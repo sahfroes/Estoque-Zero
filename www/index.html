@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Estoque Zero - Smart Control</title>
+    <script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.js"></script>
+    <script src="script.js"></script>
+    <link rel="stylesheet" href="style.css">
+   
+</head>
+<body>
+
+<div id="celular">
+    <div class="barra-status">
+        <span>9:41</span>
+        <span>📶 🔋</span>
+    </div>
+
+    <!-- TELA DE LOGIN -->
+    <section id="tela-login" class="tela ativa">
+        <div class="icone-logo">📦</div>
+        <h1>Estoque Zero</h1>
+        <p class="slogan">Controle financeiro inteligente</p>
+
+        <div style="margin-top: 16px;">
+            <input type="text" placeholder="E-mail" value="joao@estoquezero.com">
+            <input type="password" placeholder="Senha" value="••••••">
+            <button class="botao" onclick="navegarPara('tela-boas-vindas')">Acessar Conta</button>
+            <p style="text-align:center; font-size:13px; margin-top:28px; color: var(--texto-secundario)">
+                Novo por aqui? <span style="color:var(--verde); cursor:pointer; font-weight:600">Criar conta</span>
+            </p>
+        </div>
+    </section>
+
+    <!-- TELA DE BOAS-VINDAS -->
+    <section id="tela-boas-vindas" class="tela">
+        <div style="display:flex; align-items:center; gap:14px; margin-bottom:36px">
+            <div style="width:52px; height:52px; background:linear-gradient(45deg,#34495e,#2c3e50); border-radius:50%; display:flex; align-items:center; justify-content:center; font-weight:800; font-family:'Syne',sans-serif; border:2px solid var(--verde)">JS</div>
+            <div>
+                <p style="font-weight:700; font-size:17px; font-family:'Syne',sans-serif">Olá, João!</p>
+                <p style="font-size:13px; color:var(--texto-secundario)">Nível 4 • Mestre de Estoque</p>
+            </div>
+        </div>
+
+        <div style="background:var(--bg-cartao); padding:22px; border-radius:var(--raio); margin-bottom:28px; border:1px solid rgba(255,255,255,0.05)">
+            <p style="font-size:11px; font-weight:800; margin-bottom:18px; color:var(--verde); letter-spacing:1.5px; font-family:'Syne',sans-serif">COMO JOGAR</p>
+            <div style="font-size:14px; line-height:1.9; color:var(--texto-principal)">
+                <p>💰 Estipule um teto de gastos</p>
+                <p>📷 Escaneie QR codes em tempo real</p>
+                <p>🏆 Ganhe pontos por economia</p>
+            </div>
+        </div>
+
+        <p style="font-size:12px; font-weight:700; margin-bottom:12px; color:var(--texto-secundario); letter-spacing:1px">MAPAS DISPONÍVEIS</p>
+        <div style="background:var(--bg-cartao); padding:18px 20px; border-radius:var(--raio); border:1px solid var(--verde); display:flex; justify-content:space-between; align-items:center; cursor:pointer" onclick="navegarPara('tela-saldo')">
+            <span style="font-weight:600">🛒 Supermercado BH</span>
+            <span style="background:var(--verde); color:#000; font-size:10px; padding:4px 10px; border-radius:10px; font-weight:800; font-family:'Syne',sans-serif">ATALHO</span>
+        </div>
+    </section>
+
+    <!-- TELA DE SALDO -->
+    <section id="tela-saldo" class="tela">
+        <p style="text-align:center; font-size:11px; color:var(--verde); font-weight:800; letter-spacing:2px; font-family:'Syne',sans-serif">FASE 1</p>
+        <h2 style="text-align:center; margin: 18px 0 36px; font-size:22px;">Qual sua meta de hoje?</h2>
+
+        <div id="visor-saldo" style="font-size:60px; font-weight:800; color:var(--verde); text-align:center; margin-bottom:36px; font-family:'Syne',sans-serif; text-shadow:0 0 40px rgba(46,204,113,0.25); transition: transform 0.2s">R$ 100</div>
+
+        <div class="dashboard-grid">
+            <button class="botao botao-fantasma" onclick="ajustarSaldo(50)">R$ 50</button>
+            <button class="botao botao-fantasma" onclick="ajustarSaldo(100)">R$ 100</button>
+            <button class="botao botao-fantasma" onclick="ajustarSaldo(250)">R$ 250</button>
+            <button class="botao botao-fantasma" onclick="ajustarSaldo(500)">R$ 500</button>
+        </div>
+
+        <button class="botao margem-topo-auto" onclick="iniciarScanner()">▶ Iniciar Scanner QR</button>
+    </section>
+
+    <!-- TELA DA CÂMERA / SCANNER QR -->
+    <section id="tela-camera" class="tela" style="padding: 54px 20px 20px;">
+
+        <!-- HUD superior -->
+        <div class="camera-hud" style="margin-bottom: 0;">
+            <div id="cronometro" class="hud-pill">⏱️ 02:00</div>
+            <div id="total-jogo" class="hud-pill" style="color:var(--vermelho)">R$ 0,00</div>
+        </div>
+
+        <!-- Janela do scanner QR -->
+        <div class="janela-ra">
+            <!-- Vídeo da câmera real -->
+            <video id="video-scanner" autoplay playsinline muted></video>
+            <!-- Canvas para processamento (oculto) -->
+            <canvas id="canvas-qr"></canvas>
+
+            <!-- Status do scanner -->
+            <div id="scanner-status">● AGUARDANDO CÂMERA...</div>
+
+            <!-- Overlay de mira -->
+            <div class="mira-overlay">
+                <div class="mira-box">
+                    <span></span>
+                    <div class="scan-line"></div>
+                </div>
+            </div>
+
+            <!-- Label de instrução -->
+            <div class="scan-label" id="scan-label">Aponte para um QR code do produto</div>
+
+            <!-- Popup do item detectado (oculto inicialmente) -->
+            <div class="popup-item" id="popup-item" style="display:none;">
+                <div style="display:flex; justify-content:space-between; align-items:flex-start">
+                    <div>
+                        <p id="popup-nome" style="font-size:15px; font-weight:700; font-family:'Syne',sans-serif">Produto</p>
+                        <p id="popup-cat" style="color:var(--verde); font-size:10px; font-weight:800; margin-top:4px; letter-spacing:1px">CATEGORIA</p>
+                    </div>
+                    <p id="popup-preco" style="font-size:18px; font-weight:800; font-family:'Syne',sans-serif; color:var(--verde)">R$ 0,00</p>
+                </div>
+            </div>
+
+            <!-- Erro de câmera -->
+            <div id="erro-camera">
+                <div class="erro-icone">📵</div>
+                <p>Câmera não disponível.<br>Use <b>HTTPS</b> e permita o acesso à câmera nas configurações do navegador.</p>
+                <button class="btn-retry" onclick="ligarCamera()">Tentar novamente</button>
+            </div>
+        </div>
+
+        <!-- Rodapé com itens -->
+        <div class="camera-footer">
+            <div style="display:flex; justify-content:space-between; margin-bottom:10px">
+                <span style="color:var(--texto-secundario); font-size:13px">Itens escaneados</span>
+                <span id="qtd-itens" style="font-weight:700; font-size:13px">0</span>
+            </div>
+            <div id="lista-itens"></div>
+            <div style="display:flex; justify-content:space-between; margin-top:10px; padding-top:10px; border-top:1px solid rgba(255,255,255,0.06)">
+                <span style="font-weight:700; font-size:14px; font-family:'Syne',sans-serif">TOTAL</span>
+                <span id="soma-final" style="color:var(--vermelho); font-weight:900; font-size:18px; font-family:'Syne',sans-serif">R$ 0,00</span>
+            </div>
+        </div>
+
+        <button class="botao" onclick="finalizarCarrinho()">Finalizar Carrinho</button>
+    </section>
+
+    <!-- TELA DE VITÓRIA -->
+    <section id="tela-vitoria" class="tela">
+        <div style="text-align:center; margin-top:20px">
+            <div style="font-size:70px">🏆</div>
+            <h1 style="color:var(--verde); margin:15px 0; font-size:26px">Missão Concluída!</h1>
+            <p style="color:var(--texto-secundario); font-size:15px" id="msg-economia">Você economizou R$ 0,00</p>
+        </div>
+
+        <div class="dashboard-grid" style="margin-top:36px">
+            <div class="cartao-estatistica">
+                <small style="color:var(--texto-secundario); font-size:11px; font-weight:600; letter-spacing:1px">POUPADO</small>
+                <span id="stat-economia" style="color:var(--verde); font-size:22px; font-weight:800; font-family:'Syne',sans-serif">R$ 0</span>
+            </div>
+            <div class="cartao-estatistica">
+                <small style="color:var(--texto-secundario); font-size:11px; font-weight:600; letter-spacing:1px">ITENS</small>
+                <span id="stat-itens" style="font-size:22px; font-weight:800; font-family:'Syne',sans-serif">0</span>
+            </div>
+        </div>
+
+        <button class="botao margem-topo-auto" onclick="navegarPara('tela-grafico')">Ver Relatório</button>
+        <button class="botao botao-fantasma" onclick="reiniciar()">Novo Desafio</button>
+    </section>
+
+    <!-- TELA DE GRÁFICO -->
+    <section id="tela-grafico" class="tela">
+        <h2 style="text-align:center; margin-bottom:28px; font-size:20px">Análise Mensal</h2>
+
+        <div style="background:var(--bg-cartao); padding:28px; border-radius:var(--raio); margin-bottom:22px;">
+            <p style="font-size:10px; color:var(--texto-secundario); margin-bottom:22px; text-transform:uppercase; font-weight:800; letter-spacing:1.5px;">Saúde Financeira</p>
+            <div class="container-barras">
+                <div class="grupo-barra">
+                    <div id="barra-bom" class="barra" style="background:var(--verde); height:0%"></div>
+                    <small style="margin-top:10px; font-size:11px; color:var(--texto-secundario)">Essencial</small>
+                </div>
+                <div class="grupo-barra">
+                    <div id="barra-alerta" class="barra" style="background:var(--amarelo); height:0%"></div>
+                    <small style="margin-top:10px; font-size:11px; color:var(--texto-secundario)">Lazer</small>
+                </div>
+                <div class="grupo-barra">
+                    <div id="barra-mau" class="barra" style="background:var(--vermelho); height:0%"></div>
+                    <small style="margin-top:10px; font-size:11px; color:var(--texto-secundario)">Outros</small>
+                </div>
+            </div>
+        </div>
+
+        <div style="background:rgba(46,204,113,0.08); border:1px solid rgba(46,204,113,0.2); padding:18px; border-radius:var(--raio);">
+            <p style="font-size:13px; line-height:1.7">
+                💡 <b>Dica Pro:</b> Você está gastando 15% menos em "Outros" que no mês passado. Continue assim!
+            </p>
+        </div>
+
+        <button class="botao margem-topo-auto" onclick="reiniciar()">Reiniciar Jornada</button>
+    </section>
+
+</div><!-- fim #celular -->
+
+</body>
+</html>

@@ -1,0 +1,20 @@
+# Windows
+desktop.ini
+thumbs.db
+
+# Dependências (ESSENCIAL ignorar, são pastas muito pesadas)
+node_modules/
+
+# Mobile (Capacitor/Android)
+android/
+ios/
+*.log
+
+# IDEs
+.vscode/
+.idea/
+
+*.exe
+xampp/
+node_modules/
+.DS_Store
