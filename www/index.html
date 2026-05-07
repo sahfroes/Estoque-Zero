@@ -1,3 +1,5 @@
+<!-- node www/server.js -->
+
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
@@ -18,20 +20,40 @@
     </div>
 
     <!-- TELA DE LOGIN -->
-    <section id="tela-login" class="tela ativa">
-        <div class="icone-logo">📦</div>
-        <h1>Estoque Zero</h1>
-        <p class="slogan">Controle financeiro inteligente</p>
+   <section id="tela-login" class="tela ativa">
+    <div class="icone-logo">📦</div>
+    <h1>Estoque Zero</h1>
+    <p class="slogan">Controle financeiro inteligente</p>
 
-        <div style="margin-top: 16px;">
-            <input type="text" placeholder="E-mail" value="joao@estoquezero.com">
-            <input type="password" placeholder="Senha" value="••••••">
-            <button class="botao" onclick="navegarPara('tela-boas-vindas')">Acessar Conta</button>
-            <p style="text-align:center; font-size:13px; margin-top:28px; color: var(--texto-secundario)">
-                Novo por aqui? <span style="color:var(--verde); cursor:pointer; font-weight:600">Criar conta</span>
-            </p>
-        </div>
-    </section>
+    <div style="margin-top: 16px;">
+        <input type="text" placeholder="E-mail" value="joao@estoquezero.com">
+        <input type="password" placeholder="Senha" value="••••••">
+        <button class="botao" onclick="navegarPara('tela-boas-vindas')">Acessar Conta</button>
+        
+        <p style="text-align:center; font-size:13px; margin-top:28px; color: var(--texto-secundario)">
+            Novo por aqui? 
+            <span onclick="navegarPara('tela-novo-usuario')" style="color:var(--verde); cursor:pointer; font-weight:600">Criar conta</span>
+        </p>
+    </div>
+</section>
+
+    <!-- TELA DE NOVO USUÁRIO -->
+   <section id="tela-novo-usuario" class="tela">
+    <div class="icone-logo">📦</div>
+    <h1>Criar Conta</h1>
+    <p class="slogan">Junte-se à comunidade Estoque Zero</p>
+
+    <div style="margin-top: 16px;">
+        <input type="text" placeholder="Nome completo">
+        <input type="email" placeholder="E-mail">
+        <input type="password" placeholder="Senha">
+        <button class="botao" onclick="navegarPara('tela-boas-vindas')">Finalizar Cadastro</button>
+        
+        <p style="text-align:center; font-size:13px; margin-top:20px; color: var(--texto-secundario)">
+            Já tem conta? <span onclick="navegarPara('tela-login')" style="color:var(--verde); cursor:pointer; font-weight:600">Fazer Login</span>
+        </p>
+    </div>
+</section>
 
     <!-- TELA DE BOAS-VINDAS -->
     <section id="tela-boas-vindas" class="tela">
