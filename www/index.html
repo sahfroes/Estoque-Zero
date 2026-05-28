@@ -1,223 +1,877 @@
-<!-- node www/server.js -->
-
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>Estoque Zero - Smart Control</title>
+    <title>Estoque Zero</title>
+    
     <script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.js"></script>
-    <script src="script.js"></script>
-    <link rel="stylesheet" href="style.css">
-   
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <script src="https://aframe.io/releases/1.4.2/aframe.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        :root {
+            --bg-profundo: #0a0a0f;
+            --bg-cartao: #12121a;
+            --bg-entrada: #1a1a24;
+            --verde: #2ecc71;
+            --nubank-roxo: #8B1E7A;
+            --nubank-roxo-claro: #9B4D8F;
+            --vermelho: #e74c3c;
+            --amarelo: #f1c40f;
+            --texto-principal: #ffffff;
+            --texto-secundario: #8a8a9e;
+        }
+
+        body {
+            background: linear-gradient(135deg, #0a0a0f 0%, #1a1a2e 100%);
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Inter', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            color: var(--texto-principal);
+            overflow: hidden;
+        }
+
+        /* Celular Mockup */
+        #celular {
+            width: 380px;
+            height: 780px;
+            background: var(--bg-profundo);
+            border-radius: 48px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.5), 0 0 0 8px #1a1a24;
+        }
+
+        /* Notch */
+        #celular::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 140px;
+            height: 30px;
+            background: #0a0a0f;
+            border-radius: 0 0 20px 20px;
+            z-index: 200;
+        }
+
+        /* Status Bar */
+        .status-bar {
+            height: 50px;
+            padding: 12px 24px;
+            display: flex;
+            justify-content: space-between;
+            font-size: 14px;
+            font-weight: 600;
+            position: relative;
+            z-index: 100;
+        }
+
+        /* Telas */
+        .tela {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            padding: 60px 20px 30px;
+            display: none;
+            flex-direction: column;
+            overflow-y: auto;
+            background: var(--bg-profundo);
+        }
+
+        .tela.ativa {
+            display: flex;
+        }
+
+        .logo-grande {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, var(--nubank-roxo), var(--nubank-roxo-claro));
+            border-radius: 24px;
+            margin: 0 auto 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 44px;
+            box-shadow: 0 10px 30px rgba(139,30,122,0.3);
+        }
+
+        h1 {
+            font-size: 28px;
+            font-weight: 800;
+            text-align: center;
+            margin-bottom: 8px;
+        }
+
+        .subtitulo {
+            text-align: center;
+            color: var(--texto-secundario);
+            font-size: 14px;
+            margin-bottom: 32px;
+        }
+
+        .input-group {
+            margin-bottom: 16px;
+        }
+
+        input {
+            width: 100%;
+            background: var(--bg-entrada);
+            border: 1px solid rgba(255,255,255,0.08);
+            padding: 16px 18px;
+            border-radius: 14px;
+            color: white;
+            font-size: 15px;
+        }
+
+        .btn {
+            background: var(--verde);
+            color: #000;
+            border: none;
+            padding: 16px;
+            border-radius: 14px;
+            font-weight: 700;
+            font-size: 15px;
+            cursor: pointer;
+            width: 100%;
+            transition: all 0.2s;
+            margin-top: 8px;
+        }
+
+        .btn:active {
+            transform: scale(0.97);
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 1px solid var(--verde);
+            color: var(--verde);
+        }
+
+        .btn-roxo {
+            background: linear-gradient(135deg, var(--nubank-roxo), var(--nubank-roxo-claro));
+            color: white;
+        }
+
+        .link-alternativo {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 14px;
+            color: var(--nubank-roxo-claro);
+            cursor: pointer;
+            text-decoration: underline;
+        }
+
+        .card {
+            background: var(--bg-cartao);
+            border-radius: 20px;
+            padding: 20px;
+            margin-bottom: 16px;
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .card-saldo {
+            background: linear-gradient(135deg, var(--nubank-roxo), var(--nubank-roxo-claro));
+            padding: 28px;
+            border-radius: 28px;
+            margin-bottom: 24px;
+            text-align: center;
+        }
+
+        .label-saldo {
+            font-size: 12px;
+            letter-spacing: 2px;
+            opacity: 0.8;
+            margin-bottom: 8px;
+        }
+
+        .valor-saldo {
+            font-size: 48px;
+            font-weight: 800;
+            margin-bottom: 8px;
+        }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+
+        .camera-container {
+            flex: 1;
+            background: #000000;
+            border-radius: 24px;
+            margin: 12px 0;
+            position: relative;
+            overflow: hidden;
+            min-height: 320px;
+        }
+
+        #canvas-qr {
+            display: none;
+        }
+
+        .scan-overlay {
+            position: absolute;
+            inset: 0;
+            z-index: 10;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            pointer-events: none;
+        }
+
+        .scan-frame {
+            width: 180px;
+            height: 180px;
+            position: relative;
+        }
+
+        .scan-frame::before,
+        .scan-frame::after,
+        .scan-frame span::before,
+        .scan-frame span::after {
+            content: '';
+            position: absolute;
+            width: 30px;
+            height: 30px;
+            border-color: var(--verde);
+            border-style: solid;
+        }
+
+        .scan-frame::before { top: 0; left: 0; border-width: 3px 0 0 3px; border-radius: 12px 0 0 0; }
+        .scan-frame::after { top: 0; right: 0; border-width: 3px 3px 0 0; border-radius: 0 12px 0 0; }
+        .scan-frame span::before { bottom: 0; left: 0; border-width: 0 0 3px 3px; border-radius: 0 0 0 12px; }
+        .scan-frame span::after { bottom: 0; right: 0; border-width: 0 3px 3px 0; border-radius: 0 0 12px 0; }
+
+        .scan-line {
+            position: absolute;
+            left: 10px;
+            right: 10px;
+            top: 0;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--verde), transparent);
+            animation: scan 2s ease-in-out infinite;
+        }
+
+        @keyframes scan {
+            0%, 100% { top: 10%; }
+            50% { top: 85%; }
+        }
+
+        .scan-text {
+            position: absolute;
+            bottom: 15px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0,0,0,0.7);
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 11px;
+            z-index: 11;
+            backdrop-filter: blur(10px);
+            white-space: nowrap;
+        }
+
+        .status-camera {
+            position: absolute;
+            top: 12px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0,0,0,0.7);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 10px;
+            font-weight: 600;
+            z-index: 11;
+        }
+
+        .popup-produto {
+            position: absolute;
+            bottom: 16px;
+            left: 16px;
+            right: 16px;
+            background: rgba(18,18,26,0.95);
+            backdrop-filter: blur(20px);
+            padding: 14px;
+            border-radius: 16px;
+            border-left: 4px solid var(--verde);
+            z-index: 20;
+        }
+
+        .header-camera {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 12px;
+        }
+
+        .pill {
+            background: rgba(0,0,0,0.6);
+            padding: 8px 14px;
+            border-radius: 30px;
+            backdrop-filter: blur(10px);
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .footer-camera {
+            background: var(--bg-cartao);
+            padding: 16px;
+            border-radius: 20px;
+            margin: 12px 0;
+        }
+
+        .lista-itens {
+            max-height: 100px;
+            overflow-y: auto;
+            margin-top: 8px;
+        }
+
+        .item-linha {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            font-size: 13px;
+        }
+
+        .grafico-container {
+            background: var(--bg-cartao);
+            padding: 15px;
+            border-radius: 20px;
+            margin-bottom: 16px;
+        }
+
+        canvas {
+            max-height: 160px;
+        }
+
+        .toast-top {
+            position: fixed;
+            top: 60px;
+            left: 20px;
+            right: 20px;
+            background: rgba(0,0,0,0.95);
+            backdrop-filter: blur(10px);
+            color: white;
+            padding: 14px 20px;
+            border-radius: 16px;
+            text-align: center;
+            z-index: 1000;
+            font-size: 14px;
+            font-weight: 500;
+            transform: translateY(-100px);
+            transition: transform 0.3s ease;
+            pointer-events: none;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            border-left: 4px solid var(--verde);
+        }
+
+        .toast-top.show {
+            transform: translateY(0);
+        }
+
+        .erro-camera {
+            position: absolute;
+            inset: 0;
+            background: rgba(0,0,0,0.9);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 30;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .meta-progresso {
+            background: rgba(255,255,255,0.1);
+            border-radius: 10px;
+            height: 6px;
+            margin-top: 12px;
+            overflow: hidden;
+        }
+
+        .meta-progresso-bar {
+            background: var(--verde);
+            height: 100%;
+            width: 0%;
+            transition: width 0.3s ease;
+            border-radius: 10px;
+        }
+
+        .btn-voltar {
+            position: absolute;
+            top: 60px;
+            left: 16px;
+            background: rgba(0,0,0,0.6);
+            backdrop-filter: blur(10px);
+            border: none;
+            border-radius: 30px;
+            padding: 8px 14px;
+            color: white;
+            font-size: 12px;
+            cursor: pointer;
+            z-index: 50;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        video {
+            position: absolute !important;
+            width: 100% !important;
+            height: 100% !important;
+            object-fit: cover !important;
+            top: 0 !important;
+            left: 0 !important;
+            z-index: 1 !important;
+        }
+
+        #cena-ar {
+            width: 100% !important;
+            height: 100% !important;
+            position: absolute !important;
+            top: 0 !important;
+            left: 0 !important;
+            z-index: 2 !important;
+        }
+        
+        .mindar-ui-overlay {
+            display: none !important;
+        }
+    </style>
 </head>
 <body>
 
 <div id="celular">
-    <div class="barra-status">
+    <div class="status-bar">
         <span>9:41</span>
-        <span>📶 🔋</span>
+        <span>📶 🔋 100%</span>
     </div>
 
-    <!-- TELA DE LOGIN -->
-   <section id="tela-login" class="tela ativa">
-    <div class="icone-logo">📦</div>
-    <h1>Estoque Zero</h1>
-    <p class="slogan">Controle financeiro inteligente</p>
+    <button class="btn-voltar" id="btnVoltar" style="display: none;" onclick="voltarTela()">
+        ← Voltar
+    </button>
 
-    <div style="margin-top: 16px;">
-        <input type="text" placeholder="E-mail" value="joao@estoquezero.com">
-        <input type="password" placeholder="Senha" value="••••••">
-        <button class="botao" onclick="navegarPara('tela-boas-vindas')">Acessar Conta</button>
-        
-        <p style="text-align:center; font-size:13px; margin-top:28px; color: var(--texto-secundario)">
-            Novo por aqui? 
-            <span onclick="navegarPara('tela-novo-usuario')" style="color:var(--verde); cursor:pointer; font-weight:600">Criar conta</span>
-        </p>
-    </div>
-</section>
+    <section id="tela-login" class="tela ativa">
+        <div class="logo-grande">📦</div>
+        <h1>Estoque Zero</h1>
+        <p class="subtitulo">Controle financeiro com Realidade Aumentada</p>
+        <div class="input-group">
+            <input type="email" id="login-email" placeholder="E-mail" value="joao@estoquezero.com">
+        </div>
+        <div class="input-group">
+            <input type="password" id="login-senha" placeholder="Senha" value="123456">
+        </div>
+        <button class="btn" onclick="fazerLogin()">Acessar Conta</button>
+        <div class="link-alternativo" onclick="navegarPara('tela-cadastro')">Criar nova conta</div>
+    </section>
 
-    <!-- TELA DE NOVO USUÁRIO -->
-   <section id="tela-novo-usuario" class="tela">
-    <div class="icone-logo">📦</div>
-    <h1>Criar Conta</h1>
-    <p class="slogan">Junte-se à comunidade Estoque Zero</p>
+    <section id="tela-cadastro" class="tela">
+        <div class="logo-grande">✨</div>
+        <h1>Nova Conta</h1>
+        <p class="subtitulo">Cadastre-se para começar a economizar</p>
+        <div class="input-group">
+            <input type="text" id="cadastro-nome" placeholder="Nome Completo">
+        </div>
+        <div class="input-group">
+            <input type="email" id="cadastro-email" placeholder="Seu melhor E-mail">
+        </div>
+        <div class="input-group">
+            <input type="password" id="cadastro-senha" placeholder="Crie uma Senha">
+        </div>
+        <button class="btn btn-roxo" onclick="confirmarCadastro()">Finalizar Cadastro</button>
+        <div class="link-alternativo" onclick="navegarPara('tela-login')">Já tenho conta (Login)</div>
+    </section>
 
-    <div style="margin-top: 16px;">
-        <input type="text" placeholder="Nome completo">
-        <input type="email" placeholder="E-mail">
-        <input type="password" placeholder="Senha">
-        <button class="botao" onclick="navegarPara('tela-boas-vindas')">Finalizar Cadastro</button>
-        
-        <p style="text-align:center; font-size:13px; margin-top:20px; color: var(--texto-secundario)">
-            Já tem conta? <span onclick="navegarPara('tela-login')" style="color:var(--verde); cursor:pointer; font-weight:600">Fazer Login</span>
-        </p>
-    </div>
-</section>
-
-    <!-- TELA DE BOAS-VINDAS -->
     <section id="tela-boas-vindas" class="tela">
-        <div style="display:flex; align-items:center; gap:14px; margin-bottom:36px">
-            <div style="width:52px; height:52px; background:linear-gradient(45deg,#34495e,#2c3e50); border-radius:50%; display:flex; align-items:center; justify-content:center; font-weight:800; font-family:'Syne',sans-serif; border:2px solid var(--verde)">JS</div>
-            <div>
-                <p style="font-weight:700; font-size:17px; font-family:'Syne',sans-serif">Olá, João!</p>
-                <p style="font-size:13px; color:var(--texto-secundario)">Nível 4 • Mestre de Estoque</p>
+        <div class="card-saldo" style="padding: 20px;">
+            <div style="display: flex; align-items: center; gap: 16px;">
+                <div style="width: 56px; height: 56px; background: rgba(255,255,255,0.2); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 24px;">👤</div>
+                <div>
+                    <p style="font-weight: 700; font-size: 18px;" id="welcome-nome">Olá, João!</p>
+                    <p style="font-size: 12px; opacity: 0.8;">Nível 4 • Mestre de Estoque</p>
+                </div>
             </div>
         </div>
-
-        <div style="background:var(--bg-cartao); padding:22px; border-radius:var(--raio); margin-bottom:28px; border:1px solid rgba(255,255,255,0.05)">
-            <p style="font-size:11px; font-weight:800; margin-bottom:18px; color:var(--verde); letter-spacing:1.5px; font-family:'Syne',sans-serif">COMO JOGAR</p>
-            <div style="font-size:14px; line-height:1.9; color:var(--texto-principal)">
-                <p>💰 Estipule um teto de gastos</p>
-                <p>📷 Escaneie QR codes em tempo real</p>
-                <p>🏆 Ganhe pontos por economia</p>
+        <div class="card">
+            <p style="font-size: 11px; font-weight: 700; color: var(--verde); letter-spacing: 2px; margin-bottom: 16px;">📖 JOGABILIDADE</p>
+            <div style="line-height: 2;">
+                <p>💰 1. Defina sua meta de teto</p>
+                <p>📷 2. Escaneie QR Codes ou Alvos</p>
+                <p>✨ 3. Visualize os produtos em 3D</p>
             </div>
         </div>
-
-        <p style="font-size:12px; font-weight:700; margin-bottom:12px; color:var(--texto-secundario); letter-spacing:1px">MAPAS DISPONÍVEIS</p>
-        <div style="background:var(--bg-cartao); padding:18px 20px; border-radius:var(--raio); border:1px solid var(--verde); display:flex; justify-content:space-between; align-items:center; cursor:pointer" onclick="navegarPara('tela-saldo')">
-            <span style="font-weight:600">🛒 Supermercado BH</span>
-            <span style="background:var(--verde); color:#000; font-size:10px; padding:4px 10px; border-radius:10px; font-weight:800; font-family:'Syne',sans-serif">ATALHO</span>
-        </div>
+        <button class="btn btn-roxo" onclick="navegarPara('tela-meta')">▶ Avançar</button>
     </section>
 
-    <!-- TELA DE SALDO -->
-    <section id="tela-saldo" class="tela">
-        <p style="text-align:center; font-size:11px; color:var(--verde); font-weight:800; letter-spacing:2px; font-family:'Syne',sans-serif">FASE 1</p>
-        <h2 style="text-align:center; margin: 18px 0 36px; font-size:22px;">Qual sua meta de hoje?</h2>
-
-        <div id="visor-saldo" style="font-size:60px; font-weight:800; color:var(--verde); text-align:center; margin-bottom:36px; font-family:'Syne',sans-serif; text-shadow:0 0 40px rgba(46,204,113,0.25); transition: transform 0.2s">R$ 100</div>
-
-        <div class="dashboard-grid">
-            <button class="botao botao-fantasma" onclick="ajustarSaldo(50)">R$ 50</button>
-            <button class="botao botao-fantasma" onclick="ajustarSaldo(100)">R$ 100</button>
-            <button class="botao botao-fantasma" onclick="ajustarSaldo(250)">R$ 250</button>
-            <button class="botao botao-fantasma" onclick="ajustarSaldo(500)">R$ 500</button>
+    <section id="tela-meta" class="tela">
+        <div class="card-saldo">
+            <p class="label-saldo">DEFINA SUA META</p>
+            <div class="valor-saldo" id="visor-meta">R$ 100</div>
         </div>
-
-        <button class="botao margem-topo-auto" onclick="iniciarScanner()">▶ Iniciar Scanner QR</button>
+        <div class="grid-2">
+            <button class="btn-outline" onclick="ajustarMeta(50)">R$ 50</button>
+            <button class="btn-outline" onclick="ajustarMeta(100)">R$ 100</button>
+            <button class="btn-outline" onclick="ajustarMeta(250)">R$ 250</button>
+            <button class="btn-outline" onclick="ajustarMeta(500)">R$ 500</button>
+        </div>
+        <button class="btn" onclick="iniciarScanner()">📷 Iniciar Scanner AR</button>
     </section>
 
-    <!-- TELA DA CÂMERA / SCANNER QR -->
-    <section id="tela-camera" class="tela" style="padding: 54px 20px 20px;">
-
-        <!-- HUD superior -->
-        <div class="camera-hud" style="margin-bottom: 0;">
-            <div id="cronometro" class="hud-pill">⏱️ 02:00</div>
-            <div id="total-jogo" class="hud-pill" style="color:var(--vermelho)">R$ 0,00</div>
+    <section id="tela-camera" class="tela" style="padding: 50px 16px 20px;">
+        <div class="header-camera" style="position: relative; z-index: 15;">
+            <div class="pill" id="cronometro">⏱️ 02:00</div>
+            <div class="pill" id="total-gasto" style="color: var(--verde);">R$ 0,00</div>
         </div>
 
-        <!-- Janela do scanner QR -->
-        <div class="janela-ra">
-            <!-- Vídeo da câmera real -->
-            <video id="video-scanner" autoplay playsinline muted></video>
-            <!-- Canvas para processamento (oculto) -->
+        <div class="camera-container" id="container-webcam">
             <canvas id="canvas-qr"></canvas>
-
-            <!-- Status do scanner -->
-            <div id="scanner-status">● AGUARDANDO CÂMERA...</div>
-
-            <!-- Overlay de mira -->
-            <div class="mira-overlay">
-                <div class="mira-box">
+            <div class="status-camera" id="status-camera">● AR INICIANDO...</div>
+            
+            <div class="scan-overlay">
+                <div class="scan-frame">
                     <span></span>
                     <div class="scan-line"></div>
                 </div>
             </div>
-
-            <!-- Label de instrução -->
-            <div class="scan-label" id="scan-label">Aponte para um QR code do produto</div>
-
-            <!-- Popup do item detectado (oculto inicialmente) -->
-            <div class="popup-item" id="popup-item" style="display:none;">
-                <div style="display:flex; justify-content:space-between; align-items:flex-start">
+            
+            <div class="scan-text">Aponte para o alvo ou QR Code</div>
+            
+            <div class="popup-produto" id="popup-produto" style="display: none;">
+                <div style="display: flex; justify-content: space-between; align-items: center;">
                     <div>
-                        <p id="popup-nome" style="font-size:15px; font-weight:700; font-family:'Syne',sans-serif">Produto</p>
-                        <p id="popup-cat" style="color:var(--verde); font-size:10px; font-weight:800; margin-top:4px; letter-spacing:1px">CATEGORIA</p>
+                        <p id="popup-nome" style="font-weight: 700;">Produto</p>
+                        <p id="popup-categoria" style="font-size: 10px; color: var(--verde);">CATEGORIA</p>
                     </div>
-                    <p id="popup-preco" style="font-size:18px; font-weight:800; font-family:'Syne',sans-serif; color:var(--verde)">R$ 0,00</p>
+                    <p id="popup-preco" style="font-weight: 800; font-size: 18px; color: var(--verde);">R$ 0,00</p>
                 </div>
             </div>
-
-            <!-- Erro de câmera -->
-            <div id="erro-camera">
-                <div class="erro-icone">📵</div>
-                <p>Câmera não disponível.<br>Use <b>HTTPS</b> e permita o acesso à câmera nas configurações do navegador.</p>
-                <button class="btn-retry" onclick="ligarCamera()">Tentar novamente</button>
+            
+            <div id="erro-camera" class="erro-camera" style="display: none;">
+                <div style="font-size: 48px;">📵</div>
+                <p style="margin: 16px; color: #fff;">Câmera não disponível</p>
+                <button class="btn" onclick="iniciarScanner()" style="width: auto; padding: 10px 20px;">Tentar novamente</button>
             </div>
         </div>
 
-        <!-- Rodapé com itens -->
-        <div class="camera-footer">
-            <div style="display:flex; justify-content:space-between; margin-bottom:10px">
-                <span style="color:var(--texto-secundario); font-size:13px">Itens escaneados</span>
-                <span id="qtd-itens" style="font-weight:700; font-size:13px">0</span>
+        <div class="footer-camera" style="position: relative; z-index: 15;">
+            <div style="display: flex; justify-content: space-between; margin-bottom: 12px;">
+                <span style="color: var(--texto-secundario);">Itens adicionados</span>
+                <span id="qtd-itens">0</span>
             </div>
-            <div id="lista-itens"></div>
-            <div style="display:flex; justify-content:space-between; margin-top:10px; padding-top:10px; border-top:1px solid rgba(255,255,255,0.06)">
-                <span style="font-weight:700; font-size:14px; font-family:'Syne',sans-serif">TOTAL</span>
-                <span id="soma-final" style="color:var(--vermelho); font-weight:900; font-size:18px; font-family:'Syne',sans-serif">R$ 0,00</span>
+            <div class="meta-progresso">
+                <div class="meta-progresso-bar" id="progresso-meta"></div>
+            </div>
+            <div class="lista-itens" id="lista-itens">
+                <div style="text-align: center; color: var(--texto-secundario); padding: 10px;">Nenhum item ainda</div>
             </div>
         </div>
-
-        <button class="botao" onclick="finalizarCarrinho()">Finalizar Carrinho</button>
+        <button class="btn-outline" onclick="finalizarCompra()" style="margin-top: 8px; position: relative; z-index: 15;">✅ Finalizar Compra</button>
     </section>
 
-    <!-- TELA DE VITÓRIA -->
     <section id="tela-vitoria" class="tela">
-        <div style="text-align:center; margin-top:20px">
-            <div style="font-size:70px">🏆</div>
-            <h1 style="color:var(--verde); margin:15px 0; font-size:26px">Missão Concluída!</h1>
-            <p style="color:var(--texto-secundario); font-size:15px" id="msg-economia">Você economizou R$ 0,00</p>
+        <div style="text-align: center; margin-top: 40px;">
+            <div style="font-size: 80px;">🏆</div>
+            <h1 style="color: var(--verde); margin: 16px 0;">Concluído!</h1>
+            <p style="color: var(--texto-secundario);" id="msg-vitoria">Economia calculada com sucesso</p>
         </div>
-
-        <div class="dashboard-grid" style="margin-top:36px">
-            <div class="cartao-estatistica">
-                <small style="color:var(--texto-secundario); font-size:11px; font-weight:600; letter-spacing:1px">POUPADO</small>
-                <span id="stat-economia" style="color:var(--verde); font-size:22px; font-weight:800; font-family:'Syne',sans-serif">R$ 0</span>
-            </div>
-            <div class="cartao-estatistica">
-                <small style="color:var(--texto-secundario); font-size:11px; font-weight:600; letter-spacing:1px">ITENS</small>
-                <span id="stat-itens" style="font-size:22px; font-weight:800; font-family:'Syne',sans-serif">0</span>
-            </div>
-        </div>
-
-        <button class="botao margem-topo-auto" onclick="navegarPara('tela-grafico')">Ver Relatório</button>
-        <button class="botao botao-fantasma" onclick="reiniciar()">Novo Desafio</button>
+        <button class="btn" onclick="navegarPara('tela-grafico')">📊 Ver Relatório de Gastos</button>
     </section>
 
-    <!-- TELA DE GRÁFICO -->
     <section id="tela-grafico" class="tela">
-        <h2 style="text-align:center; margin-bottom:28px; font-size:20px">Análise Mensal</h2>
+        <h2 style="text-align: center; margin-bottom: 15px; font-size: 22px;">Análise Prática</h2>
+        
+        <p style="font-size: 12px; color: var(--texto-secundario); text-align: center; margin-bottom: 10px;">O que foi essencial vs. o que pode esperar:</p>
 
-        <div style="background:var(--bg-cartao); padding:28px; border-radius:var(--raio); margin-bottom:22px;">
-            <p style="font-size:10px; color:var(--texto-secundario); margin-bottom:22px; text-transform:uppercase; font-weight:800; letter-spacing:1.5px;">Saúde Financeira</p>
-            <div class="container-barras">
-                <div class="grupo-barra">
-                    <div id="barra-bom" class="barra" style="background:var(--verde); height:0%"></div>
-                    <small style="margin-top:10px; font-size:11px; color:var(--texto-secundario)">Essencial</small>
-                </div>
-                <div class="grupo-barra">
-                    <div id="barra-alerta" class="barra" style="background:var(--amarelo); height:0%"></div>
-                    <small style="margin-top:10px; font-size:11px; color:var(--texto-secundario)">Lazer</small>
-                </div>
-                <div class="grupo-barra">
-                    <div id="barra-mau" class="barra" style="background:var(--vermelho); height:0%"></div>
-                    <small style="margin-top:10px; font-size:11px; color:var(--texto-secundario)">Outros</small>
-                </div>
-            </div>
+        <div class="grafico-container">
+            <p style="font-size: 13px; font-weight: bold; color: var(--verde); margin-bottom: 8px; text-align: center;">🟢 FOI BOM COMPRAR (Essenciais)</p>
+            <canvas id="grafico-bom"></canvas>
         </div>
 
-        <div style="background:rgba(46,204,113,0.08); border:1px solid rgba(46,204,113,0.2); padding:18px; border-radius:var(--raio);">
-            <p style="font-size:13px; line-height:1.7">
-                💡 <b>Dica Pro:</b> Você está gastando 15% menos em "Outros" que no mês passado. Continue assim!
-            </p>
+        <div class="grafico-container">
+            <p style="font-size: 13px; font-weight: bold; color: var(--vermelho); margin-bottom: 8px; text-align: center;">🔴 COMPRAR DEPOIS (Lazer / Desejos)</p>
+            <canvas id="grafico-depois"></canvas>
         </div>
 
-        <button class="botao margem-topo-auto" onclick="reiniciar()">Reiniciar Jornada</button>
+        <button class="btn" onclick="reiniciarCompleto()">🎮 Jogar Novamente</button>
     </section>
+</div>
 
-</div><!-- fim #celular -->
+<div id="toast-top" class="toast-top"></div>
 
+<script>
+    let metaGasto = 100;
+    let totalGasto = 0;
+    let carrinho = [];
+    let scannerAtivo = false;
+    let timerCronometro = null;
+    let historicoTela = ['tela-login'];
+
+    // Instâncias Globais dos Gráficos para Limpeza Perfeita
+    let chartBomInstance = null;
+    let chartDepoisInstance = null;
+
+    const produtos = {
+        "LEITE001": { nome: "Leite Integral", preco: 6.50, categoria: "ESSENCIAL" },
+        "PAO002": { nome: "Pão de Forma", preco: 8.90, categoria: "ESSENCIAL" },
+        "CHOCO004": { nome: "Chocolate", preco: 12.50, categoria: "LAZER" }
+    };
+
+    function showToast(message) {
+        const toast = document.getElementById('toast-top');
+        toast.textContent = message;
+        toast.classList.add('show');
+        setTimeout(() => toast.classList.remove('show'), 3000);
+    }
+
+    function navegarPara(telaId, addHistorico = true) {
+        const telas = document.querySelectorAll('.tela');
+        const telaAtual = document.querySelector('.tela.ativa');
+        if (addHistorico && telaAtual) historicoTela.push(telaAtual.id);
+        
+        telas.forEach(t => t.classList.remove('ativa'));
+        document.getElementById(telaId).classList.add('ativa');
+        
+        document.getElementById('btnVoltar').style.display = (historicoTela.length > 1 && telaId !== 'tela-login') ? 'flex' : 'none';
+        
+        if (telaId !== 'tela-camera') pararScanner();
+        if (telaId === 'tela-grafico') atualizarGraficosSeparados();
+    }
+    
+    function voltarTela() {
+        if (historicoTela.length > 1) { navegarPara(historicoTela.pop(), false); }
+    }
+
+    function fazerLogin() { 
+        const email = document.getElementById('login-email').value;
+        if(!email) return showToast("Insira seu e-mail");
+        navegarPara('tela-boas-vindas'); 
+    }
+
+    function confirmarCadastro() {
+        const nome = document.getElementById('cadastro-nome').value || "Usuário";
+        document.getElementById('welcome-nome').innerText = `Olá, ${nome}!`;
+        showToast("Conta criada com sucesso!");
+        navegarPara('tela-boas-vindas');
+    }
+
+    function ajustarMeta(valor) { 
+        metaGasto = valor; 
+        document.getElementById('visor-meta').innerText = `R$ ${valor}`; 
+    }
+
+    function iniciarScanner() {
+        totalGasto = 0; 
+        carrinho = []; 
+        atualizarUI();
+        document.getElementById('erro-camera').style.display = 'none';
+        document.getElementById('status-camera').textContent = '● AR INICIANDO...';
+        
+        navegarPara('tela-camera');
+
+        const container = document.getElementById('container-webcam');
+        
+        const cenaAntiga = document.getElementById('cena-ar');
+        if(cenaAntiga) cenaAntiga.remove();
+        document.querySelectorAll('video').forEach(v => v.remove());
+
+        const novaCena = document.createElement('a-scene');
+        novaCena.setAttribute('id', 'cena-ar');
+        novaCena.setAttribute('mindar-image', 'imageTargetSrc: ./img/Flor.mind; uiLoading: no; uiScanning: no;');
+        novaCena.setAttribute('embedded', 'true');
+        novaCena.setAttribute('vr-mode-ui', 'enabled: false');
+        novaCena.setAttribute('device-orientation-permission-ui', 'enabled: false');
+
+        novaCena.innerHTML = `
+            <a-assets><img id="card-img" src="./img/flor.png" /></a-assets>
+            <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
+            <a-entity mindar-image-target="targetIndex: 0">
+                <a-plane src="#card-img" position="0 0 0" height="0.55" width="1"></a-plane>
+            </a-entity>
+
+             <a-assets><img id="card-img" src="./img/flor.png" /></a-assets>
+            <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
+            <a-entity mindar-image-target="targetIndex: 0">
+                <a-plane src="#card-img" position="0 0 0" height="0.55" width="1"></a-plane>
+            </a-entity>
+        `;
+
+        container.appendChild(novaCena);
+
+        let monitoramentoVideo = setInterval(() => {
+            const videoMindAR = document.querySelector('video');
+            if(videoMindAR) {
+                if(videoMindAR.parentNode !== container) {
+                    container.appendChild(videoMindAR);
+                }
+                
+                videoMindAR.setAttribute('playsinline', '');
+                videoMindAR.setAttribute('webkit-playsinline', '');
+                videoMindAR.setAttribute('muted', '');
+                videoMindAR.muted = true;
+                
+                videoMindAR.play().catch(e => console.log("Aguardando interação..."));
+
+                if(videoMindAR.readyState === videoMindAR.HAVE_ENOUGH_DATA || videoMindAR.currentTime > 0) {
+                    clearInterval(monitoramentoVideo);
+                    document.getElementById('status-camera').textContent = '● SCANNER ATIVO';
+                    scannerAtivo = true;
+                    iniciarCronometro();
+                    requestAnimationFrame(tick);
+                }
+            }
+        }, 300);
+
+        setTimeout(() => {
+            if(!scannerAtivo) {
+                clearInterval(monitoramentoVideo);
+                document.getElementById('erro-camera').style.display = 'flex';
+            }
+        }, 10000);
+    }
+
+    function pararScanner() {
+        scannerAtivo = false;
+        clearInterval(timerCronometro);
+        const cena = document.getElementById('cena-ar');
+        if(cena) cena.remove();
+        document.querySelectorAll('video').forEach(v => {
+            if(v.srcObject) v.srcObject.getTracks().forEach(track => track.stop());
+            v.remove();
+        });
+    }
+
+    function tick() {
+        if (!scannerAtivo) return;
+        const video = document.querySelector('video');
+        const canvas = document.getElementById('canvas-qr');
+        
+        if (video && video.readyState === video.HAVE_ENOUGH_DATA) {
+            canvas.height = video.videoHeight;
+            canvas.width = video.videoWidth;
+            const ctx = canvas.getContext('2d');
+            ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+            
+            const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+            const code = jsQR(imageData.data, imageData.width, imageData.height);
+            
+            if (code && produtos[code.data]) {
+                adicionarItem(code.data);
+                const prod = produtos[code.data];
+                document.getElementById('popup-nome').textContent = prod.nome;
+                document.getElementById('popup-categoria').textContent = prod.categoria;
+                document.getElementById('popup-preco').textContent = `R$ ${prod.preco.toFixed(2)}`;
+                document.getElementById('popup-produto').style.display = 'block';
+                
+                setTimeout(() => { document.getElementById('popup-produto').style.display = 'none'; }, 2500);
+
+                scannerAtivo = false;
+                setTimeout(() => { if(document.getElementById('tela-camera').classList.contains('ativa')) { scannerAtivo = true; requestAnimationFrame(tick); } }, 3000);
+                return;
+            }
+        }
+        if (scannerAtivo) requestAnimationFrame(tick);
+    }
+
+    function adicionarItem(id) {
+        const prod = produtos[id];
+        carrinho.push(prod);
+        totalGasto += prod.preco;
+        showToast(`${prod.nome} adicionado!`);
+        atualizarUI();
+    }
+
+    function atualizarUI() {
+        document.getElementById('total-gasto').innerText = `R$ ${totalGasto.toFixed(2)}`;
+        document.getElementById('qtd-itens').innerText = carrinho.length;
+        const pct = Math.min((totalGasto / metaGasto) * 100, 100);
+        document.getElementById('progresso-meta').style.width = `${pct}%`;
+        const lista = document.getElementById('lista-itens');
+        if(carrinho.length === 0) {
+            lista.innerHTML = '<div style="text-align: center; color: var(--texto-secundario); padding: 10px;">Nenhum item ainda</div>';
+        } else {
+            lista.innerHTML = carrinho.map(i => `<div class="item-linha"><span>${i.nome}</span><span>R$ ${i.preco.toFixed(2)}</span></div>`).join('');
+        }
+    }
+
+    function iniciarCronometro() {
+        let tempo = 120;
+        if(timerCronometro) clearInterval(timerCronometro);
+        timerCronometro = setInterval(() => {
+            tempo--;
+            let min = String(Math.floor(tempo / 60)).padStart(2, '0');
+            let seg = String(tempo % 60).padStart(2, '0');
+            document.getElementById('cronometro').innerText = `⏱️ ${min}:${seg}`;
+            if(tempo <= 0) { finalizarCompra(); }
+        }, 1000);
+    }
+
+    function finalizarCompra() { pararScanner(); navegarPara('tela-vitoria'); }
+
+    // NOVA FUNÇÃO: CONFIGURAÇÃO DO GRÁFICO DUPLO (ESSENCIAL VS COMPRAR DEPOIS)
+    function atualizarGraficosSeparados() {
+        const ctxBom = document.getElementById('grafico-bom').getContext('2d');
+        const ctxDepois = document.getElementById('grafico-depois').getContext('2d');
+
+        // Separação de dados com base na categoria
+        const essenciais = carrinho.filter(i => i.categoria === "ESSENCIAL");
+        const lazerSupérfluo = carrinho.filter(i => i.categoria === "LAZER");
+
+        const totalEssenciais = essenciais.reduce((acc, curr) => acc + curr.preco, 0);
+        const totalLazer = lazerSupérfluo.reduce((acc, curr) => acc + curr.preco, 0);
+        const restanteMeta = Math.max(metaGasto - totalGasto, 0);
+
+        // Destruindo instâncias antigas para evitar bugs visuais
+        if (chartBomInstance) chartBomInstance.destroy();
+        if (chartDepoisInstance) chartDepoisInstance.destroy();
+
+        // 1. Gráfico Verde - Bom Comprar (Essenciais vs Dinheiro que sobrou)
+        chartBomInstance = new Chart(ctxBom, {
+            type: 'bar',
+            data: {
+                labels: ['Essenciais Comprados', 'Orçamento Livre'],
+                datasets: [{
+                    label: 'Investimento Inteligente (R$)',
+                    data: [totalEssenciais, restanteMeta],
+                    backgroundColor: ['#2ecc71', '#8a8a9e']
+                }]
+            },
+            options: { responsive: true, maintainAspectRatio: false }
+        });
+
+        // 2. Gráfico Vermelho - Comprar Depois (Supérfluos e Desejos Rápidos)
+        chartDepoisInstance = new Chart(ctxDepois, {
+            type: 'bar',
+            data: {
+                labels: ['Gasto Supérfluo', 'Meta Máxima'],
+                datasets: [{
+                    label: 'Poderia Evitar / Adiável (R$)',
+                    data: [totalLazer, metaGasto],
+                    backgroundColor: ['#e74c3c', '#1a1a24']
+                }]
+            },
+            options: { responsive: true, maintainAspectRatio: false }
+        });
+    }
+
+    function reiniciarCompleto() { navegarPara('tela-meta'); }
+</script>
 </body>
 </html>

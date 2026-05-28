@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Jogo de Educação Financeira - AR</title>
+    
+    <script src="https://aframe.io/releases/1.4.2/aframe.min.js"></script>
+    
+    <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
+    
+    <style>
+      /* Garante que o link de teste flutue corretamente sobre a câmera */
+      .btn-teste {
+        font-size: 18px; 
+        color: red; 
+        position: absolute; 
+        z-index: 999; 
+        background: white; 
+        padding: 8px 12px;
+        border-radius: 5px;
+        text-decoration: none;
+        font-family: Arial, sans-serif;
+        font-weight: bold;
+        top: 10px;
+        left: 10px;
+        box-shadow: 0px 2px 5px rgba(0,0,0,0.3);
+      }
+    </style>
+  </head>
+  <body>
+
+    <a href="teste-ar.html" class="btn-teste">CLIQUE AQUI PARA TESTAR AR</a>
+    
+    <a-scene 
+      mindar-image="imageTargetSrc: ./img/Flor.mind; uiLoading: no; uiScanning: no;" 
+      color-space="sRGB" 
+      renderer="colorManagement: true, physicallyCorrectLights" 
+      vr-mode-ui="enabled: false" 
+      device-orientation-permission-ui="enabled: false">
+      
+      <a-assets>
+        <img id="card" src="./img/flor.png" />
+        
+        
+      </a-assets>
+
+      <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
+      
+      <a-entity mindar-image-target="targetIndex: 0">
+        
+        <a-plane src="#card" position="0 0 0" height="0.552" width="1" rotation="0 0 0"></a-plane>
+        
+        <a-gltf-model 
+          rotation="0 0 0" 
+          position="0 0 0.1" 
+          scale="0.005 0.005 0.005" 
+          src="#avatarModel" 
+          animation="property: position; to: 0 0.1 0.1; dur: 1000; easing: easeInOutQuad; loop: true; dir: alternate">
+        </a-gltf-model>
+        
+      </a-entity>
+    </a-scene>
+
+  </body>
+</html>
