@@ -10,6 +10,9 @@
     <script src="https://aframe.io/releases/1.4.2/aframe.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
 
+    <script src="https://aframe.io/releases/1.6.0/aframe.min.js"></script>
+    <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar.js"></script>
+
     <style>
         * {
             margin: 0;
@@ -683,83 +686,68 @@
     }
 
     function iniciarScanner() {
-        totalGasto = 0; 
-        carrinho = []; 
-        atualizarUI();
-        document.getElementById('erro-camera').style.display = 'none';
-        document.getElementById('status-camera').textContent = '● AR INICIANDO...';
-        
-        navegarPara('tela-camera');
-        iniciarCronometro();
+    totalGasto = 0; 
+    carrinho = []; 
+    atualizarUI();
+    document.getElementById('erro-camera').style.display = 'none';
+    document.getElementById('status-camera').textContent = '● AR INICIANDO...';
+    
+    navegarPara('tela-camera');
+    iniciarCronometro();
 
-        const container = document.getElementById('container-webcam');
-        
-        const cenaAntiga = document.getElementById('cena-ar');
-        if(cenaAntiga) {
-            cenaAntiga.parentNode.removeChild(cenaAntiga);
-        }
-        document.querySelectorAll('video').forEach(v => v.remove());
-        document.querySelectorAll('.mindar-ui-overlay').forEach(el => el.remove());
-
-        const novaCena = document.createElement('a-scene');
-        novaCena.setAttribute('id', 'cena-ar');
-        novaCena.setAttribute('mindar-image', 'imageTargetSrc: ./img/Flor.mind; autoStart: true; uiLoading: no; uiScanning: no;');
-        novaCena.setAttribute('embedded', 'true');
-        novaCena.setAttribute('vr-mode-ui', 'enabled: false');
-        novaCena.setAttribute('device-orientation-permission-ui', 'enabled: false');
-        novaCena.setAttribute('color-space', 'sRGB');
-        novaCena.setAttribute('renderer', 'colorManagement: true, physicallyCorrectLights: false');
-
-        novaCena.innerHTML = `
-            <a-assets>
-                <img id="flor-img" src="./img/flor.png" />
-                <img id="biscoito-img" src="./img/biscoito.webp" />
-            </a-assets>
-            
-            <a-camera position="0 0 0" look-controls="enabled: false">
-                <a-cursor id="cursor" raycaster="objects: .clicavel" cursor="fuse: false; rayOrigin: mouse"></a-cursor>
-            </a-camera>
-            
-            <a-entity mindar-image-target="targetIndex: 0">
-                <a-plane src="#flor-img" 
-                         class="clicavel" 
-                         position="0 0 0" 
-                         height="1" 
-                         width="1"
-                         data-id="FLOR001"
-                         id="botao-flor">
-                </a-plane>
-            </a-entity>
-
-            <a-entity mindar-image-target="targetIndex: 1">
-                <a-plane src="#biscoito-img" 
-                         class="clicavel" 
-                         position="0 0 0" 
-                         height="1" 
-                         width="1"
-                         data-id="BISCOITO002"
-                         id="botao-biscoito">
-                </a-plane>
-            </a-entity>
-        `;
-
-        container.appendChild(novaCena);
-
-        scannerAtivo = true;
-        setTimeout(() => { requestAnimationFrame(tick); }, 1000);
-
-        // Registro seguro de cliques usando o sistema de eventos do A-Frame
-        novaCena.addEventListener('render-target-loaded', () => {
-            const itensClicaveis = novaCena.querySelectorAll('.clicavel');
-            itensClicaveis.forEach(elemento => {
-                elemento.addEventListener('click', function(e) {
-                    const idProduto = this.getAttribute('data-id');
-                    clicouNoProduto(idProduto);
-                });
-            });
-            document.getElementById('status-camera').textContent = '● AR ATIVO';
-        });
+    const container = document.getElementById('container-webcam');
+    
+    // Limpa cenas antigas e resíduos de câmeras anteriores
+    const cenaAntiga = document.getElementById('cena-ar');
+    if(cenaAntiga) {
+        cenaAntiga.parentNode.removeChild(cenaAntiga);
     }
+    document.querySelectorAll('video').forEach(v => v.remove());
+    document.querySelectorAll('.mindar-ui-overlay').forEach(el => el.remove());
+
+    // Cria a nova cena configurada para AR.js (Marcador Hiro)
+    const novaCena = document.createElement('a-scene');
+    novaCena.setAttribute('id', 'cena-ar');
+    novaCena.setAttribute('embedded', 'true');
+    novaCena.setAttribute('arjs', 'debugUIEnabled: false; trackingMethod: best;');
+    novaCena.setAttribute('vr-mode-ui', 'enabled: false');
+    novaCena.setAttribute('color-space', 'sRGB');
+    novaCena.setAttribute('renderer', 'colorManagement: true, physicallyCorrectLights: false');
+
+    
+    novaCena.innerHTML = `
+        <a-marker preset="hiro">
+            <a-image 
+                height="1.5" 
+                width="1.5"
+                rotation="-90 0 0" 
+                position="0 0 0"
+                class="clicavel"
+                data-id="FLOR001"
+                src="./img/flor.png"> </a-image>
+        </a-marker>
+        
+        <a-entity camera>
+            <a-cursor id="cursor" raycaster="objects: .clicavel" cursor="fuse: false; rayOrigin: mouse"></a-cursor>
+        </a-entity>
+    `;
+    container.appendChild(novaCena);
+
+    scannerAtivo = true;
+    setTimeout(() => { requestAnimationFrame(tick); }, 1000);
+
+    // Registro seguro de cliques nas imagens/elementos 3D gerados
+    novaCena.addEventListener('render-target-loaded', () => {
+        const itensClicaveis = novaCena.querySelectorAll('.clicavel');
+        itensClicaveis.forEach(elemento => {
+            elemento.addEventListener('click', function(e) {
+                const idProduto = this.getAttribute('data-id');
+                clicouNoProduto(idProduto);
+            });
+        });
+        document.getElementById('status-camera').textContent = '● AR ATIVO (HIRO)';
+    });
+}
 
     function pararScanner() {
         scannerAtivo = false;
