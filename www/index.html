@@ -466,7 +466,7 @@
     </div>
 
     <button class="btn-voltar" id="btnVoltar" style="display: none;" onclick="voltarTela()">
-        ← Voltar
+        &larr; Voltar
     </button>
 
     <section id="tela-login" class="tela ativa">
@@ -506,7 +506,7 @@
                 <div style="width: 56px; height: 56px; background: rgba(255,255,255,0.2); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 24px;">👤</div>
                 <div>
                     <p style="font-weight: 700; font-size: 18px;" id="welcome-nome">Olá, João!</p>
-                    <p style="font-size: 12px; opacity: 0.8;">Nível 4 • Mestre de Estoque</p>
+                    <p style="font-size: 12px; opacity: 0.8;">Nível 4 &bull; Mestre de Estoque</p>
                 </div>
             </div>
         </div>
@@ -518,7 +518,7 @@
                 <p>✨ 3. Visualize os produtos em 3D</p>
             </div>
         </div>
-        <button class="btn btn-roxo" onclick="navegarPara('tela-meta')">▶ Avançar</button>
+        <button class="btn btn-roxo" onclick="navegarPara('tela-meta')">seguir</button>
     </section>
 
     <section id="tela-meta" class="tela">
@@ -617,21 +617,26 @@
 <div id="toast-top" class="toast-top"></div>
 
 <script>
+    // ============================================================
+    // ESTADO DA APLICAÇÃO
+    // ============================================================
     let metaGasto = 100;
     let totalGasto = 0;
     let carrinho = [];
     let scannerAtivo = false;
     let timerCronometro = null;
     let historicoTela = ['tela-login'];
+    let bloqueioQR = false;
 
-    // Instâncias Globais dos Gráficos para Limpeza Perfeita
     let chartBomInstance = null;
     let chartDepoisInstance = null;
 
     const produtos = {
         "LEITE001": { nome: "Leite Integral", preco: 6.50, categoria: "ESSENCIAL" },
         "PAO002": { nome: "Pão de Forma", preco: 8.90, categoria: "ESSENCIAL" },
-        "CHOCO004": { nome: "Chocolate", preco: 12.50, categoria: "LAZER" }
+        "CHOCO004": { nome: "Chocolate", preco: 12.50, categoria: "LAZER" },
+        "FLOR001": { nome: "Flor Decorativa", preco: 15.00, categoria: "LAZER" },
+        "BISCOITO002": { nome: "Biscoito Recheado", preco: 4.20, categoria: "LAZER" }
     };
 
     function showToast(message) {
@@ -685,71 +690,75 @@
         document.getElementById('status-camera').textContent = '● AR INICIANDO...';
         
         navegarPara('tela-camera');
+        iniciarCronometro();
 
         const container = document.getElementById('container-webcam');
         
         const cenaAntiga = document.getElementById('cena-ar');
-        if(cenaAntiga) cenaAntiga.remove();
+        if(cenaAntiga) {
+            cenaAntiga.parentNode.removeChild(cenaAntiga);
+        }
         document.querySelectorAll('video').forEach(v => v.remove());
+        document.querySelectorAll('.mindar-ui-overlay').forEach(el => el.remove());
 
         const novaCena = document.createElement('a-scene');
         novaCena.setAttribute('id', 'cena-ar');
-        novaCena.setAttribute('mindar-image', 'imageTargetSrc: ./img/Flor.mind; uiLoading: no; uiScanning: no;');
-        novaCena.setAttribute('mindar-image', 'imageTargetSrc: ./img/bicoito.mind; uiLoading: no; uiScanning: no;');
+        novaCena.setAttribute('mindar-image', 'imageTargetSrc: ./img/Flor.mind; autoStart: true; uiLoading: no; uiScanning: no;');
         novaCena.setAttribute('embedded', 'true');
         novaCena.setAttribute('vr-mode-ui', 'enabled: false');
         novaCena.setAttribute('device-orientation-permission-ui', 'enabled: false');
+        novaCena.setAttribute('color-space', 'sRGB');
+        novaCena.setAttribute('renderer', 'colorManagement: true, physicallyCorrectLights: false');
 
-        // ESTRUTURA CORRIGIDA: Sem duplicados e tags limpas
         novaCena.innerHTML = `
-    <a-assets>
-        <img id="flor-img" src="./img/flor.png" />
-        <img id="biscoito-img" src="./img/bicoito.webp" />
-    </a-assets>
-    
-    <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
-    
-    <a-entity mindar-image-target="targetIndex: 0">
-        <a-plane src="#biscoito-img" position="0 0 0" height="0.75" width="1"></a-plane>
-    </a-entity>
+            <a-assets>
+                <img id="flor-img" src="./img/flor.png" />
+                <img id="biscoito-img" src="./img/biscoito.webp" />
+            </a-assets>
+            
+            <a-camera position="0 0 0" look-controls="enabled: false">
+                <a-cursor id="cursor" raycaster="objects: .clicavel" cursor="fuse: false; rayOrigin: mouse"></a-cursor>
+            </a-camera>
+            
+            <a-entity mindar-image-target="targetIndex: 0">
+                <a-plane src="#flor-img" 
+                         class="clicavel" 
+                         position="0 0 0" 
+                         height="1" 
+                         width="1"
+                         data-id="FLOR001"
+                         id="botao-flor">
+                </a-plane>
+            </a-entity>
 
-    <a-entity mindar-image-target="targetIndex: 1">
-        <a-plane src="#flor-img" position="0 0 0" height="0.55" width="1"></a-plane>
-    </a-entity>
-`;
+            <a-entity mindar-image-target="targetIndex: 1">
+                <a-plane src="#biscoito-img" 
+                         class="clicavel" 
+                         position="0 0 0" 
+                         height="1" 
+                         width="1"
+                         data-id="BISCOITO002"
+                         id="botao-biscoito">
+                </a-plane>
+            </a-entity>
+        `;
 
         container.appendChild(novaCena);
 
-        let monitoramentoVideo = setInterval(() => {
-            const videoMindAR = document.querySelector('video');
-            if(videoMindAR) {
-                if(videoMindAR.parentNode !== container) {
-                    container.appendChild(videoMindAR);
-                }
-                
-                videoMindAR.setAttribute('playsinline', '');
-                videoMindAR.setAttribute('webkit-playsinline', '');
-                videoMindAR.setAttribute('muted', '');
-                videoMindAR.muted = true;
-                
-                videoMindAR.play().catch(e => console.log("Aguardando interação..."));
+        scannerAtivo = true;
+        setTimeout(() => { requestAnimationFrame(tick); }, 1000);
 
-                if(videoMindAR.readyState === videoMindAR.HAVE_ENOUGH_DATA || videoMindAR.currentTime > 0) {
-                    clearInterval(monitoramentoVideo);
-                    document.getElementById('status-camera').textContent = '● SCANNER ATIVO';
-                    scannerAtivo = true;
-                    iniciarCronometro();
-                    requestAnimationFrame(tick);
-                }
-            }
-        }, 300);
-
-        setTimeout(() => {
-            if(!scannerAtivo) {
-                clearInterval(monitoramentoVideo);
-                document.getElementById('erro-camera').style.display = 'flex';
-            }
-        }, 10000);
+        // Registro seguro de cliques usando o sistema de eventos do A-Frame
+        novaCena.addEventListener('render-target-loaded', () => {
+            const itensClicaveis = novaCena.querySelectorAll('.clicavel');
+            itensClicaveis.forEach(elemento => {
+                elemento.addEventListener('click', function(e) {
+                    const idProduto = this.getAttribute('data-id');
+                    clicouNoProduto(idProduto);
+                });
+            });
+            document.getElementById('status-camera').textContent = '● AR ATIVO';
+        });
     }
 
     function pararScanner() {
@@ -777,8 +786,10 @@
             const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
             const code = jsQR(imageData.data, imageData.width, imageData.height);
             
-            if (code && produtos[code.data]) {
+            if (code && produtos[code.data] && !bloqueioQR) {
+                bloqueioQR = true;
                 adicionarItem(code.data);
+                
                 const prod = produtos[code.data];
                 document.getElementById('popup-nome').textContent = prod.nome;
                 document.getElementById('popup-categoria').textContent = prod.categoria;
@@ -787,8 +798,12 @@
                 
                 setTimeout(() => { document.getElementById('popup-produto').style.display = 'none'; }, 2500);
 
-                scannerAtivo = false;
-                setTimeout(() => { if(document.getElementById('tela-camera').classList.contains('ativa')) { scannerAtivo = true; requestAnimationFrame(tick); } }, 3000);
+                setTimeout(() => { 
+                    bloqueioQR = false;
+                    if(document.getElementById('tela-camera').classList.contains('ativa') && scannerAtivo) { 
+                        requestAnimationFrame(tick); 
+                    } 
+                }, 3000);
                 return;
             }
         }
@@ -797,10 +812,26 @@
 
     function adicionarItem(id) {
         const prod = produtos[id];
+        if(!prod) return;
         carrinho.push(prod);
         totalGasto += prod.preco;
         showToast(`${prod.nome} adicionado!`);
         atualizarUI();
+    }
+
+    function clicouNoProduto(idProduto) {
+        const prod = produtos[idProduto];
+        if (prod) {
+            adicionarItem(idProduto);
+            document.getElementById('popup-nome').textContent = prod.nome;
+            document.getElementById('popup-categoria').textContent = prod.categoria;
+            document.getElementById('popup-preco').textContent = `R$ ${prod.preco.toFixed(2)}`;
+            document.getElementById('popup-produto').style.display = 'block';
+            
+            setTimeout(() => { 
+                document.getElementById('popup-produto').style.display = 'none'; 
+            }, 2500);
+        }
     }
 
     function atualizarUI() {
@@ -830,24 +861,20 @@
 
     function finalizarCompra() { pararScanner(); navegarPara('tela-vitoria'); }
 
-    // NOVA FUNÇÃO: CONFIGURAÇÃO DO GRÁFICO DUPLO (ESSENCIAL VS COMPRAR DEPOIS)
     function atualizarGraficosSeparados() {
         const ctxBom = document.getElementById('grafico-bom').getContext('2d');
         const ctxDepois = document.getElementById('grafico-depois').getContext('2d');
 
-        // Separação de dados com base na categoria
         const essenciais = carrinho.filter(i => i.categoria === "ESSENCIAL");
-        const lazerSupérfluo = carrinho.filter(i => i.categoria === "LAZER");
+        const lazerSuperfluo = carrinho.filter(i => i.categoria === "LAZER");
 
         const totalEssenciais = essenciais.reduce((acc, curr) => acc + curr.preco, 0);
-        const totalLazer = lazerSupérfluo.reduce((acc, curr) => acc + curr.preco, 0);
+        const totalLazer = lazerSuperfluo.reduce((acc, curr) => acc + curr.preco, 0);
         const restanteMeta = Math.max(metaGasto - totalGasto, 0);
 
-        // Destruindo instâncias antigas para evitar bugs visuais
         if (chartBomInstance) chartBomInstance.destroy();
         if (chartDepoisInstance) chartDepoisInstance.destroy();
 
-        // 1. Gráfico Verde - Bom Comprar (Essenciais vs Dinheiro que sobrou)
         chartBomInstance = new Chart(ctxBom, {
             type: 'bar',
             data: {
@@ -861,7 +888,6 @@
             options: { responsive: true, maintainAspectRatio: false }
         });
 
-        // 2. Gráfico Vermelho - Comprar Depois (Supérfluos e Desejos Rápidos)
         chartDepoisInstance = new Chart(ctxDepois, {
             type: 'bar',
             data: {
@@ -869,14 +895,20 @@
                 datasets: [{
                     label: 'Poderia Evitar / Adiável (R$)',
                     data: [totalLazer, metaGasto],
-                    backgroundColor: ['#e74c3c', '#1a1a24']
+                    backgroundColor: ['#e74c3c', '#8B1E7A']
                 }]
             },
             options: { responsive: true, maintainAspectRatio: false }
         });
     }
 
-    function reiniciarCompleto() { navegarPara('tela-meta'); }
+    function reiniciarCompleto() {
+        totalGasto = 0;
+        carrinho = [];
+        historicoTela = ['tela-login'];
+        atualizarUI();
+        navegarPara('tela-login');
+    }
 </script>
 </body>
 </html>
