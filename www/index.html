@@ -184,6 +184,36 @@
             border: 1px solid rgba(255,255,255,0.05);
         }
 
+        /* Estilização da aba como funciona */
+        .passo-tutorial {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            background: rgba(255, 255, 255, 0.03);
+            padding: 12px;
+            border-radius: 12px;
+            margin-bottom: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .passo-numero {
+            background: linear-gradient(135deg, var(--nubank-roxo), var(--nubank-roxo-claro));
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 13px;
+            flex-shrink: 0;
+        }
+
+        .passo-texto {
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.9);
+        }
+
         .card-saldo {
             background: linear-gradient(135deg, var(--nubank-roxo), var(--nubank-roxo-claro));
             padding: 28px;
@@ -457,8 +487,7 @@
 
 <div id="celular">
     <div class="status-bar">
-        <span>9:41</span>
-        <span>📶 🔋 100%</span>
+      
     </div>
 
     <button class="btn-voltar" id="btnVoltar" style="display: none;" onclick="voltarTela()">
@@ -500,21 +529,31 @@
         <div class="card-saldo" style="padding: 20px;">
             <div style="display: flex; align-items: center; gap: 16px;">
                 <div style="width: 56px; height: 56px; background: rgba(255,255,255,0.2); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 24px;">👤</div>
-                <div>
+                <div style="text-align: left;">
                     <p style="font-weight: 700; font-size: 18px;" id="welcome-nome">Olá, João!</p>
                     <p style="font-size: 12px; opacity: 0.8;">Nível 4 &bull; Mestre de Estoque</p>
                 </div>
             </div>
         </div>
         <div class="card">
-            <p style="font-size: 11px; font-weight: 700; color: var(--verde); letter-spacing: 2px; margin-bottom: 16px;">📖 JOGABILIDADE</p>
-            <div style="line-height: 2;">
-                <p>💰 1. Defina sua meta de teto</p>
-                <p>📷 2. Escaneie QR Codes ou Alvos</p>
-                <p>✨ 3. Visualize os produtos em 3D</p>
+            <p style="font-size: 11px; font-weight: 700; color: var(--nubank-roxo-claro); letter-spacing: 2px; margin-bottom: 16px; text-align: center;">📖 COMO JOGAR</p>
+            
+            <div class="passo-tutorial">
+                <div class="passo-numero">1</div>
+                <div class="passo-texto">Defina seu teto ou meta de gastos máximos.</div>
+            </div>
+            
+            <div class="passo-tutorial">
+                <div class="passo-numero">2</div>
+                <div class="passo-texto">Use a câmera para escanear QR Codes ou alvos.</div>
+            </div>
+            
+            <div class="passo-tutorial">
+                <div class="passo-numero">3</div>
+                <div class="passo-texto">Visualize e adicione os produtos 3D ao carrinho.</div>
             </div>
         </div>
-        <button class="btn btn-roxo" onclick="navegarPara('tela-meta')">seguir</button>
+        <button class="btn btn-roxo" onclick="navegarPara('tela-meta')">Seguir</button>
     </section>
 
     <section id="tela-meta" class="tela">
@@ -613,9 +652,6 @@
 <div id="toast-top" class="toast-top"></div>
 
 <script>
-    // ============================================================
-    // ESTADO DA APLICAÇÃO
-    // ============================================================
     let metaGasto = 100;
     let totalGasto = 0;
     let carrinho = [];
@@ -628,11 +664,11 @@
     let chartDepoisInstance = null;
 
     const produtos = {
-        "LEITE001": { nome: "Leite Integral", preco: 6.50, categoria: "ESSENCIAL" },
-        "PAO002": { nome: "Pão de Forma", preco: 8.90, categoria: "ESSENCIAL" },
-        "CHOCO004": { nome: "Chocolate", preco: 12.50, categoria: "LAZER" },
-        "FLOR001": { nome: "Flor Decorativa", preco: 15.00, categoria: "LAZER" },
-        "BISCOITO002": { nome: "Biscoito Recheado", preco: 4.20, categoria: "LAZER" }
+        "LEITE001": { nome: "Leite Integral", preco: 6.50, category: "ESSENCIAL" },
+        "PAO002": { nome: "Pão de Forma", preco: 8.90, category: "ESSENCIAL" },
+        "CHOCO004": { nome: "Chocolate", preco: 12.50, category: "LAZER" },
+        "FLOR001": { nome: "Flor Decorativa", preco: 15.00, category: "LAZER" },
+        "BISCOITO002": { nome: "Biscoito Recheado", preco: 4.20, category: "LAZER" }
     };
 
     function showToast(message) {
@@ -689,15 +725,12 @@
         iniciarCronometro();
 
         const container = document.getElementById('container-webcam');
-        
-        // Limpa cenas antigas e resíduos de câmeras anteriores
         const cenaAntiga = document.getElementById('cena-ar');
         if(cenaAntiga) {
             cenaAntiga.parentNode.removeChild(cenaAntiga);
         }
         document.querySelectorAll('video').forEach(v => v.remove());
 
-        // Cria a nova cena configurada para AR.js (Marcador Hiro)
         const novaCena = document.createElement('a-scene');
         novaCena.setAttribute('id', 'cena-ar');
         novaCena.setAttribute('embedded', 'true');
@@ -728,7 +761,6 @@
         scannerAtivo = true;
         setTimeout(() => { requestAnimationFrame(tick); }, 1000);
 
-        // Delegação de eventos de clique gerenciada via cursor raycaster do A-Frame
         novaCena.addEventListener('click', function(evt) {
             if (evt.detail.intersectedEl && evt.detail.intersectedEl.classList.contains('clicavel')) {
                 const elemento = evt.detail.intersectedEl;
@@ -773,7 +805,7 @@
                 
                 const prod = produtos[code.data];
                 document.getElementById('popup-nome').textContent = prod.nome;
-                document.getElementById('popup-categoria').textContent = prod.categoria;
+                document.getElementById('popup-categoria').textContent = prod.category;
                 document.getElementById('popup-preco').textContent = `R$ ${prod.preco.toFixed(2)}`;
                 document.getElementById('popup-produto').style.display = 'block';
                 
@@ -805,7 +837,7 @@
         if (prod) {
             adicionarItem(idProduto);
             document.getElementById('popup-nome').textContent = prod.nome;
-            document.getElementById('popup-categoria').textContent = prod.categoria;
+            document.getElementById('popup-categoria').textContent = prod.category;
             document.getElementById('popup-preco').textContent = `R$ ${prod.preco.toFixed(2)}`;
             document.getElementById('popup-produto').style.display = 'block';
             
@@ -822,8 +854,7 @@
         document.getElementById('progresso-meta').style.width = `${pct}%`;
         const lista = document.getElementById('lista-itens');
         if(carrinho.length === 0) {
-            clusterHTML = '<div style="text-align: center; color: var(--texto-secundario); padding: 10px;">Nenhum item ainda</div>';
-            lista.innerHTML = clusterHTML;
+            lista.innerHTML = '<div style="text-align: center; color: var(--texto-secundario); padding: 10px;">Nenhum item ainda</div>';
         } else {
             lista.innerHTML = carrinho.map(i => `<div class="item-linha"><span>${i.nome}</span><span>R$ ${i.preco.toFixed(2)}</span></div>`).join('');
         }
@@ -847,8 +878,8 @@
         const ctxBom = document.getElementById('grafico-bom').getContext('2d');
         const ctxDepois = document.getElementById('grafico-depois').getContext('2d');
 
-        const essenciais = carrinho.filter(i => i.categoria === "ESSENCIAL");
-        const lazerSuperfluo = carrinho.filter(i => i.categoria === "LAZER");
+        const essenciais = carrinho.filter(i => i.category === "ESSENCIAL");
+        const lazerSuperfluo = carrinho.filter(i => i.category === "LAZER");
 
         const totalEssenciais = essenciais.reduce((acc, curr) => acc + curr.preco, 0);
         const totalLazer = lazerSuperfluo.reduce((acc, curr) => acc + curr.preco, 0);
