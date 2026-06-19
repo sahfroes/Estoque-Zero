@@ -88,6 +88,19 @@ npm install
 Bash ->
 npm start 
 
+**Link para teste:**
+ - Link: https://estoque-zero.vercel.app/
+
+**QR code para teste:**
+<p aligh="center">
+<img  src="www/img/estoque-zero.jpg">
+</p>
+
+**QR code para imprir e para teste de imagem 3D:**
+<p aligh="center">
+<img  src="www/img/hiro-flor.pdf">
+</p>
+
 ## 📂 Estrutura
 ```bash
 ├── 🤖 android          # Builds nativas para dispositivos móveis
