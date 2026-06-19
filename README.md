@@ -62,7 +62,7 @@ O projeto aplica conceitos de **Octalysis** (Gamificação):
 ## ⚠️ Requisitos
 Navegador com acesso à câmera
 Permissão de câmera ativa
-Execução via localhost ou HTTPS
+Execução via HTTPS
 
 
 ## 🚀 Melhorias Futuras
@@ -92,9 +92,11 @@ npm start
 ```bash
 ├── 🤖 android          # Builds nativas para dispositivos móveis
 ├── 🌐 www              # Core da aplicação (Web)
-│   ├── assets          # Imagens, fontes e ícones
-│   ├── js              # Scripts e lógica do scanner
-│   └── index.html      # Ponto de entrada
+│   ├── img             # Imagens 
+│   ├── index.html      # Ponto de entrada
+│   ├── script.js       # Scripts e lógica do scanner 
+│   ├── teste-ar.html   # Teste dom ar     
+│   └── teste3D.html    # Teste da imagem 3D para ser scanneada 
 ├── ⚙️ config           # Arquivos de configuração do sistema
 └── 📄 server.js        # Entry point do backend
 
