@@ -2,15 +2,13 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <title>Estoque Zero</title>
     
     <script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
-    
-    <!-- Versão estável do AR.js -->
     <script src="https://aframe.io/releases/1.6.0/aframe.min.js"></script>
-    <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar-nft.js"></script>
+    <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar.js"></script>
 
     <style>
         * {
@@ -42,15 +40,12 @@
             min-height: 100vh;
             color: var(--texto-principal);
             overflow: hidden;
-            margin: 0;
-            padding: 10px;
         }
 
+        /* Celular Mockup */
         #celular {
-            width: 100%;
-            max-width: 380px;
+            width: 380px;
             height: 780px;
-            max-height: 95vh;
             background: var(--bg-profundo);
             border-radius: 48px;
             position: relative;
@@ -58,23 +53,7 @@
             box-shadow: 0 30px 60px rgba(0,0,0,0.5), 0 0 0 8px #1a1a24;
         }
 
-        @media (max-width: 400px) {
-            #celular {
-                border-radius: 24px;
-                max-height: 100vh;
-                box-shadow: 0 0 0 4px #1a1a24;
-            }
-        }
-
-        @media (max-height: 700px) {
-            #celular {
-                height: 100vh;
-                max-height: 100vh;
-                border-radius: 0;
-                box-shadow: none;
-            }
-        }
-
+        /* Notch */
         #celular::before {
             content: '';
             position: absolute;
@@ -88,14 +67,7 @@
             z-index: 200;
         }
 
-        @media (max-width: 400px) {
-            #celular::before {
-                width: 100px;
-                height: 24px;
-                border-radius: 0 0 12px 12px;
-            }
-        }
-
+        /* Status Bar */
         .status-bar {
             height: 50px;
             padding: 12px 24px;
@@ -107,6 +79,7 @@
             z-index: 100;
         }
 
+        /* Telas */
         .tela {
             position: absolute;
             top: 0;
@@ -118,7 +91,6 @@
             flex-direction: column;
             overflow-y: auto;
             background: var(--bg-profundo);
-            -webkit-overflow-scrolling: touch;
         }
 
         .tela.ativa {
@@ -164,14 +136,7 @@
             border-radius: 14px;
             color: white;
             font-size: 15px;
-            -webkit-appearance: none;
-            appearance: none; 
         }
-
-        .input-group {
-    margin-bottom: 16px;
-}
-
 
         .btn {
             background: var(--verde);
@@ -185,8 +150,6 @@
             width: 100%;
             transition: all 0.2s;
             margin-top: 8px;
-            -webkit-tap-highlight-color: transparent;
-            touch-action: manipulation;
         }
 
         .btn:active {
@@ -211,7 +174,6 @@
             color: var(--nubank-roxo-claro);
             cursor: pointer;
             text-decoration: underline;
-            -webkit-tap-highlight-color: transparent;
         }
 
         .card {
@@ -222,6 +184,7 @@
             border: 1px solid rgba(255,255,255,0.05);
         }
 
+        /* Estilização da aba como funciona */
         .passo-tutorial {
             display: flex;
             align-items: center;
@@ -286,26 +249,11 @@
             margin: 12px 0;
             position: relative;
             overflow: hidden;
-            min-height: 280px;
-            width: 100%;
-            aspect-ratio: 4/3;
+            min-height: 320px;
         }
 
-        @media (max-height: 700px) {
-            .camera-container {
-                min-height: 200px;
-                aspect-ratio: 4/3;
-            }
-        }
-
-        #video-qr {
-            position: absolute !important;
-            width: 100% !important;
-            height: 100% !important;
-            object-fit: cover !important;
-            top: 0 !important;
-            left: 0 !important;
-            z-index: 1 !important;
+        #canvas-qr {
+            display: none;
         }
 
         .scan-overlay {
@@ -381,7 +329,6 @@
             font-size: 10px;
             font-weight: 600;
             z-index: 11;
-            color: white;
         }
 
         .popup-produto {
@@ -401,8 +348,6 @@
             display: flex;
             justify-content: space-between;
             margin-bottom: 12px;
-            position: relative;
-            z-index: 15;
         }
 
         .pill {
@@ -419,8 +364,6 @@
             padding: 16px;
             border-radius: 20px;
             margin: 12px 0;
-            position: relative;
-            z-index: 15;
         }
 
         .lista-itens {
@@ -518,35 +461,25 @@
             display: flex;
             align-items: center;
             gap: 6px;
-            -webkit-tap-highlight-color: transparent;
         }
 
-        .btn-scanner {
-            position: relative;
-            z-index: 15;
-            margin-top: 8px;
+        video {
+            position: absolute !important;
+            width: 100% !important;
+            height: 100% !important;
+            object-fit: cover !important;
+            top: 0 !important;
+            left: 0 !important;
+            z-index: 1 !important;
         }
 
-        .btn-scanner-qr {
-            background: var(--nubank-roxo);
-            color: white;
-            border: none;
-            padding: 12px;
-            border-radius: 14px;
-            font-weight: 700;
-            font-size: 14px;
-            cursor: pointer;
-            width: 100%;
-            margin-top: 8px;
-            position: relative;
-            z-index: 15;
-            -webkit-tap-highlight-color: transparent;
-        }
-
-        /* Esconder elementos do A-Frame que podem atrapalhar */
-        .a-enter-vr,
-        .a-orientation-modal {
-            display: none !important;
+        #cena-ar {
+            width: 100% !important;
+            height: 100% !important;
+            position: absolute !important;
+            top: 0 !important;
+            left: 0 !important;
+            z-index: 2 !important;
         }
     </style>
 </head>
@@ -638,16 +571,14 @@
     </section>
 
     <section id="tela-camera" class="tela" style="padding: 50px 16px 20px;">
-        <div class="header-camera">
+        <div class="header-camera" style="position: relative; z-index: 15;">
             <div class="pill" id="cronometro">⏱️ 02:00</div>
             <div class="pill" id="total-gasto" style="color: var(--verde);">R$ 0,00</div>
         </div>
 
         <div class="camera-container" id="container-webcam">
-            <video id="video-qr" autoplay playsinline muted></video>
-            <canvas id="canvas-qr" style="display: none;"></canvas>
-            
-            <div class="status-camera" id="status-camera">● INICIANDO CÂMERA...</div>
+            <canvas id="canvas-qr"></canvas>
+            <div class="status-camera" id="status-camera">● AR INICIANDO...</div>
             
             <div class="scan-overlay">
                 <div class="scan-frame">
@@ -656,7 +587,7 @@
                 </div>
             </div>
             
-            <div class="scan-text">Aponte para o QR Code</div>
+            <div class="scan-text">Aponte para o alvo ou QR Code</div>
             
             <div class="popup-produto" id="popup-produto" style="display: none;">
                 <div style="display: flex; justify-content: space-between; align-items: center;">
@@ -675,7 +606,7 @@
             </div>
         </div>
 
-        <div class="footer-camera">
+        <div class="footer-camera" style="position: relative; z-index: 15;">
             <div style="display: flex; justify-content: space-between; margin-bottom: 12px;">
                 <span style="color: var(--texto-secundario);">Itens adicionados</span>
                 <span id="qtd-itens">0</span>
@@ -687,8 +618,7 @@
                 <div style="text-align: center; color: var(--texto-secundario); padding: 10px;">Nenhum item ainda</div>
             </div>
         </div>
-        
-        <button class="btn-outline btn-scanner" onclick="finalizarCompra()">✅ Finalizar Compra</button>
+        <button class="btn-outline" onclick="finalizarCompra()" style="margin-top: 8px; position: relative; z-index: 15;">✅ Finalizar Compra</button>
     </section>
 
     <section id="tela-vitoria" class="tela">
@@ -722,9 +652,6 @@
 <div id="toast-top" class="toast-top"></div>
 
 <script>
-    // ============================================================
-    // CONFIGURAÇÕES E VARIÁVEIS GLOBAIS
-    // ============================================================
     let metaGasto = 100;
     let totalGasto = 0;
     let carrinho = [];
@@ -732,7 +659,6 @@
     let timerCronometro = null;
     let historicoTela = ['tela-login'];
     let bloqueioQR = false;
-    let stream = null;
 
     let chartBomInstance = null;
     let chartDepoisInstance = null;
@@ -745,15 +671,11 @@
         "BISCOITO002": { nome: "Biscoito Recheado", preco: 4.20, category: "LAZER" }
     };
 
-    // ============================================================
-    // FUNÇÕES DE UTILIDADE
-    // ============================================================
     function showToast(message) {
         const toast = document.getElementById('toast-top');
         toast.textContent = message;
         toast.classList.add('show');
-        clearTimeout(toast._timeout);
-        toast._timeout = setTimeout(() => toast.classList.remove('show'), 3000);
+        setTimeout(() => toast.classList.remove('show'), 3000);
     }
 
     function navegarPara(telaId, addHistorico = true) {
@@ -762,26 +684,18 @@
         if (addHistorico && telaAtual) historicoTela.push(telaAtual.id);
         
         telas.forEach(t => t.classList.remove('ativa'));
-        const target = document.getElementById(telaId);
-        if (target) target.classList.add('ativa');
+        document.getElementById(telaId).classList.add('ativa');
         
-        const btnVoltar = document.getElementById('btnVoltar');
-        btnVoltar.style.display = (historicoTela.length > 1 && telaId !== 'tela-login') ? 'flex' : 'none';
+        document.getElementById('btnVoltar').style.display = (historicoTela.length > 1 && telaId !== 'tela-login') ? 'flex' : 'none';
         
         if (telaId !== 'tela-camera') pararScanner();
         if (telaId === 'tela-grafico') atualizarGraficosSeparados();
     }
     
     function voltarTela() {
-        if (historicoTela.length > 1) {
-            const anterior = historicoTela.pop();
-            navegarPara(anterior, false);
-        }
+        if (historicoTela.length > 1) { navegarPara(historicoTela.pop(), false); }
     }
 
-    // ============================================================
-    // FUNÇÕES DE LOGIN E CADASTRO
-    // ============================================================
     function fazerLogin() { 
         const email = document.getElementById('login-email').value;
         if(!email) return showToast("Insira seu e-mail");
@@ -800,9 +714,6 @@
         document.getElementById('visor-meta').innerText = `R$ ${valor}`; 
     }
 
-    // ============================================================
-    // FUNÇÕES DO SCANNER (QR CODE + CÂMERA)
-    // ============================================================
     function iniciarScanner() {
         totalGasto = 0; 
         carrinho = []; 
@@ -863,128 +774,30 @@
         });
     }
 
-
-    function iniciarCamera() {
-        const video = document.getElementById('video-qr');
-        
-        // Verificar se o navegador suporta getUserMedia
-        if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
-            document.getElementById('status-camera').textContent = '❌ Câmera não suportada';
-            document.getElementById('erro-camera').style.display = 'flex';
-            return;
-        }
-
-        // Configurações para melhor compatibilidade
-        const constraints = {
-            video: {
-                facingMode: 'environment',
-                width: { ideal: 640 },
-                height: { ideal: 480 },
-                aspectRatio: { ideal: 4/3 }
-            },
-            audio: false
-        };
-
-        // Para iOS, precisamos de configurações especiais
-        const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
-        if (isIOS) {
-            constraints.video.facingMode = 'environment';
-            constraints.video.width = { ideal: 1280 };
-            constraints.video.height = { ideal: 720 };
-        }
-
-        navigator.mediaDevices.getUserMedia(constraints)
-            .then((mediaStream) => {
-                stream = mediaStream;
-                video.srcObject = mediaStream;
-                video.setAttribute('playsinline', '');
-                video.setAttribute('webkit-playsinline', '');
-                
-                video.onloadedmetadata = () => {
-                    video.play();
-                    document.getElementById('status-camera').textContent = '● CÂMERA ATIVA - ESCANEANDO';
-                    scannerAtivo = true;
-                    requestAnimationFrame(tick);
-                };
-            })
-            .catch((err) => {
-                console.error('Erro ao acessar câmera:', err);
-                document.getElementById('status-camera').textContent = '❌ ERRO: ' + (err.message || 'Câmera indisponível');
-                document.getElementById('erro-camera').style.display = 'flex';
-                
-                // Tenta novamente com configurações mais básicas
-                tentarCameraBasica();
-            });
-    }
-
-    function tentarCameraBasica() {
-        const video = document.getElementById('video-qr');
-        const constraints = {
-            video: { facingMode: 'environment' },
-            audio: false
-        };
-
-        navigator.mediaDevices.getUserMedia(constraints)
-            .then((mediaStream) => {
-                stream = mediaStream;
-                video.srcObject = mediaStream;
-                video.setAttribute('playsinline', '');
-                video.setAttribute('webkit-playsinline', '');
-                
-                video.onloadedmetadata = () => {
-                    video.play();
-                    document.getElementById('status-camera').textContent = '● CÂMERA ATIVA (MODO BÁSICO)';
-                    scannerAtivo = true;
-                    requestAnimationFrame(tick);
-                };
-            })
-            .catch((err) => {
-                console.error('Erro na tentativa básica:', err);
-                document.getElementById('status-camera').textContent = '❌ CÂMERA INDISPONÍVEL';
-                document.getElementById('erro-camera').style.display = 'flex';
-            });
-    }
-
     function pararScanner() {
         scannerAtivo = false;
         clearInterval(timerCronometro);
-        
-        if (stream) {
-            stream.getTracks().forEach(track => track.stop());
-            stream = null;
-        }
-        
-        const video = document.getElementById('video-qr');
-        if (video) {
-            video.srcObject = null;
-            video.pause();
-        }
-        
-        // Remover elementos do AR.js se existirem
         const cena = document.getElementById('cena-ar');
         if(cena) cena.remove();
-        document.querySelectorAll('a-scene').forEach(el => el.remove());
+        document.querySelectorAll('video').forEach(v => {
+            if(v.srcObject) v.srcObject.getTracks().forEach(track => track.stop());
+            v.remove();
+        });
     }
 
-    // ============================================================
-    // LOOP DE LEITURA DO QR CODE
-    // ============================================================
     function tick() {
         if (!scannerAtivo) return;
-        
-        const video = document.getElementById('video-qr');
+        const video = document.querySelector('video');
         const canvas = document.getElementById('canvas-qr');
         
-        if (video && video.readyState === video.HAVE_ENOUGH_DATA && video.videoWidth > 0) {
-            canvas.width = video.videoWidth;
+        if (video && video.readyState === video.HAVE_ENOUGH_DATA) {
             canvas.height = video.videoHeight;
+            canvas.width = video.videoWidth;
             const ctx = canvas.getContext('2d');
             ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
             
             const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-            const code = jsQR(imageData.data, imageData.width, imageData.height, {
-                inversionAttempts: "dontInvert",
-            });
+            const code = jsQR(imageData.data, imageData.width, imageData.height);
             
             if (code && produtos[code.data] && !bloqueioQR) {
                 bloqueioQR = true;
@@ -996,39 +809,42 @@
                 document.getElementById('popup-preco').textContent = `R$ ${prod.preco.toFixed(2)}`;
                 document.getElementById('popup-produto').style.display = 'block';
                 
-                setTimeout(() => { 
-                    document.getElementById('popup-produto').style.display = 'none'; 
-                }, 3000);
+                setTimeout(() => { document.getElementById('popup-produto').style.display = 'none'; }, 2500);
 
                 setTimeout(() => { 
                     bloqueioQR = false;
-                    if (scannerAtivo) requestAnimationFrame(tick);
-                }, 2000);
+                    if(document.getElementById('tela-camera').classList.contains('ativa') && scannerAtivo) { 
+                        requestAnimationFrame(tick); 
+                    } 
+                }, 3000);
                 return;
             }
         }
-        
         if (scannerAtivo) requestAnimationFrame(tick);
     }
 
-    // ============================================================
-    // FUNÇÕES DO CARRINHO E UI
-    // ============================================================
     function adicionarItem(id) {
         const prod = produtos[id];
         if(!prod) return;
-        
-        // Verificar se o item já foi adicionado (evitar duplicatas no mesmo scan)
-        const existe = carrinho.some(item => item.nome === prod.nome);
-        if (existe) {
-            showToast(`${prod.nome} já está no carrinho!`);
-            return;
-        }
-        
-        carrinho.push({...prod});
+        carrinho.push(prod);
         totalGasto += prod.preco;
-        showToast(`${prod.nome} adicionado! (R$ ${prod.preco.toFixed(2)})`);
+        showToast(`${prod.nome} adicionado!`);
         atualizarUI();
+    }
+
+    function clicouNoProduto(idProduto) {
+        const prod = produtos[idProduto];
+        if (prod) {
+            adicionarItem(idProduto);
+            document.getElementById('popup-nome').textContent = prod.nome;
+            document.getElementById('popup-categoria').textContent = prod.category;
+            document.getElementById('popup-preco').textContent = `R$ ${prod.preco.toFixed(2)}`;
+            document.getElementById('popup-produto').style.display = 'block';
+            
+            setTimeout(() => { 
+                document.getElementById('popup-produto').style.display = 'none'; 
+            }, 2500);
+        }
     }
 
     function atualizarUI() {
@@ -1036,50 +852,28 @@
         document.getElementById('qtd-itens').innerText = carrinho.length;
         const pct = Math.min((totalGasto / metaGasto) * 100, 100);
         document.getElementById('progresso-meta').style.width = `${pct}%`;
-        
         const lista = document.getElementById('lista-itens');
         if(carrinho.length === 0) {
             lista.innerHTML = '<div style="text-align: center; color: var(--texto-secundario); padding: 10px;">Nenhum item ainda</div>';
         } else {
-            lista.innerHTML = carrinho.map(i => 
-                `<div class="item-linha"><span>${i.nome}</span><span>R$ ${i.preco.toFixed(2)}</span></div>`
-            ).join('');
+            lista.innerHTML = carrinho.map(i => `<div class="item-linha"><span>${i.nome}</span><span>R$ ${i.preco.toFixed(2)}</span></div>`).join('');
         }
     }
 
     function iniciarCronometro() {
         let tempo = 120;
-        const el = document.getElementById('cronometro');
         if(timerCronometro) clearInterval(timerCronometro);
-
         timerCronometro = setInterval(() => {
-            if(!document.getElementById('tela-camera').classList.contains('ativa')) {
-                clearInterval(timerCronometro);
-                return;
-            }
             tempo--;
-            const minutos = Math.floor(tempo / 60);
-            const segundos = tempo % 60;
-            el.textContent = `⏱️ ${minutos}:${segundos < 10 ? '0' : ''}${segundos}`;
-            if (tempo <= 30) el.style.color = '#e74c3c';
-
-
-            if (tempo <= 0) {
-                clearInterval(timerCronometro);
-                showToast("⏰ Tempo esgotado!");
-                finalizarCompra();
-            }
+            let min = String(Math.floor(tempo / 60)).padStart(2, '0');
+            let seg = String(tempo % 60).padStart(2, '0');
+            document.getElementById('cronometro').innerText = `⏱️ ${min}:${seg}`;
+            if(tempo <= 0) { finalizarCompra(); }
         }, 1000);
     }
 
-    function finalizarCompra() { 
-        pararScanner(); 
-        navegarPara('tela-vitoria'); 
-    }
+    function finalizarCompra() { pararScanner(); navegarPara('tela-vitoria'); }
 
-    // ============================================================
-    // GRÁFICOS
-    // ============================================================
     function atualizarGraficosSeparados() {
         const ctxBom = document.getElementById('grafico-bom').getContext('2d');
         const ctxDepois = document.getElementById('grafico-depois').getContext('2d');
@@ -1104,13 +898,7 @@
                     backgroundColor: ['#2ecc71', '#8a8a9e']
                 }]
             },
-            options: { 
-                responsive: true, 
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: { display: false }
-                }
-            }
+            options: { responsive: true, maintainAspectRatio: false }
         });
 
         chartDepoisInstance = new Chart(ctxDepois, {
@@ -1123,13 +911,7 @@
                     backgroundColor: ['#e74c3c', '#8B1E7A']
                 }]
             },
-            options: { 
-                responsive: true, 
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: { display: false }
-                }
-            }
+            options: { responsive: true, maintainAspectRatio: false }
         });
     }
 
@@ -1140,22 +922,6 @@
         atualizarUI();
         navegarPara('tela-login');
     }
-
-    
-    console.log("💡 Para testar sem QR Code, use no console: adicionarItem('LEITE001')");
-    console.log("📋 Produtos disponíveis:", Object.keys(produtos));
-
-    // ============================================================
-    // INICIALIZAÇÃO - Verificar suporte a câmera
-    // ============================================================
-    document.addEventListener('DOMContentLoaded', function() {
-        // Verificar se o navegador suporta getUserMedia
-        if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
-            console.warn('⚠️ Este navegador não suporta acesso à câmera.');
-        } else {
-            console.log('✅ Navegador suporta câmera.');
-        }
-    });
 </script>
 </body>
 </html>
