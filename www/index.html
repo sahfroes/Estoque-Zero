@@ -1002,15 +1002,25 @@
 
     function iniciarCronometro() {
         let tempo = 120;
+        const el = document.getElementById('cronometro');
         if(timerCronometro) clearInterval(timerCronometro);
+
         timerCronometro = setInterval(() => {
-            tempo--;
-            let min = String(Math.floor(tempo / 60)).padStart(2, '0');
-            let seg = String(tempo % 60).padStart(2, '0');
-            document.getElementById('cronometro').innerText = `⏱️ ${min}:${seg}`;
-            if(tempo <= 0) { 
+            if(!document.getElementById('tela-camera').classList.contains('ativa')) {
                 clearInterval(timerCronometro);
-                finalizarCompra(); 
+                return;
+            }
+            tempo--;
+            const minutos = Math.floor(tempo / 60);
+            const segundos = tempo % 60;
+            el.textContent = `⏱️ ${minutos}:${segundos < 10 ? '0' : ''}${segundos}`;
+            if (tempo <= 30) el.style.color = '#e74c3c';
+
+
+            if (tempo <= 0) {
+                clearInterval(timerCronometro);
+                showToast("⏰ Tempo esgotado!");
+                finalizarCompra();
             }
         }, 1000);
     }
