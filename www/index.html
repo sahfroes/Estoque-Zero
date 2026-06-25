@@ -42,6 +42,23 @@
             overflow: hidden;
         }
 
+        @media (max-width: 400px) {
+            #celular {
+                border-radius: 24px;
+                max-height: 100vh;
+                box-shadow: 0 0 0 4px #1a1a24;
+            }
+        }
+
+        @media (max-height: 700px) {
+            #celular {
+                height: 100vh;
+                max-height: 100vh;
+                border-radius: 0;
+                box-shadow: none;
+            }
+        }
+
         /* Celular Mockup */
         #celular {
             width: 380px;
@@ -531,7 +548,7 @@
                 <div style="width: 56px; height: 56px; background: rgba(255,255,255,0.2); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 24px;">👤</div>
                 <div style="text-align: left;">
                     <p style="font-weight: 700; font-size: 18px;" id="welcome-nome">Olá, João!</p>
-                    <p style="font-size: 12px; opacity: 0.8;">Nível 4 &bull; Mestre de Estoque</p>
+                    <p style="font-size: 12px; opacity: 0.8;">Nível 1 &bull; Estudante</p>
                 </div>
             </div>
         </div>
@@ -627,7 +644,7 @@
             <h1 style="color: var(--verde); margin: 16px 0;">Concluído!</h1>
             <p style="color: var(--texto-secundario);" id="msg-vitoria">Economia calculada com sucesso</p>
         </div>
-        <button class="btn" onclick="navegarPara('tela-grafico')">📊 Ver Relatório de Gastos</button>
+        <button class="btn" onclick="navegarPara('tela-grafico')"> Ver Relatório de Gastos</button>
     </section>
 
     <section id="tela-grafico" class="tela">
@@ -921,9 +938,9 @@
     function reiniciarCompleto() {
         totalGasto = 0;
         carrinho = [];
-        historicoTela = ['tela-login'];
+        historicoTela = ['tela-boas-vindas'];
         atualizarUI();
-        navegarPara('tela-login');
+        navegarPara('tela-boas-vindas');
     }
 </script>
 </body>
