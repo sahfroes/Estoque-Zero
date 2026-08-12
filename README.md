@@ -1,6 +1,6 @@
 <div align="center">
   
-# 📦 Estoque Zero
+#  Estoque Zero
 **A revolução gamificada do controle financeiro na palma da sua mão.**
 
 [![GitHub license](https://img.shields.io/github/license/SEU-USUARIO/estoque-zero?style=flat-square&color=58a6ff)](https://github.com/SEU-USUARIO/estoque-zero/blob/master/LICENSE)
