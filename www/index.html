@@ -59,30 +59,29 @@
             }
         }
 
-        /* Celular Mockup */
+        @media (min-width: 415px) {
+    #celular {
+        height: 90vh;
+        max-height: 840px;
+        border-radius: 36px;
+        box-shadow: 0 0 0 8px #1a1a24, 0 20px 40px rgba(0, 0, 0, 0.8);
+    }
+}
+
         #celular {
-            width: 380px;
-            height: 780px;
-            background: var(--bg-profundo);
-            border-radius: 48px;
-            position: relative;
-            overflow: hidden;
-            box-shadow: 0 30px 60px rgba(0,0,0,0.5), 0 0 0 8px #1a1a24;
+    width: 100%;
+    max-width: 414px; 
+    height: 100vh;
+    height: 100dvh;
+    position: relative;
+    overflow: hidden; 
+    background: var(--bg-profundo);
+    margin: 0 auto; 
+    display: flex;
+    flex-direction: column;
         }
 
-        /* Notch */
-        #celular::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 140px;
-            height: 30px;
-            background: #0a0a0f;
-            border-radius: 0 0 20px 20px;
-            z-index: 200;
-        }
+
 
         /* Status Bar */
         .status-bar {
@@ -98,16 +97,15 @@
 
         /* Telas */
         .tela {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            padding: 60px 20px 30px;
-            display: none;
-            flex-direction: column;
-            overflow-y: auto;
-            background: var(--bg-profundo);
+     position: absolute;
+    inset: 0; 
+    padding: 50px 20px 20px;
+    display: none;
+    flex-direction: column;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    background: var(--bg-profundo);
+    box-sizing: border-box;
         }
 
         .tela.ativa {
@@ -169,6 +167,34 @@
             margin-top: 8px;
         }
 
+          .btn-login {
+            background: var(--verde);
+            color: #000;
+            border: none;
+            padding: 16px;
+            border-radius: 14px;
+            font-weight: 700;
+            font-size: 15px;
+            cursor: pointer;
+            width: 100%;
+            transition: all 0.2s;
+            margin-top: 8px;
+        }
+
+             .btn-cadastro {
+            background: var(--verde);
+            color: #000;
+            border: none;
+            padding: 16px;
+            border-radius: 14px;
+            font-weight: 700;
+            font-size: 15px;
+            cursor: pointer;
+            width: 100%;
+            transition: all 0.2s;
+            margin-top: 8px;
+        }
+
         .btn:active {
             transform: scale(0.97);
         }
@@ -184,7 +210,7 @@
             color: white;
         }
 
-        .link-alternativo {
+        .login, .cadastro {
             text-align: center;
             margin-top: 20px;
             font-size: 14px;
@@ -434,18 +460,19 @@
         }
 
         .erro-camera {
-            position: absolute;
-            inset: 0;
-            background: rgba(0,0,0,0.9);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            z-index: 30;
-            text-align: center;
-            padding: 20px;
-        }
-
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.9);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    z-index: 30;
+    text-align: center;
+    padding: 20px;
+    word-break: break-word; 
+    max-width: 100%;
+}
         .meta-progresso {
             background: rgba(255,255,255,0.1);
             border-radius: 10px;
@@ -512,48 +539,52 @@
     </button>
 
     <section id="tela-login" class="tela ativa">
-        <div class="logo-grande">📦</div>
+
         <h1>Estoque Zero</h1>
-        <p class="subtitulo">Controle financeiro com Realidade Aumentada</p>
+        <p class="subtitulo">Entre para começar a sua jornada de consumismo consciente</p>
         <div class="input-group">
-            <input type="email" id="login-email" placeholder="E-mail" value="joao@estoquezero.com">
+            <input type="email" id="login-email" placeholder="E-mail" value="nome@gmail.com">
         </div>
         <div class="input-group">
-            <input type="password" id="login-senha" placeholder="Senha" value="123456">
+            <input type="senha" id="login-senha" placeholder="Senha" value="">
         </div>
-        <button class="btn" onclick="fazerLogin()">Acessar Conta</button>
-        <div class="link-alternativo" onclick="navegarPara('tela-cadastro')">Criar nova conta</div>
+        <button class="btn-login" onclick="fazerLogin()">Acessar Conta</button>
+        <div class="cadastro" onclick="navegarPara('tela-cadastro')">Criar nova conta</div>
     </section>
 
     <section id="tela-cadastro" class="tela">
-        <div class="logo-grande">✨</div>
-        <h1>Nova Conta</h1>
-        <p class="subtitulo">Cadastre-se para começar a economizar</p>
+        
+        <h1>Crie sua conta</h1>
+        <p class="subtitulo">Cadastre-se para começar as compras</p>
         <div class="input-group">
             <input type="text" id="cadastro-nome" placeholder="Nome Completo">
         </div>
         <div class="input-group">
-            <input type="email" id="cadastro-email" placeholder="Seu melhor E-mail">
+            <input type="email" id="cadastro-email" placeholder="E-mail">
         </div>
         <div class="input-group">
-            <input type="password" id="cadastro-senha" placeholder="Crie uma Senha">
+            <input type="senha" id="cadastro-senha" placeholder="Senha">
         </div>
-        <button class="btn btn-roxo" onclick="confirmarCadastro()">Finalizar Cadastro</button>
-        <div class="link-alternativo" onclick="navegarPara('tela-login')">Já tenho conta (Login)</div>
+        <button class="btn-cadastro" onclick="confirmarCadastro()">Finalizar Cadastro</button>
+        <div class="login" onclick="navegarPara('tela-login')">Já tenho conta</div>
     </section>
 
+
+    <!-- Tela de Boas-Vindas-->
     <section id="tela-boas-vindas" class="tela">
         <div class="card-saldo" style="padding: 20px;">
             <div style="display: flex; align-items: center; gap: 16px;">
                 <div style="width: 56px; height: 56px; background: rgba(255,255,255,0.2); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 24px;">👤</div>
                 <div style="text-align: left;">
-                    <p style="font-weight: 700; font-size: 18px;" id="welcome-nome">Olá, João!</p>
-                    <p style="font-size: 12px; opacity: 0.8;">Nível 4 &bull; Mestre de Estoque</p>
+                    <p style="font-weight: 700; font-size: 18px;" id="welcome-nome">Olá, Jogador!</p>
+                    <p style="font-size: 12px; opacity: 0.8;">Nível 1  &bull; Iniciante</p>
                 </div>
             </div>
         </div>
+
+
         <div class="card">
-            <p style="font-size: 11px; font-weight: 700; color: var(--nubank-roxo-claro); letter-spacing: 2px; margin-bottom: 16px; text-align: center;">📖 COMO JOGAR</p>
+            <p style="font-size: 11px; font-weight: 700; color: var(--nubank-roxo-claro); letter-spacing: 2px; margin-bottom: 16px; text-align: center;"> COMO JOGAR</p>
             
             <div class="passo-tutorial">
                 <div class="passo-numero">1</div>
@@ -584,12 +615,12 @@
             <button class="btn-outline" onclick="ajustarMeta(150)">R$ 150</button>
             <button class="btn-outline" onclick="ajustarMeta(200)">R$ 200</button>
         </div>
-        <button class="btn" onclick="iniciarScanner()">📷 Iniciar Scanner AR</button>
+        <button class="btn" onclick="iniciarScanner()"> Iniciar Scanner AR</button>
     </section>
 
     <section id="tela-camera" class="tela" style="padding: 50px 16px 20px;">
         <div class="header-camera" style="position: relative; z-index: 15;">
-            <div class="pill" id="cronometro">⏱️ 02:00</div>
+            <div class="pill" id="cronometro">⏱ 02:00</div>
             <div class="pill" id="total-gasto" style="color: var(--verde);">R$ 0,00</div>
         </div>
 
@@ -635,7 +666,7 @@
                 <div style="text-align: center; color: var(--texto-secundario); padding: 10px;">Nenhum item ainda</div>
             </div>
         </div>
-        <button class="btn-outline" onclick="finalizarCompra()" style="margin-top: 8px; position: relative; z-index: 15;">Finalizar Compra</button>
+        <button class="btn" onclick="finalizarCompra()" style="margin-top: 8px; position: relative; z-index: 15;">Finalizar Compra</button>
     </section>
 
     <section id="tela-vitoria" class="tela">
@@ -681,11 +712,18 @@
     let chartDepoisInstance = null;
 
     const produtos = {
-        "LEITE001": { nome: "Leite Integral", preco: 6.50, category: "ESSENCIAL" },
-        "PAO002": { nome: "Pão de Forma", preco: 8.90, category: "ESSENCIAL" },
-        "CHOCO004": { nome: "Chocolate", preco: 12.50, category: "LAZER" },
-        "FLOR001": { nome: "Flor Decorativa", preco: 15.00, category: "LAZER" },
-        "BISCOITO002": { nome: "Biscoito Recheado", preco: 4.20, category: "LAZER" }
+ 
+        "FLOR001": { nome: "Flor Decorativa", preco: 15.00, categoria: "LAZER" },
+        "CADERNO UNIVERSITÁRIO SIMPLES": { nome: "Caderno Universitário Simples", preco: 9.00, categoria: "Essencial" },
+        "CADERNO PERSONALIZADO DE PERSONAGEM/CAPA DURA":{nome:"Caderno Personalizado de Personagem/Capa Dura", preco: 32.00, categoria: "Supérfluo"},
+        "CANETA AZUL/PRETA BÁSICA":{nome: "Caneta azul/preta básica", preco: 2.50, categoria:"Essencial"},
+        "KIT DE CANETAS COLORIDAS/FINELINE":{nome: "Kit de canetas coloridas/fineline", preco: 25.00, categoria:"Supérfluo"},
+        "SABONETE/PASTA DE DENTE":{nome:"Sabonete/pasta de dente", preco: 6.00, categoria: "Essencial"},
+        "DESODORANTE":{nome: "Desodorante", preco: "14,00", categoria: "Essencial"},
+        "CAIXA DE CHOCOLATE":{nome: "Caixa de Chocolate", preco: 12.00, categoria: "Essencial"},
+        "SALGADINHO + REFRIGERANTE (LATA)":{nome: "Salgadinho + Refrigerante (Lata)", preco: 11.00, categoria: "Supérfluo"},
+        "CABO DE CARREGADOR (CELULAR)":{nome: "Cabo de Carregador (Celular)", preco: 15.00, categoria: "Essencial"},
+        "LIVRO DE FICÇÃO/HQ DO MOMENTO":{nome: "Livro de Ficção/HQ do Momento", preco: 40.00, categoria: "Supérfluo"}
     };
 
     function showToast(message) {
@@ -898,8 +936,9 @@
         const ctxBom = document.getElementById('grafico-bom').getContext('2d');
         const ctxDepois = document.getElementById('grafico-depois').getContext('2d');
 
-        const essenciais = carrinho.filter(i => i.category === "ESSENCIAL");
-        const lazerSuperfluo = carrinho.filter(i => i.category === "LAZER");
+        const essenciais = carrinho.filter(i => i.categoria === "ESSENCIAL");
+        const lazerSuperfluo = carrinho.filter(i => i.categoria === "LAZER");
+        const Superfluo = carrinho.filter(i => i.categoria === "SUPÉRFLUO");
 
         const totalEssenciais = essenciais.reduce((acc, curr) => acc + curr.preco, 0);
         const totalLazer = lazerSuperfluo.reduce((acc, curr) => acc + curr.preco, 0);
