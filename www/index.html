@@ -4,11 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <title>Estoque Zero</title>
-    
+   
     <script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
     <script src="https://aframe.io/releases/1.6.0/aframe.min.js"></script>
     <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar.js"></script>
+
 
     <style>
         * {
@@ -17,6 +18,7 @@
             box-sizing: border-box;
             -webkit-tap-highlight-color: transparent;
         }
+
 
         :root {
             --bg-profundo: #0a0a0f;
@@ -31,6 +33,7 @@
             --texto-secundario: #8a8a9e;
         }
 
+
         body {
             background: linear-gradient(135deg, #0a0a0f 0%, #1a1a2e 100%);
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Inter', sans-serif;
@@ -42,6 +45,7 @@
             overflow: hidden;
         }
 
+
         @media (max-width: 400px) {
             #celular {
                 border-radius: 24px;
@@ -49,6 +53,7 @@
                 box-shadow: 0 0 0 4px #1a1a24;
             }
         }
+
 
         @media (max-height: 700px) {
             #celular {
@@ -59,6 +64,7 @@
             }
         }
 
+
         @media (min-width: 415px) {
     #celular {
         height: 90vh;
@@ -68,18 +74,22 @@
     }
 }
 
+
         #celular {
     width: 100%;
-    max-width: 414px; 
+    max-width: 414px;
     height: 100vh;
     height: 100dvh;
     position: relative;
-    overflow: hidden; 
+    overflow: hidden;
     background: var(--bg-profundo);
-    margin: 0 auto; 
+    margin: 0 auto;
     display: flex;
     flex-direction: column;
         }
+
+
+
 
 
 
@@ -95,10 +105,11 @@
             z-index: 100;
         }
 
+
         /* Telas */
         .tela {
      position: absolute;
-    inset: 0; 
+    inset: 0;
     padding: 50px 20px 20px;
     display: none;
     flex-direction: column;
@@ -108,9 +119,11 @@
     box-sizing: border-box;
         }
 
+
         .tela.ativa {
             display: flex;
         }
+
 
         .logo-grande {
             width: 80px;
@@ -125,12 +138,14 @@
             box-shadow: 0 10px 30px rgba(139,30,122,0.3);
         }
 
+
         h1 {
             font-size: 28px;
             font-weight: 800;
             text-align: center;
             margin-bottom: 8px;
         }
+
 
         .subtitulo {
             text-align: center;
@@ -139,9 +154,11 @@
             margin-bottom: 32px;
         }
 
+
         .input-group {
             margin-bottom: 16px;
         }
+
 
         input {
             width: 100%;
@@ -152,6 +169,7 @@
             color: white;
             font-size: 15px;
         }
+
 
         .btn {
             background: var(--verde);
@@ -167,6 +185,7 @@
             margin-top: 8px;
         }
 
+
           .btn-login {
             background: var(--verde);
             color: #000;
@@ -180,6 +199,7 @@
             transition: all 0.2s;
             margin-top: 8px;
         }
+
 
              .btn-cadastro {
             background: var(--verde);
@@ -195,9 +215,11 @@
             margin-top: 8px;
         }
 
+
         .btn:active {
             transform: scale(0.97);
         }
+
 
         .btn-outline {
             background: transparent;
@@ -205,10 +227,12 @@
             color: var(--verde);
         }
 
+
         .btn-roxo {
             background: linear-gradient(135deg, var(--nubank-roxo), var(--nubank-roxo-claro));
             color: white;
         }
+
 
         .login, .cadastro {
             text-align: center;
@@ -219,6 +243,7 @@
             text-decoration: underline;
         }
 
+
         .card {
             background: var(--bg-cartao);
             border-radius: 20px;
@@ -227,7 +252,8 @@
             border: 1px solid rgba(255,255,255,0.05);
         }
 
-        /* Estilização da aba como funciona */
+
+       
         .passo-tutorial {
             display: flex;
             align-items: center;
@@ -238,6 +264,7 @@
             margin-bottom: 10px;
             border: 1px solid rgba(255, 255, 255, 0.05);
         }
+
 
         .passo-numero {
             background: linear-gradient(135deg, var(--nubank-roxo), var(--nubank-roxo-claro));
@@ -252,10 +279,12 @@
             flex-shrink: 0;
         }
 
+
         .passo-texto {
             font-size: 14px;
             color: rgba(255, 255, 255, 0.9);
         }
+
 
         .card-saldo {
             background: linear-gradient(135deg, var(--nubank-roxo), var(--nubank-roxo-claro));
@@ -265,6 +294,7 @@
             text-align: center;
         }
 
+
         .label-saldo {
             font-size: 12px;
             letter-spacing: 2px;
@@ -272,11 +302,13 @@
             margin-bottom: 8px;
         }
 
+
         .valor-saldo {
             font-size: 48px;
             font-weight: 800;
             margin-bottom: 8px;
         }
+
 
         .grid-2 {
             display: grid;
@@ -284,6 +316,7 @@
             gap: 12px;
             margin-bottom: 16px;
         }
+
 
         .camera-container {
             flex: 1;
@@ -295,9 +328,11 @@
             min-height: 320px;
         }
 
+
         #canvas-qr {
             display: none;
         }
+
 
         .scan-overlay {
             position: absolute;
@@ -309,11 +344,13 @@
             pointer-events: none;
         }
 
+
         .scan-frame {
             width: 180px;
             height: 180px;
             position: relative;
         }
+
 
         .scan-frame::before,
         .scan-frame::after,
@@ -327,10 +364,12 @@
             border-style: solid;
         }
 
+
         .scan-frame::before { top: 0; left: 0; border-width: 3px 0 0 3px; border-radius: 12px 0 0 0; }
         .scan-frame::after { top: 0; right: 0; border-width: 3px 3px 0 0; border-radius: 0 12px 0 0; }
         .scan-frame span::before { bottom: 0; left: 0; border-width: 0 0 3px 3px; border-radius: 0 0 0 12px; }
         .scan-frame span::after { bottom: 0; right: 0; border-width: 0 3px 3px 0; border-radius: 0 0 12px 0; }
+
 
         .scan-line {
             position: absolute;
@@ -342,10 +381,12 @@
             animation: scan 2s ease-in-out infinite;
         }
 
+
         @keyframes scan {
             0%, 100% { top: 10%; }
             50% { top: 85%; }
         }
+
 
         .scan-text {
             position: absolute;
@@ -361,6 +402,7 @@
             white-space: nowrap;
         }
 
+
         .status-camera {
             position: absolute;
             top: 12px;
@@ -373,6 +415,7 @@
             font-weight: 600;
             z-index: 11;
         }
+
 
         .popup-produto {
             position: absolute;
@@ -387,11 +430,13 @@
             z-index: 20;
         }
 
+
         .header-camera {
             display: flex;
             justify-content: space-between;
             margin-bottom: 12px;
         }
+
 
         .pill {
             background: rgba(0,0,0,0.6);
@@ -402,6 +447,7 @@
             font-weight: 600;
         }
 
+
         .footer-camera {
             background: var(--bg-cartao);
             padding: 16px;
@@ -409,11 +455,13 @@
             margin: 12px 0;
         }
 
+
         .lista-itens {
             max-height: 100px;
             overflow-y: auto;
             margin-top: 8px;
         }
+
 
         .item-linha {
             display: flex;
@@ -423,6 +471,7 @@
             font-size: 13px;
         }
 
+
         .grafico-container {
             background: var(--bg-cartao);
             padding: 15px;
@@ -430,9 +479,11 @@
             margin-bottom: 16px;
         }
 
+
         canvas {
             max-height: 160px;
         }
+
 
         .toast-top {
             position: fixed;
@@ -455,9 +506,11 @@
             border-left: 4px solid var(--verde);
         }
 
+
         .toast-top.show {
             transform: translateY(0);
         }
+
 
         .erro-camera {
     position: absolute;
@@ -470,7 +523,7 @@
     z-index: 30;
     text-align: center;
     padding: 20px;
-    word-break: break-word; 
+    word-break: break-word;
     max-width: 100%;
 }
         .meta-progresso {
@@ -481,6 +534,7 @@
             overflow: hidden;
         }
 
+
         .meta-progresso-bar {
             background: var(--verde);
             height: 100%;
@@ -488,6 +542,7 @@
             transition: width 0.3s ease;
             border-radius: 10px;
         }
+
 
         .btn-voltar {
             position: absolute;
@@ -507,6 +562,7 @@
             gap: 6px;
         }
 
+
         video {
             position: absolute !important;
             width: 100% !important;
@@ -517,6 +573,7 @@
             z-index: 1 !important;
         }
 
+
         #cena-ar {
             width: 100% !important;
             height: 100% !important;
@@ -525,20 +582,84 @@
             left: 0 !important;
             z-index: 2 !important;
         }
+
+
+
+
+
+
+.perfil-wrapper {
+    position: relative;
+    width: 100px;
+    height: 100px;
+    margin: 20px auto 30px auto;
+}
+
+
+.foto-avatar {
+   width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    background-color: #ffffff;
+    color: #ffffff;
+    font-size: 32px;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-size: cover;
+    background-position: center;
+    border: 2px solid #8B5CF6;
+    box-shadow: 0 0 15px rgba(139, 92, 246, 0.4);
+}
+
+
+.btn-editar-foto {
+   position: absolute;
+    bottom: -2px;
+    right: -2px;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background-color: #7C3AED;
+    color: #ffffff;
+    font-size: 16px;
+    border: 2px solid #0D0B1D;
+    box-shadow: 0 0 10px rgba(124, 58, 237, 0.6);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.2s, background-color 0.2s;
+}
+
+
+.btn-editar-foto:hover {
+    transform: scale(1.1);
+    background-color: #6D28D9;
+}
+
+
+
+
     </style>
 </head>
 <body>
 
+
 <div id="celular">
     <div class="status-bar">
-      
+     
     </div>
+
 
     <button class="btn-voltar" id="btnVoltar" style="display: none;" onclick="voltarTela()">
         &larr; Voltar
     </button>
 
+
     <section id="tela-login" class="tela ativa">
+
 
         <h1>Estoque Zero</h1>
         <p class="subtitulo">Entre para começar a sua jornada de consumismo consciente</p>
@@ -552,10 +673,33 @@
         <div class="cadastro" onclick="navegarPara('tela-cadastro')">Criar nova conta</div>
     </section>
 
+
     <section id="tela-cadastro" class="tela">
-        
+       
         <h1>Crie sua conta</h1>
         <p class="subtitulo">Cadastre-se para começar as compras</p>
+
+
+<!--Editar Avatar-->
+        <div class="perfil-wrapper">
+            <div id="foto-perfil" class="foto-avatar">
+                <span id="foto-iniciais " class="text-xs text-white">
+                 
+                </span>
+            </div>
+            <button type="btn-foto" class="btn-editar-foto" onclick="document.getElementById('input-foto').click()">
+
+
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-camera-fill" viewBox="0 0 16 16">
+  <path d="M10.5 8.5a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0"/>
+  <path d="M2 4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2h-1.172a2 2 0 0 1-1.414-.586l-.828-.828A2 2 0 0 0 9.172 2H6.828a2 2 0 0 0-1.414.586l-.828.828A2 2 0 0 1 3.172 4zm.5 2a.5.5 0 1 1 0-1 .5.5 0 0 1 0 1m9 2.5a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0"/>
+</svg>
+    </button>
+            <input type="file" id="input-foto" accept="image/*" style="display: none;" onchange="carregarFoto(event)">
+             
+        </div>
+
+
         <div class="input-group">
             <input type="text" id="cadastro-nome" placeholder="Nome Completo">
         </div>
@@ -570,32 +714,39 @@
     </section>
 
 
+ 
+
+
     <!-- Tela de Boas-Vindas-->
     <section id="tela-boas-vindas" class="tela">
         <div class="card-saldo" style="padding: 20px;">
             <div style="display: flex; align-items: center; gap: 16px;">
-                <div style="width: 56px; height: 56px; background: rgba(255,255,255,0.2); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 24px;">👤</div>
+                <div id="foto-card-boas-vindas" style="width: 56px; height: 56px; background: rgba(255,255,255,0.2); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 24px; background-size: cover; background-position: center;"></div>
                 <div style="text-align: left;">
-                    <p style="font-weight: 700; font-size: 18px;" id="welcome-nome">Olá, João!</p>
-                    <p style="font-size: 12px; opacity: 0.8;">Nível 4 &bull; Mestre de Estoque</p>
+                    <p style="font-weight: 700; font-size: 18px;" id="welcome-nome">Olá, Jogador!</p>
+                    <p style="font-size: 12px; opacity: 0.8;">Nível 1 &bull; Iniciante</p>
                 </div>
             </div>
         </div>
 
 
+
+
+
+
         <div class="card">
             <p style="font-size: 11px; font-weight: 700; color: var(--nubank-roxo-claro); letter-spacing: 2px; margin-bottom: 16px; text-align: center;"> COMO JOGAR</p>
-            
+           
             <div class="passo-tutorial">
                 <div class="passo-numero">1</div>
                 <div class="passo-texto">Defina seu teto ou meta de gastos máximos.</div>
             </div>
-            
+           
             <div class="passo-tutorial">
                 <div class="passo-numero">2</div>
                 <div class="passo-texto">Use a câmera para escanear QR Codes ou alvos.</div>
             </div>
-            
+           
             <div class="passo-tutorial">
                 <div class="passo-numero">3</div>
                 <div class="passo-texto">Visualize e adicione os produtos 3D ao carrinho.</div>
@@ -603,6 +754,7 @@
         </div>
         <button class="btn btn-roxo" onclick="navegarPara('tela-meta')">Seguir</button>
     </section>
+
 
     <section id="tela-meta" class="tela">
         <div class="card-saldo">
@@ -618,25 +770,30 @@
         <button class="btn" onclick="iniciarScanner()"> Iniciar Scanner AR</button>
     </section>
 
+
     <section id="tela-camera" class="tela" style="padding: 50px 16px 20px;">
         <div class="header-camera" style="position: relative; z-index: 15;">
-            <div class="pill" id="cronometro">⏱ 02:00</div>
+            <div class="pill" id="cronometro"> 02:00</div>
             <div class="pill" id="total-gasto" style="color: var(--verde);">R$ 0,00</div>
         </div>
+
 
         <div class="camera-container" id="container-webcam">
             <canvas id="canvas-qr"></canvas>
             <div class="status-camera" id="status-camera">● AR INICIANDO...</div>
-            
+           
             <div class="scan-overlay">
                 <div class="scan-frame">
                     <span></span>
                     <div class="scan-line"></div>
                 </div>
             </div>
-            
+           
+           
+
+
             <div class="scan-text">Aponte para o alvo ou QR Code</div>
-            
+           
             <div class="popup-produto" id="popup-produto" style="display: none;">
                 <div style="display: flex; justify-content: space-between; align-items: center;">
                     <div>
@@ -646,13 +803,14 @@
                     <p id="popup-preco" style="font-weight: 800; font-size: 18px; color: var(--verde);">R$ 0,00</p>
                 </div>
             </div>
-            
+           
             <div id="erro-camera" class="erro-camera" style="display: none;">
                 <div style="font-size: 48px;">📵</div>
                 <p style="margin: 16px; color: #fff;">Câmera não disponível</p>
                 <button class="btn" onclick="iniciarScanner()" style="width: auto; padding: 10px 20px;">Tentar novamente</button>
             </div>
         </div>
+
 
         <div class="footer-camera" style="position: relative; z-index: 15;">
             <div style="display: flex; justify-content: space-between; margin-bottom: 12px;">
@@ -669,35 +827,107 @@
         <button class="btn" onclick="finalizarCompra()" style="margin-top: 8px; position: relative; z-index: 15;">Finalizar Compra</button>
     </section>
 
+
     <section id="tela-vitoria" class="tela">
-        <div style="text-align: center; margin-top: 40px;">
-            <div style="font-size: 80px;">🏆</div>
-            <h1 style="color: var(--verde); margin: 16px 0;">Concluído!</h1>
-            <p style="color: var(--texto-secundario);" id="msg-vitoria">Economia calculada com sucesso</p>
+    <div style="text-align: center; padding: 20px 16px;">
+        
+        <div style="font-size: 80px; margin-bottom: 8px;">🏅</div>
+        
+        <!-- Título e Subtítulo -->
+        <h1 style="color: #ffffff; margin: 8px 0; font-size: 28px; font-weight: bold;">Parabéns!</h1>
+        <p style="color: var(--texto-secundario, #a0a5b5); margin-bottom: 24px; font-size: 16px;" id="msg-vitoria">
+            Você completou a missão!
+        </p>
+
+        <!-- Lista de Estatísticas -->
+        <div style="background: rgba(255, 255, 255, 0.05); border-radius: 12px; padding: 12px 16px; margin-bottom: 20px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,0.1);">
+                <span> Pontuação</span>
+                <strong  id="res-pontos" style="color: #fff;">0/strong>
+            </div>
+            <div style="display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,0.1);">
+                <span> Saldo restante</span>
+                <strong id="res-saldo" style="color: #fff;">R$ 0,00</strong>
+            </div>
+            <div style="display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,0.1);">
+                <span> Itens comprados</span>
+                <strong id="res-itens" style="color: #fff;">8/8</strong>
+            </div>
+            <div style="display: flex; justify-content: space-between; align-items: center; padding: 10px 0;">
+                <span>⏱ Tempo utilizado</span>
+                <strong id="res-tempo" style="color: #fff;">01:38</strong>
+            </div>
         </div>
-        <button class="btn" onclick="navegarPara('tela-grafico')">📊 Ver Relatório de Gastos</button>
-    </section>
+
+        <!-- Card de Selo Conquistado -->
+        <div style="border: 1px solid #ffd700; background: rgba(255, 215, 0, 0.05); border-radius: 12px; padding: 12px; display: flex; align-items: center; gap: 12px; text-align: left; margin-bottom: 24px;">
+            <div style="font-size: 36px;">🎖️</div>
+            <div>
+                <small style="color: var(--texto-secundario, #a0a5b5); display: block;">Selo conquistado!</small>
+                <strong style="color: #fff; font-size: 16px;">Consumidor Consciente</strong>
+            </div>
+        </div>
+
+        <!-- Botões de Ação -->
+        <button class="btn" onclick="navegarPara('tela-grafico')" style="width: 100%; padding: 14px; background: #6c5ce7; color: white; border: none; border-radius: 10px; font-weight: bold; margin-bottom: 10px; cursor: pointer;">
+            Ver ranking
+        </button>
+        <button class="btn" onclick="navegarPara('tela-jogo')" style="width: 100%; padding: 14px; background: #2ed573; color: white; border: none; border-radius: 10px; font-weight: bold; cursor: pointer;">
+            Jogar novamente
+        </button>
+    </div>
+</section>
+
 
     <section id="tela-grafico" class="tela">
         <h2 style="text-align: center; margin-bottom: 15px; font-size: 22px;">Análise Prática</h2>
-        
+       
         <p style="font-size: 12px; color: var(--texto-secundario); text-align: center; margin-bottom: 10px;">O que foi essencial vs. o que pode esperar:</p>
+
 
         <div class="grafico-container">
             <p style="font-size: 13px; font-weight: bold; color: var(--verde); margin-bottom: 8px; text-align: center;">🟢 FOI BOM COMPRAR (Essenciais)</p>
             <canvas id="grafico-bom"></canvas>
         </div>
 
+
         <div class="grafico-container">
             <p style="font-size: 13px; font-weight: bold; color: var(--vermelho); margin-bottom: 8px; text-align: center;">🔴 COMPRAR DEPOIS (Lazer / Desejos)</p>
             <canvas id="grafico-depois"></canvas>
         </div>
 
-        <button class="btn" onclick="reiniciarCompleto()">🎮 Jogar Novamente</button>
+
+        <button class="btn" onclick="verRanking()"> Ver Ranking</button>
     </section>
-</div>
+
+
+    <<section id="tela-ranking" class="tela">
+    <h2>Ranking da Turma</h2>
+   
+    <div class="ranking-tabs">
+        <button class="tab-btn active" onclick="mudarAba(this, 'rodada')">Rodada atual</button>
+        <button class="tab-btn" onclick="mudarAba(this, 'acumulado')">Acumulado</button>
+    </div>
+
+
+    <div id="lista-ranking" class="ranking-lista"></div>
+
+
+    <div class="card-media">
+        <span class="media-titulo">Média da turma</span>
+        <div class="media-corpo">
+            <span id="valor-media" class="media-valor">0</span>
+            <span class="media-unidade">pontos</span>
+        </div>
+    </div>
+
+
+    <button class="btn-jogar-novamente" onclick="reiniciarCompleto()">Jogar Novamente</button>
+</section>
+
 
 <div id="toast-top" class="toast-top"></div>
+
 
 <script>
     let metaGasto = 100;
@@ -708,8 +938,14 @@
     let historicoTela = ['tela-login'];
     let bloqueioQR = false;
 
+
     let chartBomInstance = null;
     let chartDepoisInstance = null;
+
+
+
+
+
 
     const produtos = {
  
@@ -726,58 +962,109 @@
         "LIVRO DE FICÇÃO/HQ DO MOMENTO":{nome: "Livro de Ficção/HQ do Momento", preco: 40.00, categoria: "Supérfluo"}
     };
 
-    function showToast(message) {
+
+    function showToast(mensagem) {
         const toast = document.getElementById('toast-top');
-        toast.textContent = message;
+        toast.textContent = mensagem;
         toast.classList.add('show');
-        setTimeout(() => toast.classList.remove('show'), 3000);
+        setTimeout(() => toast.classList.remove('show'), 1000);
     }
+
 
     function navegarPara(telaId, addHistorico = true) {
         const telas = document.querySelectorAll('.tela');
         const telaAtual = document.querySelector('.tela.ativa');
         if (addHistorico && telaAtual) historicoTela.push(telaAtual.id);
-        
+       
         telas.forEach(t => t.classList.remove('ativa'));
         document.getElementById(telaId).classList.add('ativa');
-        
+       
         document.getElementById('btnVoltar').style.display = (historicoTela.length > 1 && telaId !== 'tela-login') ? 'flex' : 'none';
-        
+       
         if (telaId !== 'tela-camera') pararScanner();
         if (telaId === 'tela-grafico') atualizarGraficosSeparados();
     }
-    
+   
     function voltarTela() {
         if (historicoTela.length > 1) { navegarPara(historicoTela.pop(), false); }
     }
 
-    function fazerLogin() { 
+
+    function fazerLogin() {
         const email = document.getElementById('login-email').value;
-        if(!email) return showToast("Insira seu e-mail");
-        navegarPara('tela-boas-vindas'); 
+        const senha = document.getElementById('login-senha').value;
+
+
+        if(!email){
+        return showToast("Insira seu e-mail");
+        }
+
+
+        if(!senha) {
+            return showToast("insira a senha");
+        }
+
+
+        if (senha.length < 6) {
+            return showToast("A senha deve ter pelo menos 6 caracteres");
+        }
+
+
+        navegarPara('tela-boas-vindas');
     }
 
+
     function confirmarCadastro() {
-        const nome = document.getElementById('cadastro-nome').value || "Usuário";
+
+
+        const nome = document.getElementById('cadastro-nome').value.trim();
+        const email = document.getElementById('cadastro-email').value.trim();
+        const senha = document.getElementById('cadastro-senha').value.trim();
+
+
+        if (!nome) {
+            return showToast("Insira seu nome");
+        }
+
+
+        if (!email) {
+            return showToast("Insira seu e-mail");
+        }
+
+
+        if (!senha) {
+            return showToast("insira a senha");
+        }
+
+
+        if (senha.length < 6) {
+            return showToast("A senha deve ter pelo menos 6 caracteres");
+        }
+
+
+        gerarAvatarPadrão(nome);
         document.getElementById('welcome-nome').innerText = `Olá, ${nome}!`;
         showToast("Conta criada com sucesso!");
         navegarPara('tela-boas-vindas');
     }
 
-    function ajustarMeta(valor) { 
-        metaGasto = valor; 
-        document.getElementById('visor-meta').innerText = `R$ ${valor}`; 
+
+    function ajustarMeta(valor) {
+        metaGasto = valor;
+        document.getElementById('visor-meta').innerText = `R$ ${valor}`;
     }
 
+
     function iniciarScanner() {
-        totalGasto = 0; 
-        carrinho = []; 
+        totalGasto = 0;
+        carrinho = [];
         atualizarUI();
         document.getElementById('erro-camera').style.display = 'none';
         document.getElementById('status-camera').textContent = '● AR INICIANDO...';
-        
+       
         navegarPara('tela-camera');
         iniciarCronometro();
+
 
         const container = document.getElementById('container-webcam');
         const cenaAntiga = document.getElementById('cena-ar');
@@ -786,38 +1073,173 @@
         }
         document.querySelectorAll('video').forEach(v => v.remove());
 
+
         const novaCena = document.createElement('a-scene');
         novaCena.setAttribute('id', 'cena-ar');
         novaCena.setAttribute('embedded', 'true');
         novaCena.setAttribute('arjs', 'debugUIEnabled: false; trackingMethod: best;');
-        novaCena.setAttribute('vr-mode-ui', 'enabled: false');
+       
         novaCena.setAttribute('color-space', 'sRGB');
         novaCena.setAttribute('renderer', 'colorManagement: true, physicallyCorrectLights: false');
 
-        novaCena.innerHTML = `
-            <a-marker preset="hiro">
-                <a-image 
-                    height="1.5" 
-                    width="1.5"
-                    rotation="-90 0 0" 
-                    position="0 0 0"
-                    class="clicavel"
-                    data-id="FLOR001"
-                    src="./img/flor.png"> </a-image>
+ novaCena.innerHTML = `
+    <!-- Marcador da Flor -->
+    <a-marker type="pattern" url="./img/pattern-flor.patt">
+        <a-image
+            height="1.5"
+            width="1.5"
+            rotation="-90 0 0"
+            position="0 0 0"
+            class="clicavel"
+            data-id="FLOR001"
+            src="./img/flor.png">
+        </a-image>
+    </a-marker>
+
+    <!-- Marcador do Caderno -->
+    <a-marker type="pattern" url="./img/pattern-CadernoUnitario.patt">
+        <a-image
+            height="1.5"
+            width="1.5"
+            rotation="-90 0 0"
+            position="0 0 0"
+            class="clicavel"
+            data-id="CAD001"
+            src="./img/CadernoUnitario.png">
+        </a-image>
+    </a-marker>
+
+    <!-- MARCADOR CADERNO PERSONALIZADO DE PERSONAGEM/CAPA DURA -->
+    <a-marker type="pattern" url="./img/pattern-CadernoPersonalizado.patt">
+        <a-image
+            height="1.5"
+            width="1.5"
+            rotation="-90 0 0"
+            position="0 0 0"
+            class="clicavel"
+            data-id="CAD0PER01"
+            src="./img/CadernoPersonalizado.png">
+        </a-image>
+    </a-marker>
+
+    <!-- MARCADOR CANETA AZUL/PRETA BÁSICA -->
+    <a-marker type="pattern" url="./img/pattern-CanetaAzulEPreta.patt">
+        <a-image
+            height="1.5"
+            width="1.5"
+            rotation="-90 0 0"
+            position="0 0 0"
+            class="clicavel"
+            data-id="CANAZULEPRETA001"
+            src="./img/CanetaAzulEPreta.png">
+        </a-image>
+    </a-marker>
+
+    <!-- KIT CANETAS COLORIDAS -->
+    <a-marker type="pattern" url="./img/pattern-KitCanetasColoridas.patt">
+        <a-image
+            height="1.5"
+            width="1.5"
+            rotation="-90 0 0"
+            position="0 0 0"
+            class="clicavel"
+            data-id="KITCANETAS001"
+            src="./img/KitCanetasColoridas.png">
+        </a-image>
+    </a-marker>
+
+    <!-- ESCOVA DE DENTE E PASTA DE DENTE -->
+    <a-marker type="pattern" url="./img/pattern-EscovaEPastaDeDente.patt">
+        <a-image
+            height="1.5"
+            width="1.5"
+            rotation="-90 0 0"
+            position="0 0 0"
+            class="clicavel"
+            data-id="ESCDEPAS001"
+            src="./img/EscovaEPastaDeDente.png">
+        </a-image>
+    </a-marker>
+
+    <!-- DESODORANTE -->
+    <a-marker type="pattern" url="./img/pattern-Desodorante.patt">
+        <a-image
+            height="1.5"
+            width="1.5"
+            rotation="-90 0 0"
+            position="0 0 0"
+            class="clicavel"
+            data-id="DES001"
+            src="./img/Desodorante.png">
+        </a-image>
+    </a-marker>
+
+    <!-- CHOCOLATE -->
+    <a-marker type="pattern" url="./img/pattern-Chocolate.patt">
+        <a-image
+            height="1.5"
+            width="1.5"
+            rotation="-90 0 0"
+            position="0 0 0"
+            class="clicavel"
+            data-id="CHOCOLATE001"
+            src="./img/Chocolate.png">
+        </a-image>
+    </a-marker>
+
+    <!-- SALGADINHO + REFRIGERANTE (LATA) -->
+    <a-marker type="pattern" url="./img/pattern-SalgadinhoErefriLatajpg.patt">
+        <a-image
+            height="1.5"
+            width="1.5"
+            rotation="-90 0 0"
+            position="0 0 0"
+            class="clicavel"
+            data-id="SALREFLATA001"
+            src="./img/SalgadoErefriLatajpg.png">
+        </a-image>
+    </a-marker>
+
+    <!-- CARREGADOR -->
+    <a-marker type="pattern" url="./img/pattern-Carregador.patt">
+        <a-image
+            height="1.5"
+            width="1.5"
+            rotation="-90 0 0"
+            position="0 0 0"
+            class="clicavel"
+            data-id="CARREGADOR001"
+            src="./img/Carregador.png">
+        </a-image>
+    </a-marker>
+
+    <!-- HQ -->
+    <a-marker type="pattern" url="./img/pattern-LivroDeFiccao.patt">
+        <a-image
+            height="1.5"
+            width="1.5"
+            rotation="-90 0 0"
+            position="0 0 0"
+            class="clicavel"
+            data-id="HQ001"
+            src="./img/LivroDeFiccao.png">
+        </a-image>
+    </a-marker>
+
+    <a-entity camera>
+        <a-cursor id="cursor" raycaster="objects: .clicavel" cursor="fuse: false; rayOrigin: mouse"></a-cursor>
+    </a-entity>
+`;
 
 
-            </a-marker>
-            
-            <a-entity camera>
-                <a-cursor id="cursor" raycaster="objects: .clicavel" cursor="fuse: false; rayOrigin: mouse"></a-cursor>
-            </a-entity>
-        `;
-        
-        
+       
+       
         container.appendChild(novaCena);
+
 
         scannerAtivo = true;
         setTimeout(() => { requestAnimationFrame(tick); }, 1000);
+
 
         novaCena.addEventListener('click', function(evt) {
             if (evt.detail.intersectedEl && evt.detail.intersectedEl.classList.contains('clicavel')) {
@@ -827,10 +1249,12 @@
             }
         });
 
+
         novaCena.addEventListener('loaded', () => {
             document.getElementById('status-camera').textContent = '● AR ATIVO';
         });
     }
+
 
     function pararScanner() {
         scannerAtivo = false;
@@ -843,43 +1267,46 @@
         });
     }
 
+
     function tick() {
         if (!scannerAtivo) return;
         const video = document.querySelector('video');
         const canvas = document.getElementById('canvas-qr');
-        
+       
         if (video && video.readyState === video.HAVE_ENOUGH_DATA) {
             canvas.height = video.videoHeight;
             canvas.width = video.videoWidth;
             const ctx = canvas.getContext('2d');
             ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
-            
+           
             const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
             const code = jsQR(imageData.data, imageData.width, imageData.height);
-            
+           
             if (code && produtos[code.data] && !bloqueioQR) {
                 bloqueioQR = true;
                 adicionarItem(code.data);
-                
+               
                 const prod = produtos[code.data];
                 document.getElementById('popup-nome').textContent = prod.nome;
                 document.getElementById('popup-categoria').textContent = prod.category;
                 document.getElementById('popup-preco').textContent = `R$ ${prod.preco.toFixed(2)}`;
                 document.getElementById('popup-produto').style.display = 'block';
-                
+               
                 setTimeout(() => { document.getElementById('popup-produto').style.display = 'none'; }, 2500);
 
-                setTimeout(() => { 
+
+                setTimeout(() => {
                     bloqueioQR = false;
-                    if(document.getElementById('tela-camera').classList.contains('ativa') && scannerAtivo) { 
-                        requestAnimationFrame(tick); 
-                    } 
+                    if(document.getElementById('tela-camera').classList.contains('ativa') && scannerAtivo) {
+                        requestAnimationFrame(tick);
+                    }
                 }, 3000);
                 return;
             }
         }
         if (scannerAtivo) requestAnimationFrame(tick);
     }
+
 
     function adicionarItem(id) {
         const prod = produtos[id];
@@ -890,6 +1317,7 @@
         atualizarUI();
     }
 
+
     function clicouNoProduto(idProduto) {
         const prod = produtos[idProduto];
         if (prod) {
@@ -898,12 +1326,13 @@
             document.getElementById('popup-categoria').textContent = prod.category;
             document.getElementById('popup-preco').textContent = `R$ ${prod.preco.toFixed(2)}`;
             document.getElementById('popup-produto').style.display = 'block';
-            
-            setTimeout(() => { 
-                document.getElementById('popup-produto').style.display = 'none'; 
+           
+            setTimeout(() => {
+                document.getElementById('popup-produto').style.display = 'none';
             }, 2500);
         }
     }
+
 
     function atualizarUI() {
         document.getElementById('total-gasto').innerText = `R$ ${totalGasto.toFixed(2)}`;
@@ -918,34 +1347,63 @@
         }
     }
 
-    function iniciarCronometro() {
-        let tempo = 120;
-        if(timerCronometro) clearInterval(timerCronometro);
-        timerCronometro = setInterval(() => {
-            tempo--;
-            let min = String(Math.floor(tempo / 60)).padStart(2, '0');
-            let seg = String(tempo % 60).padStart(2, '0');
-            document.getElementById('cronometro').innerText = `⏱️ ${min}:${seg}`;
-            if(tempo <= 0) { finalizarCompra(); }
-        }, 1000);
-    }
 
-    function finalizarCompra() { pararScanner(); navegarPara('tela-vitoria'); }
+ function iniciarCronometro() {
+    let tempo = 120; // 2 minutos em segundos
+
+
+    // Se já houver um cronômetro rodando, limpa antes de iniciar um novo
+    if (timerCronometro) clearInterval(timerCronometro);
+
+
+    timerCronometro = setInterval(() => {
+        tempo--;
+
+
+        let min = String(Math.floor(tempo / 60)).padStart(2, '0');
+        let seg = String(tempo % 60).padStart(2, '0');
+
+
+        const elCronometro = document.getElementById('cronometro');
+        if (elCronometro) {
+            elCronometro.innerText = `⏱ ${min}:${seg}`;
+        }
+
+
+        // 2. Para o cronômetro ao atingir zero e executa a ação final
+        if (tempo <= 0) {
+            clearInterval(timerCronometro); // Impede que o tempo continue caindo negativamente
+            finalizarCompra();
+        }
+    }, 1000);
+}
+
+
+    function finalizarCompra() {
+        showToast("Tempo esgotado! Finalizando compra . . .");
+   
+     pararScanner();
+     navegarPara('tela-vitoria'); }
+
 
     function atualizarGraficosSeparados() {
         const ctxBom = document.getElementById('grafico-bom').getContext('2d');
         const ctxDepois = document.getElementById('grafico-depois').getContext('2d');
 
+
         const essenciais = carrinho.filter(i => i.categoria === "ESSENCIAL");
         const lazerSuperfluo = carrinho.filter(i => i.categoria === "LAZER");
         const Superfluo = carrinho.filter(i => i.categoria === "SUPÉRFLUO");
+
 
         const totalEssenciais = essenciais.reduce((acc, curr) => acc + curr.preco, 0);
         const totalLazer = lazerSuperfluo.reduce((acc, curr) => acc + curr.preco, 0);
         const restanteMeta = Math.max(metaGasto - totalGasto, 0);
 
+
         if (chartBomInstance) chartBomInstance.destroy();
         if (chartDepoisInstance) chartDepoisInstance.destroy();
+
 
         chartBomInstance = new Chart(ctxBom, {
             type: 'bar',
@@ -960,6 +1418,7 @@
             options: { responsive: true, maintainAspectRatio: false }
         });
 
+
         chartDepoisInstance = new Chart(ctxDepois, {
             type: 'bar',
             data: {
@@ -973,7 +1432,7 @@
             options: { responsive: true, maintainAspectRatio: false }
         });
     }
-
+   
     function reiniciarCompleto() {
         totalGasto = 0;
         carrinho = [];
@@ -981,6 +1440,136 @@
         atualizarUI();
         navegarPara('tela-login');
     }
+
+
+
+
+let fotoPerfilAtual = '';
+
+
+function gerarAvatarPadrao(nome) {
+    const nomes = nome.trim().split(' ');
+    let iniciais = nomes[0].charAt(0).toUpperCase();
+   
+    if (nomes.length > 1) {
+        iniciais += nomes[nomes.length - 1].charAt(0).toUpperCase();
+    }
+
+
+    const elementoFoto = document.getElementById('foto-perfil');
+    const elementoIniciais = document.getElementById('foto-iniciais');
+   
+   
+   if (elementoFoto) elementoFoto.style.backgroundImage = 'none';
+   if (elementoIniciais){
+    elementoIniciais.style.display = 'block';
+    elementoIniciais.innerText = iniciais;
+   }
+}
+
+
+
+
+function carregarFoto(event) {
+    const arquivo = event.target.files[0];
+   
+    if (arquivo) {
+        const reader = new FileReader();
+       
+        reader.onload = function(e) {
+
+
+            fotoPerfilAtual = e.target.result;
+
+
+            const elementoFoto = document.getElementById('foto-perfil');
+            const elementoIniciais = document.getElementById('foto-iniciais');
+           
+           
+           if (elementoFoto) elementoFoto.style.backgroundImage = `url('${e.target.result}')`;
+            if (elementoIniciais) elementoIniciais.style.display = 'none';
+        };
+       
+        reader.readAsDataURL(arquivo);
+    }
+}
+
+
+function atualizarFotoCard() {
+    const elFotoCard = document.getElementById('foto-card-boas-vindas');
+    if (elFotoCard && fotoPerfilAtual) {
+        elFotoCard.style.backgroundImage = `url('${fotoPerfilAtual}')`;
+        elFotoCard.innertText = '';
+    }
+}
+
+
+
+
+function confirmarCadastro() {
+ const nomeInput = document.getElementById('cadastro-nome');
+    const emailInput = document.getElementById('cadastro-email');
+    const senhaInput = document.getElementById('cadastro-senha');
+
+
+    const nome = nomeInput ? nomeInput.value.trim() : '';
+    const email = emailInput ? emailInput.value.trim() : '';
+    const senha = senhaInput ? senhaInput.value.trim() : '';
+
+
+    if (!nome) return showToast("Insira seu nome");
+    if (!email) return showToast("Insira seu e-mail");
+    if (!senha) return showToast("Insira a senha");
+    if (senha.length < 6) return showToast("A senha deve ter pelo menos 6 caracteres");
+
+
+ 
+    if (!fotoPerfilAtual) {
+        gerarAvatarPadrao(nome);
+    }
+
+
+   
+    const welcomeNome = document.getElementById('welcome-nome');
+    if (welcomeNome) welcomeNome.innerText = `Olá, ${nome}!`;
+
+
+   
+    atualizarFotoCard();
+
+
+    showToast("Conta criada com sucesso!");
+    navegarPara('tela-boas-vindas');
+}
+
+
+function verRanking() {
+    // 1. Pega os dados do jogador logado
+    const nomeJogador = window.usuarioCadastrado ? window.usuarioCadastrado.nome : 'Jogador Anônimo';
+    const fotoJogador = window.fotoPerfilAtual || '';
+   
+    // 2. Calcula a pontuação final (exemplo usando totalGasto)
+    const pontuacaoFinal = typeof totalGasto !== 'undefined' ? totalGasto : 0;
+
+
+    // 3. Salva no Firebase (se a função global existir)
+    if (typeof window.salvarPontuacaoNoFirebase === 'function') {
+        window.salvarPontuacaoNoFirebase(nomeJogador, pontuacaoFinal, fotoJogador);
+    }
+
+
+   
+    if (typeof window.carregarRankingAoVivo === 'function') {
+        window.carregarRankingAoVivo();
+    }
+
+
+   
+    navegarPara('tela-ranking');
+}
+
+
 </script>
 </body>
 </html>
+
