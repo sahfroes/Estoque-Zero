@@ -7,16 +7,23 @@ import { fileURLToPath } from 'url';
 import { initializeApp, cert, getApps } from 'firebase-admin/app';
 import { getFirestore, FieldValue } from 'firebase-admin/firestore';
 import { getAuth } from 'firebase-admin/auth';
+
 // Configuração necessária para simular __dirname no ES Modules
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
+// Inicialização do Firebase Admin SDK
 if (!getApps().length) {
   if (!process.env.FIREBASE_SERVICE_ACCOUNT) {
     throw new Error("A variável FIREBASE_SERVICE_ACCOUNT não foi configurada no ambiente.");
   }
   
   const serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT);
+
+  // Corrige formatação de quebras de linha na chave privada se necessário
+  if (serviceAccount.private_key) {
+    serviceAccount.private_key = serviceAccount.private_key.replace(/\\n/g, '\n');
+  }
 
   initializeApp({
     credential: cert(serviceAccount)
@@ -100,6 +107,11 @@ app.post('/login', async (req, res) => {
 
   const apiKey = process.env.FIREBASE_WEB_API_KEY;
 
+  if (!apiKey) {
+    console.error("A variável FIREBASE_WEB_API_KEY não foi configurada.");
+    return res.status(500).json({ erro: 'Erro de configuração no servidor (chave de API ausente).' });
+  }
+
   try {
     const url = `https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${apiKey}`;
 
@@ -115,7 +127,7 @@ app.post('/login', async (req, res) => {
     return res.json({
       mensagem: 'Login realizado com sucesso!',
       token: idToken,
-      usuario: userDoc.data()
+      usuario: userDoc.exists ? userDoc.data() : { email }
     });
   } catch (error) {
     console.error('Erro no login:', error.response?.data || error.message);
