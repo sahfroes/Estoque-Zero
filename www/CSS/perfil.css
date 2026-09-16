@@ -1,0 +1,541 @@
+/* =====================================
+   ESTOQUE ZERO
+   TELA DE PERFIL
+===================================== */
+
+
+/* =========================
+   RESET
+========================= */
+
+* {
+
+    margin: 0;
+    padding: 0;
+
+    box-sizing: border-box;
+
+}
+
+
+body {
+
+    font-family: Arial, sans-serif;
+
+    background: #f8f5ff;
+
+    color: #321665;
+
+    min-height: 100vh;
+
+}
+
+
+/* =========================
+   APLICATIVO
+========================= */
+
+.app {
+
+    width: 100%;
+
+    max-width: 430px;
+
+    min-height: 100vh;
+
+    margin: auto;
+
+    background: white;
+
+    padding-bottom: 100px;
+
+}
+
+
+/* =========================
+   TOPO
+========================= */
+
+.topo {
+
+    height: 70px;
+
+    border-bottom: 1px solid #eee8f7;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    position: relative;
+
+}
+
+
+.voltar {
+
+    position: absolute;
+
+    left: 18px;
+
+    border: none;
+
+    background: none;
+
+    font-size: 28px;
+
+    color: #54268e;
+
+    cursor: pointer;
+
+}
+
+
+/* =========================
+   LOGO
+========================= */
+
+.logo {
+
+    text-align: center;
+
+    font-weight: bold;
+
+    font-size: 19px;
+
+    line-height: 17px;
+
+}
+
+
+.logo span {
+
+    display: block;
+
+    color: #743bd0;
+
+}
+
+
+/* =========================
+   CABEÇALHO
+========================= */
+
+.cabecalho {
+
+    text-align: center;
+
+    padding: 24px 20px 10px;
+
+}
+
+
+.cabecalho h1 {
+
+    font-size: 24px;
+
+    color: #432078;
+
+}
+
+
+.cabecalho p {
+
+    font-size: 11px;
+
+    color: #81758d;
+
+    margin-top: 5px;
+
+}
+
+
+/* =========================
+   FOTO
+========================= */
+
+.foto-area {
+
+    text-align: center;
+
+    margin: 12px 0 20px;
+
+}
+
+
+.avatar {
+
+    width: 105px;
+
+    height: 105px;
+
+    margin: auto;
+
+    border-radius: 50%;
+
+    background:
+        linear-gradient(
+            135deg,
+            #eadcff,
+            #f7f0ff
+        );
+
+    border: 3px solid #d8c2f4;
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+    font-size: 60px;
+
+}
+
+
+.alterar-foto {
+
+    margin-top: 9px;
+
+    border: none;
+
+    background: none;
+
+    color: #6330a8;
+
+    font-size: 11px;
+
+    cursor: pointer;
+
+}
+
+
+/* =========================
+   FORMULÁRIO
+========================= */
+
+.formulario {
+
+    padding: 0 22px;
+
+}
+
+
+/* =========================
+   CAMPO
+========================= */
+
+.campo {
+
+    margin-bottom: 16px;
+
+}
+
+
+.campo label {
+
+    display: block;
+
+    font-size: 11px;
+
+    font-weight: bold;
+
+    color: #48247b;
+
+    margin-bottom: 6px;
+
+}
+
+
+.campo input,
+.campo select {
+
+    width: 100%;
+
+    height: 44px;
+
+    padding: 0 13px;
+
+    border: 1px solid #d8cbe8;
+
+    border-radius: 10px;
+
+    outline: none;
+
+    background: white;
+
+    color: #432078;
+
+    font-size: 12px;
+
+}
+
+
+.campo input:focus,
+.campo select:focus {
+
+    border-color: #7741c6;
+
+    box-shadow:
+        0 0 0 2px #eee3ff;
+
+}
+
+
+/* =========================
+   SENHA
+========================= */
+
+.senha-area {
+
+    display: flex;
+
+    border: 1px solid #d8cbe8;
+
+    border-radius: 10px;
+
+    overflow: hidden;
+
+}
+
+
+.senha-area input {
+
+    border: none;
+
+    border-radius: 0;
+
+    flex: 1;
+
+}
+
+
+.senha-area button {
+
+    width: 45px;
+
+    border: none;
+
+    background: white;
+
+    cursor: pointer;
+
+}
+
+
+/* =========================
+   TEXTO PEQUENO
+========================= */
+
+.campo small {
+
+    display: block;
+
+    font-size: 9px;
+
+    color: #91859a;
+
+    margin-top: 5px;
+
+    line-height: 13px;
+
+}
+
+
+/* =========================
+   BOTÃO SALVAR
+========================= */
+
+.botao-salvar {
+
+    width: calc(100% - 44px);
+
+    margin: 5px 22px 18px;
+
+    height: 46px;
+
+    border: none;
+
+    border-radius: 11px;
+
+    background:
+        linear-gradient(
+            90deg,
+            #6533b2,
+            #8246d1
+        );
+
+    color: white;
+
+    font-size: 13px;
+
+    font-weight: bold;
+
+    cursor: pointer;
+
+}
+
+
+.botao-salvar:active {
+
+    transform: scale(0.98);
+
+}
+
+
+/* =========================
+   MENSAGEM
+========================= */
+
+.mensagem {
+
+    margin: 0 22px 15px;
+
+    padding: 11px;
+
+    text-align: center;
+
+    border-radius: 10px;
+
+    background: #eee4ff;
+
+    color: #55268f;
+
+    font-size: 11px;
+
+}
+
+
+.escondido {
+
+    display: none;
+
+}
+
+
+/* =========================
+   ATALHOS
+========================= */
+
+.atalhos {
+
+    display: flex;
+
+    gap: 10px;
+
+    padding: 0 22px;
+
+    margin-bottom: 20px;
+
+}
+
+
+.atalhos button {
+
+    flex: 1;
+
+    height: 70px;
+
+    border: 1px solid #e5daf2;
+
+    border-radius: 13px;
+
+    background: #faf8ff;
+
+    color: #51258a;
+
+    cursor: pointer;
+
+}
+
+
+.atalhos span {
+
+    display: block;
+
+    font-size: 23px;
+
+    margin-bottom: 4px;
+
+}
+
+
+.atalhos small {
+
+    font-size: 10px;
+
+}
+
+
+/* =========================
+   MENU INFERIOR
+========================= */
+
+.menu {
+
+    position: fixed;
+
+    bottom: 0;
+
+    left: 50%;
+
+    transform:
+        translateX(-50%);
+
+    width: 100%;
+
+    max-width: 430px;
+
+    height: 70px;
+
+    background: white;
+
+    border-top: 1px solid #eee8f5;
+
+    display: flex;
+
+    justify-content: space-around;
+
+    align-items: center;
+
+}
+
+
+.menu-item {
+
+    border: none;
+
+    background: none;
+
+    color: #857991;
+
+    font-size: 9px;
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+
+    gap: 4px;
+
+    cursor: pointer;
+
+}
+
+
+.menu-item span {
+
+    font-size: 20px;
+
+}
+
+
+.menu-item.ativo {
+
+    color: #5b2b9b;
+
+    font-weight: bold;
+
+}

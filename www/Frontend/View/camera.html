@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+
+    <!-- Faz a tela se adaptar ao celular -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Estoque Zero - Câmera</title>
+
+    <!-- Nosso CSS -->
+    <link rel="stylesheet" href="../../CSS/camera.css">
+</head>
+
+<body>
+
+    <main class="app">
+
+        <!-- =========================
+             TOPO
+        ========================== -->
+
+        <header class="topo">
+
+            <div class="logo">
+                ESTOQUE
+                <span>ZERO</span>
+            </div>
+
+            <div class="saldo">
+                <small>Saldo</small>
+                <strong id="saldo">R$ 50,00</strong>
+            </div>
+
+            <div class="tempo">
+                <span>⏱</span>
+                <strong id="tempo">02:00</strong>
+            </div>
+
+        </header>
+
+
+        <!-- =========================
+             ÁREA DA CÂMERA
+        ========================== -->
+
+        <section class="camera-area">
+
+            <!-- Câmera do celular -->
+            <video
+                id="camera"
+                autoplay
+                playsinline>
+            </video>
+
+            <!-- Escurece um pouco a câmera -->
+            <div class="camera-escura"></div>
+
+
+            <!-- Moldura para apontar para o produto -->
+            <div class="moldura">
+
+                <span class="canto canto-tl"></span>
+                <span class="canto canto-tr"></span>
+                <span class="canto canto-bl"></span>
+                <span class="canto canto-br"></span>
+
+                <div class="icone-camera">
+                    
+                </div>
+
+                <p>Aponte para um produto</p>
+
+                <small>
+                    Coloque o QR Code dentro da moldura
+                </small>
+
+            </div>
+
+
+            <!-- Mensagem inferior -->
+            <div class="mensagem-camera">
+
+                💡 Encontre produtos e faça boas escolhas!
+
+            </div>
+
+        </section>
+
+
+        <!-- =========================
+             PRODUTO ENCONTRADO
+        ========================== -->
+
+        <section
+            id="produtoEncontrado"
+            class="produto-modal escondido">
+
+            <button
+                id="fecharProduto"
+                class="fechar">
+                ×
+            </button>
+
+
+            <!-- Imagem do produto -->
+            <div
+                id="produtoImagem"
+                class="produto-imagem">
+                🥛
+            </div>
+
+
+            <h2 id="produtoNome">
+                Leite integral
+            </h2>
+
+
+            <div
+                id="produtoPreco"
+                class="preco">
+                R$ 7,50
+            </div>
+
+
+            <div
+                id="produtoCategoria"
+                class="categoria">
+                Alimentação
+            </div>
+
+
+            <button
+                id="comprarBtn"
+                class="botao-principal">
+
+                🛒 Comprar produto
+
+            </button>
+
+
+            <button
+                id="cancelarBtn"
+                class="botao-secundario">
+
+                Cancelar
+
+            </button>
+
+        </section>
+
+
+        <!-- =========================
+             AVISO
+        ========================== -->
+
+        <div
+            id="aviso"
+            class="aviso escondido">
+        </div>
+
+
+        <!-- =========================
+             MENU INFERIOR
+        ========================== -->
+
+        <nav class="menu">
+
+            <button class="menu-item ativo">
+                <span>🛒</span>
+                Compras
+            </button>
+
+            <button class="menu-item">
+                <span>⏱</span>
+                Tempo
+            </button>
+
+            <button class="menu-item">
+                <span>👤</span>
+                Perfil
+            </button>
+
+        </nav>
+
+
+        <!-- Canvas utilizado para ler o QR Code -->
+        <canvas id="qrCanvas" hidden></canvas>
+
+    </main>
+
+
+    <!-- Biblioteca que lê QR Codes -->
+    <script
+        src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.js">
+    </script>
+
+    <!-- Nosso JavaScript -->
+    <script src="../../JS/camera.js"></script>
+
+</body>
+
+</html>

@@ -1,0 +1,445 @@
+/* =================================
+   ESTOQUE ZERO
+   TELA DE ABERTURA
+   ================================= */
+
+
+/* Remove margens padrões */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+
+/* Corpo da página */
+body {
+
+    font-family: Arial, Helvetica, sans-serif;
+
+    background-color: #f7f4ff;
+
+    color: #28135c;
+
+}
+
+
+/* =================================
+   TELA
+   ================================= */
+
+.tela {
+
+    min-height: 100vh;
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+    position: relative;
+
+    overflow: hidden;
+
+    background-color: #f8f6ff;
+
+}
+
+
+/* =================================
+   CAIXA PRINCIPAL
+   ================================= */
+
+.conteudo {
+
+    width: 380px;
+
+    height: 720px;
+
+    background-color: #ffffff;
+
+    border: 1.5px solid #35206b;
+
+    border-radius: 18px;
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+
+    justify-content: center;
+
+    text-align: center;
+
+    position: relative;
+
+    overflow: hidden;
+
+}
+
+
+/* =================================
+   EFEITOS CLAROS DO FUNDO
+   ================================= */
+
+.conteudo::before {
+
+    content: "";
+
+    position: absolute;
+
+    width: 180px;
+    height: 180px;
+
+    background-color: #eee7ff;
+
+    border-radius: 50%;
+
+    top: -80px;
+    left: -70px;
+
+    opacity: 0.8;
+
+}
+
+
+.conteudo::after {
+
+    content: "";
+
+    position: absolute;
+
+    width: 170px;
+    height: 170px;
+
+    background-color: #f0e9ff;
+
+    border-radius: 50%;
+
+    bottom: -80px;
+    right: -70px;
+
+}
+
+
+/* =================================
+   LOGO
+   ================================= */
+
+.logo {
+
+    line-height: 0.9;
+
+    margin-bottom: 50px;
+
+    z-index: 2;
+
+}
+
+
+/* ESTOQUE */
+
+.logo div {
+
+    color: #321777;
+
+    font-size: 34px;
+
+    font-weight: 800;
+
+    letter-spacing: -1px;
+
+}
+
+
+/* ZERO */
+
+.logo strong {
+
+    color: #7b3fd1;
+
+    font-size: 40px;
+
+    font-weight: 900;
+
+}
+
+
+/* =================================
+   ILUSTRAÇÃO
+   ================================= */
+
+.ilustracao {
+
+    width: 220px;
+
+    height: 190px;
+
+    position: relative;
+
+    margin-bottom: 25px;
+
+    z-index: 2;
+
+}
+
+
+/* Carrinho */
+
+.carrinho {
+
+    position: absolute;
+
+    left: 45px;
+
+    bottom: 0;
+
+    font-size: 110px;
+
+    filter: drop-shadow(
+        2px 3px 2px rgba(0, 0, 0, 0.12)
+    );
+
+}
+
+
+/* =================================
+   PRODUTOS
+   ================================= */
+
+.produto {
+
+    position: absolute;
+
+    font-size: 38px;
+
+    z-index: 3;
+
+}
+
+
+/* Leite */
+
+.produto1 {
+
+    top: 20px;
+
+    left: 70px;
+
+}
+
+
+/* Lata */
+
+.produto2 {
+
+    top: 10px;
+
+    left: 120px;
+
+}
+
+
+/* Maçã */
+
+.produto3 {
+
+    top: 55px;
+
+    left: 35px;
+
+}
+
+
+/* =================================
+   FRASE
+   ================================= */
+
+h1 {
+
+    color: #29145e;
+
+    font-size: 20px;
+
+    line-height: 1.4;
+
+    font-weight: 700;
+
+    margin-bottom: 28px;
+
+    z-index: 2;
+
+}
+
+
+/* =================================
+   BARRA
+   ================================= */
+
+.barra {
+
+    width: 180px;
+
+    height: 5px;
+
+    background-color: #e4dafa;
+
+    border-radius: 10px;
+
+    overflow: hidden;
+
+    z-index: 2;
+
+}
+
+
+/* Parte roxa da barra */
+
+#progresso {
+
+    width: 0%;
+
+    height: 100%;
+
+    background-color: #7942c9;
+
+    border-radius: 10px;
+
+    transition: width 0.1s;
+
+}
+
+
+/* =================================
+   TEXTO CARREGANDO
+   ================================= */
+
+#mensagem {
+
+    margin-top: 12px;
+
+    color: #83789a;
+
+    font-size: 11px;
+
+    z-index: 2;
+
+}
+
+
+/* =================================
+   DECORAÇÕES
+   ================================= */
+
+.decoracao {
+
+    position: absolute;
+
+    color: #aa91dc;
+
+    font-size: 24px;
+
+    z-index: 1;
+
+}
+
+
+/* Decoração 1 */
+
+.decoracao1 {
+
+    top: 100px;
+
+    left: 25px;
+
+}
+
+
+/* Decoração 2 */
+
+.decoracao2 {
+
+    top: 210px;
+
+    right: 25px;
+
+}
+
+
+/* Decoração 3 */
+
+.decoracao3 {
+
+    bottom: 150px;
+
+    left: 30px;
+
+}
+
+
+/* Decoração 4 */
+
+.decoracao4 {
+
+    bottom: 250px;
+
+    right: 30px;
+
+}
+
+
+/* =================================
+   ANIMAÇÃO
+   ================================= */
+
+.ilustracao {
+
+    animation: aparecer 1s ease;
+
+}
+
+
+@keyframes aparecer {
+
+    from {
+
+        opacity: 0;
+
+        transform: translateY(20px);
+
+    }
+
+    to {
+
+        opacity: 1;
+
+        transform: translateY(0);
+
+    }
+
+}
+
+
+/* =================================
+   CELULAR
+   ================================= */
+
+@media (max-width: 600px) {
+
+    .conteudo {
+
+        width: 100%;
+
+        height: 100vh;
+
+        min-height: 600px;
+
+        border: none;
+
+        border-radius: 0;
+
+    }
+
+}

@@ -1,0 +1,544 @@
+/* =====================================
+   ESTOQUE ZERO
+   TELA DE RESULTADO
+===================================== */
+
+
+/* =========================
+   RESET
+========================= */
+
+* {
+
+    margin: 0;
+    padding: 0;
+
+    box-sizing: border-box;
+
+}
+
+
+body {
+
+    font-family:
+        Arial,
+        sans-serif;
+
+    background:
+        linear-gradient(
+            180deg,
+            #f8f5ff,
+            #ffffff
+        );
+
+    min-height: 100vh;
+
+    color: #24124d;
+
+}
+
+
+/* =========================
+   APP
+========================= */
+
+.app {
+
+    width: 100%;
+
+    max-width: 430px;
+
+    min-height: 100vh;
+
+    margin: auto;
+
+    background: #ffffff;
+
+    position: relative;
+
+    padding-bottom: 90px;
+
+}
+
+
+/* =========================
+   TOPO
+========================= */
+
+.topo {
+
+    height: 70px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    position: relative;
+
+    border-bottom:
+        1px solid #eee7ff;
+
+}
+
+
+.voltar {
+
+    position: absolute;
+
+    left: 20px;
+
+    top: 20px;
+
+    border: none;
+
+    background: transparent;
+
+    font-size: 25px;
+
+    color: #482080;
+
+    cursor: pointer;
+
+}
+
+
+/* =========================
+   LOGO
+========================= */
+
+.logo {
+
+    font-size: 20px;
+
+    font-weight: 800;
+
+    color: #34156e;
+
+    line-height: 18px;
+
+    text-align: center;
+
+}
+
+
+.logo span {
+
+    display: block;
+
+    color: #7441d8;
+
+}
+
+
+/* =========================
+   RESULTADO
+========================= */
+
+.resultado {
+
+    padding:
+
+        25px
+        22px
+        30px;
+
+    text-align: center;
+
+}
+
+
+/* =========================
+   TÍTULO
+========================= */
+
+.titulo {
+
+    position: relative;
+
+}
+
+
+.titulo h1 {
+
+    font-size: 25px;
+
+    color: #432078;
+
+    margin-bottom: 5px;
+
+}
+
+
+.confetes {
+
+    font-size: 25px;
+
+}
+
+
+/* =========================
+   TROFÉU
+========================= */
+
+.trofeu {
+
+    width: 100px;
+
+    height: 100px;
+
+    margin: 15px auto;
+
+    border-radius: 50%;
+
+    background:
+        linear-gradient(
+            145deg,
+            #f5eaff,
+            #eadcff
+        );
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    font-size: 55px;
+
+    box-shadow:
+        0 8px 25px
+        rgba(100, 50, 180, 0.15);
+
+}
+
+
+/* =========================
+   MENSAGEM
+========================= */
+
+.mensagem {
+
+    font-size: 15px;
+
+    color: #5e5275;
+
+    margin-bottom: 20px;
+
+    line-height: 1.5;
+
+}
+
+
+/* =========================
+   RESUMO
+========================= */
+
+.resumo {
+
+    background: #faf8ff;
+
+    border:
+        1px solid #e9ddff;
+
+    border-radius: 18px;
+
+    padding: 8px 16px;
+
+    text-align: left;
+
+    margin-bottom: 15px;
+
+}
+
+
+.linha {
+
+    display: flex;
+
+    justify-content:
+        space-between;
+
+    align-items: center;
+
+    padding: 13px 0;
+
+    border-bottom:
+        1px solid #eee8f8;
+
+    font-size: 13px;
+
+}
+
+
+.linha:last-child {
+
+    border-bottom: none;
+
+}
+
+
+.linha span {
+
+    color: #5b4c73;
+
+}
+
+
+.linha strong {
+
+    color: #35156d;
+
+    font-size: 14px;
+
+}
+
+
+/* =========================
+   PONTUAÇÃO
+========================= */
+
+.pontuacao {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 13px;
+
+    text-align: left;
+
+    background:
+        linear-gradient(
+            135deg,
+            #f3eaff,
+            #faf7ff
+        );
+
+    border:
+        1px solid #d9c5ff;
+
+    border-radius: 16px;
+
+    padding: 14px 17px;
+
+    margin-bottom: 15px;
+
+}
+
+
+.icone-pontuacao {
+
+    width: 45px;
+
+    height: 45px;
+
+    border-radius: 50%;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    background: #ffffff;
+
+    font-size: 25px;
+
+}
+
+
+.pontuacao small {
+
+    display: block;
+
+    color: #756987;
+
+    font-size: 11px;
+
+    margin-bottom: 3px;
+
+}
+
+
+.pontuacao strong {
+
+    display: block;
+
+    color: #4c218c;
+
+    font-size: 18px;
+
+}
+
+
+/* =========================
+   DESEMPENHO
+========================= */
+
+.desempenho {
+
+    background: #f8f3ff;
+
+    color: #543879;
+
+    border-radius: 12px;
+
+    padding: 12px;
+
+    font-size: 13px;
+
+    line-height: 1.4;
+
+    margin-bottom: 18px;
+
+}
+
+
+/* =========================
+   BOTÕES
+========================= */
+
+.botao-principal,
+.botao-secundario {
+
+    width: 100%;
+
+    padding: 14px;
+
+    border-radius: 12px;
+
+    font-size: 15px;
+
+    font-weight: bold;
+
+    cursor: pointer;
+
+    margin-bottom: 10px;
+
+}
+
+
+.botao-principal {
+
+    border: none;
+
+    color: white;
+
+    background:
+        linear-gradient(
+            90deg,
+            #6634b8,
+            #8145d3
+        );
+
+    box-shadow:
+        0 5px 15px
+        rgba(100, 50, 180, 0.2);
+
+}
+
+
+.botao-secundario {
+
+    background: white;
+
+    border:
+        1px solid #7542c5;
+
+    color: #6130a8;
+
+}
+
+
+/* =========================
+   MENU
+========================= */
+
+.menu {
+
+    position: fixed;
+
+    bottom: 0;
+
+    left: 50%;
+
+    transform:
+        translateX(-50%);
+
+    width: 100%;
+
+    max-width: 430px;
+
+    height: 70px;
+
+    background: white;
+
+    border-top:
+        1px solid #eee7f8;
+
+    display: flex;
+
+    justify-content:
+        space-around;
+
+    align-items: center;
+
+    z-index: 10;
+
+}
+
+
+.menu-item {
+
+    background: none;
+
+    border: none;
+
+    color: #786a8c;
+
+    font-size: 11px;
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+
+    gap: 4px;
+
+    cursor: pointer;
+
+}
+
+
+.menu-item span {
+
+    font-size: 21px;
+
+}
+
+
+.menu-item:hover {
+
+    color: #6330ae;
+
+}
+
+
+/* =========================
+   CELULAR
+========================= */
+
+@media (max-width: 430px) {
+
+    .resultado {
+
+        padding-left: 18px;
+
+        padding-right: 18px;
+
+    }
+
+}

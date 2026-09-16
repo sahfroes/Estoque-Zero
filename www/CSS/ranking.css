@@ -1,0 +1,641 @@
+/* =====================================
+   ESTOQUE ZERO
+   TELA DE RANKING
+===================================== */
+
+
+/* =========================
+   RESET
+========================= */
+
+* {
+
+    margin: 0;
+    padding: 0;
+
+    box-sizing: border-box;
+
+}
+
+
+body {
+
+    font-family: Arial, sans-serif;
+
+    background:
+        linear-gradient(
+            180deg,
+            #f8f5ff,
+            #ffffff
+        );
+
+    color: #281452;
+
+    min-height: 100vh;
+
+}
+
+
+/* =========================
+   APP
+========================= */
+
+.app {
+
+    width: 100%;
+
+    max-width: 430px;
+
+    min-height: 100vh;
+
+    margin: auto;
+
+    background: #ffffff;
+
+    padding-bottom: 100px;
+
+}
+
+
+/* =========================
+   TOPO
+========================= */
+
+.topo {
+
+    height: 70px;
+
+    border-bottom:
+        1px solid #eee8f8;
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+    position: relative;
+
+}
+
+
+.botao-voltar {
+
+    position: absolute;
+
+    left: 20px;
+
+    top: 18px;
+
+    border: none;
+
+    background: none;
+
+    font-size: 28px;
+
+    color: #51258b;
+
+    cursor: pointer;
+
+}
+
+
+/* =========================
+   LOGO
+========================= */
+
+.logo {
+
+    text-align: center;
+
+    font-size: 20px;
+
+    font-weight: bold;
+
+    line-height: 18px;
+
+    color: #34156e;
+
+}
+
+
+.logo span {
+
+    display: block;
+
+    color: #713bd0;
+
+}
+
+
+/* =========================
+   CABEÇALHO
+========================= */
+
+.cabecalho-ranking {
+
+    text-align: center;
+
+    padding: 25px 20px 10px;
+
+}
+
+
+.trofeu {
+
+    font-size: 40px;
+
+    margin-bottom: 5px;
+
+}
+
+
+.cabecalho-ranking h1 {
+
+    font-size: 26px;
+
+    color: #432078;
+
+}
+
+
+.cabecalho-ranking p {
+
+    font-size: 13px;
+
+    color: #766b86;
+
+    margin-top: 5px;
+
+}
+
+
+/* =========================
+   PÓDIO
+========================= */
+
+.podio {
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: flex-end;
+
+    gap: 10px;
+
+    padding: 20px 15px;
+
+}
+
+
+.jogador {
+
+    width: 105px;
+
+    text-align: center;
+
+    padding: 12px 5px;
+
+    border-radius: 18px;
+
+    background: #faf8ff;
+
+}
+
+
+.jogador.primeiro {
+
+    padding-top: 5px;
+
+    transform: translateY(-10px);
+
+    border:
+        2px solid #d9b84a;
+
+}
+
+
+.jogador.segundo {
+
+    border:
+        1px solid #ddd7e8;
+
+}
+
+
+.jogador.terceiro {
+
+    border:
+        1px solid #e4c4a8;
+
+}
+
+
+.medalha {
+
+    font-size: 25px;
+
+    margin-bottom: 4px;
+
+}
+
+
+.avatar {
+
+    width: 55px;
+
+    height: 55px;
+
+    border-radius: 50%;
+
+    background: #eee4ff;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    margin: auto;
+
+    font-size: 29px;
+
+}
+
+
+.jogador strong {
+
+    display: block;
+
+    margin-top: 7px;
+
+    font-size: 13px;
+
+}
+
+
+.jogador span {
+
+    display: block;
+
+    margin-top: 3px;
+
+    font-size: 11px;
+
+    color: #705f88;
+
+}
+
+
+/* =========================
+   LISTA
+========================= */
+
+.lista-ranking {
+
+    padding: 5px 18px;
+
+}
+
+
+.lista-ranking h2 {
+
+    font-size: 17px;
+
+    margin-bottom: 10px;
+
+    color: #432078;
+
+}
+
+
+/* =========================
+   ITEM
+========================= */
+
+.item-ranking {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
+
+    background: #ffffff;
+
+    border:
+        1px solid #eee8f6;
+
+    border-radius: 14px;
+
+    padding: 10px;
+
+    margin-bottom: 8px;
+
+}
+
+
+.item-ranking.destaque {
+
+    background: #faf6ff;
+
+    border-color: #dac6f7;
+
+}
+
+
+/* =========================
+   POSIÇÃO
+========================= */
+
+.posicao {
+
+    width: 28px;
+
+    font-size: 13px;
+
+    font-weight: bold;
+
+    text-align: center;
+
+    color: #593092;
+
+}
+
+
+/* =========================
+   AVATAR
+========================= */
+
+.avatar-pequeno {
+
+    width: 40px;
+
+    height: 40px;
+
+    border-radius: 50%;
+
+    background: #f0e8ff;
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+    font-size: 21px;
+
+}
+
+
+/* =========================
+   INFORMAÇÕES
+========================= */
+
+.informacoes {
+
+    flex: 1;
+
+}
+
+
+.informacoes strong {
+
+    display: block;
+
+    font-size: 13px;
+
+}
+
+
+.informacoes small {
+
+    display: block;
+
+    margin-top: 3px;
+
+    color: #82758f;
+
+    font-size: 10px;
+
+}
+
+
+/* =========================
+   PONTOS
+========================= */
+
+.pontos {
+
+    font-size: 17px;
+
+    font-weight: bold;
+
+    color: #52228d;
+
+    text-align: right;
+
+}
+
+
+.pontos small {
+
+    display: block;
+
+    font-size: 9px;
+
+    font-weight: normal;
+
+    color: #8b7c9a;
+
+}
+
+
+/* =========================
+   MINHA POSIÇÃO
+========================= */
+
+.minha-posicao {
+
+    margin: 15px 18px;
+
+    padding: 15px;
+
+    border-radius: 15px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #f2e9ff,
+            #faf7ff
+        );
+
+    border:
+        1px solid #d9c4fa;
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+}
+
+
+.minha-posicao small {
+
+    display: block;
+
+    color: #77688b;
+
+    font-size: 10px;
+
+}
+
+
+.minha-posicao strong {
+
+    display: block;
+
+    margin-top: 4px;
+
+    color: #4d2185;
+
+    font-size: 17px;
+
+}
+
+
+.minha-pontuacao {
+
+    text-align: right;
+
+}
+
+
+.minha-pontuacao span {
+
+    font-size: 22px;
+
+    font-weight: bold;
+
+    color: #6630b0;
+
+}
+
+
+.minha-pontuacao small {
+
+    display: inline;
+
+    margin-left: 3px;
+
+}
+
+
+/* =========================
+   BOTÃO
+========================= */
+
+.botao-principal {
+
+    width: calc(100% - 36px);
+
+    margin: 5px 18px 20px;
+
+    padding: 14px;
+
+    border: none;
+
+    border-radius: 12px;
+
+    background:
+        linear-gradient(
+            90deg,
+            #6332b1,
+            #8246d2
+        );
+
+    color: white;
+
+    font-size: 15px;
+
+    font-weight: bold;
+
+    cursor: pointer;
+
+}
+
+
+/* =========================
+   MENU
+========================= */
+
+.menu {
+
+    position: fixed;
+
+    bottom: 0;
+
+    left: 50%;
+
+    transform:
+        translateX(-50%);
+
+    width: 100%;
+
+    max-width: 430px;
+
+    height: 70px;
+
+    background: white;
+
+    border-top:
+        1px solid #eee8f7;
+
+    display: flex;
+
+    justify-content:
+        space-around;
+
+    align-items: center;
+
+}
+
+
+.menu-item {
+
+    border: none;
+
+    background: none;
+
+    color: #82768e;
+
+    font-size: 10px;
+
+    cursor: pointer;
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+
+    gap: 4px;
+
+}
+
+
+.menu-item span {
+
+    font-size: 21px;
+
+}
+
+
+.menu-item.ativo {
+
+    color: #6030a7;
+
+}

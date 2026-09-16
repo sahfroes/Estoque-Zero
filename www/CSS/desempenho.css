@@ -1,0 +1,814 @@
+/* =====================================
+   ESTOQUE ZERO
+   TELA DE DESEMPENHO
+===================================== */
+
+
+/* =========================
+   RESET
+========================= */
+
+* {
+
+    margin: 0;
+    padding: 0;
+
+    box-sizing: border-box;
+
+}
+
+
+body {
+
+    font-family: Arial, sans-serif;
+
+    background: #f8f5ff;
+
+    color: #321665;
+
+    min-height: 100vh;
+
+}
+
+
+/* =========================
+   APLICATIVO
+========================= */
+
+.app {
+
+    width: 100%;
+
+    max-width: 430px;
+
+    min-height: 100vh;
+
+    margin: auto;
+
+    background: white;
+
+    padding-bottom: 100px;
+
+}
+
+
+/* =========================
+   TOPO
+========================= */
+
+.topo {
+
+    height: 70px;
+
+    border-bottom: 1px solid #eee8f7;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    position: relative;
+
+}
+
+
+.voltar {
+
+    position: absolute;
+
+    left: 18px;
+
+    border: none;
+
+    background: none;
+
+    font-size: 28px;
+
+    color: #54268e;
+
+    cursor: pointer;
+
+}
+
+
+/* =========================
+   LOGO
+========================= */
+
+.logo {
+
+    text-align: center;
+
+    font-weight: bold;
+
+    font-size: 19px;
+
+    line-height: 17px;
+
+}
+
+
+.logo span {
+
+    display: block;
+
+    color: #743bd0;
+
+}
+
+
+/* =========================
+   CABEÇALHO
+========================= */
+
+.cabecalho {
+
+    text-align: center;
+
+    padding: 25px 20px 15px;
+
+}
+
+
+.cabecalho h1 {
+
+    font-size: 24px;
+
+    color: #432078;
+
+}
+
+
+.cabecalho p {
+
+    font-size: 12px;
+
+    color: #81758d;
+
+    margin-top: 6px;
+
+}
+
+
+/* =========================
+   ABAS
+========================= */
+
+.abas {
+
+    display: flex;
+
+    margin: 0 18px 18px;
+
+    background: #f5f0fb;
+
+    border-radius: 12px;
+
+    padding: 4px;
+
+}
+
+
+.aba {
+
+    flex: 1;
+
+    padding: 9px 5px;
+
+    border: none;
+
+    border-radius: 9px;
+
+    background: transparent;
+
+    color: #7c708a;
+
+    font-size: 11px;
+
+    cursor: pointer;
+
+}
+
+
+.aba.ativa {
+
+    background: white;
+
+    color: #54248e;
+
+    font-weight: bold;
+
+    box-shadow:
+        0 2px 6px rgba(60, 30, 100, 0.08);
+
+}
+
+
+/* =========================
+   CONTEÚDO DAS ABAS
+========================= */
+
+.conteudo-aba {
+
+    display: none;
+
+    padding: 0 18px;
+
+}
+
+
+.conteudo-aba.ativa {
+
+    display: block;
+
+}
+
+
+/* =========================
+   RESUMO
+========================= */
+
+.resumo {
+
+    display: grid;
+
+    grid-template-columns: 1fr 1fr;
+
+    gap: 9px;
+
+    margin-bottom: 12px;
+
+}
+
+
+.card-resumo {
+
+    padding: 13px;
+
+    border-radius: 14px;
+
+    background: #faf7ff;
+
+    border: 1px solid #eee6f8;
+
+}
+
+
+.icone {
+
+    display: block;
+
+    font-size: 20px;
+
+    margin-bottom: 5px;
+
+}
+
+
+.card-resumo small {
+
+    display: block;
+
+    color: #81758d;
+
+    font-size: 10px;
+
+}
+
+
+.card-resumo strong {
+
+    display: block;
+
+    margin-top: 4px;
+
+    color: #4e2185;
+
+    font-size: 17px;
+
+}
+
+
+/* =========================
+   CARD
+========================= */
+
+.card {
+
+    background: white;
+
+    border: 1px solid #eee7f7;
+
+    border-radius: 16px;
+
+    padding: 15px;
+
+    margin-bottom: 12px;
+
+}
+
+
+.card h2 {
+
+    font-size: 16px;
+
+    color: #452078;
+
+}
+
+
+.descricao {
+
+    color: #877a91;
+
+    font-size: 10px;
+
+    margin-top: 4px;
+
+    margin-bottom: 15px;
+
+}
+
+
+/* =========================
+   GRÁFICO
+========================= */
+
+.grafico {
+
+    height: 190px;
+
+    position: relative;
+
+    margin-top: 10px;
+
+    padding-left: 35px;
+
+    border-bottom: 1px solid #ddd5e8;
+
+}
+
+
+.linha {
+
+    height: 30px;
+
+    border-top: 1px dashed #e8e1f0;
+
+    color: #91859b;
+
+    font-size: 8px;
+
+    padding-top: 3px;
+
+}
+
+
+.barras {
+
+    position: absolute;
+
+    left: 45px;
+
+    right: 10px;
+
+    bottom: 0;
+
+    height: 170px;
+
+    display: flex;
+
+    align-items: flex-end;
+
+    justify-content: space-around;
+
+    gap: 10px;
+
+}
+
+
+.barra {
+
+    width: 28px;
+
+    min-height: 8px;
+
+    border-radius:
+        7px 7px 0 0;
+
+    background:
+        linear-gradient(
+            to top,
+            #6532b2,
+            #9b6be0
+        );
+
+    position: relative;
+
+}
+
+
+.barra span {
+
+    position: absolute;
+
+    top: -17px;
+
+    left: 50%;
+
+    transform:
+        translateX(-50%);
+
+    font-size: 8px;
+
+    color: #57308b;
+
+    font-weight: bold;
+
+}
+
+
+.legenda-grafico {
+
+    display: flex;
+
+    justify-content: space-around;
+
+    margin-top: 8px;
+
+    color: #8c8097;
+
+    font-size: 7px;
+
+}
+
+
+/* =========================
+   PERFIL FINANCEIRO
+========================= */
+
+.perfil-financeiro {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 12px;
+
+    padding: 15px;
+
+    border-radius: 16px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #f1e8ff,
+            #fbf8ff
+        );
+
+    border: 1px solid #dac8f3;
+
+}
+
+
+.perfil-icone {
+
+    width: 48px;
+
+    height: 48px;
+
+    border-radius: 50%;
+
+    background: white;
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+    font-size: 25px;
+
+}
+
+
+.perfil-financeiro small {
+
+    font-size: 9px;
+
+    color: #806f91;
+
+}
+
+
+.perfil-financeiro h2 {
+
+    font-size: 17px;
+
+    color: #54268e;
+
+    margin-top: 2px;
+
+}
+
+
+.perfil-financeiro p {
+
+    font-size: 9px;
+
+    color: #776a84;
+
+    margin-top: 4px;
+
+    line-height: 14px;
+
+}
+
+
+/* =========================
+   LISTA DE COMPRAS
+========================= */
+
+.compra {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
+
+    padding: 10px 0;
+
+    border-bottom: 1px solid #eee8f5;
+
+}
+
+
+.compra:last-child {
+
+    border-bottom: none;
+
+}
+
+
+.compra-icone {
+
+    width: 38px;
+
+    height: 38px;
+
+    border-radius: 10px;
+
+    background: #f2eaff;
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+    font-size: 20px;
+
+}
+
+
+.compra-info {
+
+    flex: 1;
+
+}
+
+
+.compra-info strong {
+
+    display: block;
+
+    font-size: 12px;
+
+}
+
+
+.compra-info small {
+
+    font-size: 9px;
+
+    color: #897d94;
+
+}
+
+
+.compra-preco {
+
+    font-weight: bold;
+
+    color: #55258e;
+
+    font-size: 12px;
+
+}
+
+
+/* =========================
+   FINANCEIRO
+========================= */
+
+.linha-financeira {
+
+    display: flex;
+
+    justify-content: space-between;
+
+    padding: 13px 0;
+
+    border-bottom: 1px solid #eee8f5;
+
+    font-size: 11px;
+
+}
+
+
+.linha-financeira:last-child {
+
+    border-bottom: none;
+
+}
+
+
+.linha-financeira span {
+
+    color: #7e7189;
+
+}
+
+
+.linha-financeira strong {
+
+    color: #4d2185;
+
+}
+
+
+/* =========================
+   CATEGORIAS
+========================= */
+
+.categoria-item {
+
+    margin-top: 16px;
+
+}
+
+
+.categoria-topo {
+
+    display: flex;
+
+    justify-content: space-between;
+
+    font-size: 10px;
+
+}
+
+
+.categoria-topo strong {
+
+    color: #5b2b96;
+
+}
+
+
+.barra-categoria {
+
+    height: 7px;
+
+    background: #eee9f4;
+
+    border-radius: 10px;
+
+    margin-top: 6px;
+
+    overflow: hidden;
+
+}
+
+
+.progresso {
+
+    height: 100%;
+
+    background:
+        linear-gradient(
+            90deg,
+            #6735b5,
+            #9c6be0
+        );
+
+    border-radius: 10px;
+
+}
+
+
+/* =========================
+   BOTÃO RANKING
+========================= */
+
+.botao-ranking {
+
+    width: calc(100% - 36px);
+
+    margin: 10px 18px 20px;
+
+    padding: 13px;
+
+    border: none;
+
+    border-radius: 12px;
+
+    background:
+        linear-gradient(
+            90deg,
+            #6332b1,
+            #8147d1
+        );
+
+    color: white;
+
+    font-weight: bold;
+
+    font-size: 13px;
+
+    cursor: pointer;
+
+}
+
+
+/* =========================
+   MENU
+========================= */
+
+.menu {
+
+    position: fixed;
+
+    bottom: 0;
+
+    left: 50%;
+
+    transform:
+        translateX(-50%);
+
+    width: 100%;
+
+    max-width: 430px;
+
+    height: 70px;
+
+    background: white;
+
+    border-top: 1px solid #eee8f5;
+
+    display: flex;
+
+    justify-content: space-around;
+
+    align-items: center;
+
+}
+
+
+.menu-item {
+
+    border: none;
+
+    background: none;
+
+    color: #857991;
+
+    font-size: 9px;
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+
+    gap: 4px;
+
+}
+
+
+.menu-item span {
+
+    font-size: 20px;
+
+}
+
+
+.menu-item.ativo {
+
+    color: #5b2b9b;
+
+    font-weight: bold;
+
+}

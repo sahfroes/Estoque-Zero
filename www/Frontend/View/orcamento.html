@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Escolher Orçamento - Estoque Zero</title>
+  <link rel="stylesheet" href="../../CSS/orcamento.css">
+</head>
+<body>
+
+  <div class="tela-orcamento">
+    <!-- Cabeçalho idêntico ao do Tutorial -->
+    <header class="cabecalho">
+      <button class="botao-voltar" onclick="history.back()">&larr;</button>
+      <span class="contador-etapa">3/3</span>
+    </header>
+
+    <!-- Conteúdo centralizado com max-width: 430px -->
+    <main class="conteudo">
+      <div class="area-texto">
+        <h1>Quanto você quer gastar?</h1>
+        <p>Escolha seu orçamento para esta missão.</p>
+      </div>
+
+      <div class="lista-opcoes">
+        <label class="cartao-opcao ativo">
+          <input type="radio" name="orcamento" value="20" checked>
+          <div class="icone-circulo icone-verde">$</div>
+          <div class="info-opcao">
+            <span class="valor">R$ 20,00</span>
+            <span class="modo">Modo Econômico</span>
+          </div>
+        </label>
+
+        <label class="cartao-opcao">
+          <input type="radio" name="orcamento" value="30">
+          <div class="icone-circulo icone-roxo">$</div>
+          <div class="info-opcao">
+            <span class="valor">R$ 30,00</span>
+            <span class="modo">Modo Estratégia</span>
+          </div>
+        </label>
+
+        <label class="cartao-opcao">
+          <input type="radio" name="orcamento" value="40">
+          <div class="icone-circulo icone-laranja">$</div>
+          <div class="info-opcao">
+            <span class="valor">R$ 40,00</span>
+            <span class="modo">Modo Equilíbrio</span>
+          </div>
+        </label>
+
+        <label class="cartao-opcao">
+          <input type="radio" name="orcamento" value="50">
+          <div class="icone-circulo icone-azul">$</div>
+          <div class="info-opcao">
+            <span class="valor">R$ 50,00</span>
+            <span class="modo">Modo Livre</span>
+          </div>
+        </label>
+      </div>
+
+      <div class="caixa-dica">
+        <span class="icone-dica">💡</span>
+        <p>Quanto menor o orçamento, maior o desafio!</p>
+      </div>
+
+      <!-- Botão fixado no final -->
+      <div class="area-botao">
+        <button class="botao-principal" id="btnContinuar">Começar</button>
+      </div>
+    </main>
+  </div>
+
+  <script src="../../Js/orcamento.js"></script>
+</body>
+</html>

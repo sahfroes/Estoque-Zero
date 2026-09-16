@@ -1,0 +1,610 @@
+/* ========================================
+   CONFIGURAÇÕES GERAIS
+======================================== */
+
+* {
+    margin: 0;
+    padding: 0;
+
+    box-sizing: border-box;
+}
+
+
+body {
+
+    font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+
+    background-color: #faf8fd;
+
+    color: #30253b;
+}
+
+
+/* ========================================
+   TELA PRINCIPAL
+======================================== */
+
+.tela-principal {
+
+    width: 100%;
+
+    max-width: 430px;
+
+    min-height: 100vh;
+
+    margin: 0 auto;
+
+    padding: 25px 20px;
+
+    animation: aparecer 0.5s ease;
+}
+
+
+/* ========================================
+   CABEÇALHO
+======================================== */
+
+.cabecalho {
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    margin-bottom: 25px;
+}
+
+
+.logo {
+
+    font-size: 21px;
+
+    font-weight: 900;
+
+    line-height: 0.9;
+
+    letter-spacing: 1px;
+
+    color: #452477;
+}
+
+
+.logo span {
+
+    display: block;
+
+    color: #9154d4;
+
+    margin-left: 10px;
+
+    margin-top: 4px;
+}
+
+
+.nivel {
+
+    background-color: #eee4fa;
+
+    color: #5c3190;
+
+    padding: 9px 15px;
+
+    border-radius: 20px;
+
+    font-size: 16px;
+
+    font-weight: bold;
+}
+
+
+/* ========================================
+   CARTÃO DO SALDO
+======================================== */
+
+.cartao-saldo {
+
+    width: 100%;
+
+    min-height: 105px;
+
+    padding: 18px;
+
+    border-radius: 22px;
+
+    background: linear-gradient(
+        135deg,
+        #e8d7fa,
+        #ddd0f8
+    );
+
+    border: 1px solid #cfc0ef;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 15px;
+
+    margin-bottom: 15px;
+
+    box-shadow:
+        0 8px 20px
+        rgba(90, 55, 130, 0.08);
+}
+
+
+.icone-saldo {
+
+    width: 62px;
+
+    height: 62px;
+
+    border-radius: 17px;
+
+    background-color: #ffffff;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    font-size: 34px;
+
+    flex-shrink: 0;
+}
+
+
+.informacao-saldo {
+
+    flex: 1;
+}
+
+
+.informacao-saldo span {
+
+    display: block;
+
+    font-size: 13px;
+
+    color: #665a70;
+
+    margin-bottom: 3px;
+}
+
+
+.informacao-saldo strong {
+
+    display: block;
+
+    font-size: 28px;
+
+    color: #452477;
+}
+
+
+.seta {
+
+    font-size: 25px;
+
+    color: #553185;
+}
+
+
+/* ========================================
+   CARTÃO DE INFORMAÇÕES
+======================================== */
+
+.cartao-informacoes {
+
+    width: 100%;
+
+    background-color: #ffffff;
+
+    border: 1px solid #e5def0;
+
+    border-radius: 22px;
+
+    padding: 17px;
+
+    display: grid;
+
+    grid-template-columns: 1fr 1fr;
+
+    gap: 16px;
+
+    margin-bottom: 15px;
+
+    box-shadow:
+        0 8px 20px
+        rgba(70, 40, 90, 0.06);
+}
+
+
+.informacao {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
+}
+
+
+.informacao.compras {
+
+    grid-column: 1 / 3;
+
+    padding-top: 12px;
+
+    border-top: 1px solid #eee9f3;
+}
+
+
+.icone-informacao {
+
+    width: 42px;
+
+    height: 42px;
+
+    border-radius: 13px;
+
+    background-color: #eee5f8;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    font-size: 22px;
+
+    flex-shrink: 0;
+}
+
+
+.informacao span {
+
+    display: block;
+
+    font-size: 11px;
+
+    color: #817889;
+
+    margin-bottom: 3px;
+}
+
+
+.informacao strong {
+
+    display: block;
+
+    font-size: 20px;
+
+    color: #4d287b;
+}
+
+
+/* ========================================
+   ATALHOS
+======================================== */
+
+.atalhos {
+
+    display: grid;
+
+    grid-template-columns: repeat(3, 1fr);
+
+    gap: 10px;
+
+    margin-bottom: 15px;
+}
+
+
+.atalho {
+
+    min-height: 90px;
+
+    border: 1px solid #e4dcf0;
+
+    border-radius: 18px;
+
+    background-color: white;
+
+    color: #49305f;
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 7px;
+
+    font-size: 13px;
+
+    font-weight: bold;
+
+    cursor: pointer;
+
+    transition: 0.2s;
+
+    box-shadow:
+        0 6px 15px
+        rgba(70, 40, 90, 0.05);
+}
+
+
+.icone-atalho {
+
+    font-size: 27px;
+}
+
+
+.atalho:hover {
+
+    transform: translateY(-3px);
+
+    border-color: #bda2dc;
+
+    background-color: #faf6ff;
+}
+
+
+/* ========================================
+   BOTÃO ADICIONAR R$50
+======================================== */
+
+.botao-adicionar {
+
+    width: 100%;
+
+    min-height: 70px;
+
+    border: 1px solid #cdb9ec;
+
+    border-radius: 20px;
+
+    background: linear-gradient(
+        135deg,
+        #e7d7fa,
+        #dcd0f5
+    );
+
+    color: #452477;
+
+    padding: 15px 18px;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 12px;
+
+    font-size: 19px;
+
+    font-weight: bold;
+
+    cursor: pointer;
+
+    margin-bottom: 15px;
+
+    transition: 0.2s;
+}
+
+
+.botao-adicionar span:first-child {
+
+    flex: 1;
+
+    text-align: left;
+}
+
+
+.icone-dinheiro {
+
+    font-size: 28px;
+}
+
+
+.botao-adicionar:hover {
+
+    transform: translateY(-2px);
+
+    box-shadow:
+        0 8px 20px
+        rgba(100, 60, 150, 0.12);
+}
+
+
+/* ========================================
+   BOTÃO COMEÇAR MISSÃO
+======================================== */
+
+.botao-missao {
+
+    width: 100%;
+
+    min-height: 85px;
+
+    border: 1px solid #dcd2e9;
+
+    border-radius: 20px;
+
+    background-color: #ffffff;
+
+    padding: 15px;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 13px;
+
+    color: #3e2850;
+
+    cursor: pointer;
+
+    text-align: left;
+
+    transition: 0.2s;
+
+    box-shadow:
+        0 8px 20px
+        rgba(70, 40, 90, 0.06);
+}
+
+
+.botao-missao:hover {
+
+    transform: translateY(-2px);
+
+    border-color: #bba0da;
+}
+
+
+.icone-missao {
+
+    width: 52px;
+
+    height: 52px;
+
+    border-radius: 15px;
+
+    background-color: #eee5f8;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    font-size: 27px;
+
+    flex-shrink: 0;
+}
+
+
+.texto-missao {
+
+    flex: 1;
+}
+
+
+.texto-missao strong {
+
+    display: block;
+
+    font-size: 17px;
+
+    margin-bottom: 4px;
+
+    color: #452477;
+}
+
+
+.texto-missao span {
+
+    display: block;
+
+    font-size: 12px;
+
+    color: #766b80;
+}
+
+
+/* ========================================
+   MENSAGEM
+======================================== */
+
+.mensagem {
+
+    display: none;
+
+    margin-top: 15px;
+
+    padding: 12px;
+
+    border-radius: 12px;
+
+    text-align: center;
+
+    font-size: 13px;
+
+    font-weight: bold;
+
+    background-color: #eee5f8;
+
+    color: #5b3480;
+}
+
+
+.mensagem.mostrar {
+
+    display: block;
+
+    animation: aparecer 0.3s ease;
+}
+
+
+/* ========================================
+   ANIMAÇÃO
+======================================== */
+
+@keyframes aparecer {
+
+    from {
+
+        opacity: 0;
+
+        transform: translateY(10px);
+
+    }
+
+    to {
+
+        opacity: 1;
+
+        transform: translateY(0);
+
+    }
+
+}
+
+
+/* ========================================
+   CELULARES PEQUENOS
+======================================== */
+
+@media (max-width: 370px) {
+
+    .tela-principal {
+
+        padding: 20px 15px;
+    }
+
+
+    .informacao strong {
+
+        font-size: 17px;
+    }
+
+
+    .informacao span {
+
+        font-size: 10px;
+    }
+
+
+    .cartao-saldo strong {
+
+        font-size: 25px;
+    }
+
+}

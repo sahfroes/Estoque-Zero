@@ -1,0 +1,499 @@
+/* =====================================
+LOGIN
+===================================== */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+
+    min-height: 100vh;
+
+    background:
+        radial-gradient(
+            circle at top left,
+            #eee8ff,
+            transparent 35%
+        ),
+        radial-gradient(
+            circle at bottom right,
+            #dfffe9,
+            transparent 35%
+        ),
+        #f8f7fb;
+
+    color: #292333;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    padding: 30px;
+}
+
+
+/* =====================================
+   CONTAINER
+===================================== */
+
+.login-container {
+
+    width: 100%;
+    max-width: 430px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+
+/* =====================================
+   LOGO
+===================================== */
+
+.logo-area {
+
+    text-align: center;
+
+    margin-bottom: 25px;
+}
+
+
+.logo-icon {
+
+    width: 65px;
+    height: 65px;
+
+    margin: 0 auto 12px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: #ffffff;
+
+    border-radius: 20px;
+
+    font-size: 32px;
+
+    box-shadow:
+        0 10px 25px rgba(70, 45, 120, 0.12);
+}
+
+
+.logo-area h1 {
+
+    font-size: 34px;
+
+    line-height: 0.95;
+
+    letter-spacing: 1px;
+
+    font-weight: 900;
+
+    color: #312345;
+}
+
+
+.logo-area h1 span {
+
+    color: #6c3fd1;
+}
+
+
+.logo-area p {
+
+    margin-top: 10px;
+
+    font-size: 14px;
+
+    color: #77717f;
+}
+
+
+/* =====================================
+   CARD
+===================================== */
+
+.login-card {
+
+    width: 100%;
+
+    background: rgba(255, 255, 255, 0.94);
+
+    border: 1px solid #e8e3ef;
+
+    border-radius: 28px;
+
+    padding: 32px 28px;
+
+    box-shadow:
+        0 20px 50px rgba(54, 36, 90, 0.10);
+}
+
+
+.login-card h2 {
+
+    font-size: 25px;
+
+    margin-bottom: 8px;
+
+    color: #30243d;
+}
+
+
+.login-description {
+
+    font-size: 14px;
+
+    line-height: 1.5;
+
+    color: #77717f;
+
+    margin-bottom: 25px;
+}
+
+
+/* =====================================
+   INPUTS
+===================================== */
+
+.input-group {
+
+    margin-bottom: 18px;
+}
+
+
+.input-group label {
+
+    display: block;
+
+    font-size: 13px;
+
+    font-weight: 700;
+
+    margin-bottom: 7px;
+
+    color: #40374a;
+}
+
+
+.input-wrapper {
+
+    position: relative;
+
+    display: flex;
+    align-items: center;
+}
+
+
+.input-icon {
+
+    position: absolute;
+
+    left: 15px;
+
+    font-size: 15px;
+
+    color: #8067ad;
+
+    z-index: 2;
+}
+
+
+.input-wrapper input {
+
+    width: 100%;
+
+    height: 52px;
+
+    border: 1.5px solid #ded8e7;
+
+    border-radius: 14px;
+
+    background: #faf9fc;
+
+    padding: 0 45px;
+
+    font-size: 14px;
+
+    color: #332a3b;
+
+    outline: none;
+
+    transition: 0.2s;
+}
+
+
+.input-wrapper input:focus {
+
+    border-color: #7a4bd3;
+
+    background: #ffffff;
+
+    box-shadow:
+        0 0 0 4px rgba(122, 75, 211, 0.10);
+}
+
+
+.input-wrapper input::placeholder {
+
+    color: #aaa3b1;
+}
+
+
+/* =====================================
+   MOSTRAR SENHA
+===================================== */
+
+.password-button {
+
+    position: absolute;
+
+    right: 12px;
+
+    border: none;
+
+    background: transparent;
+
+    cursor: pointer;
+
+    font-size: 16px;
+
+    opacity: 0.65;
+}
+
+
+/* =====================================
+   ESQUECI SENHA
+===================================== */
+
+.forgot-password {
+
+    text-align: right;
+
+    margin-top: -5px;
+
+    margin-bottom: 20px;
+}
+
+
+.forgot-password a {
+
+    color: #7043c6;
+
+    font-size: 12px;
+
+    text-decoration: none;
+
+    font-weight: 600;
+}
+
+
+.forgot-password a:hover {
+
+    text-decoration: underline;
+}
+
+
+/* =====================================
+   BOTÃO PRINCIPAL
+===================================== */
+
+.btn-primary {
+
+    width: 100%;
+
+    height: 52px;
+
+    border: none;
+
+    border-radius: 15px;
+
+    background: linear-gradient(
+        135deg,
+        #7144d4,
+        #5e32b9
+    );
+
+    color: white;
+
+    font-size: 15px;
+
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition: 0.2s;
+
+    box-shadow:
+        0 8px 18px rgba(104, 59, 195, 0.22);
+}
+
+
+.btn-primary:hover {
+
+    transform: translateY(-2px);
+
+    box-shadow:
+        0 12px 25px rgba(104, 59, 195, 0.30);
+}
+
+
+.btn-primary:active {
+
+    transform: translateY(0);
+}
+
+
+/* =====================================
+   SEPARADOR
+===================================== */
+
+.separator {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 12px;
+
+    margin: 22px 0;
+
+    color: #aaa3b1;
+
+    font-size: 12px;
+}
+
+
+.separator::before,
+.separator::after {
+
+    content: "";
+
+    flex: 1;
+
+    height: 1px;
+
+    background: #e8e3ef;
+}
+
+/* =====================================
+   CADASTRO
+===================================== */
+
+.register-text {
+
+    text-align: center;
+
+    margin-top: 22px;
+
+    font-size: 13px;
+
+    color: #77717f;
+}
+
+
+.register-text a {
+
+    color: #6b3dc4;
+
+    font-weight: 700;
+
+    text-decoration: none;
+}
+
+
+.register-text a:hover {
+
+    text-decoration: underline;
+}
+
+
+/* =====================================
+   RESPONSIVO
+===================================== */
+
+@media (max-width: 500px) {
+
+    body {
+
+        padding: 18px;
+    }
+
+    .login-card {
+
+        padding: 28px 20px;
+
+        border-radius: 23px;
+    }
+
+    .logo-area h1 {
+
+        font-size: 30px;
+    }
+
+}
+
+/* =====================================
+   CADASTRO
+===================================== */
+
+.mensagem-erro {
+
+    min-height: 18px;
+
+    margin-top: -5px;
+
+    margin-bottom: 12px;
+
+    color: #d84b5b;
+
+    font-size: 12px;
+
+    font-weight: 600;
+
+    text-align: center;
+}
+
+
+/* Campo com erro */
+
+.input-wrapper.erro input {
+
+    border-color: #d84b5b;
+
+    box-shadow:
+        0 0 0 4px rgba(216, 75, 91, 0.08);
+}
+
+
+/* Campo correto */
+
+.input-wrapper.sucesso input {
+
+    border-color: #4caf72;
+}
+
+
+/* Mensagem de sucesso */
+
+.mensagem-sucesso {
+
+    color: #32945b;
+
+    font-size: 13px;
+
+    text-align: center;
+
+    margin-bottom: 15px;
+
+    font-weight: 600;
+}
+
+

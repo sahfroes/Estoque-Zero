@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Estoque Zero - Cadastro</title>
+
+   <link rel="stylesheet" href="../../CSS/style.css">
+    
+</head>
+
+<body>
+
+    <main class="login-container">
+
+        <!-- LOGO -->
+        <section class="logo-area">
+            <div class="logo-icon">🛒</div>
+            <h1>ESTOQUE<br><span>ZERO</span></h1>
+            <p>Educação financeira na prática!</p>
+        </section>
+
+        <!-- CARD DE CADASTRO -->
+        <section class="login-card">
+
+            <h2>Criar sua conta ✨</h2>
+            <p class="login-descricao">Preencha os dados abaixo para começar sua jornada.</p>
+
+            <form id="cadastroForm">
+
+                <!-- NOME -->
+                <div class="input-group">
+                    <label for="nome">Nome completo</label>
+                    <div class="input-wrapper">
+                        <input type="text" id="nome" name="nome" placeholder="Digite seu nome" autocomplete="name" required>
+                    </div>
+                </div>
+
+                <!-- E-MAIL -->
+                <div class="input-group">
+                    <label for="email">E-mail</label>
+                    <div class="input-wrapper">
+                        <input type="email" id="email" name="email" placeholder="Digite seu e-mail" autocomplete="email" required>
+                    </div>
+                </div>
+
+                <!-- SENHA -->
+                <div class="input-group">
+                    <label for="senha">Senha</label>
+                    <div class="input-wrapper">
+                        <input type="password" id="senha" name="senha" placeholder="Crie uma senha" autocomplete="new-password" required>
+                        <button type="button" id="mostrarSenha" class="password-button">👁</button>
+                    </div>
+                </div>
+
+                <!-- CONFIRMAR SENHA -->
+                <div class="input-group">
+                    <label for="confirmarSenha">Confirmar senha</label>
+                    <div class="input-wrapper">
+                        <input type="password" id="confirmarSenha" name="confirmarSenha" placeholder="Digite a senha novamente" autocomplete="new-password" required>
+                        <button type="button" id="mostrarConfirmacao" class="password-button">👁</button>
+                    </div>
+                </div>
+
+                <!-- MENSAGEM DE ERRO -->
+                <p id="mensagemErro" class="mensagem-erro"></p>
+
+                <!-- BOTÃO DE CADASTRO -->
+                
+                <button type="submit" class="btn-primary">Cadastrar</button>
+
+            </form>
+
+            <!-- VOLTAR PARA LOGIN -->
+            <p class="register-text">
+                Já tem uma conta?
+                <a href="/Frontend/View/login.html">Entrar</a>
+            </p>
+
+        </section>
+
+    </main>
+
+    <!-- JAVASCRIPT DE CADASTRO -->
+    <script src="../../Js/cadastro.js"></script>
+
+</body>
+
+</html>

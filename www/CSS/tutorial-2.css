@@ -1,0 +1,450 @@
+
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+
+    background-color: #f8f6fc;
+
+    color: #29232f;
+}
+
+
+/* ========================================
+   TELA PRINCIPAL
+======================================== */
+
+.tela-tutorial {
+    min-height: 100vh;
+
+    display: flex;
+    flex-direction: column;
+
+    animation: aparecerTela 0.5s ease;
+}
+
+
+/* ========================================
+   CABEÇALHO
+======================================== */
+
+.cabecalho {
+    width: 100%;
+
+    padding: 25px 30px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.logo {
+    font-size: 20px;
+
+    font-weight: 800;
+
+    letter-spacing: 1px;
+
+    color: #4f277d;
+}
+
+.logo span {
+    color: #8b4dcc;
+}
+
+.contador-tutorial {
+    font-size: 14px;
+
+    font-weight: bold;
+
+    color: #8b4dcc;
+
+    background-color: #eee5f8;
+
+    padding: 8px 14px;
+
+    border-radius: 20px;
+}
+
+
+/* ========================================
+   CONTEÚDO
+======================================== */
+
+.conteudo {
+    width: 100%;
+
+    max-width: 430px;
+
+    margin: 0 auto;
+
+    padding: 10px 25px 25px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    flex: 1;
+}
+
+
+/* ========================================
+   ILUSTRAÇÃO
+======================================== */
+
+.area-ilustracao {
+    width: 100%;
+
+    display: flex;
+    justify-content: center;
+
+    margin-top: 10px;
+
+    margin-bottom: 25px;
+}
+
+.circulo-ilustracao {
+    width: 180px;
+    height: 180px;
+
+    border-radius: 50%;
+
+    background: linear-gradient(
+        145deg,
+        #eadcf8,
+        #f3eafa
+    );
+
+    position: relative;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    box-shadow:
+        0 15px 30px rgba(100, 60, 140, 0.12);
+}
+
+
+/* ========================================
+   CARRINHO
+======================================== */
+
+.carrinho {
+    width: 85px;
+    height: 65px;
+
+    background-color: #7b42b7;
+
+    border-radius: 15px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 40px;
+
+    box-shadow:
+        0 10px 20px rgba(90, 40, 130, 0.25);
+}
+
+
+/* ========================================
+   PRODUTOS
+======================================== */
+
+.produto {
+    position: absolute;
+
+    width: 55px;
+    height: 55px;
+
+    border-radius: 15px;
+
+    background-color: white;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 30px;
+
+    box-shadow:
+        0 6px 15px rgba(70, 40, 90, 0.12);
+
+    animation: flutuar 2s ease-in-out infinite;
+}
+
+.produto-1 {
+    top: 20px;
+    left: 25px;
+}
+
+.produto-2 {
+    right: 20px;
+    bottom: 25px;
+
+    animation-delay: 0.5s;
+}
+
+
+@keyframes flutuar {
+
+    0% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-7px);
+    }
+
+    100% {
+        transform: translateY(0);
+    }
+
+}
+
+
+/* ========================================
+   TEXTOS
+======================================== */
+
+.area-texto {
+    text-align: center;
+
+    margin-bottom: 20px;
+}
+
+.area-texto h1 {
+    font-size: 30px;
+
+    line-height: 1.15;
+
+    color: #352040;
+
+    margin-bottom: 18px;
+}
+
+.area-texto p {
+    font-size: 17px;
+
+    line-height: 1.5;
+
+    color: #51485a;
+
+    margin-bottom: 10px;
+}
+
+.texto-secundario {
+    font-size: 14px !important;
+
+    color: #77707e !important;
+}
+
+.texto-secundario strong {
+    color: #7b42b7;
+}
+
+
+/* ========================================
+   CARTÃO DE DICA
+======================================== */
+
+.cartao-dica {
+    width: 100%;
+
+    background-color: white;
+
+    border: 1px solid #eee7f4;
+
+    border-radius: 18px;
+
+    padding: 18px;
+
+    display: flex;
+    align-items: flex-start;
+
+    gap: 14px;
+
+    box-shadow:
+        0 8px 25px rgba(70, 40, 90, 0.08);
+
+    margin-bottom: 25px;
+}
+
+.icone-dica {
+    width: 45px;
+    height: 45px;
+
+    flex-shrink: 0;
+
+    border-radius: 13px;
+
+    background-color: #eee5f8;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 23px;
+}
+
+.texto-dica span {
+    display: block;
+
+    font-size: 14px;
+
+    font-weight: bold;
+
+    color: #7b42b7;
+
+    margin-bottom: 5px;
+}
+
+.texto-dica p {
+    font-size: 13px;
+
+    line-height: 1.4;
+
+    color: #6e6675;
+}
+
+
+/* ========================================
+   BOTÃO
+======================================== */
+
+.area-botao {
+    width: 100%;
+
+    margin-top: auto;
+}
+
+.botao-principal {
+    width: 100%;
+
+    border: none;
+
+    padding: 17px;
+
+    border-radius: 15px;
+
+    background-color: #7b42b7;
+
+    color: white;
+
+    font-size: 17px;
+
+    font-weight: bold;
+
+    cursor: pointer;
+
+    transition: 0.2s;
+
+    box-shadow:
+        0 8px 20px rgba(123, 66, 183, 0.25);
+}
+
+.botao-principal span {
+    margin-left: 8px;
+
+    font-size: 20px;
+}
+
+.botao-principal:hover {
+    background-color: #6934a0;
+
+    transform: translateY(-2px);
+}
+
+.botao-principal:active {
+    transform: scale(0.98);
+}
+
+
+/* ========================================
+   INDICADORES
+======================================== */
+
+.indicadores {
+    display: flex;
+
+    gap: 8px;
+
+    margin-top: 20px;
+}
+
+.indicador {
+    width: 8px;
+    height: 8px;
+
+    border-radius: 50%;
+
+    background-color: #d8cce2;
+
+    transition: 0.3s;
+}
+
+.indicador.ativo {
+    width: 25px;
+
+    border-radius: 10px;
+
+    background-color: #7b42b7;
+}
+
+
+/* ========================================
+   ANIMAÇÃO
+======================================== */
+
+@keyframes aparecerTela {
+
+    from {
+        opacity: 0;
+
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+
+        transform: translateY(0);
+    }
+
+}
+
+
+/* ========================================
+   CELULARES PEQUENOS
+======================================== */
+
+@media (max-width: 380px) {
+
+    .cabecalho {
+        padding: 20px;
+    }
+
+    .conteudo {
+        padding: 5px 20px 20px;
+    }
+
+    .circulo-ilustracao {
+        width: 150px;
+        height: 150px;
+    }
+
+    .area-texto h1 {
+        font-size: 26px;
+    }
+
+    .area-texto p {
+        font-size: 15px;
+    }
+
+}

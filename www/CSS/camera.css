@@ -1,0 +1,772 @@
+/* =================================
+   CONFIGURAÇÕES GERAIS
+================================= */
+
+* {
+    box-sizing: border-box;
+}
+
+:root {
+    --roxo: #6d35c8;
+    --roxo-claro: #eee4ff;
+    --roxo-escuro: #3d176f;
+
+    --branco: #ffffff;
+
+    --texto: #24134b;
+
+    --cinza: #77718a;
+
+    --borda: #d9cbed;
+
+    --vermelho: #e53935;
+}
+
+
+body {
+
+    margin: 0;
+
+    min-height: 100vh;
+
+    font-family:
+        "Trebuchet MS",
+        Arial,
+        sans-serif;
+
+    background: #f5f1ff;
+
+    color: var(--texto);
+
+    display: flex;
+
+    justify-content: center;
+}
+
+
+/* =================================
+   APLICATIVO
+================================= */
+
+.app {
+
+    width: 100%;
+
+    max-width: 430px;
+
+    min-height: 100vh;
+
+    background: white;
+
+    position: relative;
+
+    overflow: hidden;
+
+    box-shadow:
+        0 0 30px rgba(65, 35, 120, 0.12);
+}
+
+
+/* =================================
+   TOPO
+================================= */
+
+.topo {
+
+    height: 82px;
+
+    padding:
+        18px
+        18px
+        12px;
+
+    display: grid;
+
+    grid-template-columns:
+        1fr
+        auto
+        auto;
+
+    align-items: center;
+
+    gap: 10px;
+
+    background: white;
+
+    position: relative;
+
+    z-index: 5;
+}
+
+
+/* Logo */
+
+.logo {
+
+    font-size: 12px;
+
+    font-weight: 900;
+
+    color: #4a247c;
+}
+
+.logo span {
+
+    display: block;
+
+    color: #7637d2;
+
+    font-size: 14px;
+}
+
+
+/* =================================
+   SALDO
+================================= */
+
+.saldo {
+
+    background:
+        linear-gradient(
+            135deg,
+            #6734bf,
+            #8651d6
+        );
+
+    color: white;
+
+    padding:
+        8px
+        15px;
+
+    border-radius: 9px;
+
+    min-width: 105px;
+}
+
+.saldo small {
+
+    display: block;
+
+    font-size: 10px;
+
+    opacity: .9;
+}
+
+.saldo strong {
+
+    font-size: 15px;
+}
+
+
+/* =================================
+   CRONÔMETRO
+================================= */
+
+.tempo {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 3px;
+
+    font-size: 15px;
+}
+
+.tempo span {
+
+    font-size: 23px;
+
+    color: var(--roxo);
+}
+
+
+/* =================================
+   CÂMERA
+================================= */
+
+.camera-area {
+
+    height:
+        calc(100vh - 145px);
+
+    min-height: 570px;
+
+    position: relative;
+
+    background: #20172e;
+
+    overflow: hidden;
+}
+
+
+/* Vídeo da câmera */
+
+#camera {
+
+    width: 100%;
+
+    height: 100%;
+
+    object-fit: cover;
+
+    display: block;
+
+    background: #2a2235;
+}
+
+
+/* Escurecimento */
+
+.camera-escura {
+
+    position: absolute;
+
+    inset: 0;
+
+    background:
+        rgba(24, 15, 38, .38);
+
+    pointer-events: none;
+}
+
+
+/* =================================
+   MOLDURA
+================================= */
+
+.moldura {
+
+    width: 270px;
+
+    height: 300px;
+
+    position: absolute;
+
+    left: 50%;
+
+    top: 47%;
+
+    transform:
+        translate(-50%, -50%);
+
+    display: flex;
+
+    flex-direction: column;
+
+    justify-content: center;
+
+    align-items: center;
+
+    text-align: center;
+
+    color: white;
+}
+
+
+/* Cantos da moldura */
+
+.canto {
+
+    width: 38px;
+
+    height: 38px;
+
+    position: absolute;
+
+    border-color: white;
+
+    border-style: solid;
+}
+
+
+.canto-tl {
+
+    top: 0;
+
+    left: 0;
+
+    border-width:
+        4px
+        0
+        0
+        4px;
+
+    border-radius:
+        12px
+        0
+        0
+        0;
+}
+
+
+.canto-tr {
+
+    top: 0;
+
+    right: 0;
+
+    border-width:
+        4px
+        4px
+        0
+        0;
+
+    border-radius:
+        0
+        12px
+        0
+        0;
+}
+
+
+.canto-bl {
+
+    bottom: 0;
+
+    left: 0;
+
+    border-width:
+        0
+        0
+        4px
+        4px;
+
+    border-radius:
+        0
+        0
+        0
+        12px;
+}
+
+
+.canto-br {
+
+    bottom: 0;
+
+    right: 0;
+
+    border-width:
+        0
+        4px
+        4px
+        0;
+
+    border-radius:
+        0
+        0
+        12px
+        0;
+}
+
+
+/* Ícone da câmera */
+
+.icone-camera {
+
+    width: 70px;
+
+    height: 70px;
+
+    border:
+        4px solid white;
+
+    border-radius: 50%;
+
+    display: grid;
+
+    place-items: center;
+
+    font-size: 30px;
+
+    margin-bottom: 18px;
+
+    background:
+        rgba(255,255,255,.12);
+}
+
+
+.moldura p {
+
+    margin:
+        0
+        0
+        7px;
+
+    font-size: 17px;
+
+    font-weight: bold;
+}
+
+
+.moldura small {
+
+    font-size: 11px;
+
+    opacity: .8;
+}
+
+
+/* =================================
+   TEXTO DA CÂMERA
+================================= */
+
+.mensagem-camera {
+
+    position: absolute;
+
+    bottom: 28px;
+
+    left: 0;
+
+    width: 100%;
+
+    text-align: center;
+
+    color: white;
+
+    font-size: 12px;
+}
+
+
+/* =================================
+   JANELA DO PRODUTO
+================================= */
+
+.produto-modal {
+
+    position: absolute;
+
+    z-index: 20;
+
+    left: 18px;
+
+    right: 18px;
+
+    top: 105px;
+
+    background: white;
+
+    border-radius: 24px;
+
+    padding:
+        24px
+        18px
+        18px;
+
+    text-align: center;
+
+    box-shadow:
+        0 15px 45px
+        rgba(35,10,65,.35);
+
+    animation:
+        aparecer .25s ease;
+}
+
+
+/* Esconde elemento */
+
+.escondido {
+
+    display: none !important;
+}
+
+
+/* Animação */
+
+@keyframes aparecer {
+
+    from {
+
+        opacity: 0;
+
+        transform:
+            translateY(15px);
+    }
+
+    to {
+
+        opacity: 1;
+
+        transform:
+            translateY(0);
+    }
+}
+
+
+/* Botão X */
+
+.fechar {
+
+    position: absolute;
+
+    right: 13px;
+
+    top: 10px;
+
+    border: 0;
+
+    background: transparent;
+
+    color: #3f2862;
+
+    font-size: 28px;
+
+    cursor: pointer;
+}
+
+
+/* Imagem */
+
+.produto-imagem {
+
+    width: 105px;
+
+    height: 105px;
+
+    margin:
+        0
+        auto
+        12px;
+
+    border-radius: 50%;
+
+    background: #f1e7ff;
+
+    display: grid;
+
+    place-items: center;
+
+    font-size: 58px;
+}
+
+
+.produto-modal h2 {
+
+    margin: 3px 0;
+
+    font-size: 21px;
+}
+
+
+/* Preço */
+
+.preco {
+
+    color: var(--roxo);
+
+    font-size: 21px;
+
+    font-weight: bold;
+
+    margin:
+        4px
+        0
+        9px;
+}
+
+
+/* Categoria */
+
+.categoria {
+
+    display: inline-block;
+
+    padding:
+        6px
+        18px;
+
+    border-radius: 20px;
+
+    background:
+        #e7dcff;
+
+    color:
+        #5b27a5;
+
+    font-size: 11px;
+
+    margin-bottom: 17px;
+}
+
+
+/* =================================
+   BOTÕES
+================================= */
+
+.botao-principal,
+.botao-secundario {
+
+    width: 100%;
+
+    height: 47px;
+
+    border-radius: 14px;
+
+    font-family: inherit;
+
+    font-size: 14px;
+
+    font-weight: bold;
+
+    cursor: pointer;
+}
+
+
+.botao-principal {
+
+    border: 0;
+
+    color: white;
+
+    background:
+        linear-gradient(
+            135deg,
+            #6630bd,
+            #8045d2
+        );
+}
+
+
+.botao-secundario {
+
+    margin-top: 9px;
+
+    background: white;
+
+    border:
+        1px solid #cab8e6;
+
+    color:
+        #542594;
+}
+
+
+/* =================================
+   AVISO
+================================= */
+
+.aviso {
+
+    position: absolute;
+
+    z-index: 30;
+
+    left: 22px;
+
+    right: 22px;
+
+    bottom: 90px;
+
+    padding: 13px 16px;
+
+    background: white;
+
+    border-radius: 13px;
+
+    box-shadow:
+        0 8px 25px rgba(0,0,0,.2);
+
+    text-align: center;
+
+    font-size: 13px;
+
+    font-weight: bold;
+
+    animation:
+        aparecer .2s ease;
+}
+
+
+/* =================================
+   MENU INFERIOR
+================================= */
+
+.menu {
+
+    height: 63px;
+
+    background: white;
+
+    border-top:
+        1px solid #eee7f7;
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(3, 1fr);
+
+    position: absolute;
+
+    bottom: 0;
+
+    left: 0;
+
+    right: 0;
+
+    z-index: 10;
+}
+
+
+.menu-item {
+
+    border: 0;
+
+    background: transparent;
+
+    color: #88819b;
+
+    font-family: inherit;
+
+    font-size: 10px;
+
+    cursor: pointer;
+
+    
+}
+
+
+.menu-item span {
+
+    display: block;
+
+    font-size: 19px;
+
+    margin-bottom: 2px;
+}
+
+
+.menu-item.ativo {
+
+    color: var(--roxo);
+
+    font-weight: bold;
+
+    
+}
+
+
+/* =================================
+   CELULARES PEQUENOS
+================================= */
+
+@media (max-width: 380px) {
+
+    .saldo {
+
+        min-width: 92px;
+
+        padding:
+            7px
+            10px;
+    }
+
+    .moldura {
+
+        width: 245px;
+
+        height: 280px;
+    }
+}

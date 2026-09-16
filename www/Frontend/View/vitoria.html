@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Estoque Zero - Vitória</title>
+
+    <link
+        rel="stylesheet"
+        href="../../CSS/vitoria.css"
+    >
+
+</head>
+
+
+<body>
+
+    <main class="app">
+
+
+        <!-- =========================
+             TOPO
+        ========================== -->
+
+        <header class="topo">
+
+            <button
+                class="voltar"
+                onclick="voltarInicio()">
+
+                ←
+
+            </button>
+
+
+            <div class="logo">
+
+                ESTOQUE
+
+                <span>ZERO</span>
+
+            </div>
+
+        </header>
+
+
+
+        <!-- =========================
+             RESULTADO
+        ========================== -->
+
+        <section class="resultado">
+
+
+            <!-- TÍTULO -->
+
+            <div class="titulo">
+
+                <h1>
+                    Missão concluída!
+                </h1>
+
+                <div class="confetes">
+
+                    🎉
+
+                </div>
+
+            </div>
+
+
+
+            <!-- TROFÉU -->
+
+            <div class="trofeu">
+
+                🏆
+
+            </div>
+
+
+
+            <!-- MENSAGEM -->
+
+            <p class="mensagem">
+
+                Parabéns! Você terminou
+                sua missão.
+
+            </p>
+
+
+
+            <!-- =========================
+                 RESUMO
+            ========================== -->
+
+            <div class="resumo">
+
+
+                <div class="linha">
+
+                    <span>
+                        💰 Orçamento inicial
+                    </span>
+
+                    <strong id="orcamentoInicial">
+                        R$ 50,00
+                    </strong>
+
+                </div>
+
+
+
+                <div class="linha">
+
+                    <span>
+                        🛒 Total gasto
+                    </span>
+
+                    <strong id="totalGasto">
+                        R$ 0,00
+                    </strong>
+
+                </div>
+
+
+
+                <div class="linha">
+
+                    <span>
+                        💵 Saldo restante
+                    </span>
+
+                    <strong id="saldoRestante">
+                        R$ 50,00
+                    </strong>
+
+                </div>
+
+
+
+                <div class="linha">
+
+                    <span>
+                        🛍️ Compras realizadas
+                    </span>
+
+                    <strong id="quantidadeCompras">
+                        0
+                    </strong>
+
+                </div>
+
+
+            </div>
+
+
+
+            <!-- =========================
+                 PONTUAÇÃO
+            ========================== -->
+
+            <div class="pontuacao">
+
+                <div class="icone-pontuacao">
+
+                    🏅
+
+                </div>
+
+
+                <div>
+
+                    <small>
+                        Pontuação
+                    </small>
+
+                    <strong id="pontuacao">
+                        0 pontos
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- =========================
+                 MENSAGEM DE DESEMPENHO
+            ========================== -->
+
+            <div
+                id="mensagemDesempenho"
+                class="desempenho">
+
+                Você conseguiu guardar
+                parte do seu dinheiro! 💜
+
+            </div>
+
+
+
+            <!-- =========================
+                 BOTÕES
+            ========================== -->
+
+            <button
+                class="botao-principal"
+                onclick="verRanking()">
+
+                🏆 Ver ranking
+
+            </button>
+
+
+
+            <button
+                class="botao-secundario"
+                onclick="voltarInicio()">
+
+                Voltar para o início
+
+            </button>
+
+
+        </section>
+
+
+
+        <!-- =========================
+             MENU INFERIOR
+        ========================== -->
+
+        <nav class="menu">
+
+
+            <button
+                class="menu-item"
+                onclick="voltarInicio()">
+
+                <span>⌂</span>
+
+                Início
+
+            </button>
+
+
+
+            <button
+                class="menu-item"
+                onclick="verRanking()">
+
+                <span>🏆</span>
+
+                Ranking
+
+            </button>
+
+
+
+            <button
+                class="menu-item">
+
+                <span>👤</span>
+
+                Perfil
+
+            </button>
+
+
+        </nav>
+
+
+    </main>
+
+
+    <!-- JavaScript -->
+
+    <script src="../../vitoria.js"></script>
+
+
+</body>
+
+</html>

@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Estoque Zero</title>
+
+    <!-- Arquivo CSS -->
+    <link
+        rel="stylesheet"
+        href="../../CSS/meta.css"
+    >
+
+</head>
+
+
+<body>
+
+    <main class="tela-principal">
+
+
+        <!-- ========================================
+             CABEÇALHO
+        ========================================= -->
+
+        <header class="cabecalho">
+
+            <div class="logo">
+
+                ESTOQUE
+                <span>ZERO</span>
+
+            </div>
+
+
+            <div class="nivel">
+
+                <span id="pontuacao">
+                    0
+                </span>
+
+                ⭐
+
+            </div>
+
+        </header>
+
+
+
+        <!-- ========================================
+             CARTÃO DO SALDO
+        ========================================= -->
+
+        <section class="cartao-saldo">
+
+            <div class="icone-saldo">
+                💰
+            </div>
+
+
+            <div class="informacao-saldo">
+
+                <span>
+                    Saldo disponível
+                </span>
+
+                <strong id="saldo">
+                    R$ 50,00
+                </strong>
+
+            </div>
+
+
+            <span class="seta">
+                →
+            </span>
+
+        </section>
+
+
+
+        <!-- ========================================
+             INFORMAÇÕES DO JOGO
+        ========================================= -->
+
+        <section class="cartao-informacoes">
+
+
+            <!-- Tempo -->
+
+            <div class="informacao">
+
+                <div class="icone-informacao">
+                    ⏱️
+                </div>
+
+                <div>
+
+                    <span>
+                        Tempo restante
+                    </span>
+
+                    <strong id="cronometro">
+                        02:00
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+            <!-- Saldo gasto -->
+
+            <div class="informacao">
+
+                <div class="icone-informacao">
+                    🎯
+                </div>
+
+                <div>
+
+                    <span>
+                        Saldo gasto
+                    </span>
+
+                    <strong id="saldo-gasto">
+                        R$ 0,00
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+            <!-- Compras -->
+
+            <div class="informacao compras">
+
+                <div class="icone-informacao">
+                    🛒
+                </div>
+
+                <div>
+
+                    <span>
+                        Compras realizadas
+                    </span>
+
+                    <strong id="compras-realizadas">
+                        0/10
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+        </section>
+
+
+
+        <!-- ========================================
+             ATALHOS
+        ========================================= -->
+
+        <section class="atalhos">
+
+
+            <!-- Carrinho -->
+
+            <button
+                class="atalho"
+                id="botao-carrinho"
+            >
+
+                <span class="icone-atalho">
+                    🛒
+                </span>
+
+                <span>
+                    Carrinho
+                </span>
+
+            </button>
+
+
+
+            <!-- Contador -->
+
+            <button
+                class="atalho"
+                id="botao-contador"
+            >
+
+                <span class="icone-atalho">
+                    ⏱️
+                </span>
+
+                <span>
+                    Contador
+                </span>
+
+            </button>
+
+
+
+            <!-- Perfil -->
+
+            <button
+                class="atalho"
+                id="botao-perfil"
+            >
+
+                <span class="icone-atalho">
+                    👤
+                </span>
+
+                <span>
+                    Perfil
+                </span>
+
+            </button>
+
+
+        </section>
+
+
+
+        <!-- ========================================
+             BOTÃO ADICIONAR DINHEIRO
+        ========================================= -->
+
+        <button
+            id="botao-adicionar"
+            class="botao-adicionar"
+        >
+
+            <span>
+                Adicionar R$50
+            </span>
+
+            <span class="icone-dinheiro">
+                💵
+            </span>
+
+            <span class="seta">
+                →
+            </span>
+
+        </button>
+
+
+
+        <!-- ========================================
+             COMEÇAR MISSÃO
+        ========================================= -->
+
+        <button
+            id="botao-missao"
+            class="botao-missao"
+        >
+
+            <div class="icone-missao">
+                🎯
+            </div>
+
+
+            <div class="texto-missao">
+
+                <strong>
+                    Começar missão
+                </strong>
+
+                <span>
+                    Mire na câmera e compre!
+                </span>
+
+            </div>
+
+
+            <span class="seta">
+                →
+            </span>
+
+        </button>
+
+
+
+        <!-- ========================================
+             MENSAGEM
+        ========================================= -->
+
+        <div
+            id="mensagem"
+            class="mensagem"
+        >
+        </div>
+
+
+    </main>
+
+
+    <!-- Arquivo JavaScript -->
+
+    <script src="../../Js/meta.js"></script>
+
+</body>
+
+</html>

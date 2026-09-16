@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Estoque Zero - Meu Desempenho</title>
+
+    <link
+        rel="stylesheet"
+        href="../../CSS/desempenho.css"
+    >
+
+</head>
+
+
+<body>
+
+    <main class="app">
+
+
+        <!-- =========================
+             TOPO
+        ========================== -->
+
+        <header class="topo">
+
+            <button
+                class="voltar"
+                onclick="voltar()">
+
+                ←
+
+            </button>
+
+
+            <div class="logo">
+
+                ESTOQUE
+
+                <span>ZERO</span>
+
+            </div>
+
+        </header>
+
+
+
+        <!-- =========================
+             TÍTULO
+        ========================== -->
+
+        <section class="cabecalho">
+
+            <h1>
+                Meu Desempenho
+            </h1>
+
+            <p>
+                Veja como você se saiu na missão!
+            </p>
+
+        </section>
+
+
+
+        <!-- =========================
+             ABAS
+        ========================== -->
+
+        <div class="abas">
+
+            <button
+                class="aba ativa"
+                onclick="mostrarAba('geral', this)">
+
+                Geral
+
+            </button>
+
+
+            <button
+                class="aba"
+                onclick="mostrarAba('compras', this)">
+
+                Compras
+
+            </button>
+
+
+            <button
+                class="aba"
+                onclick="mostrarAba('financeiro', this)">
+
+                Financeiro
+
+            </button>
+
+        </div>
+
+
+
+        <!-- =================================================
+             ABA GERAL
+        ================================================== -->
+
+        <section
+            id="geral"
+            class="conteudo-aba ativa">
+
+
+            <!-- =========================
+                 RESUMO
+            ========================== -->
+
+            <div class="resumo">
+
+
+                <div class="card-resumo">
+
+                    <span class="icone">
+                        💰
+                    </span>
+
+                    <small>
+                        Saldo restante
+                    </small>
+
+                    <strong id="saldo">
+                        R$ 50,00
+                    </strong>
+
+                </div>
+
+
+                <div class="card-resumo">
+
+                    <span class="icone">
+                        🛒
+                    </span>
+
+                    <small>
+                        Compras
+                    </small>
+
+                    <strong id="quantidadeCompras">
+                        0
+                    </strong>
+
+                </div>
+
+
+                <div class="card-resumo">
+
+                    <span class="icone">
+                        ⭐
+                    </span>
+
+                    <small>
+                        Pontos
+                    </small>
+
+                    <strong id="pontuacao">
+                        100
+                    </strong>
+
+                </div>
+
+
+                <div class="card-resumo">
+
+                    <span class="icone">
+                        💎
+                    </span>
+
+                    <small>
+                        Guardado
+                    </small>
+
+                    <strong id="guardado">
+                        R$ 50,00
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- =========================
+                 GRÁFICO
+            ========================== -->
+
+            <div class="card">
+
+                <h2>
+                    Evolução do saldo
+                </h2>
+
+                <p class="descricao">
+                    Veja como seu dinheiro mudou durante a missão.
+                </p>
+
+
+                <div class="grafico">
+
+                    <div class="linha">
+                        R$ 50
+                    </div>
+
+                    <div class="linha">
+                        R$ 40
+                    </div>
+
+                    <div class="linha">
+                        R$ 30
+                    </div>
+
+                    <div class="linha">
+                        R$ 20
+                    </div>
+
+                    <div class="linha">
+                        R$ 10
+                    </div>
+
+                    <div class="linha">
+                        R$ 0
+                    </div>
+
+
+                    <div class="barras">
+
+                        <div
+                            class="barra"
+                            style="height: 100%;">
+
+                            <span>
+                                50
+                            </span>
+
+                        </div>
+
+
+                        <div
+                            class="barra"
+                            style="height: 82%;">
+
+                            <span>
+                                41
+                            </span>
+
+                        </div>
+
+
+                        <div
+                            class="barra"
+                            style="height: 65%;">
+
+                            <span>
+                                32
+                            </span>
+
+                        </div>
+
+
+                        <div
+                            class="barra"
+                            style="height: 50%;">
+
+                            <span>
+                                25
+                            </span>
+
+                        </div>
+
+
+                        <div
+                            id="barraFinal"
+                            class="barra"
+                            style="height: 64%;">
+
+                            <span id="valorBarra">
+                                32
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="legenda-grafico">
+
+                    <span>
+                        Compra 1
+                    </span>
+
+                    <span>
+                        Compra 2
+                    </span>
+
+                    <span>
+                        Compra 3
+                    </span>
+
+                    <span>
+                        Compra 4
+                    </span>
+
+                    <span>
+                        Atual
+                    </span>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- =========================
+                 PERFIL FINANCEIRO
+            ========================== -->
+
+            <div class="perfil-financeiro">
+
+                <div class="perfil-icone">
+                    💡
+                </div>
+
+
+                <div>
+
+                    <small>
+                        Seu perfil financeiro
+                    </small>
+
+                    <h2 id="perfil">
+                        Consciente
+                    </h2>
+
+                    <p id="perfilDescricao">
+
+                        Você conseguiu controlar
+                        seus gastos e preservar
+                        boa parte do seu orçamento.
+
+                    </p>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =================================================
+             ABA COMPRAS
+        ================================================== -->
+
+        <section
+            id="compras"
+            class="conteudo-aba">
+
+
+            <div class="card">
+
+                <h2>
+                    Suas compras
+                </h2>
+
+                <p class="descricao">
+                    Produtos escolhidos durante a missão.
+                </p>
+
+
+                <div id="listaCompras">
+
+                    <!-- JavaScript coloca as compras aqui -->
+
+                </div>
+
+            </div>
+
+
+        </section>
+
+
+
+        <!-- =================================================
+             ABA FINANCEIRO
+        ================================================== -->
+
+        <section
+            id="financeiro"
+            class="conteudo-aba">
+
+
+            <div class="card">
+
+                <h2>
+                    Resumo financeiro
+                </h2>
+
+
+                <div class="linha-financeira">
+
+                    <span>
+                        Orçamento inicial
+                    </span>
+
+                    <strong>
+                        R$ 50,00
+                    </strong>
+
+                </div>
+
+
+                <div class="linha-financeira">
+
+                    <span>
+                        Total gasto
+                    </span>
+
+                    <strong id="totalGasto">
+                        R$ 0,00
+                    </strong>
+
+                </div>
+
+
+                <div class="linha-financeira">
+
+                    <span>
+                        Saldo restante
+                    </span>
+
+                    <strong id="saldoFinanceiro">
+                        R$ 50,00
+                    </strong>
+
+                </div>
+
+
+                <div class="linha-financeira">
+
+                    <span>
+                        Percentual gasto
+                    </span>
+
+                    <strong id="percentualGasto">
+                        0%
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- =========================
+                 CATEGORIAS
+            ========================== -->
+
+            <div class="card">
+
+                <h2>
+                    Categorias de gasto
+                </h2>
+
+
+                <div class="categoria-item">
+
+                    <div class="categoria-topo">
+
+                        <span>
+                            🍎 Alimentação
+                        </span>
+
+                        <strong>
+                            60%
+                        </strong>
+
+                    </div>
+
+
+                    <div class="barra-categoria">
+
+                        <div
+                            class="progresso"
+                            style="width: 60%;">
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+
+                <div class="categoria-item">
+
+                    <div class="categoria-topo">
+
+                        <span>
+                            🛍️ Supérfluos
+                        </span>
+
+                        <strong>
+                            25%
+                        </strong>
+
+                    </div>
+
+
+                    <div class="barra-categoria">
+
+                        <div
+                            class="progresso"
+                            style="width: 25%;">
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+
+                <div class="categoria-item">
+
+                    <div class="categoria-topo">
+
+                        <span>
+                            📦 Outros
+                        </span>
+
+                        <strong>
+                            15%
+                        </strong>
+
+                    </div>
+
+
+                    <div class="barra-categoria">
+
+                        <div
+                            class="progresso"
+                            style="width: 15%;">
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =========================
+             BOTÃO RANKING
+        ========================== -->
+
+        <button
+            class="botao-ranking"
+            onclick="abrirRanking()">
+
+            🏆 Ver ranking da turma
+
+        </button>
+
+
+
+        <!-- =========================
+             MENU
+        ========================== -->
+
+        <nav class="menu">
+
+            <button
+                class="menu-item"
+                onclick="voltar()">
+
+                <span>
+                    ⌂
+                </span>
+
+                Início
+
+            </button>
+
+
+            <button
+                class="menu-item"
+                onclick="abrirRanking()">
+
+                <span>
+                    🏆
+                </span>
+
+                Ranking
+
+            </button>
+
+
+            <button
+                class="menu-item ativo">
+
+                <span>
+                    📊
+                </span>
+
+                Desempenho
+
+            </button>
+
+        </nav>
+
+
+    </main>
+
+
+    <script src="../../JS/desempenho.js"></script>
+
+</body>
+
+</html>

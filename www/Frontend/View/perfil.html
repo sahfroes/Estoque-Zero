@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Estoque Zero - Meu Perfil</title>
+
+    <link
+        rel="stylesheet"
+        href="../../CSS/perfil.css"
+    >
+
+</head>
+
+
+<body>
+
+    <main class="app">
+
+
+        <!-- =========================
+             TOPO
+        ========================== -->
+
+        <header class="topo">
+
+            <button
+                class="voltar"
+                onclick="voltar()">
+
+                ←
+
+            </button>
+
+
+            <div class="logo">
+
+                ESTOQUE
+
+                <span>ZERO</span>
+
+            </div>
+
+        </header>
+
+
+
+        <!-- =========================
+             TÍTULO
+        ========================== -->
+
+        <section class="cabecalho">
+
+            <h1>
+                Meu Perfil
+            </h1>
+
+            <p>
+                Gerencie suas informações
+            </p>
+
+        </section>
+
+
+
+        <!-- =========================
+             FOTO
+        ========================== -->
+
+        <section class="foto-area">
+
+            <div class="avatar">
+
+
+            </div>
+
+
+            <button
+                class="alterar-foto"
+                onclick="alterarFoto()">
+
+                📷 Alterar foto
+
+            </button>
+
+        </section>
+
+
+
+        <!-- =========================
+             FORMULÁRIO
+        ========================== -->
+
+        <section class="formulario">
+
+
+            <!-- NOME -->
+
+            <div class="campo">
+
+                <label>
+                    Nome
+                </label>
+
+                <input
+                    type="text"
+                    id="nome"
+                    placeholder="Digite seu nome"
+                >
+
+            </div>
+
+
+
+            <!-- EMAIL -->
+
+            <div class="campo">
+
+                <label>
+                    E-mail
+                </label>
+
+                <input
+                    type="email"
+                    id="email"
+                    placeholder="Digite seu e-mail"
+                >
+
+            </div>
+
+
+
+            <!-- SENHA -->
+
+            <div class="campo">
+
+                <label>
+                    Senha
+                </label>
+
+                <div class="senha-area">
+
+                    <input
+                        type="password"
+                        id="senha"
+                        placeholder="Digite sua senha"
+                    >
+
+                    <button
+                        type="button"
+                        onclick="mostrarSenha()">
+
+                        👁
+
+                    </button>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- PERFIL FINANCEIRO -->
+
+            <div class="campo">
+
+                <label>
+                    Perfil financeiro
+                </label>
+
+
+                <select id="perfilFinanceiro">
+
+                    <option value="economico">
+                        Econômico
+                    </option>
+
+                    <option value="consciente">
+                        Consciente
+                    </option>
+
+                    <option value="estrategico">
+                        Estratégico
+                    </option>
+
+                    <option value="impulsivo">
+                        Impulsivo
+                    </option>
+
+                </select>
+
+
+                <small>
+                    Seu perfil pode mudar de acordo com
+                    suas escolhas no jogo.
+                </small>
+
+            </div>
+
+
+        </section>
+
+
+
+        <!-- =========================
+             BOTÃO SALVAR
+        ========================== -->
+
+        <button
+            class="botao-salvar"
+            onclick="salvarPerfil()">
+
+            💾 Salvar alterações
+
+        </button>
+
+
+
+        <!-- =========================
+             MENSAGEM
+        ========================== -->
+
+        <div
+            id="mensagem"
+            class="mensagem escondido">
+
+        </div>
+
+
+
+        <!-- =========================
+             ATALHOS
+        ========================== -->
+
+        <section class="atalhos">
+
+
+            <button
+                onclick="abrirDesempenho()">
+
+                <span>
+                    📊
+                </span>
+
+                <small>
+                    Desempenho
+                </small>
+
+            </button>
+
+
+            <button
+                onclick="abrirRanking()">
+
+                <span>
+                    🏆
+                </span>
+
+                <small>
+                    Ranking
+                </small>
+
+            </button>
+
+        </section>
+
+
+
+        <!-- =========================
+             MENU INFERIOR
+        ========================== -->
+
+        <nav class="menu">
+
+
+            <button
+                class="menu-item"
+                onclick="voltar()">
+
+                <span>
+                    🏠
+                </span>
+
+                Início
+
+            </button>
+
+
+            <button
+                class="menu-item"
+                onclick="abrirRanking()">
+
+                <span>
+                    🏆
+                </span>
+
+                Ranking
+
+            </button>
+
+
+            <button
+                class="menu-item ativo">
+
+                <span>
+                    👤
+                </span>
+
+                Perfil
+
+            </button>
+
+
+        </nav>
+
+
+    </main>
+
+
+    <script src="../../JS/perfil.js"></script>
+
+</body>
+
+</html>
