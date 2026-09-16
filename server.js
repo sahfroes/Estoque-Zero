@@ -24,7 +24,7 @@ if (!getApps().length) {
 }
 
 const db = getFirestore();
-const auth = getFirebaseAuth();
+const auth = getAuth();
 
 const app = express();
 
