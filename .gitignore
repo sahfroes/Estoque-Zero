@@ -1,20 +1,22 @@
-# Windows
-desktop.ini
-thumbs.db
+# Segredos e Chaves de API (NUNCA ENVIAR)
+firebase-key.json
+.env
 
-# Dependências (ESSENCIAL ignorar, são pastas muito pesadas)
+# Dependências
 node_modules/
 
-# Mobile (Capacitor/Android)
+# Arquivos do Sistema Operacional
+desktop.ini
+thumbs.db
+.DS_Store
+
+# Mobile / Builds / Executáveis
 android/
 ios/
 *.log
-
-# IDEs
-.vscode/
-.idea/
-
 *.exe
 xampp/
-node_modules/
-.DS_Store
+
+# IDEs e Editores
+.vscode/
+.idea/
