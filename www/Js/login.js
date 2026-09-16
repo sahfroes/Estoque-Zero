@@ -1,5 +1,5 @@
 // =====================================
-// ESTOQUE ZERO - LOGIN
+// LOGIN
 // =====================================
 
 const loginForm = document.getElementById("loginForm");
@@ -30,7 +30,6 @@ loginForm.addEventListener("submit", async (event) => {
     }
 
     try {
-        
         const resposta = await fetch("/login", {
             method: "POST",
             headers: {
@@ -42,14 +41,18 @@ loginForm.addEventListener("submit", async (event) => {
         const dados = await resposta.json();
 
         if (resposta.ok) {
-            alert("Login realizado !");
+            alert("Login realizado com sucesso!");
             
-            // Salva o token da sessão
+            // Salva o token e os dados do usuário logado
             localStorage.setItem("token", dados.token);
+            if (dados.usuario) {
+                localStorage.setItem("usuario", JSON.stringify(dados.usuario));
+            }
             
-            // Redireciona para a rota da tela de boas-vindas
+            // Redireciona para a tela de boas-vindas
             window.location.href = "/Frontend/View/boas-vindas.html";
         } else {
+            // Exibe a mensagem de erro do backend caso o login falhe
             alert(dados.erro || "E-mail ou senha incorretos.");
         }
 
@@ -58,4 +61,3 @@ loginForm.addEventListener("submit", async (event) => {
         alert("Erro ao conectar com o servidor. Tente novamente.");
     }
 });
-
