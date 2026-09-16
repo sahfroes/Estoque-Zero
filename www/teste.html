@@ -1,0 +1,63 @@
+containerCena.innerHTML = `
+    <a-scene embedded arjs="sourceType: webcam; debugUIEnabled: false; trackingMethod: best;" vr-mode-ui="enabled: false">
+        
+        <!-- Marcador da Flor -->
+        <a-marker type="pattern" url="img/pattern-flor.patt">
+            <a-image height="1.5" width="1.5" rotation="-90 0 0" position="0 0 0" class="clicavel" data-id="FLOR001" src="img/flor.png"></a-image>
+        </a-marker>
+
+        <!-- Marcador do Caderno -->
+        <a-marker type="pattern" url="img/pattern-CadernoUnitario.patt">
+            <a-image height="1.5" width="1.5" rotation="-90 0 0" position="0 0 0" class="clicavel" data-id="CAD001" src="img/CadernoUnitario.png"></a-image>
+        </a-marker>
+
+        <!-- MARCADOR CADERNO PERSONALIZADO -->
+        <a-marker type="pattern" url="img/pattern-CadernoPersonalizado.patt">
+            <a-image height="1.5" width="1.5" rotation="-90 0 0" position="0 0 0" class="clicavel" data-id="CAD0PER01" src="img/CadernoPersonalizado.png"></a-image>
+        </a-marker>
+
+        <!-- MARCADOR CANETA AZUL/PRETA -->
+        <a-marker type="pattern" url="img/pattern-CanetaAzulEPreta.patt">
+            <a-image height="1.5" width="1.5" rotation="-90 0 0" position="0 0 0" class="clicavel" data-id="CANAZULEPRETA001" src="img/CanetaAzulEPreta.png"></a-image>
+        </a-marker>
+
+        <!-- KIT CANETAS COLORIDAS -->
+        <a-marker type="pattern" url="img/pattern-KitCanetasColoridas.patt">
+            <a-image height="1.5" width="1.5" rotation="-90 0 0" position="0 0 0" class="clicavel" data-id="KITCANETAS001" src="img/KitCanetasColoridas.png"></a-image>
+        </a-marker>
+
+        <!-- ESCOVA DE DENTE E PASTA -->
+        <a-marker type="pattern" url="img/pattern-EscovaEPastaDeDente.patt">
+            <a-image height="1.5" width="1.5" rotation="-90 0 0" position="0 0 0" class="clicavel" data-id="ESCDEPAS001" src="img/EscovaEPastaDeDente.png"></a-image>
+        </a-marker>
+
+        <!-- DESODORANTE -->
+        <a-marker type="pattern" url="img/pattern-Desodorante.patt">
+            <a-image height="1.5" width="1.5" rotation="-90 0 0" position="0 0 0" class="clicavel" data-id="DES001" src="img/Desodorante.png"></a-image>
+        </a-marker>
+
+        <!-- CHOCOLATE -->
+        <a-marker type="pattern" url="img/pattern-Chocolate.patt">
+            <a-image height="1.5" width="1.5" rotation="-90 0 0" position="0 0 0" class="clicavel" data-id="CHOCOLATE001" src="img/Chocolate.png"></a-image>
+        </a-marker>
+
+        <!-- SALGADINHO + REFRIGERANTE -->
+        <a-marker type="pattern" url="img/pattern-SalgadinhoErefriLatajpg.patt">
+            <a-image height="1.5" width="1.5" rotation="-90 0 0" position="0 0 0" class="clicavel" data-id="SALREFLATA001" src="img/SalgadoErefriLatajpg.png"></a-image>
+        </a-marker>
+
+        <!-- CARREGADOR -->
+        <a-marker type="pattern" url="img/pattern-Carregador.patt">
+            <a-image height="1.5" width="1.5" rotation="-90 0 0" position="0 0 0" class="clicavel" data-id="CARREGADOR001" src="img/Carregador.png"></a-image>
+        </a-marker>
+
+        <!-- HQ -->
+        <a-marker type="pattern" url="img/pattern-LivroDeFiccao.patt">
+            <a-image height="1.5" width="1.5" rotation="-90 0 0" position="0 0 0" class="clicavel" data-id="HQ001" src="img/LivroDeFiccao.png"></a-image>
+        </a-marker>
+
+        <a-entity camera>
+            <a-cursor id="cursor" raycaster="objects: .clicavel" cursor="fuse: false; rayOrigin: mouse"></a-cursor>
+        </a-entity>
+    </a-scene>
+`;
