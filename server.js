@@ -120,12 +120,12 @@ app.post('/login', async (req, res) => {
 
 
   // Chave da API obtida do ambiente ou fallback local
-  const apiKey = process.env.FIREBASE_WEB_API_KEY || "AIzaSyDSiH1Fb8BWoK_Z2__vasl3KyKB5uEv5L4";
 
+  const apiKey = process.env.FIREBASE_WEB_API_KEY;
 
   try {
     const url = `https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${apiKey}`;
-
+    
 
     const response = await axios.post(url, {
       email,
