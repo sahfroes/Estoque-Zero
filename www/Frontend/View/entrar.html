@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Estoque Zero - Login</title>
+
+    <link rel="stylesheet" href="../../CSS/entrar.css">
+</head>
+
+<body>
+ <!-- Tela principal -->
+    <main class="tela">
+
+        <!-- Logo -->
+        <div class="logo">
+            <span>ESTOQUE</span>
+            <span>ZERO</span>
+        </div>
+
+
+        <!-- Título -->
+        <h1>Bem-vindo(a)!</h1>
+
+        <p class="descricao">
+            Digite o código da turma e o PIN
+            fornecidos pela sua professora.
+        </p>
+
+
+        <!-- Formulário -->
+        <form id="formularioEntrada">
+
+
+            <!-- Código da turma -->
+            <div class="campo">
+
+                <label for="codigoTurma">
+                    Código da turma
+                </label>
+
+                <div class="campo-input">
+
+                    <span class="icone">👥</span>
+
+                    <input
+                        type="text"
+                        id="codigoTurma"
+                        placeholder="Ex.: TSI2026"
+                        maxlength="10"
+                    >
+
+                </div>
+
+            </div>
+
+
+            <!-- PIN -->
+            <div class="campo">
+
+                <label for="pin">
+                    PIN da sala
+                </label>
+
+                <div class="campo-input">
+
+                    <span class="icone">🔒</span>
+
+                    <input
+                        type="password"
+                        id="pin"
+                        placeholder="Digite o PIN"
+                        maxlength="6"
+                    >
+
+                    <!-- Botão para mostrar o PIN -->
+                    <button
+                        type="button"
+                        id="mostrarPin"
+                        class="olho"
+                    >
+                        👁
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <!-- Mensagem de erro -->
+            <p id="mensagem" class="mensagem"></p>
+
+
+            <!-- Botão entrar -->
+            <button
+                type="submit"
+                class="botao-entrar"
+            >
+                Entrar
+            </button>
+
+
+        </form>
+
+
+        <!-- Informação -->
+        <div class="privacidade">
+
+            <span>🔒</span>
+
+            <p>
+                Não usamos seu nome ou e-mail.
+                <br>
+                Você escolherá um avatar para jogar.
+            </p>
+
+        </div>
+
+
+        <!-- Link para professora -->
+        <p class="professora">
+             Área da professora
+        </p>
+
+    </main>
+
+
+    <script src="../../Js/entrar.js"></script>
+
+</body>
+
+</html>

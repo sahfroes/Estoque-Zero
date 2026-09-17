@@ -1,0 +1,415 @@
+/* ============================= */
+/* CONFIGURAÇÕES GERAIS           */
+/* ============================= */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+
+body {
+
+    font-family: Arial, sans-serif;
+
+    min-height: 100vh;
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+    background: #f5f0ff;
+
+    color: #30205c;
+}
+
+
+/* ============================= */
+/* TELA                          */
+/* ============================= */
+
+.tela {
+
+    width: 100%;
+
+    max-width: 390px;
+
+    min-height: 700px;
+
+    background: #ffffff;
+
+    border-radius: 25px;
+
+    padding: 35px 28px;
+
+    box-shadow: 0 8px 30px rgba(80, 50, 140, 0.15);
+
+    position: relative;
+
+    overflow: hidden;
+}
+
+
+/* Decoração do fundo */
+
+.tela::before {
+
+    content: "";
+
+    position: absolute;
+
+    width: 180px;
+
+    height: 180px;
+
+    background: #eee5ff;
+
+    border-radius: 50%;
+
+    top: -80px;
+
+    left: -70px;
+
+    z-index: 0;
+}
+
+
+.tela::after {
+
+    content: "";
+
+    position: absolute;
+
+    width: 130px;
+
+    height: 130px;
+
+    background: #f9eaff;
+
+    border-radius: 50%;
+
+    bottom: -50px;
+
+    right: -40px;
+
+    z-index: 0;
+}
+
+
+/* Faz o conteúdo ficar acima das decorações */
+
+.tela > * {
+
+    position: relative;
+
+    z-index: 1;
+}
+
+
+/* ============================= */
+/* LOGO                          */
+/* ============================= */
+
+.logo {
+
+    text-align: center;
+
+    margin-top: 15px;
+
+    margin-bottom: 35px;
+}
+
+
+.logo span {
+
+    display: block;
+
+    font-size: 32px;
+
+    font-weight: 900;
+
+    color: #5630a8;
+
+    line-height: 0.95;
+}
+
+
+/* ============================= */
+/* TÍTULO                        */
+/* ============================= */
+
+h1 {
+
+    text-align: center;
+
+    font-size: 25px;
+
+    color: #422080;
+
+    margin-bottom: 10px;
+}
+
+
+.descricao {
+
+    text-align: center;
+
+    font-size: 14px;
+
+    line-height: 1.5;
+
+    color: #766b8c;
+
+    margin-bottom: 30px;
+}
+
+
+/* ============================= */
+/* CAMPOS                        */
+/* ============================= */
+
+.campo {
+
+    margin-bottom: 20px;
+}
+
+
+.campo label {
+
+    display: block;
+
+    font-size: 13px;
+
+    font-weight: bold;
+
+    color: #4a3671;
+
+    margin-bottom: 7px;
+}
+
+
+.campo-input {
+
+    height: 52px;
+
+    border: 1.5px solid #d7c9ef;
+
+    border-radius: 13px;
+
+    display: flex;
+
+    align-items: center;
+
+    background: #ffffff;
+
+    transition: 0.2s;
+}
+
+
+.campo-input:focus-within {
+
+    border-color: #7545c4;
+
+    box-shadow: 0 0 0 3px #eee5ff;
+}
+
+
+.icone {
+
+    font-size: 18px;
+
+    margin-left: 14px;
+
+    margin-right: 8px;
+}
+
+
+.campo-input input {
+
+    flex: 1;
+
+    height: 100%;
+
+    border: none;
+
+    outline: none;
+
+    font-size: 15px;
+
+    color: #35235c;
+
+    background: transparent;
+}
+
+
+.campo-input input::placeholder {
+
+    color: #aaa1bb;
+}
+
+
+/* ============================= */
+/* BOTÃO OLHO                    */
+/* ============================= */
+
+.olho {
+
+    border: none;
+
+    background: transparent;
+
+    cursor: pointer;
+
+    font-size: 17px;
+
+    margin-right: 12px;
+}
+
+
+/* ============================= */
+/* BOTÃO ENTRAR                  */
+/* ============================= */
+
+.botao-entrar {
+
+    width: 100%;
+
+    height: 52px;
+
+    border: none;
+
+    border-radius: 14px;
+
+    background: #7040bd;
+
+    color: white;
+
+    font-size: 16px;
+
+    font-weight: bold;
+
+    cursor: pointer;
+
+    margin-top: 5px;
+
+    transition: 0.2s;
+}
+
+
+.botao-entrar:hover {
+
+    background: #5d31a5;
+
+    transform: translateY(-1px);
+}
+
+
+.botao-entrar:active {
+
+    transform: scale(0.98);
+}
+
+
+/* ============================= */
+/* MENSAGEM                      */
+/* ============================= */
+
+.mensagem {
+
+    text-align: center;
+
+    font-size: 13px;
+
+    min-height: 20px;
+
+    margin-bottom: 5px;
+
+    color: #d14a6b;
+}
+
+
+/* ============================= */
+/* PRIVACIDADE                   */
+/* ============================= */
+
+.privacidade {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
+
+    margin-top: 28px;
+
+    padding: 13px;
+
+    background: #f8f4ff;
+
+    border-radius: 13px;
+}
+
+
+.privacidade span {
+
+    font-size: 20px;
+}
+
+
+.privacidade p {
+
+    font-size: 11px;
+
+    line-height: 1.4;
+
+    color: #766b8c;
+}
+
+
+/* ============================= */
+/* ÁREA DA PROFESSORA            */
+/* ============================= */
+
+.professora {
+
+    text-align: center;
+
+    margin-top: 28px;
+
+    font-size: 12px;
+
+    color: #8061b4;
+
+    cursor: pointer;
+}
+
+
+/* ============================= */
+/* CELULAR                       */
+/* ============================= */
+
+@media (max-width: 430px) {
+
+    body {
+
+        background: #ffffff;
+
+        align-items: stretch;
+    }
+
+
+    .tela {
+
+        max-width: none;
+
+        min-height: 100vh;
+
+        border-radius: 0;
+
+        box-shadow: none;
+    }
+
+}

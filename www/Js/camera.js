@@ -3,7 +3,6 @@
    JAVASCRIPT DA CÂMERA
 ===================================== */
 
-
 /* =====================================
    PEGAR ELEMENTOS DO HTML
 ===================================== */
@@ -32,54 +31,45 @@ const produtoEncontrado =
         "produtoEncontrado"
     );
 
-
 const produtoImagem =
     document.getElementById(
         "produtoImagem"
-    );
-
+    )
 
 const produtoNome =
     document.getElementById(
         "produtoNome"
     );
 
-
 const produtoPreco =
     document.getElementById(
         "produtoPreco"
     );
-
 
 const produtoCategoria =
     document.getElementById(
         "produtoCategoria"
     );
 
-
 const comprarBotao =
     document.getElementById(
         "comprarBtn"
     );
-
 
 const cancelarBotao =
     document.getElementById(
         "cancelarBtn"
     );
 
-
 const fecharBotao =
     document.getElementById(
         "fecharProduto"
     );
 
-
 const aviso =
     document.getElementById(
         "aviso"
     );
-
 
 /* =====================================
    PRODUTOS
@@ -151,7 +141,6 @@ const produtos = {
 
 };
 
-
 /* =====================================
    SALDO INICIAL
 ===================================== */
@@ -162,7 +151,6 @@ let saldo =
             "estoqueZeroSaldo"
         )
     );
-
 
 /*
    Se ainda não existir saldo,
@@ -179,7 +167,6 @@ if (Number.isNaN(saldo)) {
     );
 }
 
-
 /* =====================================
    MOSTRAR SALDO
 ===================================== */
@@ -189,7 +176,6 @@ function atualizarSaldo() {
     saldoElemento.textContent =
         formatarDinheiro(saldo);
 }
-
 
 function formatarDinheiro(valor) {
 
@@ -202,9 +188,7 @@ function formatarDinheiro(valor) {
     );
 }
 
-
 atualizarSaldo();
-
 
 /* =====================================
    ABRIR CÂMERA
@@ -229,9 +213,7 @@ async function iniciarCamera() {
 
                 });
 
-
         camera.srcObject = stream;
-
 
         camera.addEventListener(
             "loadedmetadata",
@@ -259,7 +241,6 @@ async function iniciarCamera() {
     }
 }
 
-
 /* =====================================
    LER QR CODE
 ===================================== */
@@ -269,7 +250,6 @@ let lendoQRCode = true;
 let ultimoCodigo = "";
 
 let ultimoDetectado = 0;
-
 
 function procurarQRCode() {
 
@@ -282,7 +262,6 @@ function procurarQRCode() {
         return;
     }
 
-
     if (
         camera.readyState ===
         camera.HAVE_ENOUGH_DATA
@@ -293,7 +272,6 @@ function procurarQRCode() {
 
         canvas.height =
             camera.videoHeight;
-
 
         /*
            Copia a imagem da câmera
@@ -311,7 +289,6 @@ function procurarQRCode() {
             canvas.height
         );
 
-
         /*
            Pega os pixels da imagem.
         */
@@ -325,7 +302,6 @@ function procurarQRCode() {
                 canvas.width,
                 canvas.height
             );
-
 
         /*
            Procura o QR Code.
@@ -346,7 +322,6 @@ function procurarQRCode() {
                 }
             );
 
-
         /*
            Encontrou QR Code?
         */
@@ -358,10 +333,8 @@ function procurarQRCode() {
                     .trim()
                     .toUpperCase();
 
-
             const agora =
                 Date.now();
-
 
             /*
                Evita detectar
@@ -382,7 +355,6 @@ function procurarQRCode() {
                 ultimoDetectado =
                     agora;
 
-
                 produtoDetectado(
                     texto
                 );
@@ -390,19 +362,16 @@ function procurarQRCode() {
         }
     }
 
-
     requestAnimationFrame(
         procurarQRCode
     );
 }
-
 
 /* =====================================
    PRODUTO ENCONTRADO
 ===================================== */
 
 let produtoAtual = null;
-
 
 function produtoDetectado(codigo) {
 
@@ -413,7 +382,6 @@ function produtoDetectado(codigo) {
 
     const produto =
         produtos[codigo];
-
 
     /*
        QR Code não cadastrado.
@@ -431,14 +399,12 @@ function produtoDetectado(codigo) {
         return;
     }
 
-
     /*
        Guarda o produto encontrado.
     */
 
     produtoAtual =
         produto;
-
 
     /*
        Coloca os dados
@@ -448,16 +414,13 @@ function produtoDetectado(codigo) {
     produtoImagem.textContent =
         produto.imagem;
 
-
     produtoNome.textContent =
         produto.nome;
-
 
     produtoPreco.textContent =
         formatarDinheiro(
             produto.preco
         );
-
 
     produtoCategoria.textContent =
         produto.categoria;
@@ -471,7 +434,6 @@ function produtoDetectado(codigo) {
         .classList
         .remove("escondido");
 
-
     /*
        Para temporariamente
        a leitura da câmera.
@@ -479,7 +441,6 @@ function produtoDetectado(codigo) {
 
     lendoQRCode = false;
 }
-
 
 /* =====================================
    BOTÃO COMPRAR
@@ -499,7 +460,6 @@ comprarBotao.addEventListener(
             return;
         }
 
-
         /*
            Verifica se tem dinheiro.
         */
@@ -518,7 +478,6 @@ comprarBotao.addEventListener(
             return;
         }
 
-
         /*
            DESCONTA O PRODUTO
            DO SALDO
@@ -526,7 +485,6 @@ comprarBotao.addEventListener(
 
         saldo -=
             produtoAtual.preco;
-
 
         /*
            Corrige possíveis
@@ -537,7 +495,6 @@ comprarBotao.addEventListener(
             Math.round(
                 saldo * 100
             ) / 100;
-
 
         /*
            Salva o novo saldo.
@@ -550,13 +507,11 @@ comprarBotao.addEventListener(
             saldo
         );
 
-
         /*
            Atualiza a tela.
         */
 
         atualizarSaldo();
-
 
         /*
            Guarda o nome
@@ -566,17 +521,14 @@ comprarBotao.addEventListener(
         const nome =
             produtoAtual.nome;
 
-
         const preco =
             produtoAtual.preco;
-
 
         /*
            Fecha a janela.
         */
 
         fecharModal();
-
 
         /*
            Mostra confirmação.
@@ -591,7 +543,6 @@ comprarBotao.addEventListener(
             "!"
 
         );
-
 
         /*
            Se acabou o dinheiro.
@@ -616,7 +567,6 @@ comprarBotao.addEventListener(
     }
 );
 
-
 /* =====================================
    FECHAR PRODUTO
 ===================================== */
@@ -627,9 +577,7 @@ function fecharModal() {
         .classList
         .add("escondido");
 
-
     produtoAtual = null;
-
 
     /*
        Aguarda um pouco para
@@ -647,18 +595,15 @@ function fecharModal() {
     );
 }
 
-
 cancelarBotao.addEventListener(
     "click",
     fecharModal
 );
 
-
 fecharBotao.addEventListener(
     "click",
     fecharModal
 );
-
 
 /* =====================================
    AVISOS
@@ -666,12 +611,10 @@ fecharBotao.addEventListener(
 
 let avisoTimer;
 
-
 function mostrarAviso(texto) {
 
     aviso.textContent =
         texto;
-
 
     aviso.classList
         .remove("escondido");
@@ -680,7 +623,6 @@ function mostrarAviso(texto) {
     clearTimeout(
         avisoTimer
     );
-
 
     avisoTimer =
         setTimeout(
@@ -694,7 +636,6 @@ function mostrarAviso(texto) {
         );
 }
 
-
 /* =====================================
    CRONÔMETRO
 
@@ -704,7 +645,6 @@ function mostrarAviso(texto) {
 let segundos = 120;
 
 let jogoTerminou = false;
-
 
 function atualizarTempo() {
 
@@ -718,16 +658,13 @@ function atualizarTempo() {
         return;
     }
 
-
     const minutos =
         Math.floor(
             segundos / 60
         );
 
-
     const segundosRestantes =
         segundos % 60;
-
 
     /*
        Mostra:
@@ -748,7 +685,6 @@ function atualizarTempo() {
         String(segundosRestantes)
             .padStart(2, "0");
 
-
     /*
        Tempo acabou.
     */
@@ -757,21 +693,17 @@ function atualizarTempo() {
 
         jogoTerminou = true;
 
-
         mostrarAviso(
 
             "⏰ Tempo encerrado! Veja seu resultado."
 
         );
 
-
         return;
     }
 
-
     segundos--;
 }
-
 
 /*
    Começa o cronômetro.
@@ -779,15 +711,12 @@ function atualizarTempo() {
 
 atualizarTempo();
 
-
 setInterval(
     atualizarTempo,
     1000
 );
 
-
 /* =====================================
    INICIAR O JOGO
 ===================================== */
-
 iniciarCamera();
