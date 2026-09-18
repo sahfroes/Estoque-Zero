@@ -1,6 +1,7 @@
 import express from 'express';
 import path from 'path';
 import cors from 'cors';
+import fs from 'fs';
 import { fileURLToPath } from 'url';
 
 import { initializeApp, cert, getApps } from 'firebase-admin/app';
@@ -10,13 +11,21 @@ import { getFirestore, FieldValue } from 'firebase-admin/firestore';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// Inicialização do Firebase Admin SDK
+// Inicialização do Firebase Admin SDK (Compatível com Vercel e Local)
 if (!getApps().length) {
-  if (!process.env.FIREBASE_SERVICE_ACCOUNT) {
-    throw new Error("A variável FIREBASE_SERVICE_ACCOUNT não foi configurada no ambiente.");
+  let serviceAccount;
+
+  // Se estiver na Vercel usa a variável do painel, se estiver Local usa o arquivo firebase-key.json
+  if (process.env.FIREBASE_SERVICE_ACCOUNT) {
+    serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT);
+  } else {
+    const keyPath = path.join(__dirname, 'firebase-key.json');
+    if (fs.existsSync(keyPath)) {
+      serviceAccount = JSON.parse(fs.readFileSync(keyPath, 'utf8'));
+    } else {
+      throw new Error("Credenciais do Firebase não encontradas (variável ou firebase-key.json).");
+    }
   }
-  
-  const serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT);
 
   if (serviceAccount.private_key) {
     serviceAccount.private_key = serviceAccount.private_key.replace(/\\n/g, '\n');
@@ -34,11 +43,18 @@ app.use(express.json());
 app.use(cors());
 
 // Servir arquivos estáticos da pasta www (CSS, JS, Imagens)
-app.use(express.static(path.join(__dirname, 'www'), { index: false }));
+app.use(express.static(path.join(__dirname, 'www')));
 
 // --- ROTAS DE PÁGINAS ---
+
+// Rota inicial do site (Abertura)
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'www', 'Frontend', 'View', 'abertura.html'));
+});
+
+// Rota da tela de Login (Entrar)
+app.get('/entrar.html', (req, res) => {
+  res.sendFile(path.join(__dirname, 'www', 'Frontend', 'View', 'entrar.html'));
 });
 
 // --- ROTAS DO SISTEMA DE SALAS (ESTOQUE ZERO) ---

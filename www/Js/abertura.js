@@ -45,7 +45,7 @@ const carregamento = setInterval(function() {
         setTimeout(function() {
 
             // Vai para a tela de Login
-            window.location.href = "entrar.html";
+           window.location.href = "/Frontend/View/entrar.html";
         }, 500);
 
     }
