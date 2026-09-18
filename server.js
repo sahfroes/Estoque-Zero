@@ -41,22 +41,21 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 
-// ALTERAÇÃO 1: Adicionado { index: false } para não carregar index.html antigo automaticamente
+// Servir arquivos estáticos (CSS, JS, imagens) da pasta www
 app.use(express.static(path.join(__dirname, 'www'), { index: false }));
 
 // --- ROTAS DE PÁGINAS ---
-
-// Rota inicial do site (Abertura)
+// Rota principal da raiz: entrega diretamente o abertura.html dentro de Frontend/View
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'www', 'Frontend', 'View', 'abertura.html'));
 });
 
-// Rota da tela de Login (Entrar)
+// Rota da tela de Login
 app.get('/entrar.html', (req, res) => {
   res.sendFile(path.join(__dirname, 'www', 'Frontend', 'View', 'entrar.html'));
 });
 
-// --- ROTAS DO SISTEMA DE SALAS (ESTOQUE ZERO) ---
+// --- ROTAS DO SISTEMA DE SALAS ---
 
 app.post('/api/salas/entrar', async (req, res) => {
   try {
@@ -120,11 +119,6 @@ app.post('/api/salas/criar', async (req, res) => {
     console.error('Erro ao criar sala:', error);
     return res.status(500).json({ mensagem: 'Erro ao criar a sala.' });
   }
-});
-
-// ALTERAÇÃO 2: Rota "pega-tudo" para garantir que o celular sempre vá para abertura.html se acessar a raiz
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'www', 'Frontend', 'View', 'abertura.html'));
 });
 
 // Execução Local
