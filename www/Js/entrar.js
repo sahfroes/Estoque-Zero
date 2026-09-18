@@ -52,12 +52,8 @@ formulario.addEventListener("submit", async function (evento) {
     try {
         mensagem.textContent = "Verificando...";
 
-        // Detecta se está testando localmente ou na Vercel
-        const urlApi = (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1")
-            ? 'http://localhost:3000/api/salas/entrar'
-            : '/api/salas/entrar';
-
-        const resposta = await fetch(urlApi, {
+        // Rota relativa direta (funciona no localhost:3000 e na Vercel)
+        const resposta = await fetch('/api/salas/entrar', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -76,10 +72,10 @@ formulario.addEventListener("submit", async function (evento) {
             // Guarda a turma validada para as próximas telas
             localStorage.setItem("codigoTurma", dados.codigo);
 
-            // Redireciona para a tela do avatar na mesma pasta (Frontend/View)
+            // Redireciona para a tela do avatar
             window.location.href = "avatar.html";
         } else {
-            // Exibe a mensagem de erro retornada pelo backend
+            // Exibe a mensagem de erro retornada pelo backend (ex: PIN incorreto)
             mensagem.textContent = dados.mensagem || "Código ou PIN incorretos.";
         }
     } catch (erro) {
