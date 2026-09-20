@@ -1,0 +1,297 @@
+/* ==============================
+   CONFIGURAÇÕES GERAIS
+================================= */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background: #f5f2ff;
+
+    min-height: 100vh;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    color: #332080;
+}
+
+
+/* ==============================
+   TELA PRINCIPAL
+================================= */
+
+.tela {
+    width: 100%;
+    max-width: 390px;
+    min-height: 700px;
+
+    background: #ffffff;
+
+    border: 1.5px solid #6650d9;
+    border-radius: 20px;
+
+    padding: 25px 20px;
+
+    position: relative;
+
+    text-align: center;
+
+    overflow: hidden;
+}
+
+
+/* ==============================
+   BOTÃO VOLTAR
+================================= */
+
+.voltar {
+    position: absolute;
+
+    top: 18px;
+    left: 18px;
+
+    border: none;
+    background: transparent;
+
+    font-size: 24px;
+
+    color: #2f218c;
+
+    cursor: pointer;
+}
+
+
+/* ==============================
+   TÍTULO
+================================= */
+
+h1 {
+    margin-top: 5px;
+
+    font-size: 25px;
+    line-height: 1.15;
+
+    color: #34219a;
+
+    font-weight: 800;
+}
+
+
+/* ==============================
+   ESTRELAS
+================================= */
+
+.estrela {
+    position: absolute;
+
+    font-size: 25px;
+
+    color: #ffb6df;
+}
+
+.estrela1 {
+    top: 105px;
+    left: 35px;
+}
+
+.estrela2 {
+    top: 145px;
+    right: 35px;
+
+    color: #ffd05c;
+}
+
+.estrela3 {
+    top: 215px;
+    left: 25px;
+
+    color: #ff8bc8;
+}
+
+.estrela4 {
+    top: 235px;
+    right: 25px;
+
+    color: #a88cff;
+}
+
+
+/* ==============================
+   AVATAR
+================================= */
+
+.area-avatar {
+    width: 145px;
+    height: 145px;
+
+    margin: 18px auto 5px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.area-avatar img {
+    width: 140px;
+    height: 140px;
+
+    object-fit: contain;
+}
+
+
+/* ==============================
+   NOME DA IDENTIDADE
+================================= */
+
+h2 {
+    color: #21139b;
+
+    font-size: 20px;
+
+    margin-bottom: 15px;
+}
+
+
+/* ==============================
+   CAMPOS DE INFORMAÇÃO
+================================= */
+
+.campo-info {
+    width: 100%;
+
+    min-height: 62px;
+
+    border: 1px solid #c9c1f3;
+
+    border-radius: 10px;
+
+    background: #f8f6ff;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    padding: 9px 13px;
+
+    margin-bottom: 10px;
+
+    text-align: left;
+}
+
+.campo-info div {
+    display: flex;
+    flex-direction: column;
+
+    gap: 4px;
+}
+
+.campo-info span {
+    font-size: 11px;
+
+    color: #625d82;
+}
+
+.campo-info strong {
+    font-size: 17px;
+
+    color: #27179b;
+}
+
+
+/* ==============================
+   BOTÃO COPIAR
+================================= */
+
+.copiar {
+    border: none;
+
+    background: transparent;
+
+    font-size: 18px;
+
+    cursor: pointer;
+
+    color: #34219a;
+}
+
+
+/* ==============================
+   AVISO
+================================= */
+
+.aviso {
+    font-size: 11px;
+
+    color: #403b63;
+
+    line-height: 1.4;
+
+    margin: 8px 0 14px;
+}
+
+
+/* ==============================
+   BOTÃO CONTINUAR
+================================= */
+
+.botao-continuar {
+    width: 100%;
+
+    border: none;
+
+    border-radius: 25px;
+
+    padding: 14px;
+
+    background: #6441c7;
+
+    color: white;
+
+    font-size: 15px;
+
+    font-weight: bold;
+
+    cursor: pointer;
+
+    transition: 0.2s;
+}
+
+.botao-continuar:hover {
+    background: #5332b4;
+
+    transform: scale(1.02);
+}
+
+
+/* ==============================
+   CELULARES MENORES
+================================= */
+
+@media (max-height: 720px) {
+
+    .tela {
+        min-height: 100vh;
+
+        padding-top: 20px;
+    }
+
+    .area-avatar {
+        width: 120px;
+        height: 120px;
+    }
+
+    .area-avatar img {
+        width: 115px;
+        height: 115px;
+    }
+
+    h1 {
+        font-size: 23px;
+    }
+}

@@ -1,0 +1,298 @@
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+
+body {
+
+    min-height: 100vh;
+    font-family: Arial, sans-serif;
+    background: #f4efff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #39216d;
+}
+
+/* =========================
+   TELA DO CELULAR
+========================= */
+
+.tela {
+
+    width: 100%;
+    max-width: 390px;
+    min-height: 700px;
+    background: #ffffff;
+    border-radius: 28px;
+    padding: 25px 22px;
+    box-shadow:
+        0 10px 35px rgba(91, 58, 150, 0.18);
+    position: relative;
+    overflow: hidden;
+}
+
+/* =========================
+   DECORAÇÕES
+========================= */
+
+.tela::before {
+
+    content: "";
+    position: absolute;
+    width: 170px;
+    height: 170px;
+    background: #eee5ff;
+    border-radius: 50%;
+    top: -90px;
+    left: -70px;
+    z-index: 0;
+}
+
+
+.tela::after {
+
+    content: "";
+    position: absolute;
+    width: 160px;
+    height: 160px;
+    background: #f9e7ff;
+    border-radius: 50%;
+    bottom: -90px;
+    right: -70px;
+    z-index: 0;
+}
+
+
+/* Conteúdo fica por cima */
+
+.tela > * {
+
+    position: relative;
+    z-index: 1;
+}
+
+/* =========================
+   BOTÃO VOLTAR
+========================= */
+
+.voltar {
+
+    background: transparent;
+    border: none;
+    font-size: 30px;
+    color: #4c2a94;
+    cursor: pointer;
+    margin-bottom: 5px;
+}
+
+/* =========================
+   CABEÇALHO
+========================= */
+
+.cabecalho {
+
+    text-align: center;
+    margin-bottom: 18px;
+}
+
+
+.coroa {
+
+    font-size: 27px;
+    margin-bottom: 5px;
+}
+
+
+.cabecalho h1 {
+
+    color: #5429a2;
+    font-size: 25px;
+    margin-bottom: 10px;
+}
+
+
+.cabecalho p {
+
+    color: #756b8e;
+    font-size: 12px;
+    line-height: 1.5;
+    max-width: 310px;
+    margin: auto;
+}
+
+
+/* =========================
+   GRID DOS AVATARES
+========================= */
+
+.lista-avatares {
+
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    margin-top: 15px;
+}
+
+
+/* =========================
+   CARD DO AVATAR
+========================= */
+
+.avatar-card {
+
+    position: relative; /*adicionado 19/09*/
+    border: 2px solid transparent;
+    background: #faf8ff;
+    border-radius: 17px;
+    padding: 7px 4px 8px;
+    cursor: pointer;
+    transition: 0.2s;
+    text-align: center;
+}
+
+
+/* Efeito ao passar o mouse */
+
+.avatar-card:hover {
+
+    transform: translateY(-3px);
+    background: #f1eaff;
+}
+
+/* Avatar selecionado */
+
+.avatar-card.selecionado {
+
+    border-color: #7040bd;
+    background: #eee4ff;
+    box-shadow:
+        0 4px 12px rgba(112, 64, 189, 0.20);
+}
+
+/* =========================
+   IMAGEM DO AVATAR
+========================= */
+
+.avatar-card img {
+
+    width: 72px;
+    height: 72px;
+    display: block;
+    margin: auto;
+    border-radius: 50%;
+}
+
+/* =========================
+   NOME DO AVATAR
+========================= */
+
+.nome-avatar {
+
+    display: block;
+    margin-top: 3px;
+    font-size: 11px;
+    font-weight: bold;
+    color: #4c2b8e;
+}
+
+/* =========================
+   CHECK
+========================= */
+
+.check {
+
+    position: absolute;
+    top: 5px; /* adicionado 19/09*/
+    right: 5px; /*adicionado 19/09*/
+    background: #7040bd;
+    color: white;
+    width: 21px;
+    height: 21px;
+    border-radius: 50%;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.avatar-card.selecionado .check {
+
+    display: flex;
+}
+
+/* =========================
+   PERSONAGEM ESCOLHIDO
+========================= */
+
+.personagem-escolhido {
+
+    text-align: center;
+    font-size: 13px;
+    font-weight: bold;
+    color: #6338a8;
+    min-height: 20px;
+    margin-top: 10px;
+}
+
+/* =========================
+   BOTÃO CONTINUAR
+========================= */
+
+.botao-continuar {
+
+    width: 100%;
+    height: 48px;
+    border: none;
+    border-radius: 14px;
+    background: #7040bd;
+    color: white;
+    font-size: 15px;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 10px;
+    transition: 0.2s;
+}
+
+/* Botão desativado */
+
+.botao-continuar:disabled {
+
+    background: #cfc2e8;
+    cursor: not-allowed;
+}
+
+/* Botão ativo */
+
+.botao-continuar:not(:disabled):hover {
+
+    background: #5d31a5;
+    transform: translateY(-2px);
+}
+
+/* =========================
+   CELULAR PEQUENO
+========================= */
+
+@media (max-width: 430px) {
+
+    body {
+
+        background: #ffffff;
+        align-items: stretch;
+    }
+
+
+    .tela {
+
+        max-width: none;
+        min-height: 100vh;
+        border-radius: 0;
+        box-shadow: none;
+    }
+
+}
