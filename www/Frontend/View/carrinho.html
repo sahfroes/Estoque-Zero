@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Meu Carrinho</title>
+
+        <link rel="stylesheet" href="../../CSS/carrinho.css">
+</head>
+
+<body>
+
+    <main class="tela-carrinho">
+
+        <!-- =========================
+             CABEÇALHO
+        ========================== -->
+
+        <header class="cabecalho">
+
+            <button
+                class="botao-voltar"
+                id="voltar"
+            >
+                ←
+            </button>
+
+            <h1>Meu carrinho</h1>
+
+        </header>
+
+
+        <!-- =========================
+             PRODUTOS
+        ========================== -->
+
+        <section
+            class="lista-produtos"
+            id="listaProdutos"
+        >
+
+        </section>
+
+        <!-- =========================
+             CARRINHO VAZIO
+        ========================== -->
+
+        <section
+            class="carrinho-vazio"
+            id="carrinhoVazio"
+        >
+
+            <div class="icone-vazio">
+                🛒
+            </div>
+
+            <h2>Seu carrinho está vazio</h2>
+
+            <p>
+                Aponte a câmera para um produto
+                para adicioná-lo.
+            </p>
+
+        </section>
+
+        <!-- =========================
+             RESUMO
+        ========================== -->
+
+        <section
+            class="resumo"
+            id="resumo"
+        >
+
+            <div class="linha-resumo">
+
+                <span>Total</span>
+
+                <strong id="total">
+                    R$ 0,00
+                </strong>
+
+            </div>
+
+
+            <div class="linha-resumo">
+
+                <span>Saldo restante</span>
+
+                <strong id="saldoRestante">
+                    R$ 50,00
+                </strong>
+
+            </div>
+
+            <!-- =========================
+                 CONFIRMAR
+            ========================== -->
+
+            <button
+                class="botao-confirmar"
+                id="confirmar"
+            >
+                Confirmar compras
+            </button>
+
+        </section>
+
+    </main>
+
+    <script src="../../JS/carrinho.js"></script>
+
+</body>
+
+</html>
