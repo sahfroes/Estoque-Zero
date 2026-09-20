@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Escolha seu avatar - Estoque Zero</title>
+
+     <link rel="stylesheet" href="../../CSS/avatar.css">
+
+</head>
+
+<body>
+
+    <main class="tela">
+
+        <!-- Botão voltar -->
+        <button class="voltar" id="btnVoltar">
+            ←
+        </button>
+
+        <!-- Título -->
+        <div class="cabecalho">
+
+            <div class="coroa">
+                👑
+            </div>
+
+            <h1>
+                Escolha seu avatar!
+            </h1>
+
+            <p>
+                Qual personagem combina mais com você?
+                Esse será o seu avatar durante a missão!
+            </p>
+
+        </div>
+
+        <!-- Área onde os avatares serão criados pelo JavaScript -->
+        <section
+            id="listaAvatares"
+            class="lista-avatares"
+        >
+        </section>
+
+        <!-- Nome do personagem escolhido -->
+        <div
+            id="personagemEscolhido"
+            class="personagem-escolhido"
+        >
+            Escolha um personagem
+        </div>
+
+        <!-- Botão continuar -->
+        <button
+            id="btnContinuar"
+            class="botao-continuar"
+            disabled
+        >
+            Continuar →
+        </button>
+
+    </main>
+
+    <script src="../../Js/avatar.js"></script>
+
+</body>
+
+</html>

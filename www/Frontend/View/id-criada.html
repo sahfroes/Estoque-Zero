@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Identidade criada - Estoque Zero</title>
+
+    <link rel="stylesheet" href="../../CSS/id-criada.css">
+</head>
+
+<body>
+
+    <main class="tela">
+
+        <!-- Ícone de voltar -->
+        <button class="voltar" id="btnVoltar">←</button>
+
+        <!-- Título -->
+        <h1>Sua identidade<br>foi criada!</h1>
+
+        <!-- Estrelinhas decorativas -->
+        <div class="estrela estrela1">✦</div>
+        <div class="estrela estrela2">✦</div>
+        <div class="estrela estrela3">✦</div>
+        <div class="estrela estrela4">✦</div>
+
+        <!-- Avatar -->
+        <div class="area-avatar">
+            <img id="avatar" src="" alt="Avatar do jogador">
+        </div>
+
+        <!-- Nome fictício -->
+        <h2 id="nomeIdentidade">Raposa Roxa #247</h2>
+
+        <!-- Código do jogador -->
+        <div class="campo-info">
+
+            <div>
+                <span>Código do jogador</span>
+                <strong id="codigoJogador">EZ-7K42</strong>
+            </div>
+
+            <button class="copiar" onclick="copiarCodigo()">
+                📋
+            </button>
+
+        </div>
+
+        <!-- PIN -->
+        <div class="campo-info">
+
+            <div>
+                <span>PIN de acesso</span>
+                <strong id="pinJogador">5831</strong>
+            </div>
+
+            <button class="copiar" onclick="copiarPin()">
+                📋
+            </button>
+
+        </div>
+
+        <!-- Aviso -->
+        <p class="aviso">
+            🔒 Guarde essas informações<br>
+            para acessar seu progresso.
+        </p>
+
+        <!-- Botão continuar -->
+        <button class="botao-continuar" id="btnContinuar">
+            Continuar
+        </button>
+
+    </main>
+
+    <script src="../../Js/id-criada.js"></script>
+
+</body>
+
+</html>
