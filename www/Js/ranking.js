@@ -1,8 +1,3 @@
-/* =====================================
-   ESTOQUE ZERO
-   JAVASCRIPT DO RANKING
-===================================== */
-
 
 /* =========================
    PEGAR DADOS DO JOGADOR
@@ -14,7 +9,6 @@ const saldo =
             "estoqueZeroSaldo"
         )
     ) || 50;
-
 
 /* =========================
    COMPRAS
@@ -39,13 +33,11 @@ catch (erro) {
 
 }
 
-
 /* =========================
    CALCULAR PONTUAÇÃO
 ========================= */
 
 const ORCAMENTO = 50;
-
 
 /*
    Quanto mais dinheiro
@@ -61,14 +53,12 @@ let pontuacao =
         dinheiroGuardado * 100
     );
 
-
 /*
    Pequeno bônus por participar.
 */
 
 pontuacao +=
     compras.length * 5;
-
 
 /*
    Limitar a 100 pontos.
@@ -118,7 +108,7 @@ document.getElementById(
 function voltarResultado() {
 
     window.location.href =
-        "resultado.html";
+        "vitoria.html";
 
 }
 
@@ -136,6 +126,6 @@ function voltarInicio() {
     */
 
     window.location.href =
-        "index.html";
+        "orcamento.html";
 
 }
