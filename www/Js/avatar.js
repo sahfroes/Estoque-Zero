@@ -5,53 +5,53 @@
 const personagens = [
 
     {
-        nome: "Raposa",
-        seed: "raposa-estoque-zero"
+        nome: "Gigis",
+        seed: "gigis-estoque-zero"
     },
 
     {
-        nome: "Panda",
-        seed: "panda-estoque-zero"
+        nome: "Alexa",
+        seed: "alexa-estoque-zero"
     },
 
     {
-        nome: "Tigre",
-        seed: "tigre-estoque-zero"
+        nome: "Vivi",
+        seed: "vivi-estoque-zero"
     },
 
     {
-        nome: "Gato",
-        seed: "gato-estoque-zero"
+        nome: "Gao",
+        seed: "gao-estoque-zero"
     },
 
     {
-        nome: "Coelho",
-        seed: "coelho-estoque-zero"
+        nome: "Tuco",
+        seed: "tuco-estoque-zero"
     },
 
     {
-        nome: "Sapo",
-        seed: "sapo-estoque-zero"
+        nome: "Pulma",
+        seed: "pulma-estoque-zero"
     },
 
     {
-        nome: "Urso",
-        seed: "urso-estoque-zero"
+        nome: "Robs",
+        seed: "robs-estoque-zero"
     },
 
     {
-        nome: "Lobo",
-        seed: "lobo-estoque-zero"
+        nome: "Prin",
+        seed: "prin-estoque-zero"
     },
 
     {
-        nome: "Coruja",
-        seed: "coruja-estoque-zero"
+        nome: "Mark",
+        seed: "mark-estoque-zero"
     },
 
     {
-        nome: "Tartaruga",
-        seed: "tartaruga-estoque-zero"
+        nome: "Ligi",
+        seed: "ligi-estoque-zero"
     }
 
 ];

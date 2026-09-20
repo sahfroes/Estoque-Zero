@@ -113,7 +113,7 @@ document.getElementById("btnContinuar").addEventListener("click", function () {
 document.getElementById("btnVoltar").addEventListener("click", function () {
 
     window.location.href =
-        "entrar.html";
+        "avatar.html";
 
 });
 
