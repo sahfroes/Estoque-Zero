@@ -1,0 +1,168 @@
+/* =========================
+   CONFIGURAÇÕES
+========================= */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+}
+
+
+/* =========================
+   FUNDO
+========================= */
+
+.tela-camera {
+    width: 100%;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    padding: 20px;
+    background: linear-gradient(
+        rgba(30, 20, 70, 0.25),
+        rgba(30, 20, 70, 0.45)
+    );
+}
+
+/* =========================
+   CARD
+========================= */
+
+.card-produto {
+    width: 100%;
+    max-width: 360px;
+    background: white;
+    border-radius: 25px;
+    padding: 25px 22px 20px;
+    position: relative;
+    text-align: center;
+    box-shadow:
+        0 -5px 25px rgba(0, 0, 0, 0.15);
+    animation: aparecer 0.3s ease;
+}
+
+/* =========================
+   ANIMAÇÃO
+========================= */
+
+@keyframes aparecer {
+    from {
+        transform: translateY(80px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+/* =========================
+   BOTÃO FECHAR
+========================= */
+
+.fechar {
+    position: absolute;
+    right: 15px;
+    top: 10px;
+    border: none;
+    background: transparent;
+    font-size: 28px;
+    color: #222;
+    cursor: pointer;
+}
+
+/* =========================
+   IMAGEM
+========================= */
+
+.area-imagem {
+    width: 150px;
+    height: 150px;
+    margin: 5px auto 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.area-imagem img {
+    width: 130px;
+    height: 130px;
+    object-fit: contain;
+}
+
+/* =========================
+   NOME
+========================= */
+
+.informacoes h1 {
+    font-size: 23px;
+    color: #15158c;
+    margin-bottom: 5px;
+}
+
+/* =========================
+   PREÇO
+========================= */
+
+.informacoes p {
+    font-size: 22px;
+    font-weight: bold;
+    color: #15158c;
+    margin-bottom: 20px;
+}
+
+/* =========================
+   BOTÕES
+========================= */
+
+.botoes {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+/* =========================
+   ADICIONAR
+========================= */
+
+.botao-adicionar {
+    width: 100%;
+    padding: 14px;
+    border: none;
+    border-radius: 14px;
+    background: #5936c9;
+    color: white;
+    font-size: 15px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.botao-adicionar:hover {
+    background: #4725a8;
+}
+
+/* =========================
+   CANCELAR
+========================= */
+
+.botao-cancelar {
+    width: 100%;
+    padding: 13px;
+    border: 1px solid #5936c9;
+    border-radius: 14px;
+    background: white;
+    color: #5936c9;
+    font-size: 15px;
+    cursor: pointer;
+}
+
+.botao-cancelar:hover {
+    background: #f3f0ff;
+}

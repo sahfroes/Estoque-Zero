@@ -1,0 +1,424 @@
+/* =========================
+   CONFIGURAÇÕES
+========================= */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+
+    background: #f8f7ff;
+
+    color: #15158c;
+}
+
+
+/* =========================
+   TELA
+========================= */
+
+.tela-carrinho {
+
+    width: 100%;
+
+    max-width: 390px;
+
+    min-height: 100vh;
+
+    margin: 0 auto;
+
+    padding: 18px 15px 25px;
+
+    background: #f8f7ff;
+}
+
+
+/* =========================
+   CABEÇALHO
+========================= */
+
+.cabecalho {
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    position: relative;
+
+    height: 55px;
+
+    margin-bottom: 12px;
+}
+
+
+.cabecalho h1 {
+
+    font-size: 20px;
+
+    font-weight: 700;
+
+    color: #17178f;
+}
+
+
+/* =========================
+   BOTÃO VOLTAR
+========================= */
+
+.botao-voltar {
+
+    position: absolute;
+
+    left: 2px;
+
+    top: 8px;
+
+    border: none;
+
+    background: transparent;
+
+    color: #273bb7;
+
+    font-size: 32px;
+
+    line-height: 1;
+
+    cursor: pointer;
+}
+
+
+/* =========================
+   LISTA DE PRODUTOS
+========================= */
+
+.lista-produtos {
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 8px;
+}
+
+
+/* =========================
+   CARD DO PRODUTO
+========================= */
+
+.produto-card {
+
+    width: 100%;
+
+    min-height: 90px;
+
+    display: flex;
+
+    align-items: center;
+
+    background: white;
+
+    border: 2px solid #e2e4fa;
+
+    border-radius: 16px;
+
+    padding: 10px 12px;
+
+}
+
+
+/* =========================
+   IMAGEM
+========================= */
+
+.produto-imagem {
+
+    width: 60px;
+
+    height: 65px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    flex-shrink: 0;
+
+    margin-right: 12px;
+}
+
+
+.produto-imagem img {
+
+    width: 58px;
+
+    height: 58px;
+
+    object-fit: contain;
+}
+
+
+/* =========================
+   INFORMAÇÕES
+========================= */
+
+.produto-info {
+
+    flex: 1;
+
+    text-align: left;
+}
+
+
+.produto-info h2 {
+
+    color: #1732a2;
+
+    font-size: 16px;
+
+    font-weight: 700;
+
+    margin-bottom: 5px;
+}
+
+
+.produto-preco {
+
+    color: #1732a2;
+
+    font-size: 15px;
+
+    font-weight: 700;
+}
+
+
+/* =========================
+   QUANTIDADE
+========================= */
+
+.quantidade {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 5px;
+
+    margin-left: 8px;
+}
+
+
+.quantidade button {
+
+    width: 29px;
+
+    height: 29px;
+
+    border-radius: 50%;
+
+    border: 2px solid #d7dcf7;
+
+    background: white;
+
+    color: #2441b6;
+
+    font-size: 20px;
+
+    font-weight: bold;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    cursor: pointer;
+
+    line-height: 1;
+}
+
+
+.quantidade button:hover {
+
+    background: #f0efff;
+}
+
+
+.quantidade span {
+
+    min-width: 12px;
+
+    text-align: center;
+
+    color: #1732a2;
+
+    font-weight: bold;
+
+    font-size: 14px;
+}
+
+
+/* =========================
+   RESUMO
+========================= */
+
+.resumo {
+
+    margin-top: 15px;
+
+    background: white;
+
+    border-radius: 16px;
+
+    border: 2px solid #eef0fb;
+
+    overflow: hidden;
+}
+
+
+/* =========================
+   LINHAS
+========================= */
+
+.linha-resumo {
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    padding: 16px 15px;
+
+    border-bottom: 1px solid #eef0fa;
+
+    font-size: 16px;
+
+    font-weight: 700;
+}
+
+
+.linha-resumo span {
+
+    color: #1732a2;
+}
+
+
+.linha-resumo strong {
+
+    color: #1732a2;
+
+    font-size: 18px;
+}
+
+
+/* =========================
+   BOTÃO CONFIRMAR
+========================= */
+
+.botao-confirmar {
+
+    width: calc(100% - 24px);
+
+    margin: 15px 12px;
+
+    padding: 15px;
+
+    border: none;
+
+    border-radius: 18px;
+
+    background: #6338c7;
+
+    color: white;
+
+    font-size: 16px;
+
+    font-weight: bold;
+
+    cursor: pointer;
+
+    box-shadow: 0 3px 8px rgba(91, 48, 190, 0.18);
+
+    transition: 0.2s;
+}
+
+
+.botao-confirmar:hover {
+
+    background: #5129ad;
+
+    transform: translateY(-1px);
+}
+
+
+/* =========================
+   BOTÃO DESATIVADO
+========================= */
+
+.botao-confirmar:disabled {
+
+    background: #aaa;
+
+    cursor: not-allowed;
+
+    transform: none;
+}
+
+
+/* =========================
+   CARRINHO VAZIO
+========================= */
+
+.carrinho-vazio {
+
+    display: none;
+
+    text-align: center;
+
+    padding: 50px 20px;
+
+    color: #1732a2;
+}
+
+
+.icone-vazio {
+
+    font-size: 50px;
+
+    margin-bottom: 15px;
+}
+
+
+.carrinho-vazio h2 {
+
+    font-size: 20px;
+
+    margin-bottom: 8px;
+}
+
+
+.carrinho-vazio p {
+
+    color: #777;
+
+    font-size: 14px;
+
+    line-height: 1.5;
+}
+
+
+/* =========================
+   VALOR NEGATIVO
+========================= */
+
+.saldo-negativo {
+
+    color: #e53935 !important;
+}
