@@ -1,104 +1,76 @@
-
 <!DOCTYPE html>
 <html lang="pt-BR">
 
 <head>
-
     <meta charset="UTF-8">
 
-    <!-- Faz a página se adaptar ao celular -->
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
+    <!-- Faz a tela se adaptar ao celular -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>Estoque Zero - Câmera</title>
 
-    <!-- CSS da tela -->
-    <link
-        rel="stylesheet"
-        href="../../CSS/camera.css"
-    >
-
+    <!-- Nosso CSS -->
+    <link rel="stylesheet" href="../../CSS/camera.css">
 </head>
 
 <body>
 
-    <main class="aplicativo">
-      <!-- =========================
+    <main class="app">
+
+        <!-- =========================
              TOPO
         ========================== -->
 
         <header class="topo">
 
             <div class="logo">
-
                 ESTOQUE
                 <span>ZERO</span>
-
             </div>
 
             <div class="saldo">
-
                 <small>Saldo</small>
-
-                <strong id="saldo">
-                    R$ 50,00
-                </strong>
-
+                <strong id="saldo">R$ 50,00</strong>
             </div>
 
             <div class="tempo">
-
                 <span>⏱</span>
-
-                <strong id="tempo">
-                    02:00
-                </strong>
-
+                <strong id="tempo">02:00</strong>
             </div>
 
         </header>
+
 
         <!-- =========================
              ÁREA DA CÂMERA
         ========================== -->
 
-        <section class="area-camera">
+        <section class="camera-area">
 
-            <!--
-                Vídeo que vai mostrar
-                a câmera do celular
-            -->
-
+            <!-- Câmera do celular -->
             <video
                 id="camera"
                 autoplay
-                muted
                 playsinline>
             </video>
 
-            <!-- Escurece levemente a câmera -->
+            <!-- Escurece um pouco a câmera -->
+            <div class="camera-escura"></div>
 
-            <div class="escurecimento"></div>
 
-
-            <!-- Moldura -->
-
+            <!-- Moldura para apontar para o produto -->
             <div class="moldura">
 
-                <span class="canto canto-superior-esquerdo"></span>
+                <span class="canto canto-tl"></span>
+                <span class="canto canto-tr"></span>
+                <span class="canto canto-bl"></span>
+                <span class="canto canto-br"></span>
 
-                <span class="canto canto-superior-direito"></span>
+                <div class="icone-camera">
+                    
+                </div>
 
-                <span class="canto canto-inferior-esquerdo"></span>
-
-                <span class="canto canto-inferior-direito"></span>
-
-                <p>
-                    Aponte para um produto
-                </p>
-
+                <p>Aponte para um produto</p>
 
                 <small>
                     Coloque o QR Code dentro da moldura
@@ -107,26 +79,15 @@
             </div>
 
 
-            <!-- Mensagem -->
-
+            <!-- Mensagem inferior -->
             <div class="mensagem-camera">
 
                 💡 Encontre produtos e faça boas escolhas!
 
             </div>
 
-            
-            <!-- Botão para abrir a câmera -->
-
-            <button
-                id="botaoCamera"
-                class="botao-camera">
-
-                📷 Abrir câmera
-
-            </button>
-
         </section>
+
 
         <!-- =========================
              PRODUTO ENCONTRADO
@@ -134,21 +95,19 @@
 
         <section
             id="produtoEncontrado"
-            class="produto-modal escondido"
-        >
+            class="produto-modal escondido">
 
             <button
                 id="fecharProduto"
-                class="fechar"
-            >
+                class="fechar">
                 ×
             </button>
 
 
+            <!-- Imagem do produto -->
             <div
                 id="produtoImagem"
-                class="produto-imagem"
-            >
+                class="produto-imagem">
                 🥛
             </div>
 
@@ -160,24 +119,21 @@
 
             <div
                 id="produtoPreco"
-                class="preco"
-            >
+                class="preco">
                 R$ 7,50
             </div>
 
 
             <div
                 id="produtoCategoria"
-                class="categoria"
-            >
+                class="categoria">
                 Alimentação
             </div>
 
 
             <button
                 id="comprarBtn"
-                class="botao-principal"
-            >
+                class="botao-principal">
 
                 🛒 Comprar produto
 
@@ -186,8 +142,7 @@
 
             <button
                 id="cancelarBtn"
-                class="botao-secundario"
-            >
+                class="botao-secundario">
 
                 Cancelar
 
@@ -195,51 +150,53 @@
 
         </section>
 
+
         <!-- =========================
              AVISO
         ========================== -->
 
         <div
             id="aviso"
-            class="aviso escondido"
-        ></div>
+            class="aviso escondido">
+        </div>
+
 
         <!-- =========================
-             MENU
+             MENU INFERIOR
         ========================== -->
 
         <nav class="menu">
 
-            <button class="item-menu ativo">
-
+            <button class="menu-item ativo">
                 <span>🛒</span>
-
                 Compras
+            </button>
 
+            <button class="menu-item">
+                <span>⏱</span>
+                Tempo
+            </button>
+
+            <button class="menu-item">
+                <span>👤</span>
+                Perfil
             </button>
 
         </nav>
 
-        <!-- Canvas utilizado para
-             ler o QR Code -->
 
-        <canvas
-            id="canvasQR"
-            hidden>
-        </canvas>
+        <!-- Canvas utilizado para ler o QR Code -->
+        <canvas id="qrCanvas" hidden></canvas>
 
     </main>
 
-    <!-- Biblioteca para ler QR Code -->
+    <script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.js"></script>
+    <script src="https://aframe.io/releases/1.6.0/aframe.min.js"></script>
+    <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar.js"></script>
 
-    <script
-        src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.js">
-    </script>
-
+    <!-- Nosso JavaScript -->
     <script src="../../JS/camera.js"></script>
-
 
 </body>
 
 </html>
-
