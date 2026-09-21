@@ -190,179 +190,91 @@ atualizarSaldo();
 // =====================================
 // ABRIR CÂMERA DO CELULAR
 // =====================================
-
 async function iniciarCamera() {
-
     console.log("Iniciando câmera...");
 
-
-    // Verifica se o navegador possui câmera
-
-    if (!navigator.mediaDevices) {
-
-        mostrarAviso(
-            "❌ Este navegador não permite acesso à câmera."
-        );
-
-        console.error(
-            "navigator.mediaDevices não está disponível."
-        );
-
+    // Verifica se está rodando em HTTPS ou localhost (exigido por celulares)
+    if (window.location.protocol !== 'https:' && window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1') {
+        mostrarAviso("⚠️ A câmera exige conexão segura (HTTPS) no celular.");
+        console.error("Acesso à câmera bloqueado: A página não está sendo executada via HTTPS.");
         return;
     }
 
+    // Suporte para navegadores mais antigos em dispositivos móveis
+    if (!navigator.mediaDevices) {
+        navigator.mediaDevices = {};
+    }
+
+    if (!navigator.mediaDevices.getUserMedia) {
+        navigator.mediaDevices.getUserMedia = function(constraints) {
+            const getUserMedia = navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
+            if (!getUserMedia) {
+                mostrarAviso("❌ Este navegador não suporta acesso à câmera.");
+                return Promise.reject(new Error("getUserMedia não suportado neste navegador."));
+            }
+            return new Promise((resolve, reject) => {
+                getUserMedia.call(navigator, constraints, resolve, reject);
+            });
+        };
+    }
 
     try {
-
         console.log("Pedindo permissão para câmera...");
 
+        // Configuração ajustada para câmeras traseiras de celulares
+        const constraints = {
+            video: {
+                facingMode: { ideal: "environment" },
+                width: { ideal: 1280 },
+                height: { ideal: 720 }
+            },
+            audio: false
+        };
 
-        // Pede a câmera TRASEIRA
+        const stream = await navigator.mediaDevices.getUserMedia(constraints);
 
-        const stream =
-            await navigator.mediaDevices.getUserMedia({
-
-                video: {
-
-                    facingMode: {
-                        ideal: "environment"
-                    },
-
-                    width: {
-                        ideal: 1280
-                    },
-
-                    height: {
-                        ideal: 720
-                    }
-
-                },
-
-                audio: false
-
-            });
-
-
-        console.log(
-            "✅ Câmera liberada!"
-        );
-
-
-        // Coloca a câmera no vídeo
+        console.log("✅ Câmera liberada!");
 
         camera.srcObject = stream;
-
-
-        // Força o vídeo a começar
-
+        
+        // Garante a execução em navegadores móveis WebKit/iOS
+        camera.setAttribute("playsinline", true); 
         await camera.play();
 
+        console.log("✅ Vídeo da câmera iniciado!");
 
-        console.log(
-            "✅ Vídeo da câmera iniciado!"
-        );
+        camera.addEventListener("loadedmetadata", () => {
+            canvas.width = camera.videoWidth;
+            canvas.height = camera.videoHeight;
 
+            console.log("Tamanho da câmera:", camera.videoWidth, "x", camera.videoHeight);
+            procurarQRCode();
+        }, { once: true });
 
-        camera.addEventListener(
-            "loadedmetadata",
-            () => {
+    } catch (erro) {
+        console.error("❌ ERRO DA CÂMERA:", erro.name, erro.message);
 
-                canvas.width =
-                    camera.videoWidth;
-
-                canvas.height =
-                    camera.videoHeight;
-
-
-                console.log(
-                    "Tamanho da câmera:",
-                    camera.videoWidth,
-                    "x",
-                    camera.videoHeight
-                );
-
-
+        if (erro.name === "NotAllowedError" || erro.name === "PermissionDeniedError") {
+            mostrarAviso("🔒 Permita o acesso à câmera nas configurações do seu navegador.");
+        } else if (erro.name === "NotFoundError" || erro.name === "DevicesNotFoundError") {
+            mostrarAviso("📷 Nenhuma câmera foi encontrada no dispositivo.");
+        } else if (erro.name === "NotReadableError" || erro.name === "TrackStartError") {
+            mostrarAviso("📷 A câmera já está sendo usada por outro app.");
+        } else if (erro.name === "OverconstrainedError") {
+            // Tenta abrir com configurações padrão caso a restrição de resolução falhe no celular
+            try {
+                const streamFallback = await navigator.mediaDevices.getUserMedia({ video: true });
+                camera.srcObject = streamFallback;
+                await camera.play();
                 procurarQRCode();
-
-            },
-            {
-                once: true
+            } catch (fallbackErro) {
+                mostrarAviso("📷 Erro nas configurações de resolução da câmera.");
             }
-        );
-
-
+        } else {
+            mostrarAviso("❌ Erro ao abrir a câmera: " + erro.name);
+        }
     }
-
-    catch (erro) {
-
-        console.error(
-            "❌ ERRO DA CÂMERA:",
-            erro.name,
-            erro.message
-        );
-
-
-        // =================================
-        // MOSTRAR O ERRO NA TELA
-        // =================================
-
-        if (
-            erro.name ===
-            "NotAllowedError"
-        ) {
-
-            mostrarAviso(
-                "🔒 Permita o acesso à câmera neste navegador."
-            );
-
-        }
-
-        else if (
-            erro.name ===
-            "NotFoundError"
-        ) {
-
-            mostrarAviso(
-                "📷 Nenhuma câmera foi encontrada."
-            );
-
-        }
-
-        else if (
-            erro.name ===
-            "NotReadableError"
-        ) {
-
-            mostrarAviso(
-                "📷 A câmera está sendo usada por outro aplicativo."
-            );
-
-        }
-
-        else if (
-            erro.name ===
-            "OverconstrainedError"
-        ) {
-
-            mostrarAviso(
-                "📷 Não foi possível selecionar a câmera traseira."
-            );
-
-        }
-
-        else {
-
-            mostrarAviso(
-                "❌ Erro ao abrir a câmera: " +
-                erro.name
-            );
-
-        }
-
-    }
-
 }
-
 /* =====================================
    LER QR CODE
 ===================================== */
