@@ -1,12 +1,11 @@
-/* =================================
-   CONFIGURAÇÕES GERAIS
-================================= */
 
 * {
     box-sizing: border-box;
 }
 
+
 :root {
+
     --roxo: #6d35c8;
     --roxo-claro: #eee4ff;
     --roxo-escuro: #3d176f;
@@ -19,9 +18,12 @@
 
     --borda: #d9cbed;
 
-    --vermelho: #e53935;
 }
 
+
+/* =================================
+   PÁGINA
+================================= */
 
 body {
 
@@ -41,6 +43,7 @@ body {
     display: flex;
 
     justify-content: center;
+
 }
 
 
@@ -48,7 +51,7 @@ body {
    APLICATIVO
 ================================= */
 
-.app {
+.aplicativo {
 
     width: 100%;
 
@@ -62,8 +65,6 @@ body {
 
     overflow: hidden;
 
-    box-shadow:
-        0 0 30px rgba(65, 35, 120, 0.12);
 }
 
 
@@ -96,10 +97,11 @@ body {
     position: relative;
 
     z-index: 5;
+
 }
 
 
-/* Logo */
+/* LOGO */
 
 .logo {
 
@@ -108,7 +110,9 @@ body {
     font-weight: 900;
 
     color: #4a247c;
+
 }
+
 
 .logo span {
 
@@ -117,6 +121,7 @@ body {
     color: #7637d2;
 
     font-size: 14px;
+
 }
 
 
@@ -142,7 +147,9 @@ body {
     border-radius: 9px;
 
     min-width: 105px;
+
 }
+
 
 .saldo small {
 
@@ -150,17 +157,18 @@ body {
 
     font-size: 10px;
 
-    opacity: .9;
 }
+
 
 .saldo strong {
 
     font-size: 15px;
+
 }
 
 
 /* =================================
-   CRONÔMETRO
+   TEMPO
 ================================= */
 
 .tempo {
@@ -171,22 +179,23 @@ body {
 
     gap: 3px;
 
-    font-size: 15px;
 }
+
 
 .tempo span {
 
     font-size: 23px;
 
     color: var(--roxo);
+
 }
 
 
 /* =================================
-   CÂMERA
+   ÁREA DA CÂMERA
 ================================= */
 
-.camera-area {
+.area-camera {
 
     height:
         calc(100vh - 145px);
@@ -198,10 +207,13 @@ body {
     background: #20172e;
 
     overflow: hidden;
+
 }
 
 
-/* Vídeo da câmera */
+/* =================================
+   VÍDEO
+================================= */
 
 #camera {
 
@@ -214,21 +226,25 @@ body {
     display: block;
 
     background: #2a2235;
+
 }
 
 
-/* Escurecimento */
+/* =================================
+   ESCURECIMENTO
+================================= */
 
-.camera-escura {
+.escurecimento {
 
     position: absolute;
 
     inset: 0;
 
     background:
-        rgba(24, 15, 38, .38);
+        rgba(24, 15, 38, 0.38);
 
     pointer-events: none;
+
 }
 
 
@@ -262,10 +278,13 @@ body {
     text-align: center;
 
     color: white;
+
 }
 
 
-/* Cantos da moldura */
+/* =================================
+   CANTOS
+================================= */
 
 .canto {
 
@@ -278,10 +297,11 @@ body {
     border-color: white;
 
     border-style: solid;
+
 }
 
 
-.canto-tl {
+.canto-superior-esquerdo {
 
     top: 0;
 
@@ -293,15 +313,10 @@ body {
         0
         4px;
 
-    border-radius:
-        12px
-        0
-        0
-        0;
 }
 
 
-.canto-tr {
+.canto-superior-direito {
 
     top: 0;
 
@@ -313,15 +328,10 @@ body {
         0
         0;
 
-    border-radius:
-        0
-        12px
-        0
-        0;
 }
 
 
-.canto-bl {
+.canto-inferior-esquerdo {
 
     bottom: 0;
 
@@ -333,15 +343,10 @@ body {
         4px
         4px;
 
-    border-radius:
-        0
-        0
-        0
-        12px;
 }
 
 
-.canto-br {
+.canto-inferior-direito {
 
     bottom: 0;
 
@@ -353,15 +358,12 @@ body {
         4px
         0;
 
-    border-radius:
-        0
-        0
-        12px
-        0;
 }
 
 
-/* Ícone da câmera */
+/* =================================
+   ÍCONE
+================================= */
 
 .icone-camera {
 
@@ -382,10 +384,12 @@ body {
 
     margin-bottom: 18px;
 
-    background:
-        rgba(255,255,255,.12);
 }
 
+
+/* =================================
+   TEXTOS
+================================= */
 
 .moldura p {
 
@@ -397,6 +401,7 @@ body {
     font-size: 17px;
 
     font-weight: bold;
+
 }
 
 
@@ -405,18 +410,63 @@ body {
     font-size: 11px;
 
     opacity: .8;
+
 }
 
 
 /* =================================
-   TEXTO DA CÂMERA
+   BOTÃO ABRIR CÂMERA
+================================= */
+
+.botao-camera {
+
+    position: absolute;
+
+    z-index: 5;
+
+    bottom: 70px;
+
+    left: 50%;
+
+    transform:
+        translateX(-50%);
+
+    border: none;
+
+    border-radius: 15px;
+
+    padding:
+        13px
+        25px;
+
+    background: white;
+
+    color: var(--roxo);
+
+    font-family: inherit;
+
+    font-size: 14px;
+
+    font-weight: bold;
+
+    cursor: pointer;
+
+    box-shadow:
+        0 5px 20px
+        rgba(0,0,0,.25);
+
+}
+
+
+/* =================================
+   MENSAGEM
 ================================= */
 
 .mensagem-camera {
 
     position: absolute;
 
-    bottom: 28px;
+    bottom: 25px;
 
     left: 0;
 
@@ -427,11 +477,12 @@ body {
     color: white;
 
     font-size: 12px;
+
 }
 
 
 /* =================================
-   JANELA DO PRODUTO
+   PRODUTO
 ================================= */
 
 .produto-modal {
@@ -461,64 +512,15 @@ body {
         0 15px 45px
         rgba(35,10,65,.35);
 
-    animation:
-        aparecer .25s ease;
 }
 
-
-/* Esconde elemento */
 
 .escondido {
 
     display: none !important;
+
 }
 
-
-/* Animação */
-
-@keyframes aparecer {
-
-    from {
-
-        opacity: 0;
-
-        transform:
-            translateY(15px);
-    }
-
-    to {
-
-        opacity: 1;
-
-        transform:
-            translateY(0);
-    }
-}
-
-
-/* Botão X */
-
-.fechar {
-
-    position: absolute;
-
-    right: 13px;
-
-    top: 10px;
-
-    border: 0;
-
-    background: transparent;
-
-    color: #3f2862;
-
-    font-size: 28px;
-
-    cursor: pointer;
-}
-
-
-/* Imagem */
 
 .produto-imagem {
 
@@ -540,6 +542,7 @@ body {
     place-items: center;
 
     font-size: 58px;
+
 }
 
 
@@ -548,10 +551,9 @@ body {
     margin: 3px 0;
 
     font-size: 21px;
+
 }
 
-
-/* Preço */
 
 .preco {
 
@@ -561,14 +563,10 @@ body {
 
     font-weight: bold;
 
-    margin:
-        4px
-        0
-        9px;
+    margin: 4px 0 9px;
+
 }
 
-
-/* Categoria */
 
 .categoria {
 
@@ -580,20 +578,19 @@ body {
 
     border-radius: 20px;
 
-    background:
-        #e7dcff;
+    background: #e7dcff;
 
-    color:
-        #5b27a5;
+    color: #5b27a5;
 
     font-size: 11px;
 
     margin-bottom: 17px;
+
 }
 
 
 /* =================================
-   BOTÕES
+   BOTÕES DO PRODUTO
 ================================= */
 
 .botao-principal,
@@ -611,7 +608,6 @@ body {
 
     font-weight: bold;
 
-    cursor: pointer;
 }
 
 
@@ -627,6 +623,7 @@ body {
             #6630bd,
             #8045d2
         );
+
 }
 
 
@@ -639,8 +636,8 @@ body {
     border:
         1px solid #cab8e6;
 
-    color:
-        #542594;
+    color: #542594;
+
 }
 
 
@@ -660,14 +657,17 @@ body {
 
     bottom: 90px;
 
-    padding: 13px 16px;
+    padding:
+        13px
+        16px;
 
     background: white;
 
     border-radius: 13px;
 
     box-shadow:
-        0 8px 25px rgba(0,0,0,.2);
+        0 8px 25px
+        rgba(0,0,0,.2);
 
     text-align: center;
 
@@ -675,14 +675,8 @@ body {
 
     font-weight: bold;
 
-    animation:
-        aparecer .2s ease;
 }
 
-
-/* =================================
-   MENU INFERIOR
-================================= */
 
 .menu {
 
@@ -695,9 +689,6 @@ body {
 
     display: grid;
 
-    grid-template-columns:
-        repeat(3, 1fr);
-
     position: absolute;
 
     bottom: 0;
@@ -707,66 +698,31 @@ body {
     right: 0;
 
     z-index: 10;
+
 }
 
 
-.menu-item {
+.item-menu {
 
     border: 0;
 
     background: transparent;
 
-    color: #88819b;
+    color: var(--roxo);
 
     font-family: inherit;
 
     font-size: 10px;
 
-    cursor: pointer;
-
-    
 }
 
 
-.menu-item span {
+.item-menu span {
 
     display: block;
 
     font-size: 19px;
 
     margin-bottom: 2px;
-}
 
-
-.menu-item.ativo {
-
-    color: var(--roxo);
-
-    font-weight: bold;
-
-    
-}
-
-
-/* =================================
-   CELULARES PEQUENOS
-================================= */
-
-@media (max-width: 380px) {
-
-    .saldo {
-
-        min-width: 92px;
-
-        padding:
-            7px
-            10px;
-    }
-
-    .moldura {
-
-        width: 245px;
-
-        height: 280px;
-    }
 }
