@@ -1,7 +1,4 @@
-/* =====================================
-   ESTOQUE ZERO
-   JAVASCRIPT DA CÂMERA
-===================================== */
+
 
 /* =====================================
    PEGAR ELEMENTOS DO HTML
@@ -190,30 +187,81 @@ function formatarDinheiro(valor) {
 
 atualizarSaldo();
 
-/* =====================================
-   ABRIR CÂMERA
-===================================== */
+// =====================================
+// ABRIR CÂMERA DO CELULAR
+// =====================================
 
 async function iniciarCamera() {
 
+    console.log("Iniciando câmera...");
+
+
+    // Verifica se o navegador possui câmera
+
+    if (!navigator.mediaDevices) {
+
+        mostrarAviso(
+            "❌ Este navegador não permite acesso à câmera."
+        );
+
+        console.error(
+            "navigator.mediaDevices não está disponível."
+        );
+
+        return;
+    }
+
+
     try {
 
+        console.log("Pedindo permissão para câmera...");
+
+
+        // Pede a câmera TRASEIRA
+
         const stream =
-            await navigator.mediaDevices
-                .getUserMedia({
+            await navigator.mediaDevices.getUserMedia({
 
-                    video: {
+                video: {
 
-                        facingMode: {
-                            ideal: "environment"
-                        }
+                    facingMode: {
+                        ideal: "environment"
                     },
 
-                    audio: false
+                    width: {
+                        ideal: 1280
+                    },
 
-                });
+                    height: {
+                        ideal: 720
+                    }
+
+                },
+
+                audio: false
+
+            });
+
+
+        console.log(
+            "✅ Câmera liberada!"
+        );
+
+
+        // Coloca a câmera no vídeo
 
         camera.srcObject = stream;
+
+
+        // Força o vídeo a começar
+
+        await camera.play();
+
+
+        console.log(
+            "✅ Vídeo da câmera iniciado!"
+        );
+
 
         camera.addEventListener(
             "loadedmetadata",
@@ -225,20 +273,94 @@ async function iniciarCamera() {
                 canvas.height =
                     camera.videoHeight;
 
+
+                console.log(
+                    "Tamanho da câmera:",
+                    camera.videoWidth,
+                    "x",
+                    camera.videoHeight
+                );
+
+
                 procurarQRCode();
+
+            },
+            {
+                once: true
             }
         );
+
 
     }
 
     catch (erro) {
 
-        console.error(erro);
-
-        mostrarAviso(
-            "📷 Não foi possível abrir a câmera. Permita o acesso à câmera."
+        console.error(
+            "❌ ERRO DA CÂMERA:",
+            erro.name,
+            erro.message
         );
+
+
+        // =================================
+        // MOSTRAR O ERRO NA TELA
+        // =================================
+
+        if (
+            erro.name ===
+            "NotAllowedError"
+        ) {
+
+            mostrarAviso(
+                "🔒 Permita o acesso à câmera neste navegador."
+            );
+
+        }
+
+        else if (
+            erro.name ===
+            "NotFoundError"
+        ) {
+
+            mostrarAviso(
+                "📷 Nenhuma câmera foi encontrada."
+            );
+
+        }
+
+        else if (
+            erro.name ===
+            "NotReadableError"
+        ) {
+
+            mostrarAviso(
+                "📷 A câmera está sendo usada por outro aplicativo."
+            );
+
+        }
+
+        else if (
+            erro.name ===
+            "OverconstrainedError"
+        ) {
+
+            mostrarAviso(
+                "📷 Não foi possível selecionar a câmera traseira."
+            );
+
+        }
+
+        else {
+
+            mostrarAviso(
+                "❌ Erro ao abrir a câmera: " +
+                erro.name
+            );
+
+        }
+
     }
+
 }
 
 /* =====================================
