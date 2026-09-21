@@ -838,6 +838,13 @@ setInterval(
     1000
 );
 
+
+document
+    .getElementById("abrirCamera")
+    .addEventListener(
+        "click",
+        iniciarCamera
+    );
 /* =====================================
    INICIAR O JOGO
 ===================================== */
