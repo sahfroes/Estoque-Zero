@@ -513,3 +513,138 @@ body {
     }
 
 }
+
+/* ==========================================
+   ALERTA DE TEMPO
+========================================== */
+
+.alerta-tempo {
+    display: none;
+
+    position: absolute;
+
+    top: 50%;
+    left: 50%;
+
+    transform: translate(-50%, -50%);
+
+    z-index: 30;
+
+    width: 80%;
+    max-width: 300px;
+
+    padding: 25px 20px;
+
+    border-radius: 20px;
+
+    background: rgba(255, 255, 255, 0.97);
+
+    border: 3px solid #ff3b3b;
+
+    text-align: center;
+
+    color: #e32626;
+
+    box-shadow:
+        0 0 0 100vmax rgba(80, 0, 0, 0.25),
+        0 8px 25px rgba(0, 0, 0, 0.3);
+
+    animation: aparecerAlerta 0.3s ease;
+}
+
+
+.alerta-tempo .icone-alerta {
+    font-size: 42px;
+
+    margin-bottom: 8px;
+}
+
+
+.alerta-tempo strong {
+    display: block;
+
+    font-size: 22px;
+
+    margin-bottom: 8px;
+}
+
+
+.alerta-tempo span {
+    display: block;
+
+    font-size: 14px;
+
+    color: #c62828;
+}
+
+
+/* ==========================================
+   ANIMAÇÃO DO ALERTA
+========================================== */
+
+@keyframes aparecerAlerta {
+
+    from {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(0.8);
+    }
+
+    to {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1);
+    }
+
+}
+
+
+/* ==========================================
+   TEMPO VERMELHO
+========================================== */
+
+.tempo.tempo-critico {
+    background: #ff3b3b;
+
+    color: white;
+
+    animation: piscarTempo 0.8s infinite;
+}
+
+
+@keyframes piscarTempo {
+
+    0% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.55;
+    }
+
+    100% {
+        opacity: 1;
+    }
+
+}
+
+
+/* ==========================================
+   ALERTA EM CELULARES PEQUENOS
+========================================== */
+
+@media (max-width: 380px) {
+
+    .alerta-tempo {
+        width: 85%;
+
+        padding: 20px 15px;
+    }
+
+    .alerta-tempo .icone-alerta {
+        font-size: 35px;
+    }
+
+    .alerta-tempo strong {
+        font-size: 19px;
+    }
+
+}

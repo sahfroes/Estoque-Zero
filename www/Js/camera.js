@@ -108,6 +108,8 @@ async function iniciarCamera() {
 
         // Esconde mensagem
         mensagemCamera.style.display = "none";
+        // Começa o cronômetro
+        iniciarCronometro();
 
         console.log(
             "Câmera traseira iniciada!"
@@ -355,3 +357,163 @@ window.addEventListener(
 
     }
 );
+
+// ==========================================
+// CRONÔMETRO
+// ==========================================
+
+let tempoRestante = 120;
+
+let intervaloTempo = null;
+
+const elementoTempo =
+    document.getElementById("tempo");
+
+const alertaTempo =
+    document.getElementById("alerta-tempo");
+
+const elementoTempoContainer =
+    document.querySelector(".tempo");
+
+    // ==========================================
+// FORMATAR TEMPO
+// ==========================================
+
+function formatarTempo(segundos) {
+
+    const minutos =
+        Math.floor(segundos / 60);
+
+    const segundosRestantes =
+        segundos % 60;
+
+    return (
+        String(minutos).padStart(2, "0") +
+        ":" +
+        String(segundosRestantes).padStart(2, "0")
+    );
+}
+
+
+// ==========================================
+// ATUALIZAR TEMPO NA TELA
+// ==========================================
+
+function atualizarTempo() {
+
+    elementoTempo.textContent =
+        formatarTempo(tempoRestante);
+
+
+    // ==========================================
+    // ALERTA QUANDO CHEGAR A 10 SEGUNDOS
+    // ==========================================
+
+    if (tempoRestante <= 10 &&
+        tempoRestante > 0) {
+
+        alertaTempo.style.display = "block";
+
+        elementoTempoContainer
+            .classList.add("tempo-critico");
+
+    }
+
+
+    // ==========================================
+    // TEMPO ACABOU
+    // ==========================================
+
+    if (tempoRestante <= 0) {
+
+        tempoRestante = 0;
+
+        elementoTempo.textContent = "00:00";
+
+        pararCronometro();
+
+        finalizarJogo();
+
+    }
+
+}
+
+
+// ==========================================
+// INICIAR CRONÔMETRO
+// ==========================================
+
+function iniciarCronometro() {
+
+    // Evita criar dois cronômetros
+    if (intervaloTempo !== null) {
+        return;
+    }
+
+
+    tempoRestante = 120;
+
+    atualizarTempo();
+
+
+    intervaloTempo = setInterval(function () {
+
+        tempoRestante--;
+
+        atualizarTempo();
+
+    }, 1000);
+
+}
+
+
+// ==========================================
+// PARAR CRONÔMETRO
+// ==========================================
+
+function pararCronometro() {
+
+    if (intervaloTempo !== null) {
+
+        clearInterval(intervaloTempo);
+
+        intervaloTempo = null;
+
+    }
+
+}
+
+
+// ==========================================
+// FINALIZAR JOGO
+// ==========================================
+
+function finalizarJogo() {
+
+    alertaTempo.style.display = "block";
+
+    alertaTempo.innerHTML = `
+        <div class="icone-alerta">⏰</div>
+
+        <strong>Tempo esgotado!</strong>
+
+        <span>
+            Suas compras foram finalizadas.
+        </span>
+    `;
+
+
+    console.log("Tempo esgotado!");
+
+    /*
+       Aqui futuramente podemos mandar
+       o jogador para resultado.html
+
+       Exemplo:
+
+       setTimeout(function() {
+           window.location.href = "resultado.html";
+       }, 3000);
+    */
+
+}
