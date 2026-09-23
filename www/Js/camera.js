@@ -516,3 +516,38 @@ function finalizarJogo() {
   
 
 }
+
+// ==========================================
+// PEGAR ORÇAMENTO ESCOLHIDO
+// ==========================================
+
+const valorSalvo =
+    localStorage.getItem("orcamentoSelecionado");
+
+
+// Converte para número
+const saldoInicial =
+    Number(valorSalvo);
+
+
+// ==========================================
+// MOSTRAR SALDO
+// ==========================================
+
+const elementoSaldo =
+    document.getElementById("saldo");
+
+
+if (!isNaN(saldoInicial) && saldoInicial > 0) {
+
+    elementoSaldo.textContent =
+        "R$ " +
+        saldoInicial.toFixed(2).replace(".", ",");
+
+} else {
+
+    // Caso não exista orçamento salvo
+    elementoSaldo.textContent =
+        "R$ 0,00";
+
+}

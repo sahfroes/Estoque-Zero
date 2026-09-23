@@ -1,29 +1,115 @@
-// Seleciona os elementos da página usando os nomes em português
-const cartaosOpcao = document.querySelectorAll('.cartao-opcao');
-const botaoContinuar = document.getElementById('btnContinuar');
+// ==========================================
+// SELECIONAR ELEMENTOS
+// ==========================================
 
-// Adiciona evento de clique em cada opção
-cartaosOpcao.forEach(cartao => {
-  cartao.addEventListener('click', () => {
-    // Remove o destaque de todos os cartões
-    cartaosOpcao.forEach(c => c.classList.remove('ativo'));
-    
-    // Adiciona a classe de destaque ao cartão clicado
-    cartao.classList.add('ativo');
-    
-    // Marca o botão radio interno como selecionado
-    const opcaoRadio = cartao.querySelector('input[type="radio"]');
-    opcaoRadio.checked = true;
-  });
+const cartoesOpcao =
+    document.querySelectorAll(".cartao-opcao");
+
+const botaoContinuar =
+    document.getElementById("btnContinuar");
+
+
+// ==========================================
+// SELECIONAR UMA OPÇÃO
+// ==========================================
+
+cartoesOpcao.forEach(function (cartao) {
+
+    cartao.addEventListener("click", function () {
+
+        // Remove o destaque de todos
+        cartoesOpcao.forEach(function (item) {
+            item.classList.remove("ativo");
+        });
+
+
+        // Destaca o cartão escolhido
+        cartao.classList.add("ativo");
+
+
+        // Marca o radio
+        const radio =
+            cartao.querySelector(
+                'input[type="radio"]'
+            );
+
+        radio.checked = true;
+
+    });
+
 });
 
-// Ação do botão Começar
-botaoContinuar.addEventListener('click', () => {
-  const opcaoSelecionada = document.querySelector('input[name="orcamento"]:checked');
-  
-  // Salva o valor para usar depois
-  localStorage.setItem('orcamentoSelecionado', opcaoSelecionada.value);
-  
-  // Redireciona para a Tela 9
-  window.location.href = 'contagem.html'; 
+
+// ==========================================
+// BOTÃO COMEÇAR
+// ==========================================
+
+botaoContinuar.addEventListener("click", function () {
+
+    // Procura o orçamento selecionado
+    const opcaoSelecionada =
+        document.querySelector(
+            'input[name="orcamento"]:checked'
+        );
+
+
+    // Verifica se existe uma opção
+    if (!opcaoSelecionada) {
+
+        alert(
+            "Escolha um orçamento para continuar."
+        );
+
+        return;
+    }
+
+
+    // Pega o valor
+    const valorOrcamento =
+        Number(opcaoSelecionada.value);
+
+
+    // ==========================================
+    // SALVAR ORÇAMENTO
+    // ==========================================
+
+    localStorage.setItem(
+        "orcamentoSelecionado",
+        valorOrcamento
+    );
+
+
+    // Também salva o saldo inicial
+    localStorage.setItem(
+        "saldoInicial",
+        valorOrcamento
+    );
+
+
+    // Zera compras anteriores
+    localStorage.setItem(
+        "quantidadeCarrinho",
+        "0"
+    );
+
+
+    // Zera produtos anteriores
+    localStorage.setItem(
+        "produtosCarrinho",
+        JSON.stringify([])
+    );
+
+
+    console.log(
+        "Orçamento escolhido:",
+        valorOrcamento
+    );
+
+
+    // ==========================================
+    // IR PARA CONTAGEM
+    // ==========================================
+
+    window.location.href = "contagem.html";
+
 });
