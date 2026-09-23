@@ -1,7 +1,3 @@
-// ==========================================
-// CONFIGURAÇÕES
-// ==========================================
-
 const camera = document.getElementById("camera");
 
 const mensagemCamera =
@@ -25,7 +21,6 @@ const botaoCarrinho =
 const quantidadeCarrinho =
     document.getElementById("quantidade-carrinho");
 
-
 // ==========================================
 // VARIÁVEIS
 // ==========================================
@@ -35,7 +30,6 @@ let fluxoCamera = null;
 let usandoCameraTraseira = true;
 
 let quantidadeProdutos = 0;
-
 
 // ==========================================
 // INICIAR CÂMERA
@@ -63,10 +57,8 @@ async function iniciarCamera() {
         return;
     }
 
-
     // Para a câmera anterior
     pararCamera();
-
 
     try {
 
@@ -96,13 +88,11 @@ async function iniciarCamera() {
             audio: false
         };
 
-
         // Solicita permissão
         fluxoCamera =
             await navigator.mediaDevices.getUserMedia(
                 configuracao
             );
-
 
         console.log("Câmera autorizada!");
 
@@ -110,18 +100,14 @@ async function iniciarCamera() {
             fluxoCamera.getVideoTracks()
         );
 
-
         // Coloca a câmera no vídeo
         camera.srcObject = fluxoCamera;
-
 
         // Garante que o vídeo fique funcionando
         await camera.play();
 
-
         // Esconde mensagem
         mensagemCamera.style.display = "none";
-
 
         console.log(
             "Câmera traseira iniciada!"
@@ -136,7 +122,6 @@ async function iniciarCamera() {
             erro
         );
 
-
         mostrarErro(
             descobrirErro(erro)
         );
@@ -144,7 +129,6 @@ async function iniciarCamera() {
     }
 
 }
-
 
 // ==========================================
 // PARAR CÂMERA
@@ -165,10 +149,8 @@ function pararCamera() {
         fluxoCamera = null;
     }
 
-
     camera.srcObject = null;
 }
-
 
 // ==========================================
 // TROCAR CÂMERA
@@ -207,12 +189,10 @@ async function trocarCameraCelular() {
 
         };
 
-
         fluxoCamera =
             await navigator.mediaDevices.getUserMedia(
                 configuracao
             );
-
 
         camera.srcObject =
             fluxoCamera;
@@ -241,7 +221,6 @@ async function trocarCameraCelular() {
 
 }
 
-
 // ==========================================
 // MOSTRAR ERRO
 // ==========================================
@@ -255,7 +234,6 @@ function mostrarErro(mensagem) {
     textoErro.textContent = mensagem;
 
 }
-
 
 // ==========================================
 // IDENTIFICAR ERRO
@@ -273,7 +251,6 @@ function descobrirErro(erro) {
 
     }
 
-
     if (erro.name === "NotFoundError") {
 
         return (
@@ -282,7 +259,6 @@ function descobrirErro(erro) {
 
     }
 
-
     if (erro.name === "NotReadableError") {
 
         return (
@@ -290,7 +266,6 @@ function descobrirErro(erro) {
         );
 
     }
-
 
     if (erro.name === "SecurityError") {
 
@@ -301,14 +276,12 @@ function descobrirErro(erro) {
 
     }
 
-
     return (
         "Não foi possível acessar a câmera. " +
         "Verifique as permissões do navegador."
     );
 
 }
-
 
 // ==========================================
 // BOTÃO TENTAR NOVAMENTE
@@ -323,7 +296,6 @@ tentarNovamente.addEventListener(
     }
 );
 
-
 // ==========================================
 // BOTÃO TROCAR CÂMERA
 // ==========================================
@@ -336,7 +308,6 @@ trocarCamera.addEventListener(
 
     }
 );
-
 
 // ==========================================
 // BOTÃO CARRINHO
@@ -359,7 +330,6 @@ botaoCarrinho.addEventListener(
     }
 );
 
-
 // ==========================================
 // INICIAR AO ABRIR A PÁGINA
 // ==========================================
@@ -372,7 +342,6 @@ window.addEventListener(
 
     }
 );
-
 
 // ==========================================
 // LIMPAR CÂMERA AO SAIR

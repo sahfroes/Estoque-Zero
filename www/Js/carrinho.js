@@ -208,7 +208,6 @@ function mostrarProdutos() {
 
     });
 
-
     adicionarEventosQuantidade();
 
     atualizarResumo();
@@ -230,7 +229,6 @@ function adicionarEventosQuantidade() {
             ".botao-mais"
         );
 
-
     // -------------------------------
     // DIMINUIR
     // -------------------------------
@@ -249,7 +247,6 @@ function adicionarEventosQuantidade() {
         );
 
     });
-
 
     // -------------------------------
     // AUMENTAR
@@ -285,7 +282,6 @@ function aumentarProduto(nome) {
 
         });
 
-
     if (!produto) {
         return;
     }
@@ -299,7 +295,6 @@ function aumentarProduto(nome) {
         imagem: produto.imagem
 
     });
-
 
     salvarCarrinho();
 
@@ -419,7 +414,6 @@ confirmar.addEventListener(
             return;
         }
 
-
         // Guarda os dados
         localStorage.setItem(
             "totalCompra",
@@ -443,15 +437,10 @@ confirmar.addEventListener(
 // VOLTAR
 // ========================================
 
-voltar.addEventListener(
-    "click",
-    function () {
-
-        window.location.href =
-            "camera.html";
-
-    }
-);
+voltar.addEventListener("click", function (e) {
+    e.preventDefault();
+    window.location.href = "camera.html";
+});
 
 // ========================================
 // INICIAR
