@@ -505,15 +505,14 @@ function finalizarJogo() {
 
     console.log("Tempo esgotado!");
 
+
+
     /*
-       Aqui futuramente podemos mandar
-       o jogador para resultado.html
-
-       Exemplo:
-
+       Aqui envia o jogador para resultado
+  */
        setTimeout(function() {
-           window.location.href = "resultado.html";
+           window.location.href = "vitoria.html";
        }, 3000);
-    */
+  
 
 }
