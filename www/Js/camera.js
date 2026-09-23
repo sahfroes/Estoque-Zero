@@ -1,763 +1,388 @@
+// ==========================================
+// CONFIGURAÇÕES
+// ==========================================
 
+const camera = document.getElementById("camera");
 
-/* =====================================
-   PEGAR ELEMENTOS DO HTML
-===================================== */
+const mensagemCamera =
+    document.getElementById("mensagem-camera");
 
-const camera =
-    document.getElementById("camera");
+const erroCamera =
+    document.getElementById("erro-camera");
 
-const canvas =
-    document.getElementById("qrCanvas");
+const textoErro =
+    document.getElementById("texto-erro");
 
-const contexto =
-    canvas.getContext("2d", {
-        willReadFrequently: true
-    });
+const tentarNovamente =
+    document.getElementById("tentar-novamente");
 
+const trocarCamera =
+    document.getElementById("trocar-camera");
 
-const saldoElemento =
-    document.getElementById("saldo");
+const botaoCarrinho =
+    document.getElementById("botao-carrinho");
 
-const tempoElemento =
-    document.getElementById("tempo");
+const quantidadeCarrinho =
+    document.getElementById("quantidade-carrinho");
 
 
-const produtoEncontrado =
-    document.getElementById(
-        "produtoEncontrado"
-    );
+// ==========================================
+// VARIÁVEIS
+// ==========================================
 
-const produtoImagem =
-    document.getElementById(
-        "produtoImagem"
-    )
+let fluxoCamera = null;
 
-const produtoNome =
-    document.getElementById(
-        "produtoNome"
-    );
+let usandoCameraTraseira = true;
 
-const produtoPreco =
-    document.getElementById(
-        "produtoPreco"
-    );
+let quantidadeProdutos = 0;
 
-const produtoCategoria =
-    document.getElementById(
-        "produtoCategoria"
-    );
 
-const comprarBotao =
-    document.getElementById(
-        "comprarBtn"
-    );
+// ==========================================
+// INICIAR CÂMERA
+// ==========================================
 
-const cancelarBotao =
-    document.getElementById(
-        "cancelarBtn"
-    );
-
-const fecharBotao =
-    document.getElementById(
-        "fecharProduto"
-    );
-
-const aviso =
-    document.getElementById(
-        "aviso"
-    );
-
-/* =====================================
-   PRODUTOS
-
-   O código precisa ser igual
-   ao conteúdo do QR Code.
-===================================== */
-
-const produtos = {
-
-    "LEITE": {
-
-        nome: "Leite integral",
-
-        preco: 7.50,
-
-        imagem: "🥛",
-
-        categoria: "Alimentação"
-    },
-
-
-    "MACA": {
-
-        nome: "Maçã",
-
-        preco: 5.00,
-
-        imagem: "🍎",
-
-        categoria: "Alimentação"
-    },
-
-
-    "PAO": {
-
-        nome: "Pão",
-
-        preco: 6.00,
-
-        imagem: "🥖",
-
-        categoria: "Alimentação"
-    },
-
-
-    "ARROZ": {
-
-        nome: "Arroz",
-
-        preco: 8.50,
-
-        imagem: "🍚",
-
-        categoria: "Alimentação"
-    },
-
-
-    "CHOCOLATE": {
-
-        nome: "Chocolate",
-
-        preco: 6.50,
-
-        imagem: "🍫",
-
-        categoria: "Supérfluo"
-    }
-
-};
-
-/* =====================================
-   SALDO INICIAL
-===================================== */
-
-let saldo =
-    Number(
-        localStorage.getItem(
-            "estoqueZeroSaldo"
-        )
-    );
-
-/*
-   Se ainda não existir saldo,
-   começa com R$ 50,00.
-*/
-
-if (Number.isNaN(saldo)) {
-
-    saldo = 50.00;
-
-    localStorage.setItem(
-        "estoqueZeroSaldo",
-        saldo
-    );
-}
-
-/* =====================================
-   MOSTRAR SALDO
-===================================== */
-
-function atualizarSaldo() {
-
-    saldoElemento.textContent =
-        formatarDinheiro(saldo);
-}
-
-function formatarDinheiro(valor) {
-
-    return valor.toLocaleString(
-        "pt-BR",
-        {
-            style: "currency",
-            currency: "BRL"
-        }
-    );
-}
-
-atualizarSaldo();
-
-// =====================================
-// ABRIR CÂMERA DO CELULAR
-// =====================================
 async function iniciarCamera() {
-    console.log("Iniciando câmera...");
 
-    // Verifica se está rodando em HTTPS ou localhost (exigido por celulares)
-    if (window.location.protocol !== 'https:' && window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1') {
-        mostrarAviso("⚠️ A câmera exige conexão segura (HTTPS) no celular.");
-        console.error("Acesso à câmera bloqueado: A página não está sendo executada via HTTPS.");
+    console.log("Tentando iniciar a câmera...");
+
+    // Mostra mensagem
+    mensagemCamera.style.display = "block";
+
+    // Esconde erro
+    erroCamera.style.display = "none";
+
+
+    // Verifica se o navegador possui câmera
+    if (!navigator.mediaDevices ||
+        !navigator.mediaDevices.getUserMedia) {
+
+        mostrarErro(
+            "Seu navegador não permite acesso à câmera."
+        );
+
         return;
     }
 
-    // Suporte para navegadores mais antigos em dispositivos móveis
-    if (!navigator.mediaDevices) {
-        navigator.mediaDevices = {};
-    }
 
-    if (!navigator.mediaDevices.getUserMedia) {
-        navigator.mediaDevices.getUserMedia = function(constraints) {
-            const getUserMedia = navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
-            if (!getUserMedia) {
-                mostrarAviso("❌ Este navegador não suporta acesso à câmera.");
-                return Promise.reject(new Error("getUserMedia não suportado neste navegador."));
-            }
-            return new Promise((resolve, reject) => {
-                getUserMedia.call(navigator, constraints, resolve, reject);
-            });
-        };
-    }
+    // Para a câmera anterior
+    pararCamera();
+
 
     try {
-        console.log("Pedindo permissão para câmera...");
 
-        // Configuração ajustada para câmeras traseiras de celulares
-        const constraints = {
+        // ==========================================
+        // CONFIGURAÇÃO DA CÂMERA
+        // ==========================================
+
+        const configuracao = {
+
             video: {
-                facingMode: { ideal: "environment" },
-                width: { ideal: 1280 },
-                height: { ideal: 720 }
+
+                // TRUE = câmera traseira
+                facingMode: {
+                    ideal: "environment"
+                },
+
+                width: {
+                    ideal: 1280
+                },
+
+                height: {
+                    ideal: 720
+                }
+
             },
+
             audio: false
         };
 
-        const stream = await navigator.mediaDevices.getUserMedia(constraints);
 
-        console.log("✅ Câmera liberada!");
+        // Solicita permissão
+        fluxoCamera =
+            await navigator.mediaDevices.getUserMedia(
+                configuracao
+            );
 
-        camera.srcObject = stream;
-        
-        // Garante a execução em navegadores móveis WebKit/iOS
-        camera.setAttribute("playsinline", true); 
+
+        console.log("Câmera autorizada!");
+
+        console.log(
+            fluxoCamera.getVideoTracks()
+        );
+
+
+        // Coloca a câmera no vídeo
+        camera.srcObject = fluxoCamera;
+
+
+        // Garante que o vídeo fique funcionando
         await camera.play();
 
-        console.log("✅ Vídeo da câmera iniciado!");
 
-        camera.addEventListener("loadedmetadata", () => {
-            canvas.width = camera.videoWidth;
-            canvas.height = camera.videoHeight;
+        // Esconde mensagem
+        mensagemCamera.style.display = "none";
 
-            console.log("Tamanho da câmera:", camera.videoWidth, "x", camera.videoHeight);
-            procurarQRCode();
-        }, { once: true });
 
-    } catch (erro) {
-        console.error("❌ ERRO DA CÂMERA:", erro.name, erro.message);
-
-        if (erro.name === "NotAllowedError" || erro.name === "PermissionDeniedError") {
-            mostrarAviso("🔒 Permita o acesso à câmera nas configurações do seu navegador.");
-        } else if (erro.name === "NotFoundError" || erro.name === "DevicesNotFoundError") {
-            mostrarAviso("📷 Nenhuma câmera foi encontrada no dispositivo.");
-        } else if (erro.name === "NotReadableError" || erro.name === "TrackStartError") {
-            mostrarAviso("📷 A câmera já está sendo usada por outro app.");
-        } else if (erro.name === "OverconstrainedError") {
-            // Tenta abrir com configurações padrão caso a restrição de resolução falhe no celular
-            try {
-                const streamFallback = await navigator.mediaDevices.getUserMedia({ video: true });
-                camera.srcObject = streamFallback;
-                await camera.play();
-                procurarQRCode();
-            } catch (fallbackErro) {
-                mostrarAviso("📷 Erro nas configurações de resolução da câmera.");
-            }
-        } else {
-            mostrarAviso("❌ Erro ao abrir a câmera: " + erro.name);
-        }
-    }
-}
-/* =====================================
-   LER QR CODE
-===================================== */
-
-let lendoQRCode = true;
-
-let ultimoCodigo = "";
-
-let ultimoDetectado = 0;
-
-function procurarQRCode() {
-
-    if (!lendoQRCode) {
-
-        requestAnimationFrame(
-            procurarQRCode
+        console.log(
+            "Câmera traseira iniciada!"
         );
 
-        return;
     }
 
-    if (
-        camera.readyState ===
-        camera.HAVE_ENOUGH_DATA
-    ) {
+    catch (erro) {
 
-        canvas.width =
-            camera.videoWidth;
-
-        canvas.height =
-            camera.videoHeight;
-
-        /*
-           Copia a imagem da câmera
-           para o canvas.
-        */
-
-        contexto.drawImage(
-
-            camera,
-
-            0,
-            0,
-
-            canvas.width,
-            canvas.height
+        console.error(
+            "Erro ao acessar câmera:",
+            erro
         );
 
-        /*
-           Pega os pixels da imagem.
-        */
 
-        const imagem =
-            contexto.getImageData(
+        mostrarErro(
+            descobrirErro(erro)
+        );
 
-                0,
-                0,
-
-                canvas.width,
-                canvas.height
-            );
-
-        /*
-           Procura o QR Code.
-        */
-
-        const codigo =
-            jsQR(
-
-                imagem.data,
-
-                imagem.width,
-
-                imagem.height,
-
-                {
-                    inversionAttempts:
-                        "attemptBoth"
-                }
-            );
-
-        /*
-           Encontrou QR Code?
-        */
-
-        if (codigo) {
-
-            const texto =
-                codigo.data
-                    .trim()
-                    .toUpperCase();
-
-            const agora =
-                Date.now();
-
-            /*
-               Evita detectar
-               o mesmo QR várias vezes.
-            */
-
-            if (
-
-                texto !== ultimoCodigo ||
-
-                agora - ultimoDetectado > 3000
-
-            ) {
-
-                ultimoCodigo =
-                    texto;
-
-                ultimoDetectado =
-                    agora;
-
-                produtoDetectado(
-                    texto
-                );
-            }
-        }
     }
 
-    requestAnimationFrame(
-        procurarQRCode
-    );
 }
 
-/* =====================================
-   PRODUTO ENCONTRADO
-===================================== */
 
-let produtoAtual = null;
+// ==========================================
+// PARAR CÂMERA
+// ==========================================
 
-function produtoDetectado(codigo) {
+function pararCamera() {
 
-    /*
-       Procura o produto
-       dentro da lista.
-    */
+    if (fluxoCamera) {
 
-    const produto =
-        produtos[codigo];
+        fluxoCamera
+            .getTracks()
+            .forEach(function (faixa) {
 
-    /*
-       QR Code não cadastrado.
-    */
+                faixa.stop();
 
-    if (!produto) {
+            });
 
-        mostrarAviso(
-
-            "❌ Produto não cadastrado: " +
-            codigo
-
-        );
-
-        return;
+        fluxoCamera = null;
     }
 
-    /*
-       Guarda o produto encontrado.
-    */
 
-    produtoAtual =
-        produto;
-
-    /*
-       Coloca os dados
-       na tela.
-    */
-
-    produtoImagem.textContent =
-        produto.imagem;
-
-    produtoNome.textContent =
-        produto.nome;
-
-    produtoPreco.textContent =
-        formatarDinheiro(
-            produto.preco
-        );
-
-    produtoCategoria.textContent =
-        produto.categoria;
-
-
-    /*
-       Mostra a janela.
-    */
-
-    produtoEncontrado
-        .classList
-        .remove("escondido");
-
-    /*
-       Para temporariamente
-       a leitura da câmera.
-    */
-
-    lendoQRCode = false;
+    camera.srcObject = null;
 }
 
-/* =====================================
-   BOTÃO COMPRAR
-===================================== */
 
-comprarBotao.addEventListener(
-    "click",
-    () => {
+// ==========================================
+// TROCAR CÂMERA
+// ==========================================
 
-        /*
-           Segurança:
-           não existe produto.
-        */
+async function trocarCameraCelular() {
 
-        if (!produtoAtual) {
+    usandoCameraTraseira =
+        !usandoCameraTraseira;
 
-            return;
-        }
 
-        /*
-           Verifica se tem dinheiro.
-        */
+    pararCamera();
 
-        if (
-            produtoAtual.preco >
-            saldo
-        ) {
 
-            mostrarAviso(
+    try {
 
-                "💸 Saldo insuficiente!"
+        const configuracao = {
 
-            );
+            video: {
 
-            return;
-        }
+                facingMode: usandoCameraTraseira
+                    ? "environment"
+                    : "user",
 
-        /*
-           DESCONTA O PRODUTO
-           DO SALDO
-        */
-
-        saldo -=
-            produtoAtual.preco;
-
-        /*
-           Corrige possíveis
-           casas decimais.
-        */
-
-        saldo =
-            Math.round(
-                saldo * 100
-            ) / 100;
-
-        /*
-           Salva o novo saldo.
-        */
-
-        localStorage.setItem(
-
-            "estoqueZeroSaldo",
-
-            saldo
-        );
-
-        /*
-           Atualiza a tela.
-        */
-
-        atualizarSaldo();
-
-        /*
-           Guarda o nome
-           antes de fechar.
-        */
-
-        const nome =
-            produtoAtual.nome;
-
-        const preco =
-            produtoAtual.preco;
-
-        /*
-           Fecha a janela.
-        */
-
-        fecharModal();
-
-        /*
-           Mostra confirmação.
-        */
-
-        mostrarAviso(
-
-            "🛒 Você comprou " +
-            nome +
-            " por " +
-            formatarDinheiro(preco) +
-            "!"
-
-        );
-
-        /*
-           Se acabou o dinheiro.
-        */
-
-        if (saldo === 0) {
-
-            setTimeout(
-                () => {
-
-                    mostrarAviso(
-
-                        "⚠️ Você gastou todo o orçamento!"
-
-                    );
-
+                width: {
+                    ideal: 1280
                 },
-                2500
-            );
-        }
 
-    }
-);
-
-/* =====================================
-   FECHAR PRODUTO
-===================================== */
-
-function fecharModal() {
-
-    produtoEncontrado
-        .classList
-        .add("escondido");
-
-    produtoAtual = null;
-
-    /*
-       Aguarda um pouco para
-       não detectar o mesmo QR
-       imediatamente.
-    */
-
-    setTimeout(
-        () => {
-
-            lendoQRCode = true;
-
-        },
-        700
-    );
-}
-
-cancelarBotao.addEventListener(
-    "click",
-    fecharModal
-);
-
-fecharBotao.addEventListener(
-    "click",
-    fecharModal
-);
-
-/* =====================================
-   AVISOS
-===================================== */
-
-let avisoTimer;
-
-function mostrarAviso(texto) {
-
-    aviso.textContent =
-        texto;
-
-    aviso.classList
-        .remove("escondido");
-
-
-    clearTimeout(
-        avisoTimer
-    );
-
-    avisoTimer =
-        setTimeout(
-            () => {
-
-                aviso.classList
-                    .add("escondido");
+                height: {
+                    ideal: 720
+                }
 
             },
-            2500
+
+            audio: false
+
+        };
+
+
+        fluxoCamera =
+            await navigator.mediaDevices.getUserMedia(
+                configuracao
+            );
+
+
+        camera.srcObject =
+            fluxoCamera;
+
+
+        await camera.play();
+
+
+        console.log(
+            usandoCameraTraseira
+                ? "Câmera traseira"
+                : "Câmera frontal"
         );
-}
 
-/* =====================================
-   CRONÔMETRO
-
-   120 segundos = 2 minutos
-===================================== */
-
-let segundos = 120;
-
-let jogoTerminou = false;
-
-function atualizarTempo() {
-
-    /*
-       Se acabou o jogo,
-       não continua.
-    */
-
-    if (jogoTerminou) {
-
-        return;
     }
 
-    const minutos =
-        Math.floor(
-            segundos / 60
+    catch (erro) {
+
+        console.error(erro);
+
+        mostrarErro(
+            "Não foi possível trocar a câmera."
         );
 
-    const segundosRestantes =
-        segundos % 60;
-
-    /*
-       Mostra:
-
-       02:00
-       01:59
-       01:58
-       ...
-    */
-
-    tempoElemento.textContent =
-
-        String(minutos)
-            .padStart(2, "0")
-
-        + ":" +
-
-        String(segundosRestantes)
-            .padStart(2, "0");
-
-    /*
-       Tempo acabou.
-    */
-
-    if (segundos <= 0) {
-
-        jogoTerminou = true;
-
-        mostrarAviso(
-
-            "⏰ Tempo encerrado! Veja seu resultado."
-
-        );
-
-        return;
     }
 
-    segundos--;
 }
 
-/*
-   Começa o cronômetro.
-*/
 
-atualizarTempo();
+// ==========================================
+// MOSTRAR ERRO
+// ==========================================
 
-setInterval(
-    atualizarTempo,
-    1000
+function mostrarErro(mensagem) {
+
+    mensagemCamera.style.display = "none";
+
+    erroCamera.style.display = "block";
+
+    textoErro.textContent = mensagem;
+
+}
+
+
+// ==========================================
+// IDENTIFICAR ERRO
+// ==========================================
+
+function descobrirErro(erro) {
+
+    if (erro.name === "NotAllowedError") {
+
+        return (
+            "O acesso à câmera foi bloqueado. " +
+            "Permita o uso da câmera nas configurações " +
+            "do navegador."
+        );
+
+    }
+
+
+    if (erro.name === "NotFoundError") {
+
+        return (
+            "Nenhuma câmera foi encontrada neste dispositivo."
+        );
+
+    }
+
+
+    if (erro.name === "NotReadableError") {
+
+        return (
+            "A câmera está sendo usada por outro aplicativo."
+        );
+
+    }
+
+
+    if (erro.name === "SecurityError") {
+
+        return (
+            "O navegador bloqueou o acesso à câmera. " +
+            "Verifique se o site está usando HTTPS."
+        );
+
+    }
+
+
+    return (
+        "Não foi possível acessar a câmera. " +
+        "Verifique as permissões do navegador."
+    );
+
+}
+
+
+// ==========================================
+// BOTÃO TENTAR NOVAMENTE
+// ==========================================
+
+tentarNovamente.addEventListener(
+    "click",
+    function () {
+
+        iniciarCamera();
+
+    }
 );
 
 
-document
-    .getElementById("abrirCamera")
-    .addEventListener(
-        "click",
-        iniciarCamera
-    );
-/* =====================================
-   INICIAR O JOGO
-===================================== */
-iniciarCamera();
+// ==========================================
+// BOTÃO TROCAR CÂMERA
+// ==========================================
+
+trocarCamera.addEventListener(
+    "click",
+    function () {
+
+        trocarCameraCelular();
+
+    }
+);
+
+
+// ==========================================
+// BOTÃO CARRINHO
+// ==========================================
+
+botaoCarrinho.addEventListener(
+    "click",
+    function () {
+
+        console.log(
+            "Abrindo carrinho..."
+        );
+
+
+        // Aqui você poderá mandar para
+        // carrinho.html
+
+        window.location.href = "carrinho.html";
+
+    }
+);
+
+
+// ==========================================
+// INICIAR AO ABRIR A PÁGINA
+// ==========================================
+
+window.addEventListener(
+    "load",
+    function () {
+
+        iniciarCamera();
+
+    }
+);
+
+
+// ==========================================
+// LIMPAR CÂMERA AO SAIR
+// ==========================================
+
+window.addEventListener(
+    "beforeunload",
+    function () {
+
+        pararCamera();
+
+    }
+);

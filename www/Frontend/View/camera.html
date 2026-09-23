@@ -4,213 +4,176 @@
 <head>
     <meta charset="UTF-8">
 
-    <!-- Faz a tela se adaptar ao celular -->
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Faz a página se adaptar ao celular -->
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 
     <title>Estoque Zero - Câmera</title>
 
-    <!-- Nosso CSS -->
     <link rel="stylesheet" href="../../CSS/camera.css">
 </head>
 
 <body>
 
-    <main class="app">
+    <!-- ==========================================
+         ÁREA DA CÂMERA
+    =========================================== -->
 
-        <!-- =========================
+    <main class="tela-camera">
+
+        <!-- Vídeo da câmera do celular -->
+        <video
+            id="camera"
+            autoplay
+            muted
+            playsinline>
+        </video>
+
+
+        <!-- Mensagem enquanto a câmera carrega -->
+        <div id="mensagem-camera" class="mensagem-camera">
+
+            <div class="icone-camera">
+                📷
+            </div>
+
+            <p>
+                Preparando sua câmera...
+            </p>
+
+        </div>
+
+
+        <!-- ==========================================
              TOPO
-        ========================== -->
+        =========================================== -->
 
-        <header class="topo">
+        <header class="cabecalho">
 
-            <div class="logo">
-                ESTOQUE
-                <span>ZERO</span>
+            <div class="nome-jogo">
+                ESTOQUE<br>
+                ZERO
             </div>
 
-            <div class="saldo">
-                <small>Saldo</small>
-                <strong id="saldo">R$ 50,00</strong>
-            </div>
+            <div class="informacoes">
 
-            <div class="tempo">
-                <span>⏱</span>
-                <strong id="tempo">02:00</strong>
+                <div class="saldo">
+                    Saldo
+                    <strong id="saldo">
+                        R$ 30,00
+                    </strong>
+                </div>
+
+                <div class="tempo">
+
+                    <span>⏱</span>
+
+                    <strong id="tempo">
+                        01:58
+                    </strong>
+
+                </div>
+
             </div>
 
         </header>
 
 
-        <!-- =========================
-             ÁREA DA CÂMERA
-        ========================== -->
+        <!-- ==========================================
+             ÁREA DE ESCANEAMENTO
+        =========================================== -->
 
-        <section class="camera-area">
+        <section class="area-escaneamento">
 
-            <!-- Câmera do celular -->
-           <video
-    id="camera"
-    autoplay
-    muted
-    playsinline
-    webkit-playsinline>
-</video>
-
-
-
-            <!-- Escurece um pouco a câmera -->
-            <div class="camera-escura"></div>
-
-
-            <!-- Moldura para apontar para o produto -->
             <div class="moldura">
 
-                <span class="canto canto-tl"></span>
-                <span class="canto canto-tr"></span>
-                <span class="canto canto-bl"></span>
-                <span class="canto canto-br"></span>
+                <span class="canto canto-superior-esquerdo"></span>
+                <span class="canto canto-superior-direito"></span>
 
-                <div class="icone-camera">
-                    
-                </div>
-
-                <p>Aponte para um produto</p>
-
-                <small>
-                    Coloque o QR Code dentro da moldura
-                </small>
+                <span class="canto canto-inferior-esquerdo"></span>
+                <span class="canto canto-inferior-direito"></span>
 
             </div>
 
-<button
-    id="abrirCamera"
-    style="
-        position: absolute;
-        z-index: 999;
-        top: 100px;
-        left: 20px;
-        padding: 15px;
-    "
->
-    📷 Abrir câmera
-</button>
-            <!-- Mensagem inferior -->
-            <div class="mensagem-camera">
 
-                💡 Encontre produtos e faça boas escolhas!
-
-            </div>
+            <p class="instrucao">
+                Aponte para um produto
+            </p>
 
         </section>
 
 
-        <!-- =========================
-             PRODUTO ENCONTRADO
-        ========================== -->
+        <!-- ==========================================
+             BOTÃO DO CARRINHO
+        =========================================== -->
 
-        <section
-            id="produtoEncontrado"
-            class="produto-modal escondido">
+        <button
+            id="botao-carrinho"
+            class="botao-carrinho"
+            type="button">
 
-            <button
-                id="fecharProduto"
-                class="fechar">
-                ×
-            </button>
+            <span class="icone-carrinho">
+                🛒
+            </span>
 
+            <span>
+                Compras
+            </span>
 
-            <!-- Imagem do produto -->
-            <div
-                id="produtoImagem"
-                class="produto-imagem">
-                🥛
-            </div>
+            <span
+                id="quantidade-carrinho"
+                class="quantidade-carrinho">
+                0
+            </span>
 
-
-            <h2 id="produtoNome">
-                Leite integral
-            </h2>
+        </button>
 
 
-            <div
-                id="produtoPreco"
-                class="preco">
-                R$ 7,50
-            </div>
+        <!-- ==========================================
+             BOTÃO TROCAR CÂMERA
+        =========================================== -->
+
+        <button
+            id="trocar-camera"
+            class="botao-trocar-camera"
+            type="button"
+            aria-label="Trocar câmera">
+
+            🔄
+
+        </button>
 
 
-            <div
-                id="produtoCategoria"
-                class="categoria">
-                Alimentação
-            </div>
-
-
-            <button
-                id="comprarBtn"
-                class="botao-principal">
-
-                🛒 Comprar produto
-
-            </button>
-
-
-            <button
-                id="cancelarBtn"
-                class="botao-secundario">
-
-                Cancelar
-
-            </button>
-
-        </section>
-
-
-        <!-- =========================
-             AVISO
-        ========================== -->
+        <!-- ==========================================
+             MENSAGEM DE ERRO
+        =========================================== -->
 
         <div
-            id="aviso"
-            class="aviso escondido">
+            id="erro-camera"
+            class="erro-camera">
+
+            <h2>
+                Câmera não disponível
+            </h2>
+
+            <p id="texto-erro">
+                Não foi possível acessar a câmera.
+            </p>
+
+            <button
+                id="tentar-novamente"
+                type="button">
+
+                Tentar novamente
+
+            </button>
+
         </div>
-
-
-        <!-- =========================
-             MENU INFERIOR
-        ========================== -->
-
-        <nav class="menu">
-
-            <button class="menu-item ativo">
-                <span>🛒</span>
-                Compras
-            </button>
-
-            <button class="menu-item">
-                <span>⏱</span>
-                Tempo
-            </button>
-
-            <button class="menu-item">
-                <span>👤</span>
-                Perfil
-            </button>
-
-        </nav>
-
-
-        <!-- Canvas utilizado para ler o QR Code -->
-        <canvas id="qrCanvas" hidden></canvas>
 
     </main>
 
-    <script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.js"></script>
-    <script src="https://aframe.io/releases/1.6.0/aframe.min.js"></script>
-    <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar.js"></script>
 
-    <!-- Nosso JavaScript -->
-    <script src="../../JS/camera.js"></script>
+    <script src="../../Js/camera.js"></script>
 
 </body>
 

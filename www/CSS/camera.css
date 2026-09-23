@@ -1,770 +1,515 @@
-
+/* ==========================================
+   CONFIGURAÇÕES GERAIS
+========================================== */
 
 * {
+    margin: 0;
+    padding: 0;
     box-sizing: border-box;
 }
 
-:root {
-    --roxo: #6d35c8;
-    --roxo-claro: #eee4ff;
-    --roxo-escuro: #3d176f;
-
-    --branco: #ffffff;
-
-    --texto: #24134b;
-
-    --cinza: #77718a;
-
-    --borda: #d9cbed;
-
-    --vermelho: #e53935;
+html,
+body {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    font-family: Arial, sans-serif;
 }
-
 
 body {
-
-    margin: 0;
-
-    min-height: 100vh;
-
-    font-family:
-        "Trebuchet MS",
-        Arial,
-        sans-serif;
-
-    background: #f5f1ff;
-
-    color: var(--texto);
-
-    display: flex;
-
-    justify-content: center;
+    background: #111;
 }
 
 
-/* =================================
-   APLICATIVO
-================================= */
+/* ==========================================
+   TELA DA CÂMERA
+========================================== */
 
-.app {
+.tela-camera {
+    position: relative;
 
     width: 100%;
-
-    max-width: 430px;
-
-    min-height: 100vh;
-
-    background: white;
-
-    position: relative;
+    height: 100vh;
+    height: 100dvh;
 
     overflow: hidden;
 
-    box-shadow:
-        0 0 30px rgba(65, 35, 120, 0.12);
+    background: #111;
 }
 
 
-/* =================================
-   TOPO
-================================= */
-
-.topo {
-
-    height: 82px;
-
-    padding:
-        18px
-        18px
-        12px;
-
-    display: grid;
-
-    grid-template-columns:
-        1fr
-        auto
-        auto;
-
-    align-items: center;
-
-    gap: 10px;
-
-    background: white;
-
-    position: relative;
-
-    z-index: 5;
-}
-
-
-/* Logo */
-
-.logo {
-
-    font-size: 12px;
-
-    font-weight: 900;
-
-    color: #4a247c;
-}
-
-.logo span {
-
-    display: block;
-
-    color: #7637d2;
-
-    font-size: 14px;
-}
-
-
-/* =================================
-   SALDO
-================================= */
-
-.saldo {
-
-    background:
-        linear-gradient(
-            135deg,
-            #6734bf,
-            #8651d6
-        );
-
-    color: white;
-
-    padding:
-        8px
-        15px;
-
-    border-radius: 9px;
-
-    min-width: 105px;
-}
-
-.saldo small {
-
-    display: block;
-
-    font-size: 10px;
-
-    opacity: .9;
-}
-
-.saldo strong {
-
-    font-size: 15px;
-}
-
-
-/* =================================
-   CRONÔMETRO
-================================= */
-
-.tempo {
-
-    display: flex;
-
-    align-items: center;
-
-    gap: 3px;
-
-    font-size: 15px;
-}
-
-.tempo span {
-
-    font-size: 23px;
-
-    color: var(--roxo);
-}
-
-
-/* =================================
-   CÂMERA
-================================= */
-
-.camera-area {
-
-    height:
-        calc(100vh - 145px);
-
-    min-height: 570px;
-
-    position: relative;
-
-    background: #20172e;
-
-    overflow: hidden;
-}
-
-
-/* Vídeo da câmera */
+/* ==========================================
+   VÍDEO DA CÂMERA
+========================================== */
 
 #camera {
+    position: absolute;
+
+    top: 0;
+    left: 0;
 
     width: 100%;
-
     height: 100%;
 
     object-fit: cover;
 
-    display: block;
+    background: #111;
 
-    background: #2a2235;
+    z-index: 1;
 }
 
 
-/* Escurecimento */
+/* ==========================================
+   CABEÇALHO
+========================================== */
 
-.camera-escura {
-
+.cabecalho {
     position: absolute;
 
-    inset: 0;
+    top: 0;
+    left: 0;
 
-    background:
-        rgba(24, 15, 38, .38);
+    width: 100%;
 
-    pointer-events: none;
-}
-
-
-/* =================================
-   MOLDURA
-================================= */
-
-.moldura {
-
-    width: 270px;
-
-    height: 300px;
-
-    position: absolute;
-
-    left: 50%;
-
-    top: 47%;
-
-    transform:
-        translate(-50%, -50%);
+    padding: 18px;
 
     display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
 
-    flex-direction: column;
+    z-index: 10;
 
-    justify-content: center;
+    background: linear-gradient(
+        to bottom,
+        rgba(20, 10, 60, 0.85),
+        rgba(20, 10, 60, 0)
+    );
+}
+
+
+/* Nome do jogo */
+
+.nome-jogo {
+    color: white;
+
+    font-size: 13px;
+    font-weight: bold;
+
+    line-height: 1.1;
+
+    letter-spacing: 0.5px;
+}
+
+
+/* ==========================================
+   INFORMAÇÕES
+========================================== */
+
+.informacoes {
+    display: flex;
 
     align-items: center;
 
-    text-align: center;
-
-    color: white;
+    gap: 8px;
 }
 
 
-/* Cantos da moldura */
+/* Saldo */
 
-.canto {
+.saldo {
+    min-width: 85px;
 
-    width: 38px;
+    padding: 7px 12px;
 
-    height: 38px;
+    border-radius: 10px;
 
+    background: #6541c7;
+
+    color: white;
+
+    font-size: 11px;
+}
+
+.saldo strong {
+    display: block;
+
+    margin-top: 2px;
+
+    font-size: 14px;
+}
+
+
+/* Tempo */
+
+.tempo {
+    display: flex;
+
+    align-items: center;
+
+    gap: 5px;
+
+    padding: 9px 12px;
+
+    border-radius: 10px;
+
+    background: rgba(255, 255, 255, 0.95);
+
+    color: #43249c;
+
+    font-size: 14px;
+}
+
+
+/* ==========================================
+   ÁREA DE ESCANEAMENTO
+========================================== */
+
+.area-escaneamento {
     position: absolute;
 
-    border-color: white;
+    top: 50%;
+    left: 50%;
 
+    transform: translate(-50%, -50%);
+
+    width: 75%;
+    max-width: 330px;
+
+    height: 310px;
+
+    z-index: 5;
+
+    display: flex;
+    flex-direction: column;
+
+    justify-content: flex-end;
+    align-items: center;
+}
+
+
+/* ==========================================
+   MOLDURA
+========================================== */
+
+.moldura {
+    position: absolute;
+
+    top: 0;
+    left: 0;
+
+    width: 100%;
+    height: 250px;
+}
+
+
+/* Cantos */
+
+.canto {
+    position: absolute;
+
+    width: 45px;
+    height: 45px;
+
+    border-color: white;
     border-style: solid;
 }
 
 
-.canto-tl {
+/* Superior esquerdo */
 
+.canto-superior-esquerdo {
     top: 0;
-
     left: 0;
 
-    border-width:
-        4px
-        0
-        0
-        4px;
+    border-width: 4px 0 0 4px;
 
-    border-radius:
-        12px
-        0
-        0
-        0;
+    border-radius: 10px 0 0 0;
 }
 
 
-.canto-tr {
+/* Superior direito */
 
+.canto-superior-direito {
     top: 0;
-
     right: 0;
 
-    border-width:
-        4px
-        4px
-        0
-        0;
+    border-width: 4px 4px 0 0;
 
-    border-radius:
-        0
-        12px
-        0
-        0;
+    border-radius: 0 10px 0 0;
 }
 
 
-.canto-bl {
+/* Inferior esquerdo */
 
+.canto-inferior-esquerdo {
     bottom: 0;
-
     left: 0;
 
-    border-width:
-        0
-        0
-        4px
-        4px;
+    border-width: 0 0 4px 4px;
 
-    border-radius:
-        0
-        0
-        0
-        12px;
+    border-radius: 0 0 0 10px;
 }
 
 
-.canto-br {
+/* Inferior direito */
 
+.canto-inferior-direito {
     bottom: 0;
-
     right: 0;
 
-    border-width:
-        0
-        4px
-        4px
-        0;
+    border-width: 0 4px 4px 0;
 
-    border-radius:
-        0
-        0
-        12px
-        0;
+    border-radius: 0 0 10px 0;
 }
 
 
-/* Ícone da câmera */
+/* ==========================================
+   INSTRUÇÃO
+========================================== */
 
-.icone-camera {
+.instrucao {
+    position: relative;
 
-    width: 70px;
-
-    height: 70px;
-
-    border:
-        4px solid white;
-
-    border-radius: 50%;
-
-    display: grid;
-
-    place-items: center;
-
-    font-size: 30px;
-
-    margin-bottom: 18px;
-
-    background:
-        rgba(255,255,255,.12);
-}
-
-
-.moldura p {
-
-    margin:
-        0
-        0
-        7px;
-
-    font-size: 17px;
-
-    font-weight: bold;
-}
-
-
-.moldura small {
-
-    font-size: 11px;
-
-    opacity: .8;
-}
-
-
-/* =================================
-   TEXTO DA CÂMERA
-================================= */
-
-.mensagem-camera {
-
-    position: absolute;
-
-    bottom: 28px;
-
-    left: 0;
-
-    width: 100%;
-
-    text-align: center;
-
-    color: white;
-
-    font-size: 12px;
-}
-
-
-/* =================================
-   JANELA DO PRODUTO
-================================= */
-
-.produto-modal {
-
-    position: absolute;
-
-    z-index: 20;
-
-    left: 18px;
-
-    right: 18px;
-
-    top: 105px;
-
-    background: white;
-
-    border-radius: 24px;
-
-    padding:
-        24px
-        18px
-        18px;
-
-    text-align: center;
-
-    box-shadow:
-        0 15px 45px
-        rgba(35,10,65,.35);
-
-    animation:
-        aparecer .25s ease;
-}
-
-
-/* Esconde elemento */
-
-.escondido {
-
-    display: none !important;
-}
-
-
-/* Animação */
-
-@keyframes aparecer {
-
-    from {
-
-        opacity: 0;
-
-        transform:
-            translateY(15px);
-    }
-
-    to {
-
-        opacity: 1;
-
-        transform:
-            translateY(0);
-    }
-}
-
-
-/* Botão X */
-
-.fechar {
-
-    position: absolute;
-
-    right: 13px;
-
-    top: 10px;
-
-    border: 0;
-
-    background: transparent;
-
-    color: #3f2862;
-
-    font-size: 28px;
-
-    cursor: pointer;
-}
-
-
-/* Imagem */
-
-.produto-imagem {
-
-    width: 105px;
-
-    height: 105px;
-
-    margin:
-        0
-        auto
-        12px;
-
-    border-radius: 50%;
-
-    background: #f1e7ff;
-
-    display: grid;
-
-    place-items: center;
-
-    font-size: 58px;
-}
-
-
-.produto-modal h2 {
-
-    margin: 3px 0;
-
-    font-size: 21px;
-}
-
-
-/* Preço */
-
-.preco {
-
-    color: var(--roxo);
-
-    font-size: 21px;
-
-    font-weight: bold;
-
-    margin:
-        4px
-        0
-        9px;
-}
-
-
-/* Categoria */
-
-.categoria {
-
-    display: inline-block;
-
-    padding:
-        6px
-        18px;
+    padding: 10px 20px;
 
     border-radius: 20px;
 
-    background:
-        #e7dcff;
-
-    color:
-        #5b27a5;
-
-    font-size: 11px;
-
-    margin-bottom: 17px;
-}
-
-
-/* =================================
-   BOTÕES
-================================= */
-
-.botao-principal,
-.botao-secundario {
-
-    width: 100%;
-
-    height: 47px;
-
-    border-radius: 14px;
-
-    font-family: inherit;
-
-    font-size: 14px;
-
-    font-weight: bold;
-
-    cursor: pointer;
-}
-
-
-.botao-principal {
-
-    border: 0;
+    background: rgba(30, 20, 70, 0.85);
 
     color: white;
 
-    background:
-        linear-gradient(
-            135deg,
-            #6630bd,
-            #8045d2
-        );
+    font-size: 14px;
+
+    text-align: center;
 }
 
 
-.botao-secundario {
+/* ==========================================
+   BOTÃO CARRINHO
+========================================== */
 
-    margin-top: 9px;
-
-    background: white;
-
-    border:
-        1px solid #cab8e6;
-
-    color:
-        #542594;
-}
-
-
-/* =================================
-   AVISO
-================================= */
-
-.aviso {
-
+.botao-carrinho {
     position: absolute;
 
-    z-index: 30;
+    left: 50%;
+    bottom: 25px;
 
-    left: 22px;
+    transform: translateX(-50%);
 
-    right: 22px;
+    z-index: 20;
 
-    bottom: 90px;
+    min-width: 130px;
 
-    padding: 13px 16px;
+    padding: 13px 20px;
+
+    border: none;
+
+    border-radius: 25px;
+
+    background: #6541c7;
+
+    color: white;
+
+    font-size: 14px;
+    font-weight: bold;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    gap: 8px;
+
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+
+    cursor: pointer;
+}
+
+
+.botao-carrinho:active {
+    transform: translateX(-50%) scale(0.96);
+}
+
+
+/* Ícone */
+
+.icone-carrinho {
+    font-size: 18px;
+}
+
+
+/* Quantidade */
+
+.quantidade-carrinho {
+    min-width: 20px;
+    height: 20px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
 
     background: white;
 
-    border-radius: 13px;
+    color: #6541c7;
 
-    box-shadow:
-        0 8px 25px rgba(0,0,0,.2);
+    font-size: 11px;
+}
+
+
+/* ==========================================
+   BOTÃO TROCAR CÂMERA
+========================================== */
+
+.botao-trocar-camera {
+    position: absolute;
+
+    right: 18px;
+    bottom: 28px;
+
+    z-index: 20;
+
+    width: 45px;
+    height: 45px;
+
+    border: none;
+
+    border-radius: 50%;
+
+    background: rgba(255, 255, 255, 0.9);
+
+    font-size: 20px;
+
+    cursor: pointer;
+}
+
+
+/* ==========================================
+   MENSAGEM ENQUANTO CARREGA
+========================================== */
+
+.mensagem-camera {
+    position: absolute;
+
+    top: 50%;
+    left: 50%;
+
+    transform: translate(-50%, -50%);
+
+    z-index: 15;
 
     text-align: center;
 
-    font-size: 13px;
-
-    font-weight: bold;
-
-    animation:
-        aparecer .2s ease;
+    color: white;
 }
 
 
-/* =================================
-   MENU INFERIOR
-================================= */
+.icone-camera {
+    font-size: 45px;
 
-.menu {
+    margin-bottom: 10px;
+}
 
-    height: 63px;
 
-    background: white;
+.mensagem-camera p {
+    font-size: 14px;
+}
 
-    border-top:
-        1px solid #eee7f7;
 
-    display: grid;
+/* ==========================================
+   ERRO DA CÂMERA
+========================================== */
 
-    grid-template-columns:
-        repeat(3, 1fr);
+.erro-camera {
+    display: none;
 
     position: absolute;
 
-    bottom: 0;
+    top: 50%;
+    left: 50%;
 
-    left: 0;
+    transform: translate(-50%, -50%);
 
-    right: 0;
+    z-index: 50;
 
-    z-index: 10;
+    width: 85%;
+    max-width: 350px;
+
+    padding: 25px;
+
+    border-radius: 20px;
+
+    background: white;
+
+    text-align: center;
+
+    color: #333;
 }
 
 
-.menu-item {
+.erro-camera h2 {
+    margin-bottom: 10px;
 
-    border: 0;
-
-    background: transparent;
-
-    color: #88819b;
-
-    font-family: inherit;
-
-    font-size: 10px;
-
-    cursor: pointer;
-
-    
+    color: #5c39bd;
 }
 
 
-.menu-item span {
+.erro-camera p {
+    margin-bottom: 20px;
 
-    display: block;
+    font-size: 14px;
 
-    font-size: 19px;
-
-    margin-bottom: 2px;
+    line-height: 1.5;
 }
 
 
-.menu-item.ativo {
+.erro-camera button {
+    border: none;
 
-    color: var(--roxo);
+    padding: 12px 25px;
+
+    border-radius: 20px;
+
+    background: #6541c7;
+
+    color: white;
 
     font-weight: bold;
-
-    
 }
 
 
-/* =================================
+/* ==========================================
    CELULARES PEQUENOS
-================================= */
+========================================== */
 
 @media (max-width: 380px) {
 
+    .cabecalho {
+        padding: 12px;
+    }
+
+    .nome-jogo {
+        font-size: 11px;
+    }
+
     .saldo {
+        min-width: 70px;
+        padding: 6px 8px;
+    }
 
-        min-width: 92px;
+    .tempo {
+        padding: 7px 8px;
+    }
 
-        padding:
-            7px
-            10px;
+    .area-escaneamento {
+        width: 78%;
+        height: 280px;
     }
 
     .moldura {
-
-        width: 245px;
-
-        height: 280px;
+        height: 220px;
     }
+
 }
