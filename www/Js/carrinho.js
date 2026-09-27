@@ -434,6 +434,171 @@ confirmarCompras.addEventListener(
     }
 );
 
+// ==========================================
+// CRONÔMETRO DA MISSÃO
+// ==========================================
+
+const CHAVE_TEMPO_FIM = "estoqueZeroTempoFim";
+
+const DURACAO_MISSAO = 120;
+
+
+// ==========================================
+// ELEMENTO DO TEMPO
+// ==========================================
+
+const elementoTempo =
+    document.getElementById("tempo");
+
+const alertaTempo =
+    document.getElementById("alerta-tempo");
+
+const elementoTempoContainer =
+    document.querySelector(".tempo");
+
+
+// ==========================================
+// FORMATAR TEMPO
+// ==========================================
+
+function formatarTempo(segundos) {
+
+    const minutos =
+        Math.floor(segundos / 60);
+
+    const segundosRestantes =
+        segundos % 60;
+
+    return (
+        String(minutos).padStart(2, "0") +
+        ":" +
+        String(segundosRestantes).padStart(2, "0")
+    );
+
+}
+
+
+// ==========================================
+// ATUALIZAR CRONÔMETRO
+// ==========================================
+
+function atualizarCronometroCarrinho() {
+
+    if (!elementoTempo) {
+        return;
+    }
+
+
+    const tempoFim =
+        Number(
+            localStorage.getItem(
+                CHAVE_TEMPO_FIM
+            )
+        );
+
+
+    // Se não existir tempo,
+    // não inicia outro cronômetro
+
+    if (!tempoFim) {
+
+        elementoTempo.textContent =
+            "02:00";
+
+        return;
+
+    }
+
+
+    const agora =
+        Date.now();
+
+
+    let tempoRestante =
+        Math.ceil(
+            (tempoFim - agora) / 1000
+        );
+
+
+    if (tempoRestante < 0) {
+
+        tempoRestante = 0;
+
+    }
+
+
+    // Mostra o tempo
+    elementoTempo.textContent =
+        formatarTempo(tempoRestante);
+
+
+    // ======================================
+    // ÚLTIMOS 10 SEGUNDOS
+    // ======================================
+
+    if (
+        tempoRestante <= 10 &&
+        tempoRestante > 0
+    ) {
+
+        if (alertaTempo) {
+
+            alertaTempo.style.display =
+                "block";
+
+        }
+
+
+        if (elementoTempoContainer) {
+
+            elementoTempoContainer.classList.add(
+                "tempo-critico"
+            );
+
+        }
+
+    }
+
+
+    // ======================================
+    // TEMPO ACABOU
+    // ======================================
+
+    if (tempoRestante <= 0) {
+
+        clearInterval(
+            intervaloCronometroCarrinho
+        );
+
+
+        localStorage.setItem(
+            "estoqueZeroTempoFinalizado",
+            "true"
+        );
+
+
+        window.location.href =
+            "vitoria.html";
+
+    }
+
+}
+
+
+// ==========================================
+// ATUALIZAR A CADA SEGUNDO
+// ==========================================
+
+const intervaloCronometroCarrinho =
+    setInterval(
+        atualizarCronometroCarrinho,
+        1000
+    );
+
+
+// Atualiza imediatamente
+atualizarCronometroCarrinho();
+
 
 // ==========================================
 // INICIAR A TELA

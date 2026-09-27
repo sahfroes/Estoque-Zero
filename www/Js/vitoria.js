@@ -5,138 +5,138 @@
 
 
 /* =========================
-   CONFIGURAÇÕES
-========================= */
-
-const ORCAMENTO_INICIAL = 50;
-
-
-/* =========================
    PEGAR ELEMENTOS
 ========================= */
 
 const orcamentoElemento =
-    document.getElementById(
-        "orcamentoInicial"
-    );
-
+    document.getElementById("orcamentoInicial");
 
 const gastoElemento =
-    document.getElementById(
-        "totalGasto"
-    );
-
+    document.getElementById("totalGasto");
 
 const saldoElemento =
-    document.getElementById(
-        "saldoRestante"
-    );
-
+    document.getElementById("saldoRestante");
 
 const comprasElemento =
-    document.getElementById(
-        "quantidadeCompras"
-    );
-
+    document.getElementById("quantidadeCompras");
 
 const pontuacaoElemento =
-    document.getElementById(
-        "pontuacao"
-    );
-
+    document.getElementById("pontuacao");
 
 const desempenhoElemento =
-    document.getElementById(
-        "mensagemDesempenho"
+    document.getElementById("mensagemDesempenho");
+
+
+/* =========================
+   PEGAR ORÇAMENTO
+========================= */
+
+// Pega o orçamento escolhido pelo aluno
+const orcamento =
+    Number(
+        localStorage.getItem("orcamentoSelecionado")
+    ) || 0;
+
+
+/* =========================
+   PEGAR RESULTADOS
+========================= */
+
+// Pega o total calculado pelo carrinho
+const totalGasto =
+    Number(
+        localStorage.getItem("totalGasto")
+    ) || 0;
+
+
+// Pega o saldo calculado pelo carrinho
+const saldo =
+    Number(
+        localStorage.getItem("saldoFinal")
     );
 
 
 /* =========================
-   PEGAR SALDO
+   PEGAR CARRINHO
 ========================= */
 
-let saldo = Number(
-    localStorage.getItem(
-        "estoqueZeroSaldo"
-    )
-);
-
-
-/*
-   Caso não exista saldo,
-   usamos R$ 50,00.
-*/
-
-if (Number.isNaN(saldo)) {
-
-    saldo = ORCAMENTO_INICIAL;
-
-}
-
-
-/* =========================
-   CALCULAR GASTO
-========================= */
-
-const totalGasto =
-    ORCAMENTO_INICIAL - saldo;
-
-
-/* =========================
-   PEGAR COMPRAS
-========================= */
-
-let compras = [];
-
+let carrinho = [];
 
 try {
 
-    compras = JSON.parse(
-        localStorage.getItem(
-            "estoqueZeroCompras"
-        )
-    ) || [];
+    carrinho =
+        JSON.parse(
+            localStorage.getItem("carrinho")
+        ) || [];
+
+} catch (erro) {
+
+    console.error(
+        "Erro ao carregar carrinho:",
+        erro
+    );
+
+    carrinho = [];
 
 }
-catch (erro) {
 
-    compras = [];
+
+/* =========================
+   CALCULAR QUANTIDADE
+========================= */
+
+let quantidadeCompras = 0;
+
+
+carrinho.forEach(function(produto) {
+
+    quantidadeCompras +=
+        Number(produto.quantidade) || 1;
+
+});
+
+
+/* =========================
+   CALCULAR SALDO
+========================= */
+
+let saldoFinal = saldo;
+
+
+// Caso saldoFinal não exista,
+// calcula novamente
+if (Number.isNaN(saldoFinal)) {
+
+    saldoFinal =
+        orcamento - totalGasto;
 
 }
-
 
 /* =========================
    PONTUAÇÃO
 ========================= */
 
+// Quanto mais dinheiro guardar,
+// maior a pontuação.
 
-/*
-   Quanto mais dinheiro
-   guardar, maior a pontuação.
-*/
-
-const porcentagemGuardada =
-    saldo / ORCAMENTO_INICIAL;
+let pontuacao = 0;
 
 
-let pontuacao =
-    Math.round(
-        porcentagemGuardada * 100
-    );
+if (orcamento > 0) {
 
+    const porcentagemGuardada =
+        saldoFinal / orcamento;
 
-/*
-   Bônus por realizar compras.
-*/
+    pontuacao =
+        Math.round(
+            porcentagemGuardada * 100
+        );
 
-pontuacao +=
-    compras.length * 5;
+}
 
-
-/*
-   Limita a pontuação
-   entre 0 e 100.
-*/
+/* =========================
+   LIMITAR PONTUAÇÃO
+========================= */
 
 pontuacao =
     Math.max(
@@ -146,15 +146,13 @@ pontuacao =
             pontuacao
         )
     );
-
-
 /* =========================
    FORMATAR DINHEIRO
 ========================= */
 
 function dinheiro(valor) {
 
-    return valor.toLocaleString(
+    return Number(valor).toLocaleString(
         "pt-BR",
         {
             style: "currency",
@@ -164,50 +162,42 @@ function dinheiro(valor) {
 
 }
 
-
 /* =========================
    MOSTRAR RESULTADO
 ========================= */
 
 orcamentoElemento.textContent =
-    dinheiro(
-        ORCAMENTO_INICIAL
-    );
+    dinheiro(orcamento);
 
 
 gastoElemento.textContent =
-    dinheiro(
-        totalGasto
-    );
+    dinheiro(totalGasto);
 
 
 saldoElemento.textContent =
-    dinheiro(
-        saldo
-    );
+    dinheiro(saldoFinal);
 
 
 comprasElemento.textContent =
-    compras.length;
+    quantidadeCompras;
 
 
 pontuacaoElemento.textContent =
-    pontuacao +
-    " pontos";
+    pontuacao + " pontos";
 
 
 /* =========================
    MENSAGEM
 ========================= */
 
-if (saldo >= 25) {
+if (saldoFinal >= orcamento * 0.5) {
 
     desempenhoElemento.textContent =
         "🌟 Excelente! Você conseguiu guardar uma boa parte do seu dinheiro.";
 
 }
 
-else if (saldo > 0) {
+else if (saldoFinal > 0) {
 
     desempenhoElemento.textContent =
         "💜 Muito bem! Você gastou, mas ainda conseguiu guardar dinheiro.";
@@ -221,6 +211,16 @@ else {
 
 }
 
+/* =========================
+   DEBUG
+========================= */
+
+console.log("📊 RESULTADO FINAL");
+console.log("Orçamento:", orcamento);
+console.log("Total gasto:", totalGasto);
+console.log("Saldo:", saldoFinal);
+console.log("Compras:", quantidadeCompras);
+console.log("Carrinho:", carrinho);
 
 /* =========================
    RANKING
@@ -228,28 +228,16 @@ else {
 
 function verRanking() {
 
-    /*
-       Por enquanto vamos
-       apenas para uma página
-       chamada ranking.html.
-    */
-
     window.location.href =
         "ranking.html";
 
 }
-
 
 /* =========================
    VOLTAR
 ========================= */
 
 function voltarInicio() {
-
-    /*
-       Volta para a página
-       inicial do projeto.
-    */
 
     window.location.href =
         "orcamento.html";

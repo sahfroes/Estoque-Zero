@@ -598,13 +598,20 @@ if (tentarNovamente) {
 
 
 // ==========================================
-// CRONÔMETRO
+// CRONÔMETRO DA MISSÃO
 // ==========================================
 
-let tempoRestante = 120;
+// Duração da missão: 2 minutos
+const DURACAO_MISSAO = 120;
 
-let intervaloTempo = null;
+// Chaves usadas no localStorage
+const CHAVE_TEMPO_FIM = "estoqueZeroTempoFim";
+const CHAVE_JOGO_INICIADO = "estoqueZeroJogoIniciado";
 
+
+// ==========================================
+// ELEMENTOS
+// ==========================================
 
 const elementoTempo =
     document.getElementById("tempo");
@@ -628,12 +635,53 @@ function formatarTempo(segundos) {
     const segundosRestantes =
         segundos % 60;
 
-
     return (
         String(minutos).padStart(2, "0") +
         ":" +
         String(segundosRestantes).padStart(2, "0")
     );
+
+}
+
+
+// ==========================================
+// CRIAR / RECUPERAR TEMPO DA MISSÃO
+// ==========================================
+
+function obterTempoFim() {
+
+    let tempoFim =
+        Number(
+            localStorage.getItem(
+                CHAVE_TEMPO_FIM
+            )
+        );
+
+
+    // Se ainda não existe,
+    // cria os 2 minutos
+
+    if (!tempoFim || isNaN(tempoFim)) {
+
+        tempoFim =
+            Date.now() +
+            (DURACAO_MISSAO * 1000);
+
+
+        localStorage.setItem(
+            CHAVE_TEMPO_FIM,
+            tempoFim
+        );
+
+        localStorage.setItem(
+            CHAVE_JOGO_INICIADO,
+            "true"
+        );
+
+    }
+
+
+    return tempoFim;
 
 }
 
@@ -645,15 +693,37 @@ function formatarTempo(segundos) {
 function atualizarTempo() {
 
     if (!elementoTempo) {
-
         return;
-
     }
 
 
+    const tempoFim =
+        obterTempoFim();
+
+
+    // Calcula quanto tempo realmente falta
+    const agora = Date.now();
+
+    let tempoRestante =
+        Math.ceil(
+            (tempoFim - agora) / 1000
+        );
+
+
+    // Não deixa ficar negativo
+    if (tempoRestante < 0) {
+        tempoRestante = 0;
+    }
+
+
+    // Mostra na tela
     elementoTempo.textContent =
         formatarTempo(tempoRestante);
 
+
+    // ======================================
+    // ALERTA DOS 10 SEGUNDOS
+    // ======================================
 
     if (
         tempoRestante <= 10 &&
@@ -679,16 +749,22 @@ function atualizarTempo() {
     }
 
 
-    if (
-        tempoRestante <= 0
-    ) {
+    // ======================================
+    // TEMPO ESGOTADO
+    // ======================================
 
-        tempoRestante = 0;
+    if (tempoRestante <= 0) {
 
-        elementoTempo.textContent =
-            "00:00";
+        if (intervaloTempo) {
 
-        pararCronometro();
+            clearInterval(
+                intervaloTempo
+            );
+
+            intervaloTempo = null;
+
+        }
+
 
         finalizarJogo();
 
@@ -698,55 +774,26 @@ function atualizarTempo() {
 
 
 // ==========================================
-// INICIAR CRONÔMETRO
+// INICIAR ATUALIZAÇÃO
 // ==========================================
+
+let intervaloTempo = null;
+
 
 function iniciarCronometro() {
 
-    if (
-        intervaloTempo !== null
-    ) {
-
-        return;
-
-    }
-
-
-    tempoRestante = 120;
-
+    // Atualiza imediatamente
     atualizarTempo();
 
 
-    intervaloTempo =
-        setInterval(
-            function () {
+    // Depois atualiza a cada segundo
+    if (!intervaloTempo) {
 
-                tempoRestante--;
-
-                atualizarTempo();
-
-            },
-            1000
-        );
-
-}
-
-
-// ==========================================
-// PARAR CRONÔMETRO
-// ==========================================
-
-function pararCronometro() {
-
-    if (
-        intervaloTempo !== null
-    ) {
-
-        clearInterval(
-            intervaloTempo
-        );
-
-        intervaloTempo = null;
+        intervaloTempo =
+            setInterval(
+                atualizarTempo,
+                1000
+            );
 
     }
 
@@ -759,32 +806,48 @@ function pararCronometro() {
 
 function finalizarJogo() {
 
-    if (!alertaTempo) {
+    // Evita executar várias vezes
+
+    if (
+        localStorage.getItem(
+            "estoqueZeroTempoFinalizado"
+        ) === "true"
+    ) {
 
         return;
 
     }
 
 
-    alertaTempo.style.display =
-        "block";
+    localStorage.setItem(
+        "estoqueZeroTempoFinalizado",
+        "true"
+    );
 
 
-    alertaTempo.innerHTML = `
+    if (alertaTempo) {
 
-        <div class="icone-alerta">
-            ⏰
-        </div>
+        alertaTempo.style.display =
+            "block";
 
-        <strong>
-            Tempo esgotado!
-        </strong>
 
-        <span>
-            Suas compras foram finalizadas.
-        </span>
+        alertaTempo.innerHTML = `
 
-    `;
+            <div class="icone-alerta">
+                ⏰
+            </div>
+
+            <strong>
+                Tempo esgotado!
+            </strong>
+
+            <span>
+                Suas compras foram finalizadas.
+            </span>
+
+        `;
+
+    }
 
 
     setTimeout(
@@ -799,49 +862,8 @@ function finalizarJogo() {
 
 }
 
-
 // ==========================================
-// ORÇAMENTO
-// ==========================================
-
-const valorSalvo =
-    localStorage.getItem(
-        "orcamentoSelecionado"
-    );
-
-
-const saldoInicial =
-    Number(valorSalvo);
-
-
-const elementoSaldo =
-    document.getElementById("saldo");
-
-
-if (
-    elementoSaldo &&
-    !isNaN(saldoInicial) &&
-    saldoInicial >= 0
-) {
-
-    elementoSaldo.textContent =
-        "R$ " +
-        saldoInicial
-            .toFixed(2)
-            .replace(".", ",");
-
-}
-
-else if (elementoSaldo) {
-
-    elementoSaldo.textContent =
-        "R$ 0,00";
-
-}
-
-
-// ==========================================
-// INICIAR CRONÔMETRO
+// INICIAR
 // ==========================================
 
 iniciarCronometro();
