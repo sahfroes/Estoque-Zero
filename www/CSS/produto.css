@@ -1,0 +1,482 @@
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+
+body {
+
+    font-family: Arial, sans-serif;
+
+    min-height: 100vh;
+
+    background:
+        radial-gradient(
+            circle at top,
+            #272044 0%,
+            #151326 45%,
+            #0d0b16 100%
+        );
+
+    color: white;
+
+}
+
+
+/* ======================================== */
+/* TELA PRINCIPAL */
+/* ======================================== */
+
+.tela-produto {
+
+    min-height: 100vh;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    padding: 25px;
+
+}
+
+
+/* ======================================== */
+/* CARD */
+/* ======================================== */
+
+.card-produto {
+
+    width: 100%;
+
+    max-width: 420px;
+
+    background: rgba(25, 23, 42, 0.96);
+
+    border: 1px solid rgba(255, 255, 255, 0.08);
+
+    border-radius: 28px;
+
+    padding: 25px;
+
+    position: relative;
+
+    overflow: hidden;
+
+    box-shadow:
+        0 20px 60px rgba(0, 0, 0, 0.45);
+
+}
+
+
+/* ======================================== */
+/* BOTÃO FECHAR */
+/* ======================================== */
+
+.botao-fechar {
+
+    position: absolute;
+
+    top: 18px;
+
+    right: 18px;
+
+    width: 38px;
+
+    height: 38px;
+
+    border: none;
+
+    border-radius: 50%;
+
+    background: rgba(255, 255, 255, 0.08);
+
+    color: white;
+
+    font-size: 25px;
+
+    cursor: pointer;
+
+    z-index: 5;
+
+    transition: 0.2s;
+
+}
+
+
+.botao-fechar:hover {
+
+    background: rgba(255, 255, 255, 0.15);
+
+}
+
+
+/* ======================================== */
+/* CABEÇALHO */
+/* ======================================== */
+
+.cabecalho {
+
+    text-align: center;
+
+    padding: 5px 30px 20px;
+
+}
+
+
+.etiqueta {
+
+    display: inline-block;
+
+    padding: 7px 13px;
+
+    border-radius: 20px;
+
+    background: rgba(120, 90, 255, 0.15);
+
+    color: #b9a9ff;
+
+    font-size: 11px;
+
+    font-weight: bold;
+
+    letter-spacing: 1px;
+
+    margin-bottom: 10px;
+
+}
+
+
+.cabecalho h1 {
+
+    font-size: 25px;
+
+    margin-bottom: 8px;
+
+}
+
+
+.cabecalho p {
+
+    color: #aaa6b8;
+
+    font-size: 13px;
+
+    line-height: 1.5;
+
+}
+
+
+/* ======================================== */
+/* ÁREA DA IMAGEM */
+/* ======================================== */
+
+.area-imagem {
+
+    height: 230px;
+
+    border-radius: 22px;
+
+    background:
+        linear-gradient(
+            145deg,
+            #211d3b,
+            #151326
+        );
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    position: relative;
+
+    margin-bottom: 22px;
+
+    overflow: hidden;
+
+}
+
+
+/* ======================================== */
+/* BRILHO DECORATIVO */
+/* ======================================== */
+
+.brilho {
+
+    position: absolute;
+
+    width: 170px;
+
+    height: 170px;
+
+    border-radius: 50%;
+
+    background: rgba(125, 92, 255, 0.20);
+
+    filter: blur(45px);
+
+}
+
+
+/* ======================================== */
+/* IMAGEM */
+/* ======================================== */
+
+.area-imagem img {
+
+    max-width: 75%;
+
+    max-height: 190px;
+
+    object-fit: contain;
+
+    position: relative;
+
+    z-index: 2;
+
+    filter:
+        drop-shadow(
+            0 15px 20px rgba(0, 0, 0, 0.35)
+        );
+
+}
+
+
+/* ======================================== */
+/* INFORMAÇÕES */
+/* ======================================== */
+
+.informacoes {
+
+    padding: 0 5px;
+
+}
+
+
+.tipo-produto {
+
+    display: inline-block;
+
+    padding: 6px 11px;
+
+    border-radius: 15px;
+
+    background: rgba(70, 210, 150, 0.12);
+
+    color: #65dfaa;
+
+    font-size: 11px;
+
+    font-weight: bold;
+
+    margin-bottom: 8px;
+
+}
+
+
+.informacoes h2 {
+
+    font-size: 24px;
+
+    margin-bottom: 5px;
+
+}
+
+
+.descricao-produto {
+
+    color: #aaa6b8;
+
+    font-size: 14px;
+
+    margin-bottom: 18px;
+
+}
+
+
+/* ======================================== */
+/* PREÇO */
+/* ======================================== */
+
+.linha-preco {
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    padding: 15px 0;
+
+    border-top: 1px solid rgba(255, 255, 255, 0.07);
+
+    border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+
+}
+
+
+.texto-preco {
+
+    color: #aaa6b8;
+
+    font-size: 14px;
+
+}
+
+
+.linha-preco strong {
+
+    font-size: 25px;
+
+    color: #ffffff;
+
+}
+
+
+/* ======================================== */
+/* AÇÕES */
+/* ======================================== */
+
+.acoes {
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 10px;
+
+    margin-top: 22px;
+
+}
+
+
+/* ======================================== */
+/* BOTÃO ADICIONAR */
+/* ======================================== */
+
+.botao-adicionar {
+
+    width: 100%;
+
+    padding: 16px;
+
+    border: none;
+
+    border-radius: 15px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #795cff,
+            #6243df
+        );
+
+    color: white;
+
+    font-size: 15px;
+
+    font-weight: bold;
+
+    cursor: pointer;
+
+    box-shadow:
+        0 8px 20px rgba(105, 75, 230, 0.25);
+
+    transition: 0.2s;
+
+}
+
+
+.botao-adicionar:hover {
+
+    transform: translateY(-2px);
+
+}
+
+
+.botao-adicionar:active {
+
+    transform: scale(0.98);
+
+}
+
+
+/* ======================================== */
+/* BOTÃO CANCELAR */
+/* ======================================== */
+
+.botao-cancelar {
+
+    width: 100%;
+
+    padding: 14px;
+
+    border: none;
+
+    background: transparent;
+
+    color: #aaa6b8;
+
+    font-size: 13px;
+
+    cursor: pointer;
+
+}
+
+
+.botao-cancelar:hover {
+
+    color: white;
+
+}
+
+
+/* ======================================== */
+/* CELULAR */
+/* ======================================== */
+
+@media (max-width: 480px) {
+
+    .tela-produto {
+
+        padding: 15px;
+
+    }
+
+
+    .card-produto {
+
+        border-radius: 24px;
+
+        padding: 20px;
+
+    }
+
+
+    .area-imagem {
+
+        height: 210px;
+
+    }
+
+
+    .cabecalho h1 {
+
+        font-size: 23px;
+
+    }
+
+
+    .informacoes h2 {
+
+        font-size: 22px;
+
+    }
+
+}
+

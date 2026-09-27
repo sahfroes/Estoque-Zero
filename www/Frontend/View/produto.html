@@ -1,0 +1,166 @@
+```html
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <!-- Faz a tela se adaptar ao celular -->
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Produto Encontrado - Estoque Zero</title>
+
+    <link rel="stylesheet" href="../../CSS/produto.css">
+
+</head>
+
+
+<body>
+
+
+    <!-- ======================================== -->
+    <!-- TELA DO PRODUTO -->
+    <!-- ======================================== -->
+
+    <main class="tela-produto">
+
+
+        <!-- ======================================== -->
+        <!-- CARD DO PRODUTO -->
+        <!-- ======================================== -->
+
+        <section class="card-produto">
+
+
+            <!-- Botão fechar -->
+            <button
+                id="fechar"
+                class="botao-fechar"
+                aria-label="Fechar">
+
+                ×
+
+            </button>
+
+
+            <!-- ======================================== -->
+            <!-- TÍTULO -->
+            <!-- ======================================== -->
+
+            <div class="cabecalho">
+
+                <span class="etiqueta">
+                    PRODUTO ENCONTRADO
+                </span>
+
+                <h1>
+                    Você encontrou!
+                </h1>
+
+                <p>
+                    Confira os detalhes antes de adicionar ao carrinho.
+                </p>
+
+            </div>
+
+
+            <!-- ======================================== -->
+            <!-- IMAGEM DO PRODUTO -->
+            <!-- ======================================== -->
+
+            <div class="area-imagem">
+
+                <div class="brilho"></div>
+
+                <img
+                    id="imagemProduto"
+                    src=""
+                    alt="Produto encontrado">
+
+            </div>
+
+
+            <!-- ======================================== -->
+            <!-- INFORMAÇÕES -->
+            <!-- ======================================== -->
+
+            <div class="informacoes">
+
+
+                <span
+                    id="tipoProduto"
+                    class="tipo-produto">
+                </span>
+
+
+                <h2 id="nomeProduto">
+                    Produto
+                </h2>
+
+
+                <p id="descricaoProduto"
+                   class="descricao-produto">
+                    -
+                </p>
+
+
+                <div class="linha-preco">
+
+                    <span class="texto-preco">
+                        Valor
+                    </span>
+
+                    <strong id="precoProduto">
+                        R$ 0,00
+                    </strong>
+
+                </div>
+
+
+            </div>
+
+
+            <!-- ======================================== -->
+            <!-- BOTÕES -->
+            <!-- ======================================== -->
+
+            <div class="acoes">
+
+
+                <button
+                    id="adicionar"
+                    class="botao-adicionar">
+
+                    <span>🛒</span>
+
+                    Adicionar ao carrinho
+
+                </button>
+
+
+                <button
+                    id="cancelar"
+                    class="botao-cancelar">
+
+                    Continuar procurando
+
+                </button>
+
+
+            </div>
+
+        </section>
+
+
+    </main>
+
+    <!-- JavaScript -->
+        <script src="../../Js/produto.js"></script>
+
+
+</body>
+
+</html>
+
