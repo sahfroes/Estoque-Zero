@@ -167,7 +167,7 @@ personagens.forEach(function(personagem) {
 
         // Mostra mensagem
         personagemEscolhido.textContent =
-            `Você escolheu: ${personagem.nome} 💜`;
+            `Você escolheu: ${personagem.nome} `;
 
 
         // Libera botão
