@@ -114,7 +114,7 @@ adicionar.addEventListener("click", function () {
 
 cancelar.addEventListener("click", function () {
 
-    window.location.href = "camera.html";
+    window.history.back();
 
 });
 
@@ -125,6 +125,6 @@ cancelar.addEventListener("click", function () {
 
 fechar.addEventListener("click", function () {
 
-    window.location.href = "camera.html";
+    window.history.back();
 
 });

@@ -20,13 +20,16 @@ const tentarNovamente =
 const botaoCarrinho =
     document.getElementById("botao-carrinho");
 
-const produtoLeite =
-    document.getElementById("produto-leite");
-
 
 // ==========================================
-// CONTROLE DE DETECÇÃO
+// PRODUTO ATUAL
 // ==========================================
+
+let produtoAtualId = null;
+
+let produtoAtualAR = null;
+
+let produtoAtualTarget = null;
 
 let produtoFoiEncontrado = false;
 
@@ -39,11 +42,11 @@ let abrindoCard = false;
 
 const produtos = {
 
-    arroz: "Arroz Branco",
+    leite: "Leite UHT",
 
     feijao: "Feijão Carioca",
 
-    leite: "Leite UHT",
+    arroz: "Arroz Branco",
 
     macarrao: "Macarrão",
 
@@ -72,9 +75,9 @@ if (cena) {
         "arReady",
         function () {
 
-            console.log(
-                "✅ MindAR pronto!"
-            );
+            console.log("==============================");
+            console.log("✅ MINDAR PRONTO!");
+            console.log("==============================");
 
             if (mensagemCamera) {
 
@@ -92,7 +95,7 @@ if (cena) {
         function (evento) {
 
             console.error(
-                "❌ Erro no MindAR:",
+                "❌ ERRO NO MINDAR:",
                 evento
             );
 
@@ -107,13 +110,45 @@ if (cena) {
 
 
 // ==========================================
-// PEGAR TARGETS
+// PEGAR TODOS OS TARGETS
 // ==========================================
 
 const targets =
     document.querySelectorAll(
         "[mindar-image-target]"
     );
+
+
+console.log(
+    "================================"
+);
+
+console.log(
+    "🔎 QUANTIDADE DE TARGETS:",
+    targets.length
+);
+
+console.log(
+    "================================"
+);
+
+
+// ==========================================
+// MOSTRAR TARGETS NO CONSOLE
+// ==========================================
+
+targets.forEach(
+    function (target, index) {
+
+        console.log(
+            "Target",
+            index,
+            "→",
+            target.dataset.produto
+        );
+
+    }
+);
 
 
 // ==========================================
@@ -125,31 +160,31 @@ targets.forEach(
 
 
         // ======================================
-        // PRODUTO ENCONTRADO
+        // TARGET ENCONTRADO
         // ======================================
 
         target.addEventListener(
             "targetFound",
             function () {
 
-                console.log(
-                    "🎯 TARGET ENCONTRADO!"
-                );
-
-
                 const produtoEncontrado =
                     target.dataset.produto;
 
 
+                console.log("");
+                console.log("==============================");
+                console.log("🎯 TARGET ENCONTRADO!");
+                console.log("==============================");
+
                 console.log(
-                    "Produto:",
+                    "📦 Produto:",
                     produtoEncontrado
                 );
 
 
-                // ==================================
+                // ----------------------------------
                 // VERIFICAR PRODUTO
-                // ==================================
+                // ----------------------------------
 
                 if (
                     !produtoEncontrado ||
@@ -166,9 +201,49 @@ targets.forEach(
                 }
 
 
-                // ==================================
+                // ----------------------------------
+                // PRODUTO ATUAL
+                // ----------------------------------
+
+                produtoAtualId =
+                    produtoEncontrado;
+
+
+                produtoAtualTarget =
+                    target;
+
+
+                // ----------------------------------
+                // IMAGEM AR
+                // ----------------------------------
+
+                produtoAtualAR =
+                    target.querySelector(
+                        ".produto-ar"
+                    );
+
+
+                if (!produtoAtualAR) {
+
+                    console.error(
+                        "❌ Imagem AR não encontrada:",
+                        produtoEncontrado
+                    );
+
+                    return;
+
+                }
+
+
+                console.log(
+                    "🖼️ Imagem AR:",
+                    produtoAtualAR.id
+                );
+
+
+                // ----------------------------------
                 // SALVAR PRODUTO
-                // ==================================
+                // ----------------------------------
 
                 localStorage.setItem(
                     "produtoEncontrado",
@@ -182,33 +257,29 @@ targets.forEach(
                 );
 
 
-                console.log(
-                    "✅ Produto salvo:",
-                    produtos[produtoEncontrado]
-                );
-
-
-                // ==================================
+                // ----------------------------------
                 // LIBERAR INTERAÇÃO
-                // ==================================
+                // ----------------------------------
 
                 produtoFoiEncontrado =
                     true;
 
 
                 console.log(
-                    "🥛 Produto apareceu em AR!"
+                    "💾 Produto salvo:",
+                    produtoEncontrado
                 );
 
 
                 console.log(
-                    "👆 Clique ou toque em qualquer parte da imagem do produto."
+                    "✨ PRODUTO APARECEU EM AR!"
                 );
 
 
-                // ==================================
-                // ESCONDER MENSAGEM
-                // ==================================
+                console.log(
+                    "👆 Toque no produto para abrir o card."
+                );
+
 
                 if (mensagemCamera) {
 
@@ -234,6 +305,22 @@ targets.forEach(
                     target.dataset.produto
                 );
 
+
+                if (
+                    produtoAtualId ===
+                    target.dataset.produto
+                ) {
+
+                    produtoAtualAR = null;
+
+                    produtoAtualTarget = null;
+
+                    produtoAtualId = null;
+
+                    produtoFoiEncontrado = false;
+
+                }
+
             }
         );
 
@@ -247,7 +334,6 @@ targets.forEach(
 
 function abrirCardProduto() {
 
-
     if (abrindoCard) {
 
         return;
@@ -255,24 +341,12 @@ function abrirCardProduto() {
     }
 
 
-    // ======================================
-    // VERIFICAR RECONHECIMENTO
-    // ======================================
-
     if (!produtoFoiEncontrado) {
-
-        console.log(
-            "⚠️ Primeiro aponte para o produto."
-        );
 
         return;
 
     }
 
-
-    // ======================================
-    // PEGAR PRODUTO
-    // ======================================
 
     const produto =
         localStorage.getItem(
@@ -283,7 +357,7 @@ function abrirCardProduto() {
     if (!produto) {
 
         console.error(
-            "❌ Nenhum produto encontrado."
+            "❌ Nenhum produto salvo."
         );
 
         return;
@@ -292,17 +366,13 @@ function abrirCardProduto() {
 
 
     console.log(
-        "🛒 Abrindo card do:",
+        "🛒 Abrindo card:",
         produto
     );
 
 
     abrindoCard = true;
 
-
-    // ======================================
-    // ABRIR CARD
-    // ======================================
 
     window.location.href =
         "card-produto.html";
@@ -311,8 +381,7 @@ function abrirCardProduto() {
 
 
 // ==========================================
-// INTERAÇÃO COM O PRODUTO
-// MOUSE + CELULAR
+// CLIQUE / TOQUE NO PRODUTO
 // ==========================================
 
 if (cena) {
@@ -321,11 +390,6 @@ if (cena) {
         "loaded",
         function () {
 
-            console.log(
-                "✅ Cena A-Frame carregada!"
-            );
-
-
             const canvas =
                 cena.canvas;
 
@@ -333,7 +397,7 @@ if (cena) {
             if (!canvas) {
 
                 console.error(
-                    "❌ Canvas do A-Frame não encontrado."
+                    "❌ Canvas não encontrado."
                 );
 
                 return;
@@ -342,37 +406,22 @@ if (cena) {
 
 
             console.log(
-                "🖱️👆 Interação ativada!"
+                "👆 Interação ativada."
             );
 
-
-            // ======================================
-            // EVENTO DE MOUSE/TOQUE
-            // ======================================
 
             canvas.addEventListener(
                 "pointerup",
                 function (evento) {
 
 
-                    // ----------------------------------
-                    // PRODUTO AINDA NÃO ENCONTRADO
-                    // ----------------------------------
-
-                    if (!produtoFoiEncontrado) {
-
-                        return;
-
-                    }
-
-
-                    // ----------------------------------
-                    // VERIFICAR SE O PRODUTO ESTÁ VISÍVEL
-                    // ----------------------------------
+                    // ------------------------------
+                    // VERIFICAR PRODUTO
+                    // ------------------------------
 
                     if (
-                        !produtoLeite ||
-                        !produtoLeite.object3D.visible
+                        !produtoFoiEncontrado ||
+                        !produtoAtualAR
                     ) {
 
                         return;
@@ -380,138 +429,93 @@ if (cena) {
                     }
 
 
-                    // ----------------------------------
-                    // POSIÇÃO DO CLIQUE
-                    // ----------------------------------
+                    if (
+                        !produtoAtualAR.object3D ||
+                        !produtoAtualAR.object3D.visible
+                    ) {
+
+                        return;
+
+                    }
+
+
+                    // ------------------------------
+                    // POSIÇÃO DO TOQUE
+                    // ------------------------------
 
                     const rect =
                         canvas.getBoundingClientRect();
 
 
-                    const x =
-                        evento.clientX -
-                        rect.left;
+                    const mouse =
+                        new THREE.Vector2();
 
 
-                    const y =
-                        evento.clientY -
-                        rect.top;
+                    mouse.x =
+                        (
+                            (evento.clientX - rect.left)
+                            / rect.width
+                        ) * 2 - 1;
 
 
-                    console.log(
-                        "📍 Clique/toque:",
-                        x,
-                        y
+                    mouse.y =
+                        -(
+                            (evento.clientY - rect.top)
+                            / rect.height
+                        ) * 2 + 1;
+
+
+                    // ------------------------------
+                    // RAYCASTER
+                    // ------------------------------
+
+                    const raycaster =
+                        new THREE.Raycaster();
+
+
+                    raycaster.setFromCamera(
+                        mouse,
+                        cena.camera
                     );
 
 
-                    // ----------------------------------
-                    // POSIÇÃO DO PRODUTO NA TELA
-                    // ----------------------------------
+                    // ------------------------------
+                    // VERIFICAR PRODUTO ATUAL
+                    // ------------------------------
 
-                    const posicao =
-                        produtoLeite.object3D
-                            .getWorldPosition(
-                                new THREE.Vector3()
-                            );
-
-
-                    // ----------------------------------
-                    // CONVERTER PARA A TELA
-                    // ----------------------------------
-
-                    const camera =
-                        cena.camera;
-
-
-                    const vetor =
-                        posicao.project(
-                            camera
+                    const intersecoes =
+                        raycaster.intersectObject(
+                            produtoAtualAR.object3D,
+                            true
                         );
 
 
-                    const produtoX =
-                        (
-                            (vetor.x + 1) / 2
-                        ) *
-                        rect.width;
+                    console.log(
+                        "🔎 Interseções:",
+                        intersecoes.length
+                    );
 
 
-                    const produtoY =
-                        (
-                            (-vetor.y + 1) / 2
-                        ) *
-                        rect.height;
+                    // ------------------------------
+                    // PRODUTO TOCADO
+                    // ------------------------------
 
-
-                    // ----------------------------------
-                    // TAMANHO APROXIMADO DA IMAGEM
-                    // ----------------------------------
-
-                    const largura =
-                        rect.width * 0.20;
-
-
-                    const altura =
-                        rect.height * 0.35;
-
-
-                    // ----------------------------------
-                    // LIMITES DA ÁREA CLICÁVEL
-                    // ----------------------------------
-
-                    const esquerda =
-                        produtoX -
-                        largura / 2;
-
-
-                    const direita =
-                        produtoX +
-                        largura / 2;
-
-
-                    const topo =
-                        produtoY -
-                        altura / 2;
-
-
-                    const baixo =
-                        produtoY +
-                        altura / 2;
-
-
-                    // ----------------------------------
-                    // VERIFICAR CLIQUE
-                    // ----------------------------------
-
-                    const clicouNaImagem =
-
-                        x >= esquerda &&
-                        x <= direita &&
-                        y >= topo &&
-                        y <= baixo;
-
-
-                    // ----------------------------------
-                    // PRODUTO CLICADO
-                    // ----------------------------------
-
-                    if (clicouNaImagem) {
+                    if (
+                        intersecoes.length > 0
+                    ) {
 
                         console.log(
-                            "🥛 PRODUTO CLICADO/TOCADO!"
+                            "🎯 PRODUTO TOCADO!"
+                        );
+
+
+                        console.log(
+                            "📦 Produto:",
+                            produtoAtualId
                         );
 
 
                         abrirCardProduto();
-
-                    }
-
-                    else {
-
-                        console.log(
-                            "👆 Clique fora do produto."
-                        );
 
                     }
 
@@ -548,7 +552,6 @@ if (botaoCarrinho) {
 // ==========================================
 
 function mostrarErro(mensagem) {
-
 
     if (mensagemCamera) {
 
@@ -595,28 +598,6 @@ if (tentarNovamente) {
 
 
 // ==========================================
-// PÁGINA CARREGADA
-// ==========================================
-
-window.addEventListener(
-    "load",
-    function () {
-
-        console.log(
-            "📱 Página da câmera carregada."
-        );
-
-
-        console.log(
-            "🔎 Quantidade de targets:",
-            targets.length
-        );
-
-    }
-);
-
-
-// ==========================================
 // CRONÔMETRO
 // ==========================================
 
@@ -628,10 +609,8 @@ let intervaloTempo = null;
 const elementoTempo =
     document.getElementById("tempo");
 
-
 const alertaTempo =
     document.getElementById("alerta-tempo");
-
 
 const elementoTempoContainer =
     document.querySelector(".tempo");
@@ -651,18 +630,16 @@ function formatarTempo(segundos) {
 
 
     return (
-
         String(minutos).padStart(2, "0") +
         ":" +
         String(segundosRestantes).padStart(2, "0")
-
     );
 
 }
 
 
 // ==========================================
-// ATUALIZAR CRONÔMETRO
+// ATUALIZAR TEMPO
 // ==========================================
 
 function atualizarTempo() {
@@ -678,15 +655,10 @@ function atualizarTempo() {
         formatarTempo(tempoRestante);
 
 
-    // ======================================
-    // ÚLTIMOS 10 SEGUNDOS
-    // ======================================
-
     if (
         tempoRestante <= 10 &&
         tempoRestante > 0
     ) {
-
 
         if (alertaTempo) {
 
@@ -707,21 +679,16 @@ function atualizarTempo() {
     }
 
 
-    // ======================================
-    // TEMPO ESGOTADO
-    // ======================================
-
-    if (tempoRestante <= 0) {
+    if (
+        tempoRestante <= 0
+    ) {
 
         tempoRestante = 0;
-
 
         elementoTempo.textContent =
             "00:00";
 
-
         pararCronometro();
-
 
         finalizarJogo();
 
@@ -736,7 +703,9 @@ function atualizarTempo() {
 
 function iniciarCronometro() {
 
-    if (intervaloTempo !== null) {
+    if (
+        intervaloTempo !== null
+    ) {
 
         return;
 
@@ -744,7 +713,6 @@ function iniciarCronometro() {
 
 
     tempoRestante = 120;
-
 
     atualizarTempo();
 
@@ -770,12 +738,13 @@ function iniciarCronometro() {
 
 function pararCronometro() {
 
-    if (intervaloTempo !== null) {
+    if (
+        intervaloTempo !== null
+    ) {
 
         clearInterval(
             intervaloTempo
         );
-
 
         intervaloTempo = null;
 
@@ -789,7 +758,6 @@ function pararCronometro() {
 // ==========================================
 
 function finalizarJogo() {
-
 
     if (!alertaTempo) {
 
