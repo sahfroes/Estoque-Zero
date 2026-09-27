@@ -68,15 +68,57 @@ body {
 
 .fechar {
     position: absolute;
-    right: 15px;
-    top: 10px;
+    /* Posição */
+    right: 10px;
+    top: 8px;
+
+    /* Área de toque maior */
+    width: 48px;
+    height: 48px;
+
+    /* Remove aparência padrão */
     border: none;
     background: transparent;
-    font-size: 28px;
+
+    /* X */
+    font-size: 32px;
+    font-weight: normal;
+    line-height: 48px;
+    text-align: center;
+
+    /* Cor */
     color: #222;
+
+    /* Celular */
     cursor: pointer;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+
+    /* Fica acima de outros elementos */
+    z-index: 1000;
+
+    /* Centraliza o X */
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
+/* Efeito ao tocar */
+.fechar:active {
+    transform: scale(0.90);
+}
+
+@media (max-width: 600px) {
+
+    .fechar {
+        width: 52px;
+        height: 52px;
+        font-size: 34px;
+        top: 5px;
+        right: 5px;
+    }
+
+}
 /* =========================
    IMAGEM
 ========================= */
