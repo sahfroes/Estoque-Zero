@@ -1,6 +1,3 @@
-/* ==========================================
-   CONFIGURAÇÕES GERAIS
-========================================== */
 
 * {
     margin: 0;
@@ -8,54 +5,99 @@
     box-sizing: border-box;
 }
 
+
 html,
 body {
+
     width: 100%;
     height: 100%;
-    overflow: hidden;
-    font-family: Arial, sans-serif;
-}
 
-body {
-    background: #111;
+    overflow: hidden;
+
+    font-family: Arial, sans-serif;
+
+    background: #000;
+
 }
 
 
 /* ==========================================
-   TELA DA CÂMERA
+   TELA
 ========================================== */
 
 .tela-camera {
-    position: relative;
 
-    width: 100%;
-    height: 100vh;
+    position: fixed;
+
+    inset: 0;
+
+    width: 100vw;
+
     height: 100dvh;
 
     overflow: hidden;
 
-    background: #111;
+    background: #000;
+
 }
 
 
 /* ==========================================
-   VÍDEO DA CÂMERA
+   MINDAR / A-FRAME
 ========================================== */
 
-#camera {
-    position: absolute;
+.cena-ra {
 
-    top: 0;
-    left: 0;
+    position: fixed !important;
 
-    width: 100%;
-    height: 100%;
+    inset: 0 !important;
 
-    object-fit: cover;
+    width: 100vw !important;
 
-    background: #111;
+    height: 100dvh !important;
 
-    z-index: 1;
+    z-index: 1 !important;
+
+}
+
+
+/* ==========================================
+   CANVAS DO MINDAR
+========================================== */
+
+.cena-ra canvas {
+
+    position: fixed !important;
+
+    top: 0 !important;
+
+    left: 0 !important;
+
+    width: 100vw !important;
+
+    height: 100dvh !important;
+
+}
+
+
+/* ==========================================
+   VÍDEO DO MINDAR
+========================================== */
+
+.cena-ra video {
+
+    position: fixed !important;
+
+    top: 0 !important;
+
+    left: 0 !important;
+
+    width: 100vw !important;
+
+    height: 100dvh !important;
+
+    object-fit: cover !important;
+
 }
 
 
@@ -64,40 +106,58 @@ body {
 ========================================== */
 
 .cabecalho {
+
     position: absolute;
 
     top: 0;
+
     left: 0;
 
     width: 100%;
 
-    padding: 18px;
+    padding:
+
+        calc(18px + env(safe-area-inset-top))
+
+        18px
+
+        25px;
 
     display: flex;
+
     justify-content: space-between;
+
     align-items: flex-start;
 
-    z-index: 10;
+    z-index: 20;
 
-    background: linear-gradient(
-        to bottom,
-        rgba(20, 10, 60, 0.85),
-        rgba(20, 10, 60, 0)
-    );
+    background:
+
+        linear-gradient(
+            to bottom,
+            rgba(20, 10, 60, 0.90),
+            rgba(20, 10, 60, 0)
+        );
+
 }
 
 
-/* Nome do jogo */
+/* ==========================================
+   NOME DO JOGO
+========================================== */
 
 .nome-jogo {
+
     color: white;
 
     font-size: 13px;
+
     font-weight: bold;
 
     line-height: 1.1;
 
     letter-spacing: 0.5px;
+
 }
 
 
@@ -106,17 +166,22 @@ body {
 ========================================== */
 
 .informacoes {
+
     display: flex;
 
     align-items: center;
 
     gap: 8px;
+
 }
 
 
-/* Saldo */
+/* ==========================================
+   SALDO
+========================================== */
 
 .saldo {
+
     min-width: 85px;
 
     padding: 7px 12px;
@@ -128,20 +193,27 @@ body {
     color: white;
 
     font-size: 11px;
+
 }
 
+
 .saldo strong {
+
     display: block;
 
     margin-top: 2px;
 
     font-size: 14px;
+
 }
 
 
-/* Tempo */
+/* ==========================================
+   TEMPO
+========================================== */
 
 .tempo {
+
     display: flex;
 
     align-items: center;
@@ -157,6 +229,7 @@ body {
     color: #43249c;
 
     font-size: 14px;
+
 }
 
 
@@ -165,25 +238,30 @@ body {
 ========================================== */
 
 .area-escaneamento {
+
     position: absolute;
 
     top: 50%;
+
     left: 50%;
 
-    transform: translate(-50%, -50%);
+    transform:
+        translate(-50%, -50%);
 
-    width: 75%;
-    max-width: 330px;
+    width: min(78vw, 330px);
 
     height: 310px;
 
-    z-index: 5;
+    z-index: 10;
 
     display: flex;
+
     flex-direction: column;
 
     justify-content: flex-end;
+
     align-items: center;
+
 }
 
 
@@ -192,74 +270,88 @@ body {
 ========================================== */
 
 .moldura {
+
     position: absolute;
 
     top: 0;
+
     left: 0;
 
     width: 100%;
+
     height: 250px;
+
 }
 
 
-/* Cantos */
+/* ==========================================
+   CANTOS
+========================================== */
 
 .canto {
+
     position: absolute;
 
     width: 45px;
+
     height: 45px;
 
     border-color: white;
+
     border-style: solid;
+
 }
 
 
-/* Superior esquerdo */
-
 .canto-superior-esquerdo {
+
     top: 0;
+
     left: 0;
 
     border-width: 4px 0 0 4px;
 
     border-radius: 10px 0 0 0;
+
 }
 
 
-/* Superior direito */
-
 .canto-superior-direito {
+
     top: 0;
+
     right: 0;
 
     border-width: 4px 4px 0 0;
 
     border-radius: 0 10px 0 0;
+
 }
 
 
-/* Inferior esquerdo */
-
 .canto-inferior-esquerdo {
+
     bottom: 0;
+
     left: 0;
 
     border-width: 0 0 4px 4px;
 
     border-radius: 0 0 0 10px;
+
 }
 
 
-/* Inferior direito */
-
 .canto-inferior-direito {
+
     bottom: 0;
+
     right: 0;
 
     border-width: 0 4px 4px 0;
 
     border-radius: 0 0 10px 0;
+
 }
 
 
@@ -268,31 +360,40 @@ body {
 ========================================== */
 
 .instrucao {
+
     position: relative;
 
     padding: 10px 20px;
 
     border-radius: 20px;
 
-    background: rgba(30, 20, 70, 0.85);
+    background:
+        rgba(30, 20, 70, 0.88);
 
     color: white;
 
     font-size: 14px;
 
     text-align: center;
+
 }
 
 
 /* ==========================================
-   BOTÃO CARRINHO
+   CARRINHO
 ========================================== */
 
 .botao-carrinho {
+
     position: absolute;
 
     left: 50%;
-    bottom: 25px;
+
+    bottom:
+
+        calc(
+            25px + env(safe-area-inset-bottom)
+        );
 
     transform: translateX(-50%);
 
@@ -311,42 +412,51 @@ body {
     color: white;
 
     font-size: 14px;
+
     font-weight: bold;
 
     display: flex;
 
     align-items: center;
+
     justify-content: center;
 
     gap: 8px;
 
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    box-shadow:
+        0 5px 15px rgba(0, 0, 0, 0.3);
 
     cursor: pointer;
+
 }
 
 
 .botao-carrinho:active {
-    transform: translateX(-50%) scale(0.96);
+
+    transform:
+        translateX(-50%)
+        scale(0.96);
+
 }
 
-
-/* Ícone */
 
 .icone-carrinho {
+
     font-size: 18px;
+
 }
 
 
-/* Quantidade */
-
 .quantidade-carrinho {
+
     min-width: 20px;
+
     height: 20px;
 
     display: flex;
 
     align-items: center;
+
     justify-content: center;
 
     border-radius: 50%;
@@ -356,85 +466,107 @@ body {
     color: #6541c7;
 
     font-size: 11px;
+
 }
 
 
 /* ==========================================
-   BOTÃO TROCAR CÂMERA
+   TROCAR CÂMERA
 ========================================== */
 
 .botao-trocar-camera {
+
     position: absolute;
 
     right: 18px;
-    bottom: 28px;
+
+    bottom:
+
+        calc(
+            28px + env(safe-area-inset-bottom)
+        );
 
     z-index: 20;
 
     width: 45px;
+
     height: 45px;
 
     border: none;
 
     border-radius: 50%;
 
-    background: rgba(255, 255, 255, 0.9);
+    background:
+        rgba(255, 255, 255, 0.9);
 
     font-size: 20px;
 
     cursor: pointer;
+
 }
 
 
 /* ==========================================
-   MENSAGEM ENQUANTO CARREGA
+   MENSAGEM DE CARREGAMENTO
 ========================================== */
 
 .mensagem-camera {
+
     position: absolute;
 
     top: 50%;
+
     left: 50%;
 
-    transform: translate(-50%, -50%);
+    transform:
+        translate(-50%, -50%);
 
-    z-index: 15;
+    z-index: 30;
 
     text-align: center;
 
     color: white;
+
 }
 
 
 .icone-camera {
+
     font-size: 45px;
 
     margin-bottom: 10px;
+
 }
 
 
 .mensagem-camera p {
+
     font-size: 14px;
+
 }
 
 
 /* ==========================================
-   ERRO DA CÂMERA
+   ERRO
 ========================================== */
 
 .erro-camera {
+
     display: none;
 
     position: absolute;
 
     top: 50%;
+
     left: 50%;
 
-    transform: translate(-50%, -50%);
+    transform:
+        translate(-50%, -50%);
 
     z-index: 50;
 
     width: 85%;
+
     max-width: 350px;
 
     padding: 25px;
@@ -446,26 +578,32 @@ body {
     text-align: center;
 
     color: #333;
+
 }
 
 
 .erro-camera h2 {
+
     margin-bottom: 10px;
 
     color: #5c39bd;
+
 }
 
 
 .erro-camera p {
+
     margin-bottom: 20px;
 
     font-size: 14px;
 
     line-height: 1.5;
+
 }
 
 
 .erro-camera button {
+
     border: none;
 
     padding: 12px 25px;
@@ -477,67 +615,39 @@ body {
     color: white;
 
     font-weight: bold;
-}
-
-
-/* ==========================================
-   CELULARES PEQUENOS
-========================================== */
-
-@media (max-width: 380px) {
-
-    .cabecalho {
-        padding: 12px;
-    }
-
-    .nome-jogo {
-        font-size: 11px;
-    }
-
-    .saldo {
-        min-width: 70px;
-        padding: 6px 8px;
-    }
-
-    .tempo {
-        padding: 7px 8px;
-    }
-
-    .area-escaneamento {
-        width: 78%;
-        height: 280px;
-    }
-
-    .moldura {
-        height: 220px;
-    }
 
 }
+
 
 /* ==========================================
    ALERTA DE TEMPO
 ========================================== */
 
 .alerta-tempo {
+
     display: none;
 
     position: absolute;
 
     top: 50%;
+
     left: 50%;
 
-    transform: translate(-50%, -50%);
+    transform:
+        translate(-50%, -50%);
 
-    z-index: 30;
+    z-index: 40;
 
     width: 80%;
+
     max-width: 300px;
 
     padding: 25px 20px;
 
     border-radius: 20px;
 
-    background: rgba(255, 255, 255, 0.97);
+    background:
+        rgba(255, 255, 255, 0.97);
 
     border: 3px solid #ff3b3b;
 
@@ -546,67 +656,91 @@ body {
     color: #e32626;
 
     box-shadow:
-        0 0 0 100vmax rgba(80, 0, 0, 0.25),
-        0 8px 25px rgba(0, 0, 0, 0.3);
+        0 0 0 100vmax
+        rgba(80, 0, 0, 0.25),
 
-    animation: aparecerAlerta 0.3s ease;
+        0 8px 25px
+        rgba(0, 0, 0, 0.3);
+
+    animation:
+        aparecerAlerta 0.3s ease;
+
 }
 
 
 .alerta-tempo .icone-alerta {
+
     font-size: 42px;
 
     margin-bottom: 8px;
+
 }
 
 
 .alerta-tempo strong {
+
     display: block;
 
     font-size: 22px;
 
     margin-bottom: 8px;
+
 }
 
 
 .alerta-tempo span {
+
     display: block;
 
     font-size: 14px;
 
     color: #c62828;
+
 }
 
 
 /* ==========================================
-   ANIMAÇÃO DO ALERTA
+   ANIMAÇÃO
 ========================================== */
 
 @keyframes aparecerAlerta {
 
     from {
+
         opacity: 0;
-        transform: translate(-50%, -50%) scale(0.8);
+
+        transform:
+            translate(-50%, -50%)
+            scale(0.8);
+
     }
 
     to {
+
         opacity: 1;
-        transform: translate(-50%, -50%) scale(1);
+
+        transform:
+            translate(-50%, -50%)
+            scale(1);
+
     }
 
 }
 
 
 /* ==========================================
-   TEMPO VERMELHO
+   TEMPO CRÍTICO
 ========================================== */
 
 .tempo.tempo-critico {
+
     background: #ff3b3b;
 
     color: white;
 
-    animation: piscarTempo 0.8s infinite;
+    animation:
+        piscarTempo 0.8s infinite;
+
 }
 
 
@@ -628,23 +762,70 @@ body {
 
 
 /* ==========================================
-   ALERTA EM CELULARES PEQUENOS
+   CELULARES PEQUENOS
 ========================================== */
 
 @media (max-width: 380px) {
 
-    .alerta-tempo {
-        width: 85%;
+    .cabecalho {
 
-        padding: 20px 15px;
+        padding-left: 12px;
+
+        padding-right: 12px;
+
     }
 
-    .alerta-tempo .icone-alerta {
-        font-size: 35px;
+
+    .nome-jogo {
+
+        font-size: 11px;
+
     }
 
-    .alerta-tempo strong {
-        font-size: 19px;
+
+    .saldo {
+
+        min-width: 70px;
+
+        padding: 6px 8px;
+
+    }
+
+
+    .tempo {
+
+        padding: 7px 8px;
+
+    }
+
+
+    .area-escaneamento {
+
+        width: 78%;
+
+        height: 280px;
+
+    }
+
+
+    .moldura {
+
+        height: 220px;
+
+    }
+
+
+    .botao-carrinho {
+
+        bottom: 20px;
+
+    }
+
+
+    .botao-trocar-camera {
+
+        bottom: 23px;
+
     }
 
 }

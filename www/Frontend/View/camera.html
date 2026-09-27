@@ -2,186 +2,355 @@
 <html lang="pt-BR">
 
 <head>
+
     <meta charset="UTF-8">
 
-    <!-- Faz a página se adaptar ao celular -->
-    <meta name="viewport"
-        content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta
+        name="viewport"
+        content="width=device-width,
+                 initial-scale=1.0,
+                 viewport-fit=cover,
+                 maximum-scale=1.0,
+                 user-scalable=no">
+
+    <!-- ==========================================
+         A-FRAME
+    =========================================== -->
+
+    <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
+
+    <!-- ==========================================
+         A-FRAME EXTRAS
+    =========================================== -->
+
+    <script src="https://cdn.jsdelivr.net/gh/donmccurdy/aframe-extras@v7.0.0/dist/aframe-extras.min.js"></script>
+
+    <!-- ==========================================
+         MINDAR
+    =========================================== -->
+
+    <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
 
     <title>Estoque Zero - Câmera</title>
 
-    <link rel="stylesheet" href="../../CSS/camera.css">
+    <link
+        rel="stylesheet"
+        href="../../CSS/camera.css">
+
 </head>
+
 
 <body>
 
+<main class="tela-camera">
+
+
     <!-- ==========================================
-         ÁREA DA CÂMERA
+         CENA AR
     =========================================== -->
 
-    <main class="tela-camera">
+    <a-scene
 
-        <!-- Vídeo da câmera do celular -->
-        <video
-            id="camera"
-            autoplay
-            muted
-            playsinline>
-        </video>
+        id="cena-ra"
+
+        class="cena-ra"
+
+        mindar-image="
+            imageTargetSrc: ../../img/targets/leite.mind;
+            autoStart: true;
+            uiScanning: no;
+            uiLoading: no;
+            filterMinCF: 0.0001;
+            filterBeta: 0.001;
+        "
+
+        embedded
+
+        color-space="sRGB"
+
+        renderer="
+            colorManagement: true;
+            physicallyCorrectLights: true;
+        "
+
+        vr-mode-ui="enabled: false"
+
+        device-orientation-permission-ui="
+            enabled: false
+        ">
 
 
-        <!-- Mensagem enquanto a câmera carrega -->
-        <div id="mensagem-camera" class="mensagem-camera">
+        <!-- ==========================================
+             IMAGEM DO PRODUTO
+        =========================================== -->
 
-            <div class="icone-camera">
-                📷
-            </div>
+        <a-assets>
 
-            <p>
-                Preparando sua câmera...
-            </p>
+            <img
+                id="imagem-leite"
+                src="../../img/produtos/leite.png"
+                alt="Leite">
+
+        </a-assets>
+
+
+        <!-- ==========================================
+             CÂMERA
+        =========================================== -->
+
+        <a-camera
+            position="0 0 0"
+            look-controls="enabled: false">
+
+        </a-camera>
+
+
+        <!-- ==========================================
+             TARGET DO LEITE
+        =========================================== -->
+
+        <a-entity
+
+            id="target-leite"
+
+            mindar-image-target="
+                targetIndex: 0
+            "
+
+            data-produto="leite">
+
+
+            <!-- ======================================
+                 LEITE EM REALIDADE AUMENTADA
+            ======================================= -->
+
+            <a-image
+
+                id="produto-leite"
+
+                class="produto-ar"
+
+                src="#imagem-leite"
+
+                position="0 0 0.1"
+
+                width="0.8"
+
+                height="1.1">
+
+            </a-image>
+
+
+        </a-entity>
+
+
+    </a-scene>
+
+
+    <!-- ==========================================
+         MENSAGEM DA CÂMERA
+    =========================================== -->
+
+    <div
+        id="mensagem-camera"
+        class="mensagem-camera">
+
+        <div class="icone-camera">
+            📷
+        </div>
+
+        <p>
+            Preparando sua câmera...
+        </p>
+
+    </div>
+
+
+    <!-- ==========================================
+         TOPO
+    =========================================== -->
+
+    <header class="cabecalho">
+
+        <div class="nome-jogo">
+
+            ESTOQUE<br>
+            ZERO
 
         </div>
 
 
-        <!-- ==========================================
-             TOPO
-        =========================================== -->
-
-        <header class="cabecalho">
-
-            <div class="nome-jogo">
-                ESTOQUE<br>
-                ZERO
-            </div>
-
-            <div class="informacoes">
-
-                <div class="saldo">
-                    Saldo
-                    <strong id="saldo">
-                        R$ 0,00
-                    </strong>
-                </div>
-
-                <div class="tempo">
-
-                    <span>⏱</span>
-
-                    <strong id="tempo">
-                        02:00
-                    </strong>
-
-                </div>
-
-            </div>
-
-        </header>
+        <div class="informacoes">
 
 
-        <!-- ==========================================
-             ÁREA DE ESCANEAMENTO
-        =========================================== -->
+            <div class="saldo">
 
-        <section class="area-escaneamento">
+                Saldo
 
-            <div class="moldura">
-
-                <span class="canto canto-superior-esquerdo"></span>
-                <span class="canto canto-superior-direito"></span>
-
-                <span class="canto canto-inferior-esquerdo"></span>
-                <span class="canto canto-inferior-direito"></span>
+                <strong id="saldo">
+                    R$ 0,00
+                </strong>
 
             </div>
 
 
-            <p class="instrucao">
-                Aponte para um produto
-            </p>
+            <div class="tempo">
 
-        </section>
+                <span>
+                    ⏱
+                </span>
 
-<!-- ALERTA DE TEMPO -->
-<div id="alerta-tempo" class="alerta-tempo">
-    <div class="icone-alerta">⚠️</div>
+                <strong id="tempo">
+                    02:00
+                </strong>
 
-    <strong>Tempo acabando!</strong>
-
-    <span>Corra! Faltam poucos segundos.</span>
-</div>
+            </div>
 
 
-        <!-- ==========================================
-             BOTÃO DO CARRINHO
-        =========================================== -->
+        </div>
 
-        <button
-            id="botao-carrinho"
-            class="botao-carrinho"
-            type="button">
+    </header>
 
-            <span class="icone-carrinho">
-                🛒
-            </span>
 
-            <span>
-                Compras
+    <!-- ==========================================
+         ÁREA DE ESCANEAMENTO
+    =========================================== -->
+
+    <section class="area-escaneamento">
+
+        <div class="moldura">
+
+            <span
+                class="canto canto-superior-esquerdo">
             </span>
 
             <span
-                id="quantidade-carrinho"
-                class="quantidade-carrinho">
-                0
+                class="canto canto-superior-direito">
             </span>
 
-        </button>
+            <span
+                class="canto canto-inferior-esquerdo">
+            </span>
 
-
-        <!-- ==========================================
-             BOTÃO TROCAR CÂMERA
-        =========================================== -->
-
-        <button
-            id="trocar-camera"
-            class="botao-trocar-camera"
-            type="button"
-            aria-label="Trocar câmera">
-
-            🔄
-
-        </button>
-
-        <!-- ==========================================
-             MENSAGEM DE ERRO
-        =========================================== -->
-
-        <div
-            id="erro-camera"
-            class="erro-camera">
-
-            <h2>
-                Câmera não disponível
-            </h2>
-
-            <p id="texto-erro">
-                Não foi possível acessar a câmera.
-            </p>
-
-            <button
-                id="tentar-novamente"
-                type="button">
-
-                Tentar novamente
-
-            </button>
+            <span
+                class="canto canto-inferior-direito">
+            </span>
 
         </div>
 
-    </main>
+
+        <p class="instrucao">
+
+            Aponte para um produto
+
+        </p>
+
+    </section>
 
 
-    <script src="../../Js/camera.js"></script>
+    <!-- ==========================================
+         ALERTA DE TEMPO
+    =========================================== -->
+
+    <div
+        id="alerta-tempo"
+        class="alerta-tempo">
+
+        <div class="icone-alerta">
+            ⚠️
+        </div>
+
+        <strong>
+            Tempo acabando!
+        </strong>
+
+        <span>
+            Corra! Faltam poucos segundos.
+        </span>
+
+    </div>
+
+
+    <!-- ==========================================
+         CARRINHO
+    =========================================== -->
+
+    <button
+        id="botao-carrinho"
+        class="botao-carrinho"
+        type="button">
+
+        <span class="icone-carrinho">
+            🛒
+        </span>
+
+        <span>
+            Compras
+        </span>
+
+        <span
+            id="quantidade-carrinho"
+            class="quantidade-carrinho">
+
+            0
+
+        </span>
+
+    </button>
+
+
+    <!-- ==========================================
+         TROCAR CÂMERA
+    =========================================== -->
+
+    <button
+        id="trocar-camera"
+        class="botao-trocar-camera"
+        type="button"
+        aria-label="Trocar câmera">
+
+        🔄
+
+    </button>
+
+
+    <!-- ==========================================
+         ERRO
+    =========================================== -->
+
+    <div
+        id="erro-camera"
+        class="erro-camera">
+
+        <h2>
+            Câmera não disponível
+        </h2>
+
+        <p id="texto-erro">
+
+            Não foi possível acessar a câmera.
+
+        </p>
+
+        <button
+            id="tentar-novamente"
+            type="button">
+
+            Tentar novamente
+
+        </button>
+
+    </div>
+
+
+</main>
+
+
+<!-- ==========================================
+     JAVASCRIPT
+=========================================== -->
+
+<script src="../../Js/camera.js"></script>
 
 </body>
 
