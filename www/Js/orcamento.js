@@ -1,37 +1,18 @@
-// ==========================================
-// SELECIONAR ELEMENTOS
-// ==========================================
+const cartaosOpcao = document.querySelectorAll(".cartao-opcao");
+const botaoContinuar = document.getElementById("btnContinuar");
 
-const cartoesOpcao =
-    document.querySelectorAll(".cartao-opcao");
-
-const botaoContinuar =
-    document.getElementById("btnContinuar");
-
-
-// ==========================================
-// SELECIONAR UMA OPÇÃO
-// ==========================================
-
-cartoesOpcao.forEach(function (cartao) {
+cartaosOpcao.forEach(function (cartao) {
 
     cartao.addEventListener("click", function () {
 
-        // Remove o destaque de todos
-        cartoesOpcao.forEach(function (item) {
-            item.classList.remove("ativo");
+        cartaosOpcao.forEach(function (c) {
+            c.classList.remove("ativo");
         });
 
-
-        // Destaca o cartão escolhido
         cartao.classList.add("ativo");
 
-
-        // Marca o radio
         const radio =
-            cartao.querySelector(
-                'input[type="radio"]'
-            );
+            cartao.querySelector('input[type="radio"]');
 
         radio.checked = true;
 
@@ -40,75 +21,38 @@ cartoesOpcao.forEach(function (cartao) {
 });
 
 
-// ==========================================
-// BOTÃO COMEÇAR
-// ==========================================
-
 botaoContinuar.addEventListener("click", function () {
 
-    // Procura o orçamento selecionado
     const opcaoSelecionada =
         document.querySelector(
             'input[name="orcamento"]:checked'
         );
 
-
-    // Verifica se existe uma opção
     if (!opcaoSelecionada) {
-
-        alert(
-            "Escolha um orçamento para continuar."
-        );
-
+        alert("Escolha um orçamento!");
         return;
     }
 
-
-    // Pega o valor
-    const valorOrcamento =
+    const valor =
         Number(opcaoSelecionada.value);
 
-
-    // ==========================================
-    // SALVAR ORÇAMENTO
-    // ==========================================
-
+    // Salva o orçamento escolhido
     localStorage.setItem(
         "orcamentoSelecionado",
-        valorOrcamento
+        valor
     );
 
-
-    // Também salva o saldo inicial
+    // Salva também como saldo inicial
     localStorage.setItem(
         "saldoInicial",
-        valorOrcamento
+        valor
     );
 
-
-    // Zera compras anteriores
+    // Começa um novo carrinho
     localStorage.setItem(
-        "quantidadeCarrinho",
-        "0"
-    );
-
-
-    // Zera produtos anteriores
-    localStorage.setItem(
-        "produtosCarrinho",
+        "carrinho",
         JSON.stringify([])
     );
-
-
-    console.log(
-        "Orçamento escolhido:",
-        valorOrcamento
-    );
-
-
-    // ==========================================
-    // IR PARA CONTAGEM
-    // ==========================================
 
     window.location.href = "contagem.html";
 
