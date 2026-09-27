@@ -2,117 +2,204 @@
 <html lang="pt-BR">
 
 <head>
+
     <meta charset="UTF-8">
 
-    <meta
-        name="viewport"
+    <!-- Faz a tela se adaptar ao celular -->
+    <meta 
+        name="viewport" 
         content="width=device-width, initial-scale=1.0"
     >
 
-    <title>Meu Carrinho</title>
+    <title>Carrinho - Estoque Zero</title>
 
-        <link rel="stylesheet" href="../../CSS/carrinho.css">
+    <!-- CSS do carrinho -->
+    <link 
+        rel="stylesheet" 
+        href="../../CSS/carrinho.css"
+    >
+
 </head>
+
 
 <body>
 
-    <main class="tela-carrinho">
 
-        <!-- =========================
-             CABEÇALHO
-        ========================== -->
+    <!-- ==========================================
+         CABEÇALHO
+    =========================================== -->
 
-        <header class="cabecalho">
+    <header class="cabecalho">
 
-            <button
-                class="botao-voltar"
-                id="voltar"
-            >
-                ←
-            </button>
-
-            <h1>Meu carrinho</h1>
-
-        </header>
-
-
-        <!-- =========================
-             PRODUTOS
-        ========================== -->
-
-        <section
-            class="lista-produtos"
-            id="listaProdutos"
+        <!-- Botão voltar -->
+        <button 
+            id="botao-voltar"
+            class="botao-voltar"
         >
+            ←
+        </button>
+
+
+        <!-- Título -->
+        <h1>
+            Carrinho
+        </h1>
+
+    </header>
+
+
+
+    <!-- ==========================================
+         CONTEÚDO PRINCIPAL
+    =========================================== -->
+
+    <main class="conteudo">
+
+
+        <!-- ==========================================
+             LISTA DE PRODUTOS
+        =========================================== -->
+
+        <section 
+            id="lista-produtos"
+            class="lista-produtos"
+        >
+
+            <!-- Os produtos serão colocados
+                 aqui pelo JavaScript -->
 
         </section>
 
-        <!-- =========================
-             CARRINHO VAZIO
-        ========================== -->
 
-        <section
+
+        <!-- ==========================================
+             MENSAGEM CARRINHO VAZIO
+        =========================================== -->
+
+        <div 
+            id="carrinho-vazio"
             class="carrinho-vazio"
-            id="carrinhoVazio"
         >
 
             <div class="icone-vazio">
                 🛒
             </div>
 
-            <h2>Seu carrinho está vazio</h2>
+            <h2>
+                Seu carrinho está vazio
+            </h2>
 
             <p>
-                Aponte a câmera para um produto
-                para adicioná-lo.
+                Escaneie um produto para adicioná-lo.
             </p>
 
-        </section>
+            <button 
+                id="voltar-camera-vazio"
+                class="botao-voltar-camera"
+            >
+                Voltar para câmera
+            </button>
 
-        <!-- =========================
-             RESUMO
-        ========================== -->
+        </div>
 
-        <section
-            class="resumo"
+
+
+        <!-- ==========================================
+             RESUMO DA COMPRA
+        =========================================== -->
+
+        <section 
             id="resumo"
+            class="resumo"
         >
+
+
+            <!-- Orçamento inicial -->
 
             <div class="linha-resumo">
 
-                <span>Total</span>
+                <span>
+                    Orçamento inicial
+                </span>
 
-                <strong id="total">
+                <strong id="orcamento-inicial">
                     R$ 0,00
                 </strong>
 
             </div>
 
 
+
+            <!-- Total gasto -->
+
             <div class="linha-resumo">
 
-                <span>Saldo restante</span>
+                <span>
+                    Total gasto
+                </span>
 
-                <strong id="saldoRestante">
-                    R$ 50,00
+                <strong 
+                    id="total-gasto"
+                    class="total-gasto"
+                >
+                    R$ 0,00
                 </strong>
 
             </div>
 
-            <!-- =========================
-                 CONFIRMAR
-            ========================== -->
 
-            <button
+
+            <!-- Saldo restante -->
+
+            <div class="linha-resumo">
+
+                <span>
+                    Saldo restante
+                </span>
+
+                <strong 
+                    id="saldo-restante"
+                    class="saldo-restante"
+                >
+                    R$ 0,00
+                </strong>
+
+            </div>
+
+
+
+            <!-- Linha separadora -->
+
+            <div class="linha"></div>
+
+
+
+            <!-- Confirmar compras -->
+
+            <button 
+                id="confirmar-compras"
                 class="botao-confirmar"
-                id="confirmar"
             >
-                Confirmar compras
+
+                ✓
+
+                <span>
+                    Confirmar compras
+                </span>
+
             </button>
+
 
         </section>
 
+
     </main>
+
+
+
+    <!-- ==========================================
+         JAVASCRIPT
+    =========================================== -->
 
     <script src="../../JS/carrinho.js"></script>
 
