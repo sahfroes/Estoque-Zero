@@ -1,6 +1,3 @@
-/* ==========================================
-   CONFIGURAÇÕES GERAIS
-========================================== */
 
 * {
     margin: 0;
@@ -19,6 +16,18 @@ body {
     background: #faf8fd;
 
     color: #563b87;
+
+    /* Evita comportamentos estranhos de toque */
+    -webkit-tap-highlight-color: transparent;
+}
+
+
+/* ==========================================
+   BODY
+========================================== */
+
+body {
+    overflow-x: hidden;
 }
 
 
@@ -47,6 +56,11 @@ body {
     padding: 30px;
 
     gap: 15px;
+
+    /* Importante para o celular */
+    position: relative;
+
+    z-index: 50;
 }
 
 
@@ -72,9 +86,26 @@ body {
     display: flex;
 
     align-items: center;
+
     justify-content: center;
 
     cursor: pointer;
+
+    /* IMPORTANTE PARA CELULAR */
+
+    position: relative;
+
+    z-index: 999;
+
+    pointer-events: auto;
+
+    touch-action: manipulation;
+
+    -webkit-tap-highlight-color: transparent;
+
+    user-select: none;
+
+    -webkit-user-select: none;
 }
 
 
@@ -128,7 +159,6 @@ body {
     position: relative;
 
     z-index: 2;
-
 }
 
 
@@ -178,6 +208,7 @@ body {
     display: flex;
 
     align-items: center;
+
     justify-content: center;
 
     flex-shrink: 0;
@@ -257,10 +288,15 @@ body {
 
     gap: 12px;
 
+    position: relative;
+
+    z-index: 10;
 }
 
 
-/* Botões + e - */
+/* ==========================================
+   BOTÕES + E -
+========================================== */
 
 .botao-quantidade {
 
@@ -276,14 +312,30 @@ body {
     display: flex;
 
     align-items: center;
+
     justify-content: center;
 
     cursor: pointer;
 
+    position: relative;
+
+    z-index: 100;
+
+    pointer-events: auto;
+
+    touch-action: manipulation;
+
+    user-select: none;
+
+    -webkit-user-select: none;
+
+    -webkit-tap-highlight-color: transparent;
 }
 
 
-/* Botão menos */
+/* ==========================================
+   BOTÃO MENOS
+========================================== */
 
 .botao-menos {
 
@@ -294,7 +346,9 @@ body {
 }
 
 
-/* Botão mais */
+/* ==========================================
+   BOTÃO MAIS
+========================================== */
 
 .botao-mais {
 
@@ -305,7 +359,20 @@ body {
 }
 
 
-/* Número */
+/* ==========================================
+   EFEITO DE TOQUE
+========================================== */
+
+.botao-quantidade:active {
+
+    transform: scale(0.90);
+
+}
+
+
+/* ==========================================
+   NÚMERO DA QUANTIDADE
+========================================== */
 
 .quantidade {
 
@@ -340,12 +407,25 @@ body {
 
     margin-left: 2px;
 
+    position: relative;
+
+    z-index: 100;
+
+    pointer-events: auto;
+
+    touch-action: manipulation;
+
+    user-select: none;
+
+    -webkit-user-select: none;
+
+    -webkit-tap-highlight-color: transparent;
 }
 
 
 .botao-excluir:active {
 
-    transform: scale(0.9);
+    transform: scale(0.90);
 
 }
 
@@ -367,11 +447,14 @@ body {
     box-shadow:
         0 8px 30px rgba(90, 50, 120, 0.12);
 
+    position: relative;
+
+    z-index: 20;
 }
 
 
 /* ==========================================
-   LINHAS
+   LINHAS DO RESUMO
 ========================================== */
 
 .linha-resumo {
@@ -448,7 +531,7 @@ body {
 
 
 /* ==========================================
-   BOTÃO CONFIRMAR
+   BOTÃO FINALIZAR PARTIDA
 ========================================== */
 
 .botao-confirmar {
@@ -486,12 +569,42 @@ body {
     box-shadow:
         0 6px 15px rgba(90, 50, 130, 0.2);
 
+    /* IMPORTANTE PARA CELULAR */
+
+    position: relative;
+
+    z-index: 999;
+
+    pointer-events: auto;
+
+    touch-action: manipulation;
+
+    user-select: none;
+
+    -webkit-user-select: none;
+
+    -webkit-tap-highlight-color: transparent;
 }
 
+
+/* ==========================================
+   EFEITO DE TOQUE
+========================================== */
 
 .botao-confirmar:active {
 
     transform: scale(0.98);
+
+}
+
+
+/* ==========================================
+   ÍCONE DO BOTÃO
+========================================== */
+
+.icone-confirmar {
+
+    font-size: 22px;
 
 }
 
@@ -508,6 +621,9 @@ body {
 
     padding: 60px 20px;
 
+    position: relative;
+
+    z-index: 20;
 }
 
 
@@ -558,6 +674,64 @@ body {
 
     cursor: pointer;
 
+    position: relative;
+
+    z-index: 999;
+
+    pointer-events: auto;
+
+    touch-action: manipulation;
+
+    user-select: none;
+
+    -webkit-user-select: none;
+
+    -webkit-tap-highlight-color: transparent;
+}
+
+
+.botao-voltar-camera:active {
+
+    transform: scale(0.96);
+
+}
+
+
+/* ==========================================
+   TODOS OS BOTÕES
+   COMPATIBILIDADE COM CELULAR
+========================================== */
+
+button {
+
+    -webkit-tap-highlight-color: transparent;
+
+    touch-action: manipulation;
+
+    user-select: none;
+
+    -webkit-user-select: none;
+
+    pointer-events: auto;
+}
+
+
+/* ==========================================
+   GARANTIR QUE BOTÕES PRINCIPAIS
+   FIQUEM ACIMA DE OUTRAS CAMADAS
+========================================== */
+
+#botao-voltar,
+#voltar-camera-vazio,
+#confirmar-compras {
+
+    position: relative;
+
+    z-index: 999;
+
+    pointer-events: auto;
+
+    touch-action: manipulation;
 }
 
 
@@ -566,6 +740,11 @@ body {
 ========================================== */
 
 @media (max-width: 600px) {
+
+
+    /* ==========================================
+       CABEÇALHO
+    ========================================== */
 
     .cabecalho {
 
@@ -583,12 +762,20 @@ body {
     }
 
 
+    /* ==========================================
+       CONTEÚDO
+    ========================================== */
+
     .conteudo {
 
         padding: 0 16px 25px;
 
     }
 
+
+    /* ==========================================
+       PRODUTO
+    ========================================== */
 
     .produto {
 
@@ -602,6 +789,7 @@ body {
     .imagem-produto {
 
         width: 65px;
+
         height: 65px;
 
     }
@@ -628,6 +816,10 @@ body {
     }
 
 
+    /* ==========================================
+       CONTROLES
+    ========================================== */
+
     .controles {
 
         gap: 6px;
@@ -638,6 +830,7 @@ body {
     .botao-quantidade {
 
         width: 36px;
+
         height: 36px;
 
         font-size: 21px;
@@ -658,11 +851,13 @@ body {
 
     }
 
+    /* ==========================================
+       RESUMO
+    ========================================== */
 
     .resumo {
 
         margin-top: 280px;
-
         padding: 25px 20px;
 
     }
@@ -681,6 +876,9 @@ body {
 
     }
 
+    /* ==========================================
+       BOTÃO FINALIZAR
+    ========================================== */
 
     .botao-confirmar {
 
@@ -690,8 +888,21 @@ body {
 
     }
 
-}
+    /* ==========================================
+       BOTÃO VOLTAR
+    ========================================== */
 
+    .botao-voltar {
+
+        width: 48px;
+
+        height: 48px;
+
+        font-size: 29px;
+
+    }
+
+}
 
 /* ==========================================
    CELULARES MUITO PEQUENOS
@@ -699,12 +910,18 @@ body {
 
 @media (max-width: 380px) {
 
+
     .produto {
 
         flex-wrap: wrap;
 
     }
 
+    .informacoes-produto {
+
+        min-width: calc(100% - 80px);
+
+    }
 
     .controles {
 
@@ -712,11 +929,43 @@ body {
 
     }
 
-
     .resumo {
 
         margin-top: 220px;
 
+    }
+
+    .botao-quantidade {
+
+        width: 34px;
+
+        height: 34px;
+
+    }
+
+    .botao-excluir {
+
+        font-size: 18px;
+
+    }
+
+}
+
+/* ==========================================
+   CELULARES EM MODO PAISAGEM
+========================================== */
+
+@media (max-height: 500px) and (orientation: landscape) {
+
+    .cabecalho {
+
+        height: 100px;
+        padding: 15px 20px;
+
+    }
+
+    .resumo {
+        margin-top: 100px;
     }
 
 }

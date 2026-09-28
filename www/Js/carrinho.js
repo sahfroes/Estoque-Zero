@@ -1,607 +1,204 @@
-// ==========================================
-// PEGAR ELEMENTOS DA TELA
-// ==========================================
+// ========================================
+// PRODUTOS
+// ========================================
 
-const listaProdutos =
-    document.getElementById("lista-produtos");
+const produtos = {
 
-const carrinhoVazio =
-    document.getElementById("carrinho-vazio");
+    leite: {
+        nome: "Leite UHT Integral 1 L",
+        preco: 7.50,
+        imagem: "../../img/produtos/leite.png"
+    },
 
-const resumo =
-    document.getElementById("resumo");
+    feijao: {
+        nome: "Feijão Carioca 1 kg",
+        preco: 8.00,
+        imagem: "../../img/produtos/feijao.png"
+    },
 
-const orcamentoInicial =
-    document.getElementById("orcamento-inicial");
+    arroz: {
+        nome: "Arroz Branco 5 kg",
+        preco: 25.00,
+        imagem: "../../img/produtos/arroz.jpeg"
+    },
 
-const totalGasto =
-    document.getElementById("total-gasto");
+    macarrao: {
+        nome: "Macarrão 500 g",
+        preco: 5.00,
+        imagem: "../../img/produtos/macarrao.jpeg"
+    },
 
-const saldoRestante =
-    document.getElementById("saldo-restante");
+    oleo: {
+        nome: "Óleo de Soja 900 ml",
+        preco: 8.00,
+        imagem: "../../img/produtos/oleo.jpeg"
+    },
 
-const botaoVoltar =
-    document.getElementById("botao-voltar");
+    acucar: {
+        nome: "Açúcar Refinado 1 kg",
+        preco: 5.00,
+        imagem: "../../img/produtos/acucar.jpeg"
+    },
 
-const voltarCameraVazio =
-    document.getElementById("voltar-camera-vazio");
+    bombons: {
+        nome: "Caixa de Bombons",
+        preco: 12.00,
+        imagem: "../../img/produtos/bombons.jpeg"
+    },
 
-const confirmarCompras =
-    document.getElementById("confirmar-compras");
+    giftcard: {
+        nome: "Gift Card",
+        preco: 20.00,
+        imagem: "../../img/produtos/giftcard.png"
+    },
 
+    copo: {
+        nome: "Copo Térmico",
+        preco: 15.00,
+        imagem: "../../img/produtos/copo.jpg"
+    },
 
-// ==========================================
-// PEGAR CARRINHO DO LOCALSTORAGE
-// ==========================================
-
-let carrinho = JSON.parse(
-    localStorage.getItem("carrinho")
-) || [];
-
-
-// ==========================================
-// PEGAR ORÇAMENTO
-// ==========================================
-
-let orcamento = Number(
-    localStorage.getItem("orcamentoSelecionado")
-) || 0;
-
-
-// ==========================================
-// MOSTRAR VALOR EM REAIS
-// ==========================================
-
-function formatarDinheiro(valor) {
-
-    return "R$ " +
-        valor
-            .toFixed(2)
-            .replace(".", ",");
-
-}
-
-
-// ==========================================
-// MOSTRAR ORÇAMENTO
-// ==========================================
-
-orcamentoInicial.textContent =
-    formatarDinheiro(orcamento);
-
-
-// ==========================================
-// MOSTRAR PRODUTOS
-// ==========================================
-
-function mostrarProdutos() {
-
-    // Limpa a lista
-
-    listaProdutos.innerHTML = "";
-
-
-    // Verifica se está vazio
-
-    if (carrinho.length === 0) {
-
-        carrinhoVazio.style.display = "block";
-
-        resumo.style.display = "none";
-
-        return;
-
+    boneco: {
+        nome: "Boneco Colecionável",
+        preco: 18.00,
+        imagem: "../../img/produtos/boneco.jpeg"
     }
 
+};
 
-    // Mostra a lista
+// ========================================
+// PRODUTO ENCONTRADO
+// ========================================
 
-    carrinhoVazio.style.display = "none";
+// Recupera o produto que foi encontrado
+// pelo MindAR na tela da câmera
+const produtoEncontrado =
+    localStorage.getItem("produtoEncontrado");
 
-    resumo.style.display = "block";
+// Mostra no console para facilitar o teste
+console.log("🔎 Produto encontrado:", produtoEncontrado);
 
+// Procura o produto na lista
+const produto = produtos[produtoEncontrado];
 
-    // Percorre os produtos
+// ========================================
+// PEGAR ELEMENTOS DO HTML
+// ========================================
 
-    carrinho.forEach(function(produto, indice) {
+const imagemProduto =
+    document.getElementById("imagemProduto");
 
+const nomeProduto =
+    document.getElementById("nomeProduto");
 
-        // ==========================================
-        // CARD DO PRODUTO
-        // ==========================================
+const precoProduto =
+    document.getElementById("precoProduto");
 
-        const card =
-            document.createElement("div");
+const adicionar =
+    document.getElementById("adicionar");
 
-        card.classList.add("produto");
+const cancelar =
+    document.getElementById("cancelar");
 
+const fechar =
+    document.getElementById("fechar");
 
-        // ==========================================
-        // QUANTIDADE
-        // ==========================================
+// ========================================
+// MOSTRAR PRODUTO NO CARD
+// ========================================
 
-        const quantidade =
-            produto.quantidade || 1;
+if (produto) {
 
+    console.log("✅ Produto carregado:", produto.nome);
 
-        // ==========================================
-        // HTML DO CARD
-        // ==========================================
+    imagemProduto.src = produto.imagem;
+    nomeProduto.textContent = produto.nome;
 
-        card.innerHTML = `
+    // Preço
+    precoProduto.textContent =
+        produto.preco.toLocaleString("pt-BR", {
+            style: "currency",
+            currency: "BRL"
+        });
 
-            <div class="imagem-produto">
+} else {
 
-                <img 
-                    src="${produto.imagem}"
-                    alt="${produto.nome}"
-                >
+    console.error(
+        "❌ Produto não encontrado na lista:",
+        produtoEncontrado
+    );
 
-            </div>
+    nomeProduto.textContent = "Produto não encontrado";
 
+    precoProduto.textContent = "R$ 0,00";
+}
 
-            <div class="informacoes-produto">
+// ========================================
+// ADICIONAR AO CARRINHO
+// ========================================
 
-                <div class="nome-produto">
-                    ${produto.nome}
-                </div>
+adicionar.addEventListener("click", function () {
 
-                <div class="categoria-produto">
-                    ${produto.categoria || "Alimentação"}
-                </div>
+    // Se não encontrou o produto,
+    // não permite adicionar
+    if (!produto) {
+        console.error("❌ Não foi possível adicionar o produto.");
+        return;
+    }
 
-                <div class="preco-produto">
-                    ${formatarDinheiro(produto.preco)}
-                </div>
+    // Pega o carrinho existente
+    let carrinho = JSON.parse(
+        localStorage.getItem("carrinho")
+    ) || [];
 
-            </div>
+    // Adiciona o produto
+    carrinho.push({
 
+        id: produtoEncontrado,
 
-            <div class="controles">
+        nome: produto.nome,
 
-                <button
-                    class="botao-quantidade botao-menos"
-                    onclick="diminuirQuantidade(${indice})"
-                >
-                    −
-                </button>
+        preco: produto.preco,
 
-
-                <span class="quantidade">
-                    ${quantidade}
-                </span>
-
-
-                <button
-                    class="botao-quantidade botao-mais"
-                    onclick="aumentarQuantidade(${indice})"
-                >
-                    +
-                </button>
-
-
-                <button
-                    class="botao-excluir"
-                    onclick="excluirProduto(${indice})"
-                    aria-label="Excluir produto"
-                >
-                    ♧
-                </button>
-
-            </div>
-
-        `;
-
-
-        // Coloca o card na tela
-
-        listaProdutos.appendChild(card);
+        imagem: produto.imagem
 
     });
 
 
-    // Atualiza valores
-
-    atualizarResumo();
-
-}
-
-
-// ==========================================
-// AUMENTAR QUANTIDADE
-// ==========================================
-
-function aumentarQuantidade(indice) {
-
-    // Se ainda não tiver quantidade
-
-    if (!carrinho[indice].quantidade) {
-
-        carrinho[indice].quantidade = 1;
-
-    }
-
-
-    carrinho[indice].quantidade++;
-
-
-    salvarCarrinho();
-
-    mostrarProdutos();
-
-}
-
-
-// ==========================================
-// DIMINUIR QUANTIDADE
-// ==========================================
-
-function diminuirQuantidade(indice) {
-
-    if (!carrinho[indice].quantidade) {
-
-        carrinho[indice].quantidade = 1;
-
-    }
-
-
-    // Diminui
-
-    carrinho[indice].quantidade--;
-
-
-    // Se chegar a zero
-
-    if (carrinho[indice].quantidade <= 0) {
-
-        carrinho.splice(indice, 1);
-
-    }
-
-
-    salvarCarrinho();
-
-    mostrarProdutos();
-
-}
-
-
-// ==========================================
-// EXCLUIR PRODUTO
-// ==========================================
-
-function excluirProduto(indice) {
-
-    carrinho.splice(indice, 1);
-
-    salvarCarrinho();
-
-    mostrarProdutos();
-
-}
-
-
-// ==========================================
-// SALVAR CARRINHO
-// ==========================================
-
-function salvarCarrinho() {
-
+    // Salva o carrinho
     localStorage.setItem(
         "carrinho",
         JSON.stringify(carrinho)
     );
 
-}
 
-
-// ==========================================
-// CALCULAR TOTAL
-// ==========================================
-
-function calcularTotal() {
-
-    let total = 0;
-
-
-    carrinho.forEach(function(produto) {
-
-        const quantidade =
-            produto.quantidade || 1;
-
-
-        total +=
-            Number(produto.preco) *
-            quantidade;
-
-    });
-
-
-    return total;
-
-}
-
-
-// ==========================================
-// ATUALIZAR RESUMO
-// ==========================================
-
-function atualizarResumo() {
-
-    const total =
-        calcularTotal();
-
-
-    const saldo =
-        orcamento - total;
-
-
-    // Total gasto
-
-    totalGasto.textContent =
-        formatarDinheiro(total);
-
-
-    // Saldo restante
-
-    saldoRestante.textContent =
-        formatarDinheiro(saldo);
-
-
-    // Se o saldo ficou negativo
-
-    if (saldo < 0) {
-
-        saldoRestante.style.color =
-            "#e74c3c";
-
-    } else {
-
-        saldoRestante.style.color =
-            "#20a59e";
-
-    }
-
-}
-
-
-// ==========================================
-// BOTÃO VOLTAR
-// ==========================================
-
-botaoVoltar.addEventListener(
-    "click",
-    function() {
-
-        window.location.href =
-            "camera.html";
-
-    }
-);
-
-
-// ==========================================
-// VOLTAR PELA TELA VAZIA
-// ==========================================
-
-voltarCameraVazio.addEventListener(
-    "click",
-    function() {
-
-        window.location.href =
-            "camera.html";
-
-    }
-);
-
-
-// ==========================================
-// CONFIRMAR COMPRAS
-// ==========================================
-
-confirmarCompras.addEventListener(
-    "click",
-    function() {
-
-        const total =
-            calcularTotal();
-
-
-        const saldo =
-            orcamento - total;
-
-
-        // Salva informações para a
-        // próxima tela
-
-        localStorage.setItem(
-            "totalGasto",
-            total
-        );
-
-
-        localStorage.setItem(
-            "saldoFinal",
-            saldo
-        );
-
-
-        // Vai para a tela de vitória
-
-        window.location.href =
-            "vitoria.html";
-
-    }
-);
-
-// ==========================================
-// CRONÔMETRO DA MISSÃO
-// ==========================================
-
-const CHAVE_TEMPO_FIM = "estoqueZeroTempoFim";
-
-const DURACAO_MISSAO = 120;
-
-
-// ==========================================
-// ELEMENTO DO TEMPO
-// ==========================================
-
-const elementoTempo =
-    document.getElementById("tempo");
-
-const alertaTempo =
-    document.getElementById("alerta-tempo");
-
-const elementoTempoContainer =
-    document.querySelector(".tempo");
-
-
-// ==========================================
-// FORMATAR TEMPO
-// ==========================================
-
-function formatarTempo(segundos) {
-
-    const minutos =
-        Math.floor(segundos / 60);
-
-    const segundosRestantes =
-        segundos % 60;
-
-    return (
-        String(minutos).padStart(2, "0") +
-        ":" +
-        String(segundosRestantes).padStart(2, "0")
-    );
-
-}
-
-
-// ==========================================
-// ATUALIZAR CRONÔMETRO
-// ==========================================
-
-function atualizarCronometroCarrinho() {
-
-    if (!elementoTempo) {
-        return;
-    }
-
-
-    const tempoFim =
-        Number(
-            localStorage.getItem(
-                CHAVE_TEMPO_FIM
-            )
-        );
-
-
-    // Se não existir tempo,
-    // não inicia outro cronômetro
-
-    if (!tempoFim) {
-
-        elementoTempo.textContent =
-            "02:00";
-
-        return;
-
-    }
-
-
-    const agora =
-        Date.now();
-
-
-    let tempoRestante =
-        Math.ceil(
-            (tempoFim - agora) / 1000
-        );
-
-
-    if (tempoRestante < 0) {
-
-        tempoRestante = 0;
-
-    }
-
-
-    // Mostra o tempo
-    elementoTempo.textContent =
-        formatarTempo(tempoRestante);
-
-
-    // ======================================
-    // ÚLTIMOS 10 SEGUNDOS
-    // ======================================
-
-    if (
-        tempoRestante <= 10 &&
-        tempoRestante > 0
-    ) {
-
-        if (alertaTempo) {
-
-            alertaTempo.style.display =
-                "block";
-
-        }
-
-
-        if (elementoTempoContainer) {
-
-            elementoTempoContainer.classList.add(
-                "tempo-critico"
-            );
-
-        }
-
-    }
-
-
-    // ======================================
-    // TEMPO ACABOU
-    // ======================================
-
-    if (tempoRestante <= 0) {
-
-        clearInterval(
-            intervaloCronometroCarrinho
-        );
-
-
-        localStorage.setItem(
-            "estoqueZeroTempoFinalizado",
-            "true"
-        );
-
-
-        window.location.href =
-            "vitoria.html";
-
-    }
-
-}
-
-
-// ==========================================
-// ATUALIZAR A CADA SEGUNDO
-// ==========================================
-
-const intervaloCronometroCarrinho =
-    setInterval(
-        atualizarCronometroCarrinho,
-        1000
+    console.log(
+        "🛒 Produto adicionado:",
+        produto.nome
     );
 
 
-// Atualiza imediatamente
-atualizarCronometroCarrinho();
+    // Volta para o carrinho
+    window.location.href = "carrinho.html";
 
+});
 
-// ==========================================
-// INICIAR A TELA
-// ==========================================
+// ========================================
+// CANCELAR
+// ========================================
 
-mostrarProdutos();
+cancelar.addEventListener("click", function () {
+
+    window.history.back();
+
+});
+
+// ========================================
+// FECHAR
+// ========================================
+
+fechar.addEventListener("click", function () {
+
+    window.history.back();
+
+});

@@ -1,59 +1,127 @@
-const cartaosOpcao = document.querySelectorAll(".cartao-opcao");
-const botaoContinuar = document.getElementById("btnContinuar");
+const cartoesOpcao =
+    document.querySelectorAll(".cartao-opcao");
 
-cartaosOpcao.forEach(function (cartao) {
+const botaoContinuar =
+    document.getElementById("btnContinuar");
+
+
+// ==========================================
+// ESCOLHER ORÇAMENTO
+// ==========================================
+
+cartoesOpcao.forEach(function (cartao) {
 
     cartao.addEventListener("click", function () {
 
-        cartaosOpcao.forEach(function (c) {
+        cartoesOpcao.forEach(function (c) {
             c.classList.remove("ativo");
         });
 
         cartao.classList.add("ativo");
 
         const radio =
-            cartao.querySelector('input[type="radio"]');
+            cartao.querySelector(
+                'input[type="radio"]'
+            );
 
-        radio.checked = true;
+        if (radio) {
+            radio.checked = true;
+        }
 
     });
 
 });
 
 
-botaoContinuar.addEventListener("click", function () {
+// ==========================================
+// COMEÇAR PARTIDA
+// ==========================================
 
-    const opcaoSelecionada =
-        document.querySelector(
-            'input[name="orcamento"]:checked'
+botaoContinuar.addEventListener(
+    "click",
+    function () {
+
+        const opcaoSelecionada =
+            document.querySelector(
+                'input[name="orcamento"]:checked'
+            );
+
+
+        if (!opcaoSelecionada) {
+
+            alert("Escolha um orçamento!");
+
+            return;
+        }
+
+
+        const valor =
+            Number(opcaoSelecionada.value);
+
+
+        // ==================================
+        // SALVAR ORÇAMENTO
+        // ==================================
+
+        localStorage.setItem(
+            "orcamentoSelecionado",
+            valor
         );
 
-    if (!opcaoSelecionada) {
-        alert("Escolha um orçamento!");
-        return;
+        localStorage.setItem(
+            "saldoInicial",
+            valor
+        );
+
+
+        // ==================================
+        // NOVO CARRINHO
+        // ==================================
+
+        localStorage.setItem(
+            "carrinho",
+            JSON.stringify([])
+        );
+
+
+        // ==================================
+        // LIMPAR PARTIDA ANTERIOR
+        // ==================================
+
+        localStorage.removeItem(
+            "produtoEncontrado"
+        );
+
+        localStorage.removeItem(
+            "nomeProdutoEncontrado"
+        );
+
+        localStorage.removeItem(
+            "estoqueZeroTempoFim"
+        );
+
+        localStorage.removeItem(
+            "estoqueZeroTempoFinalizado"
+        );
+
+
+        console.log(
+            "💰 Orçamento:",
+            valor
+        );
+
+
+        console.log(
+            "🧹 Nova partida preparada."
+        );
+
+
+        // ==================================
+        // IR PARA CONTAGEM
+        // ==================================
+
+        window.location.href =
+            "contagem.html";
+
     }
-
-    const valor =
-        Number(opcaoSelecionada.value);
-
-    // Salva o orçamento escolhido
-    localStorage.setItem(
-        "orcamentoSelecionado",
-        valor
-    );
-
-    // Salva também como saldo inicial
-    localStorage.setItem(
-        "saldoInicial",
-        valor
-    );
-
-    // Começa um novo carrinho
-    localStorage.setItem(
-        "carrinho",
-        JSON.stringify([])
-    );
-
-    window.location.href = "contagem.html";
-
-});
+);

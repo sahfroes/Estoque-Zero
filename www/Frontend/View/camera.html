@@ -133,7 +133,7 @@
 
             <img
                 id="imagem-boneco"
-                src="../../img/produtos/boneco.png"
+                src="../../img/produtos/boneco.jpeg"
                 alt="Boneco">
 
         </a-assets>
@@ -143,11 +143,17 @@
              CÂMERA
         =========================================== -->
 
-        <a-camera
-            position="0 0 0"
-            look-controls="enabled: false">
-        </a-camera>
-
+<a-camera
+    position="0 0 0"
+    look-controls="enabled: false"
+    cursor="
+        rayOrigin: mouse;
+        fuse: false;  "
+    raycaster="
+        objects: .produto-ar;
+        recursive: true;"
+>
+</a-camera>
 <!-- LEITE -->
 <a-entity
     id="target-leite"
@@ -335,27 +341,6 @@
 </a-image>
 
 </a-entity>
-   
-
-
-    <!-- ==========================================
-         MENSAGEM DA CÂMERA
-    =========================================== -->
-
-    <div
-        id="mensagem-camera"
-        class="mensagem-camera">
-
-        <div class="icone-camera">
-            📷
-        </div>
-
-        <p>
-            Preparando sua câmera...
-        </p>
-
-    </div>
-
 
     <!-- ==========================================
          TOPO
@@ -491,7 +476,7 @@
 
     </div>
 
-
+    
 </main>
 
 

@@ -5,25 +5,21 @@
 
     <meta charset="UTF-8">
 
-    <!-- Faz a tela se adaptar ao celular -->
-    <meta 
-        name="viewport" 
-        content="width=device-width, initial-scale=1.0"
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0, viewport-fit=cover"
     >
 
     <title>Carrinho - Estoque Zero</title>
 
-    <!-- CSS do carrinho -->
-    <link 
-        rel="stylesheet" 
+    <link
+        rel="stylesheet"
         href="../../CSS/carrinho.css"
     >
 
 </head>
 
-
 <body>
-
 
     <!-- ==========================================
          CABEÇALHO
@@ -31,52 +27,41 @@
 
     <header class="cabecalho">
 
-        <!-- Botão voltar -->
-        <button 
+        <button
+            type="button"
             id="botao-voltar"
             class="botao-voltar"
+            aria-label="Voltar para a câmera"
         >
             ←
         </button>
 
-
-        <!-- Título -->
         <h1>
             Carrinho
         </h1>
 
     </header>
-
-
-
     <!-- ==========================================
-         CONTEÚDO PRINCIPAL
+         CONTEÚDO
     =========================================== -->
 
     <main class="conteudo">
-
 
         <!-- ==========================================
              LISTA DE PRODUTOS
         =========================================== -->
 
-        <section 
+        <section
             id="lista-produtos"
             class="lista-produtos"
         >
-
-            <!-- Os produtos serão colocados
-                 aqui pelo JavaScript -->
-
         </section>
 
-
-
         <!-- ==========================================
-             MENSAGEM CARRINHO VAZIO
+             CARRINHO VAZIO
         =========================================== -->
 
-        <div 
+        <div
             id="carrinho-vazio"
             class="carrinho-vazio"
         >
@@ -93,7 +78,8 @@
                 Escaneie um produto para adicioná-lo.
             </p>
 
-            <button 
+            <button
+                type="button"
                 id="voltar-camera-vazio"
                 class="botao-voltar-camera"
             >
@@ -102,19 +88,14 @@
 
         </div>
 
-
-
         <!-- ==========================================
-             RESUMO DA COMPRA
+             RESUMO
         =========================================== -->
 
-        <section 
+        <section
             id="resumo"
             class="resumo"
         >
-
-
-            <!-- Orçamento inicial -->
 
             <div class="linha-resumo">
 
@@ -128,17 +109,13 @@
 
             </div>
 
-
-
-            <!-- Total gasto -->
-
             <div class="linha-resumo">
 
                 <span>
                     Total gasto
                 </span>
 
-                <strong 
+                <strong
                     id="total-gasto"
                     class="total-gasto"
                 >
@@ -147,17 +124,13 @@
 
             </div>
 
-
-
-            <!-- Saldo restante -->
-
             <div class="linha-resumo">
 
                 <span>
                     Saldo restante
                 </span>
 
-                <strong 
+                <strong
                     id="saldo-restante"
                     class="saldo-restante"
                 >
@@ -166,40 +139,31 @@
 
             </div>
 
-
-
-            <!-- Linha separadora -->
-
             <div class="linha"></div>
 
+            <!-- ==========================================
+                 FINALIZAR PARTIDA
+            =========================================== -->
 
-
-            <!-- Confirmar compras -->
-
-            <button 
+            <button
+                type="button"
                 id="confirmar-compras"
                 class="botao-confirmar"
             >
 
-                ✓
+                <span class="icone-confirmar">
+                    ✓
+                </span>
 
                 <span>
-                    Confirmar compras
+                    Finalizar partida
                 </span>
 
             </button>
 
-
         </section>
 
-
     </main>
-
-
-
-    <!-- ==========================================
-         JAVASCRIPT
-    =========================================== -->
 
     <script src="../../JS/carrinho.js"></script>
 

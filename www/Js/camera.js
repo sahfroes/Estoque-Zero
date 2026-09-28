@@ -1,24 +1,26 @@
 // ==========================================
+// ESTOQUE ZERO - CAMERA.JS
+// ==========================================
+
+
+// ==========================================
 // ELEMENTOS DA TELA
 // ==========================================
 
 const cena =
     document.getElementById("cena-ra");
 
-const mensagemCamera =
-    document.getElementById("mensagem-camera");
-
-const erroCamera =
-    document.getElementById("erro-camera");
-
-const textoErro =
-    document.getElementById("texto-erro");
-
-const tentarNovamente =
-    document.getElementById("tentar-novamente");
-
 const botaoCarrinho =
     document.getElementById("botao-carrinho");
+
+const elementoTempo =
+    document.getElementById("tempo");
+
+const alertaTempo =
+    document.getElementById("alerta-tempo");
+
+const elementoTempoContainer =
+    document.querySelector(".tempo");
 
 
 // ==========================================
@@ -29,8 +31,6 @@ let produtoAtualId = null;
 
 let produtoAtualAR = null;
 
-let produtoAtualTarget = null;
-
 let produtoFoiEncontrado = false;
 
 let abrindoCard = false;
@@ -40,7 +40,7 @@ let abrindoCard = false;
 // PRODUTOS
 // ==========================================
 
-const produtos = {
+const nomesProdutos = {
 
     leite: "Leite UHT",
 
@@ -75,32 +75,8 @@ if (cena) {
         "arReady",
         function () {
 
-            console.log("==============================");
-            console.log("✅ MINDAR PRONTO!");
-            console.log("==============================");
-
-            if (mensagemCamera) {
-
-                mensagemCamera.style.display =
-                    "none";
-
-            }
-
-        }
-    );
-
-
-    cena.addEventListener(
-        "arError",
-        function (evento) {
-
-            console.error(
-                "❌ ERRO NO MINDAR:",
-                evento
-            );
-
-            mostrarErro(
-                "Não foi possível iniciar a realidade aumentada."
+            console.log(
+                "✅ MindAR pronto!"
             );
 
         }
@@ -120,207 +96,265 @@ const targets =
 
 
 console.log(
-    "================================"
-);
-
-console.log(
-    "🔎 QUANTIDADE DE TARGETS:",
+    "🔎 Targets encontrados:",
     targets.length
 );
 
-console.log(
-    "================================"
-);
-
 
 // ==========================================
-// MOSTRAR TARGETS NO CONSOLE
+// CONFIGURAR CADA TARGET
 // ==========================================
 
-targets.forEach(
-    function (target, index) {
-
-        console.log(
-            "Target",
-            index,
-            "→",
-            target.dataset.produto
-        );
-
-    }
-);
+targets.forEach(function (target) {
 
 
-// ==========================================
-// CONFIGURAR TARGETS
-// ==========================================
+    // ======================================
+    // PRODUTO ENCONTRADO
+    // ======================================
 
-targets.forEach(
-    function (target) {
+    target.addEventListener(
+        "targetFound",
+        function () {
 
-
-        // ======================================
-        // TARGET ENCONTRADO
-        // ======================================
-
-        target.addEventListener(
-            "targetFound",
-            function () {
-
-                const produtoEncontrado =
-                    target.dataset.produto;
+            const produto =
+                target.dataset.produto;
 
 
-                console.log("");
-                console.log("==============================");
-                console.log("🎯 TARGET ENCONTRADO!");
-                console.log("==============================");
+            console.log(
+                "🎯 TARGET ENCONTRADO:",
+                produto
+            );
 
-                console.log(
-                    "📦 Produto:",
-                    produtoEncontrado
+
+            // Verifica produto
+
+            if (!produto) {
+
+                console.error(
+                    "❌ Target sem data-produto."
                 );
 
-                // ----------------------------------
-                // VERIFICAR PRODUTO
-                // ----------------------------------
+                return;
 
-                if (
-                    !produtoEncontrado ||
-                    !produtos[produtoEncontrado]
-                ) {
+            }
 
-                    console.error(
-                        "❌ Produto não cadastrado:",
-                        produtoEncontrado
-                    );
 
-                    return;
+            // Guarda produto atual
 
-                }
+            produtoAtualId =
+                produto;
 
-                // ----------------------------------
-                // PRODUTO ATUAL
-                // ----------------------------------
+
+            // Procura imagem AR
+
+            produtoAtualAR =
+                target.querySelector(
+                    ".produto-ar"
+                );
+
+
+            if (!produtoAtualAR) {
+
+                console.error(
+                    "❌ .produto-ar não encontrado."
+                );
+
+                return;
+
+            }
+
+
+            // Produto encontrado
+
+            produtoFoiEncontrado =
+                true;
+
+
+            // Salva produto
+
+            localStorage.setItem(
+                "produtoEncontrado",
+                produto
+            );
+
+
+            localStorage.setItem(
+                "nomeProdutoEncontrado",
+                nomesProdutos[produto]
+            );
+
+
+            console.log(
+                "💾 Produto salvo:",
+                produto
+            );
+
+
+            console.log(
+                "👆 Toque na imagem do produto!"
+            );
+
+        }
+    );
+
+
+    // ======================================
+    // PRODUTO PERDIDO
+    // ======================================
+
+    target.addEventListener(
+        "targetLost",
+        function () {
+
+            console.log(
+                "👋 Target perdido:",
+                target.dataset.produto
+            );
+
+
+            if (
+                produtoAtualId ===
+                target.dataset.produto
+            ) {
 
                 produtoAtualId =
-                    produtoEncontrado;
-
-
-                produtoAtualTarget =
-                    target;
-
-
-                // ----------------------------------
-                // IMAGEM AR
-                // ----------------------------------
+                    null;
 
                 produtoAtualAR =
-                    target.querySelector(
-                        ".produto-ar"
-                    );
-
-
-                if (!produtoAtualAR) {
-
-                    console.error(
-                        "❌ Imagem AR não encontrada:",
-                        produtoEncontrado
-                    );
-
-                    return;
-
-                }
-
-                console.log(
-                    "🖼️ Imagem AR:",
-                    produtoAtualAR.id
-                );
-
-                // ----------------------------------
-                // SALVAR PRODUTO
-                // ----------------------------------
-
-                localStorage.setItem(
-                    "produtoEncontrado",
-                    produtoEncontrado
-                );
-
-
-                localStorage.setItem(
-                    "nomeProdutoEncontrado",
-                    produtos[produtoEncontrado]
-                );
-
-
-                // ----------------------------------
-                // LIBERAR INTERAÇÃO
-                // ----------------------------------
+                    null;
 
                 produtoFoiEncontrado =
-                    true;
-
-
-                console.log(
-                    "💾 Produto salvo:",
-                    produtoEncontrado
-                );
-
-
-                console.log(
-                    "✨ PRODUTO APARECEU EM AR!"
-                );
-
-
-                console.log(
-                    "👆 Toque no produto para abrir o card."
-                );
-
-
-                if (mensagemCamera) {
-
-                    mensagemCamera.style.display =
-                        "none";
-
-                }
+                    false;
 
             }
-        );
 
-        // ======================================
-        // TARGET PERDIDO
-        // ======================================
+        }
+    );
 
-        target.addEventListener(
-            "targetLost",
-            function () {
-
-                console.log(
-                    "👋 Target perdido:",
-                    target.dataset.produto
-                );
+});
 
 
-                if (
-                    produtoAtualId ===
-                    target.dataset.produto
-                ) {
+// ==========================================
+// PRODUTOS AR
+// ==========================================
 
-                    produtoAtualAR = null;
+const produtosAR =
+    document.querySelectorAll(
+        ".produto-ar"
+    );
 
-                    produtoAtualTarget = null;
 
-                    produtoAtualId = null;
-
-                    produtoFoiEncontrado = false;
-
-                }
-
-            }
-        );
-
-    }
+console.log(
+    "🖼️ Produtos AR encontrados:",
+    produtosAR.length
 );
+
+
+// ==========================================
+// CONFIGURAR CLIQUE NAS IMAGENS
+// ==========================================
+
+produtosAR.forEach(function (produtoAR) {
+
+
+    // Torna clicável
+
+    produtoAR.classList.add(
+        "clicavel"
+    );
+
+
+    // ======================================
+    // CLIQUE
+    // ======================================
+
+    produtoAR.addEventListener(
+        "click",
+        function () {
+
+            console.log(
+                "👆 CLIQUE NA IMAGEM AR!"
+            );
+
+
+            // ==================================
+            // ENCONTRA O TARGET
+            // ==================================
+
+            const target =
+                produtoAR.closest(
+                    "[mindar-image-target]"
+                );
+
+
+            if (!target) {
+
+                console.error(
+                    "❌ Target não encontrado."
+                );
+
+                return;
+
+            }
+
+
+            // ==================================
+            // PEGA O PRODUTO
+            // ==================================
+
+            const produto =
+                target.dataset.produto;
+
+
+            if (!produto) {
+
+                console.error(
+                    "❌ Produto não encontrado."
+                );
+
+                return;
+
+            }
+
+
+            console.log(
+                "📦 Produto clicado:",
+                produto
+            );
+
+
+            // ==================================
+            // SALVA O PRODUTO
+            // ==================================
+
+            localStorage.setItem(
+                "produtoEncontrado",
+                produto
+            );
+
+
+            localStorage.setItem(
+                "nomeProdutoEncontrado",
+                nomesProdutos[produto]
+            );
+
+
+            console.log(
+                "💾 Produto salvo:",
+                produto
+            );
+
+
+            // ==================================
+            // ABRE O CARD
+            // ==================================
+
+            abrirCardProduto();
+
+        }
+    );
+
+});
 
 
 // ==========================================
@@ -329,6 +363,9 @@ targets.forEach(
 
 function abrirCardProduto() {
 
+
+    // Evita vários cliques
+
     if (abrindoCard) {
 
         return;
@@ -336,11 +373,7 @@ function abrirCardProduto() {
     }
 
 
-    if (!produtoFoiEncontrado) {
-
-        return;
-
-    }
+    // Pega produto salvo
 
     const produto =
         localStorage.getItem(
@@ -358,155 +391,41 @@ function abrirCardProduto() {
 
     }
 
+
     console.log(
         "🛒 Abrindo card:",
         produto
     );
 
 
-    abrindoCard = true;
+    // Impede novo clique
 
+    abrindoCard =
+        true;
+
+
+    // ======================================
+    // PARA O CRONÔMETRO
+    // ======================================
+
+    if (intervaloTempo) {
+
+        clearInterval(
+            intervaloTempo
+        );
+
+        intervaloTempo =
+            null;
+
+    }
+
+
+    // ======================================
+    // ABRE A TELA DO PRODUTO
+    // ======================================
 
     window.location.href =
         "card-produto.html";
-
-}
-
-// ==========================================
-// CLIQUE / TOQUE NO PRODUTO
-// ==========================================
-
-if (cena) {
-
-    cena.addEventListener(
-        "loaded",
-        function () {
-
-            const canvas =
-                cena.canvas;
-
-
-            if (!canvas) {
-
-                console.error(
-                    "❌ Canvas não encontrado."
-                );
-
-                return;
-
-            }
-
-            console.log(
-                "👆 Interação ativada."
-            );
-
-
-            canvas.addEventListener(
-                "pointerup",
-                function (evento) {
-
-                    // ------------------------------
-                    // VERIFICAR PRODUTO
-                    // ------------------------------
-
-                    if (
-                        !produtoFoiEncontrado ||
-                        !produtoAtualAR
-                    ) {
-
-                        return;
-
-                    }
-
-                    if (
-                        !produtoAtualAR.object3D ||
-                        !produtoAtualAR.object3D.visible
-                    ) {
-
-                        return;
-
-                    }
-
-                    // ------------------------------
-                    // POSIÇÃO DO TOQUE
-                    // ------------------------------
-
-                    const rect =
-                        canvas.getBoundingClientRect();
-
-
-                    const mouse =
-                      new THREE.Vector2();
-
-                    mouse.x =
-                        (
-                            (evento.clientX - rect.left)
-                            / rect.width
-                        ) * 2 - 1;
-
-                    mouse.y =
-                        -(
-                            (evento.clientY - rect.top)
-                            / rect.height
-                        ) * 2 + 1;
-
-                    // ------------------------------
-                    // RAYCASTER
-                    // ------------------------------
-
-                    const raycaster =
-                        new THREE.Raycaster();
-
-
-                    raycaster.setFromCamera(
-                        mouse,
-                        cena.camera
-                    );
-
-                    // ------------------------------
-                    // VERIFICAR PRODUTO ATUAL
-                    // ------------------------------
-
-                    const intersecoes =
-                        raycaster.intersectObject(
-                            produtoAtualAR.object3D,
-                            true
-                        );
-
-
-                    console.log(
-                        "🔎 Interseções:",
-                        intersecoes.length
-                    );
-
-                    // ------------------------------
-                    // PRODUTO TOCADO
-                    // ------------------------------
-
-                    if (
-                        intersecoes.length > 0
-                    ) {
-
-                        console.log(
-                            "🎯 PRODUTO TOCADO!"
-                        );
-
-
-                        console.log(
-                            "📦 Produto:",
-                            produtoAtualId
-                        );
-
-
-                        abrirCardProduto();
-
-                    }
-
-                }
-            );
-
-        }
-    );
 
 }
 
@@ -531,77 +450,20 @@ if (botaoCarrinho) {
 
 
 // ==========================================
-// MOSTRAR ERRO
+// CRONÔMETRO
 // ==========================================
 
-function mostrarErro(mensagem) {
+const DURACAO_MISSAO =
+    120;
 
-    if (mensagemCamera) {
+let tempoRestante =
+    DURACAO_MISSAO;
 
-        mensagemCamera.style.display =
-            "none";
+let intervaloTempo =
+    null;
 
-    }
-
-    if (erroCamera) {
-
-        erroCamera.style.display =
-            "block";
-
-    }
-
-    if (textoErro) {
-
-        textoErro.textContent =
-            mensagem;
-
-    }
-
-}
-
-
-// ==========================================
-// TENTAR NOVAMENTE
-// ==========================================
-
-if (tentarNovamente) {
-
-    tentarNovamente.addEventListener(
-        "click",
-        function () {
-
-            location.reload();
-
-        }
-    );
-
-}
-
-
-// ==========================================
-// CRONÔMETRO DA MISSÃO
-// ==========================================
-
-// Duração da missão: 2 minutos
-const DURACAO_MISSAO = 120;
-
-// Chaves usadas no localStorage
-const CHAVE_TEMPO_FIM = "estoqueZeroTempoFim";
-const CHAVE_JOGO_INICIADO = "estoqueZeroJogoIniciado";
-
-
-// ==========================================
-// ELEMENTOS
-// ==========================================
-
-const elementoTempo =
-    document.getElementById("tempo");
-
-const alertaTempo =
-    document.getElementById("alerta-tempo");
-
-const elementoTempoContainer =
-    document.querySelector(".tempo");
+let jogoFinalizado =
+    false;
 
 
 // ==========================================
@@ -611,54 +473,55 @@ const elementoTempoContainer =
 function formatarTempo(segundos) {
 
     const minutos =
-        Math.floor(segundos / 60);
+        Math.floor(
+            segundos / 60
+        );
+
 
     const segundosRestantes =
         segundos % 60;
 
+
     return (
-        String(minutos).padStart(2, "0") +
-        ":" +
-        String(segundosRestantes).padStart(2, "0")
+
+        String(minutos)
+            .padStart(2, "0")
+
+        +
+
+        ":"
+
+        +
+
+        String(segundosRestantes)
+            .padStart(2, "0")
+
     );
 
 }
 
+
 // ==========================================
-// CRIAR / RECUPERAR TEMPO DA MISSÃO
+// MOSTRAR TEMPO
 // ==========================================
 
-function obterTempoFim() {
+function mostrarTempo() {
 
-    let tempoFim =
-        Number(
-            localStorage.getItem(
-                CHAVE_TEMPO_FIM
-            )
+    if (!elementoTempo) {
+
+        console.error(
+            "❌ #tempo não existe no HTML."
         );
 
-    // Se ainda não existe,
-    // cria os 2 minutos
-
-    if (!tempoFim || isNaN(tempoFim)) {
-
-        tempoFim =
-            Date.now() +
-            (DURACAO_MISSAO * 1000);
-
-        localStorage.setItem(
-            CHAVE_TEMPO_FIM,
-            tempoFim
-        );
-
-        localStorage.setItem(
-            CHAVE_JOGO_INICIADO,
-            "true"
-        );
+        return;
 
     }
 
-    return tempoFim;
+
+    elementoTempo.textContent =
+        formatarTempo(
+            tempoRestante
+        );
 
 }
 
@@ -669,30 +532,26 @@ function obterTempoFim() {
 
 function atualizarTempo() {
 
-    if (!elementoTempo) {
-        return;
-    }
 
-    const tempoFim =
-        obterTempoFim();
+    tempoRestante--;
 
-    // Calcula quanto tempo realmente falta
-    const agora = Date.now();
 
-    let tempoRestante =
-        Math.ceil(
-            (tempoFim - agora) / 1000
-        );
+    // Evita negativo
 
-    // Não deixa ficar negativo
-    if (tempoRestante < 0) {
-        tempoRestante = 0;
+    if (
+        tempoRestante < 0
+    ) {
+
+        tempoRestante =
+            0;
+
     }
 
 
-    // Mostra na tela
-    elementoTempo.textContent =
-        formatarTempo(tempoRestante);
+    // Atualiza tela
+
+    mostrarTempo();
+
 
     // ======================================
     // ALERTA DOS 10 SEGUNDOS
@@ -710,58 +569,70 @@ function atualizarTempo() {
 
         }
 
+
         if (elementoTempoContainer) {
 
             elementoTempoContainer.classList.add(
                 "tempo-critico"
             );
+
         }
+
     }
 
+
     // ======================================
-    // TEMPO ESGOTADO
+    // TEMPO ACABOU
     // ======================================
 
-    if (tempoRestante <= 0) {
-
-        if (intervaloTempo) {
-
-            clearInterval(
-                intervaloTempo
-            );
-
-            intervaloTempo = null;
-
-        }
+    if (
+        tempoRestante === 0
+    ) {
 
         finalizarJogo();
+
     }
 
 }
 
 
 // ==========================================
-// INICIAR ATUALIZAÇÃO
+// INICIAR CRONÔMETRO
 // ==========================================
 
-let intervaloTempo = null;
 function iniciarCronometro() {
 
-    // Atualiza imediatamente
-    atualizarTempo();
+    console.log(
+        "⏱️ CRONÔMETRO: 02:00"
+    );
 
-    // Depois atualiza a cada segundo
-    if (!intervaloTempo) {
 
-        intervaloTempo =
-            setInterval(
-                atualizarTempo,
-                1000
-            );
+    tempoRestante =
+        DURACAO_MISSAO;
+
+
+    mostrarTempo();
+
+
+    // Evita dois intervalos
+
+    if (intervaloTempo) {
+
+        clearInterval(
+            intervaloTempo
+        );
 
     }
 
+
+    intervaloTempo =
+        setInterval(
+            atualizarTempo,
+            1000
+        );
+
 }
+
 
 // ==========================================
 // FINALIZAR JOGO
@@ -769,24 +640,42 @@ function iniciarCronometro() {
 
 function finalizarJogo() {
 
-    // Evita executar várias vezes
 
-    if (
-        localStorage.getItem(
-            "estoqueZeroTempoFinalizado"
-        ) === "true"
-    ) {
+    // Evita finalizar duas vezes
+
+    if (jogoFinalizado) {
 
         return;
 
     }
 
 
-    localStorage.setItem(
-        "estoqueZeroTempoFinalizado",
-        "true"
+    jogoFinalizado =
+        true;
+
+
+    // Para cronômetro
+
+    if (intervaloTempo) {
+
+        clearInterval(
+            intervaloTempo
+        );
+
+        intervaloTempo =
+            null;
+
+    }
+
+
+    console.log(
+        "⏰ TEMPO ESGOTADO!"
     );
 
+
+    // ======================================
+    // MOSTRA ALERTA
+    // ======================================
 
     if (alertaTempo) {
 
@@ -812,6 +701,11 @@ function finalizarJogo() {
 
     }
 
+
+    // ======================================
+    // VAI PARA VITÓRIA
+    // ======================================
+
     setTimeout(
         function () {
 
@@ -824,26 +718,28 @@ function finalizarJogo() {
 
 }
 
+
 // ==========================================
-// ORÇAMENTO ESCOLHIDO
+// SALDO
 // ==========================================
 
-// Pega o orçamento escolhido na tela anterior
 const valorSalvo =
-    localStorage.getItem("orcamentoSelecionado");
+    localStorage.getItem(
+        "orcamentoSelecionado"
+    );
 
-// Converte para número
+
 const saldoInicial =
-    Number(valorSalvo);
+    Number(
+        valorSalvo
+    );
 
-// Elemento que mostra o saldo na câmera
+
 const elementoSaldo =
-    document.getElementById("saldo");
+    document.getElementById(
+        "saldo"
+    );
 
-
-// ==========================================
-// MOSTRAR SALDO NA CÂMERA
-// ==========================================
 
 if (
     elementoSaldo &&
@@ -859,14 +755,11 @@ if (
             }
         );
 
-} else {
-
-    elementoSaldo.textContent =
-        "R$ 0,00";
-
 }
+
+
 // ==========================================
-// INICIAR
+// COMEÇAR
 // ==========================================
 
 iniciarCronometro();

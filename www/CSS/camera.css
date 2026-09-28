@@ -829,3 +829,25 @@ body {
     }
 
 }
+
+/* ==========================================
+   NÃO BLOQUEAR O CLIQUE NO PRODUTO AR
+   ========================================== */
+
+.mensagem-camera,
+.alerta-tempo {
+    pointer-events: none;
+}
+
+/* Botões continuam podendo receber toque */
+
+.botao-carrinho,
+.botao-trocar-camera,
+.erro-camera button {
+    pointer-events: auto;
+}
+
+.produto-ar {
+    pointer-events: auto;
+    cursor: pointer;
+}
