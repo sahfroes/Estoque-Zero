@@ -181,7 +181,6 @@ targets.forEach(
                     produtoEncontrado
                 );
 
-
                 // ----------------------------------
                 // VERIFICAR PRODUTO
                 // ----------------------------------
@@ -199,7 +198,6 @@ targets.forEach(
                     return;
 
                 }
-
 
                 // ----------------------------------
                 // PRODUTO ATUAL
@@ -234,12 +232,10 @@ targets.forEach(
 
                 }
 
-
                 console.log(
                     "🖼️ Imagem AR:",
                     produtoAtualAR.id
                 );
-
 
                 // ----------------------------------
                 // SALVAR PRODUTO
@@ -290,7 +286,6 @@ targets.forEach(
 
             }
         );
-
 
         // ======================================
         // TARGET PERDIDO
@@ -347,7 +342,6 @@ function abrirCardProduto() {
 
     }
 
-
     const produto =
         localStorage.getItem(
             "produtoEncontrado"
@@ -364,7 +358,6 @@ function abrirCardProduto() {
 
     }
 
-
     console.log(
         "🛒 Abrindo card:",
         produto
@@ -378,7 +371,6 @@ function abrirCardProduto() {
         "card-produto.html";
 
 }
-
 
 // ==========================================
 // CLIQUE / TOQUE NO PRODUTO
@@ -404,7 +396,6 @@ if (cena) {
 
             }
 
-
             console.log(
                 "👆 Interação ativada."
             );
@@ -413,7 +404,6 @@ if (cena) {
             canvas.addEventListener(
                 "pointerup",
                 function (evento) {
-
 
                     // ------------------------------
                     // VERIFICAR PRODUTO
@@ -428,7 +418,6 @@ if (cena) {
 
                     }
 
-
                     if (
                         !produtoAtualAR.object3D ||
                         !produtoAtualAR.object3D.visible
@@ -437,7 +426,6 @@ if (cena) {
                         return;
 
                     }
-
 
                     // ------------------------------
                     // POSIÇÃO DO TOQUE
@@ -448,8 +436,7 @@ if (cena) {
 
 
                     const mouse =
-                        new THREE.Vector2();
-
+                      new THREE.Vector2();
 
                     mouse.x =
                         (
@@ -457,13 +444,11 @@ if (cena) {
                             / rect.width
                         ) * 2 - 1;
 
-
                     mouse.y =
                         -(
                             (evento.clientY - rect.top)
                             / rect.height
                         ) * 2 + 1;
-
 
                     // ------------------------------
                     // RAYCASTER
@@ -477,7 +462,6 @@ if (cena) {
                         mouse,
                         cena.camera
                     );
-
 
                     // ------------------------------
                     // VERIFICAR PRODUTO ATUAL
@@ -494,7 +478,6 @@ if (cena) {
                         "🔎 Interseções:",
                         intersecoes.length
                     );
-
 
                     // ------------------------------
                     // PRODUTO TOCADO
@@ -560,14 +543,12 @@ function mostrarErro(mensagem) {
 
     }
 
-
     if (erroCamera) {
 
         erroCamera.style.display =
             "block";
 
     }
-
 
     if (textoErro) {
 
@@ -643,7 +624,6 @@ function formatarTempo(segundos) {
 
 }
 
-
 // ==========================================
 // CRIAR / RECUPERAR TEMPO DA MISSÃO
 // ==========================================
@@ -657,7 +637,6 @@ function obterTempoFim() {
             )
         );
 
-
     // Se ainda não existe,
     // cria os 2 minutos
 
@@ -666,7 +645,6 @@ function obterTempoFim() {
         tempoFim =
             Date.now() +
             (DURACAO_MISSAO * 1000);
-
 
         localStorage.setItem(
             CHAVE_TEMPO_FIM,
@@ -679,7 +657,6 @@ function obterTempoFim() {
         );
 
     }
-
 
     return tempoFim;
 
@@ -696,10 +673,8 @@ function atualizarTempo() {
         return;
     }
 
-
     const tempoFim =
         obterTempoFim();
-
 
     // Calcula quanto tempo realmente falta
     const agora = Date.now();
@@ -708,7 +683,6 @@ function atualizarTempo() {
         Math.ceil(
             (tempoFim - agora) / 1000
         );
-
 
     // Não deixa ficar negativo
     if (tempoRestante < 0) {
@@ -719,7 +693,6 @@ function atualizarTempo() {
     // Mostra na tela
     elementoTempo.textContent =
         formatarTempo(tempoRestante);
-
 
     // ======================================
     // ALERTA DOS 10 SEGUNDOS
@@ -737,17 +710,13 @@ function atualizarTempo() {
 
         }
 
-
         if (elementoTempoContainer) {
 
             elementoTempoContainer.classList.add(
                 "tempo-critico"
             );
-
         }
-
     }
-
 
     // ======================================
     // TEMPO ESGOTADO
@@ -765,9 +734,7 @@ function atualizarTempo() {
 
         }
 
-
         finalizarJogo();
-
     }
 
 }
@@ -778,13 +745,10 @@ function atualizarTempo() {
 // ==========================================
 
 let intervaloTempo = null;
-
-
 function iniciarCronometro() {
 
     // Atualiza imediatamente
     atualizarTempo();
-
 
     // Depois atualiza a cada segundo
     if (!intervaloTempo) {
@@ -798,7 +762,6 @@ function iniciarCronometro() {
     }
 
 }
-
 
 // ==========================================
 // FINALIZAR JOGO
@@ -849,7 +812,6 @@ function finalizarJogo() {
 
     }
 
-
     setTimeout(
         function () {
 
@@ -862,6 +824,47 @@ function finalizarJogo() {
 
 }
 
+// ==========================================
+// ORÇAMENTO ESCOLHIDO
+// ==========================================
+
+// Pega o orçamento escolhido na tela anterior
+const valorSalvo =
+    localStorage.getItem("orcamentoSelecionado");
+
+// Converte para número
+const saldoInicial =
+    Number(valorSalvo);
+
+// Elemento que mostra o saldo na câmera
+const elementoSaldo =
+    document.getElementById("saldo");
+
+
+// ==========================================
+// MOSTRAR SALDO NA CÂMERA
+// ==========================================
+
+if (
+    elementoSaldo &&
+    !isNaN(saldoInicial)
+) {
+
+    elementoSaldo.textContent =
+        saldoInicial.toLocaleString(
+            "pt-BR",
+            {
+                style: "currency",
+                currency: "BRL"
+            }
+        );
+
+} else {
+
+    elementoSaldo.textContent =
+        "R$ 0,00";
+
+}
 // ==========================================
 // INICIAR
 // ==========================================
