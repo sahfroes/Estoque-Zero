@@ -1,3 +1,4 @@
+
 // ==========================================
 // ELEMENTOS DA TELA
 // ==========================================
@@ -80,7 +81,6 @@ if (cena) {
                 "✅ MindAR pronto!"
             );
 
-
             if (mensagemCamera) {
 
                 mensagemCamera.style.display =
@@ -100,7 +100,6 @@ if (cena) {
                 "❌ Erro no MindAR:",
                 evento
             );
-
 
             mostrarErro(
                 "Não foi possível iniciar a realidade aumentada."
@@ -135,7 +134,6 @@ console.log(
 targets.forEach(
     function (target) {
 
-
         // ======================================
         // PRODUTO ENCONTRADO
         // ======================================
@@ -158,7 +156,7 @@ targets.forEach(
 
 
                 console.log(
-                    "Produto:",
+                    "📦 Produto identificado:",
                     produtoEncontrado
                 );
 
@@ -199,13 +197,13 @@ targets.forEach(
 
 
                 console.log(
-                    "✅ Produto salvo:",
-                    produtos[produtoEncontrado]
+                    "✅ Produto salvo no localStorage:",
+                    produtoEncontrado
                 );
 
 
                 // -------------------------------
-                // GUARDAR TARGET ATUAL
+                // GUARDAR TARGET
                 // -------------------------------
 
                 targetAtivo =
@@ -213,7 +211,7 @@ targets.forEach(
 
 
                 // -------------------------------
-                // PEGAR IMAGEM DO PRODUTO
+                // PEGAR OBJETO AR
                 // -------------------------------
 
                 produtoAtivo =
@@ -236,7 +234,7 @@ targets.forEach(
 
 
                 console.log(
-                    "👆 Toque no produto para abrir o card."
+                    "👆 Toque na tela para abrir o produto."
                 );
 
 
@@ -282,6 +280,14 @@ targets.forEach(
                 );
 
 
+                /*
+                 * Não apagamos imediatamente
+                 * o produto do localStorage.
+                 *
+                 * Isso evita problemas no celular
+                 * durante pequenas perdas do target.
+                 */
+
                 if (
                     targetAtivo === target
                 ) {
@@ -307,7 +313,6 @@ targets.forEach(
 
 function abrirCardProduto() {
 
-
     // --------------------------------------
     // EVITAR ABRIR DUAS VEZES
     // --------------------------------------
@@ -320,7 +325,7 @@ function abrirCardProduto() {
 
 
     // --------------------------------------
-    // VERIFICAR PRODUTO
+    // PEGAR PRODUTO
     // --------------------------------------
 
     const produto =
@@ -329,10 +334,14 @@ function abrirCardProduto() {
         );
 
 
+    // --------------------------------------
+    // VERIFICAR
+    // --------------------------------------
+
     if (!produto) {
 
         console.error(
-            "❌ Nenhum produto encontrado."
+            "❌ Nenhum produto encontrado no localStorage."
         );
 
         return;
@@ -341,20 +350,49 @@ function abrirCardProduto() {
 
 
     console.log(
-        "🛒 Abrindo card do:",
+        "🛒 Abrindo card do produto:",
         produto
     );
 
 
     // --------------------------------------
-    // BLOQUEAR NOVOS CLIQUES
+    // GARANTIR QUE O PRODUTO EXISTE
+    // --------------------------------------
+
+    if (!produtos[produto]) {
+
+        console.error(
+            "❌ Produto inválido:",
+            produto
+        );
+
+        return;
+
+    }
+
+
+    // --------------------------------------
+    // BLOQUEAR NOVOS TOQUES
     // --------------------------------------
 
     abrindoCard = true;
 
 
     // --------------------------------------
-    // IR PARA O CARD
+    // ESCONDER INSTRUÇÃO
+    // --------------------------------------
+
+    if (toqueProduto) {
+
+        toqueProduto.classList.remove(
+            "mostrar"
+        );
+
+    }
+
+
+    // --------------------------------------
+    // ABRIR CARD
     // --------------------------------------
 
     window.location.href =
@@ -364,7 +402,7 @@ function abrirCardProduto() {
 
 
 // ==========================================
-// INTERAÇÃO COM O PRODUTO
+// INTERAÇÃO PC + CELULAR
 // ==========================================
 
 if (cena) {
@@ -394,7 +432,7 @@ if (cena) {
 
 
             console.log(
-                "🖱️👆 Interação ativada!"
+                "📱🖥️ Interação ativada para PC e celular."
             );
 
 
@@ -407,171 +445,105 @@ if (cena) {
 
 
             // ==================================
-            // CLIQUE / TOQUE
+            // FUNÇÃO CENTRAL DE TOQUE
+            // ==================================
+
+            function tocarTela() {
+
+                console.log(
+                    "👆 Tela tocada!"
+                );
+
+
+                // ------------------------------
+                // VERIFICAR PRODUTO
+                // ------------------------------
+
+                if (!produtoFoiEncontrado) {
+
+                    console.log(
+                        "⚠️ Ainda não existe produto reconhecido."
+                    );
+
+                    return;
+
+                }
+
+
+                // ------------------------------
+                // PEGAR PRODUTO SALVO
+                // ------------------------------
+
+                const produto =
+                    localStorage.getItem(
+                        "produtoEncontrado"
+                    );
+
+
+                if (!produto) {
+
+                    console.error(
+                        "❌ Produto não encontrado no localStorage."
+                    );
+
+                    return;
+
+                }
+
+
+                console.log(
+                    "🎯 Produto pronto para abrir:",
+                    produto
+                );
+
+
+                // ------------------------------
+                // ABRIR CARD
+                // ------------------------------
+
+                abrirCardProduto();
+
+            }
+
+
+            // ==================================
+            // CELULAR
             // ==================================
 
             canvas.addEventListener(
-                "pointerup",
+                "touchend",
                 function (evento) {
 
-
-                    // ------------------------------
-                    // PRECISA TER PRODUTO
-                    // ------------------------------
-
-                    if (
-                        !produtoFoiEncontrado ||
-                        !produtoAtivo ||
-                        !produtoAtivo.object3D
-                    ) {
-
-                        return;
-
-                    }
-
-
-                    // ------------------------------
-                    // PRODUTO PRECISA ESTAR VISÍVEL
-                    // ------------------------------
-
-                    if (
-                        !produtoAtivo.object3D.visible
-                    ) {
-
-                        return;
-
-                    }
-
-
-                    // ------------------------------
-                    // CÂMERA
-                    // ------------------------------
-
-                    const camera =
-                        cena.camera;
-
-
-                    if (!camera) {
-
-                        console.error(
-                            "❌ Câmera do A-Frame não encontrada."
-                        );
-
-                        return;
-
-                    }
-
-
-                    // ------------------------------
-                    // POSIÇÃO DO TOQUE
-                    // ------------------------------
-
-                    const rect =
-                        canvas.getBoundingClientRect();
-
-
-                    const x =
-                        evento.clientX -
-                        rect.left;
-
-
-                    const y =
-                        evento.clientY -
-                        rect.top;
-
-
-                    // ------------------------------
-                    // CONVERTER PARA THREE.JS
-                    // ------------------------------
-
-                    const mouse =
-                        new THREE.Vector2();
-
-
-                    mouse.x =
-                        (x / rect.width) * 2 - 1;
-
-
-                    mouse.y =
-                        -(y / rect.height) * 2 + 1;
-
-
-                    // ------------------------------
-                    // RAYCASTER
-                    // ------------------------------
-
-                    const raycaster =
-                        new THREE.Raycaster();
-
-
-                    raycaster.setFromCamera(
-                        mouse,
-                        camera
-                    );
-
-
-                    // ------------------------------
-                    // VERIFICAR OBJETO TOCADO
-                    // ------------------------------
-
-                    const intersecoes =
-                        raycaster.intersectObject(
-                            produtoAtivo.object3D,
-                            true
-                        );
-
+                    evento.preventDefault();
 
                     console.log(
-                        "🔎 Interseções:",
-                        intersecoes.length
+                        "📱 Toque detectado no celular."
                     );
 
 
-                    // ------------------------------
-                    // PRODUTO FOI TOCADO
-                    // ------------------------------
+                    tocarTela();
 
-                    if (
-                        intersecoes.length > 0
-                    ) {
-
-                        console.log(
-                            "🎯 PRODUTO TOCADO!"
-                        );
+                },
+                {
+                    passive: false
+                }
+            );
 
 
-                        const nomeProduto =
-                            localStorage.getItem(
-                                "nomeProdutoEncontrado"
-                            );
+            // ==================================
+            // PC
+            // ==================================
+
+            canvas.addEventListener(
+                "click",
+                function () {
+
+                    console.log(
+                        "🖱️ Clique detectado no PC."
+                    );
 
 
-                        console.log(
-                            "Produto:",
-                            nomeProduto
-                        );
-
-
-                        // --------------------------
-                        // ESCONDER MENSAGEM
-                        // --------------------------
-
-                        if (toqueProduto) {
-
-                            toqueProduto.classList.remove(
-                                "mostrar"
-                            );
-
-                        }
-
-
-                        // --------------------------
-                        // ABRIR CARD
-                        // --------------------------
-
-                        abrirCardProduto();
-
-                    }
+                    tocarTela();
 
                 }
             );
@@ -607,10 +579,9 @@ if (botaoCarrinho) {
 
 function mostrarErro(mensagem) {
 
-
-    // -------------------------------
+    // --------------------------------------
     // ESCONDER CARREGAMENTO
-    // -------------------------------
+    // --------------------------------------
 
     if (mensagemCamera) {
 
@@ -620,9 +591,9 @@ function mostrarErro(mensagem) {
     }
 
 
-    // -------------------------------
+    // --------------------------------------
     // MOSTRAR ERRO
-    // -------------------------------
+    // --------------------------------------
 
     if (erroCamera) {
 
@@ -632,9 +603,9 @@ function mostrarErro(mensagem) {
     }
 
 
-    // -------------------------------
+    // --------------------------------------
     // TEXTO
-    // -------------------------------
+    // --------------------------------------
 
     if (textoErro) {
 
@@ -729,3 +700,4 @@ window.addEventListener(
 
     }
 );
+

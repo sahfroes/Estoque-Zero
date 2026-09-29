@@ -317,15 +317,12 @@ if (adicionar) {
             // ====================================
             // IR PARA CARRINHO
             // ====================================
-
-            window.location.href =
-                "carrinho.html";
+        window.location.href = "carrinho.html";
 
         }
     );
 
 }
-
 
 // ========================================
 // CANCELAR
@@ -343,7 +340,6 @@ if (cancelar) {
     );
 
 }
-
 
 // ========================================
 // FECHAR
