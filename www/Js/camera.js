@@ -1,37 +1,38 @@
 // ==========================================
-// ESTOQUE ZERO - CAMERA.JS
-// ==========================================
-
-
-// ==========================================
 // ELEMENTOS DA TELA
 // ==========================================
 
 const cena =
     document.getElementById("cena-ra");
 
+const mensagemCamera =
+    document.getElementById("mensagem-camera");
+
+const toqueProduto =
+    document.getElementById("toque-produto");
+
+const erroCamera =
+    document.getElementById("erro-camera");
+
+const textoErro =
+    document.getElementById("texto-erro");
+
+const tentarNovamente =
+    document.getElementById("tentar-novamente");
+
 const botaoCarrinho =
     document.getElementById("botao-carrinho");
 
-const elementoTempo =
-    document.getElementById("tempo");
-
-const alertaTempo =
-    document.getElementById("alerta-tempo");
-
-const elementoTempoContainer =
-    document.querySelector(".tempo");
-
 
 // ==========================================
-// PRODUTO ATUAL
+// CONTROLE DO PRODUTO
 // ==========================================
-
-let produtoAtualId = null;
-
-let produtoAtualAR = null;
 
 let produtoFoiEncontrado = false;
+
+let produtoAtivo = null;
+
+let targetAtivo = null;
 
 let abrindoCard = false;
 
@@ -40,13 +41,13 @@ let abrindoCard = false;
 // PRODUTOS
 // ==========================================
 
-const nomesProdutos = {
+const produtos = {
 
-    leite: "Leite UHT",
+    arroz: "Arroz Branco",
 
     feijao: "Feijão Carioca",
 
-    arroz: "Arroz Branco",
+    leite: "Leite UHT",
 
     macarrao: "Macarrão",
 
@@ -79,6 +80,32 @@ if (cena) {
                 "✅ MindAR pronto!"
             );
 
+
+            if (mensagemCamera) {
+
+                mensagemCamera.style.display =
+                    "none";
+
+            }
+
+        }
+    );
+
+
+    cena.addEventListener(
+        "arError",
+        function (evento) {
+
+            console.error(
+                "❌ Erro no MindAR:",
+                evento
+            );
+
+
+            mostrarErro(
+                "Não foi possível iniciar a realidade aumentada."
+            );
+
         }
     );
 
@@ -102,259 +129,176 @@ console.log(
 
 
 // ==========================================
-// CONFIGURAR CADA TARGET
+// CONFIGURAR TARGETS
 // ==========================================
 
-targets.forEach(function (target) {
+targets.forEach(
+    function (target) {
 
 
-    // ======================================
-    // PRODUTO ENCONTRADO
-    // ======================================
+        // ======================================
+        // PRODUTO ENCONTRADO
+        // ======================================
 
-    target.addEventListener(
-        "targetFound",
-        function () {
+        target.addEventListener(
+            "targetFound",
+            function () {
 
-            const produto =
-                target.dataset.produto;
-
-
-            console.log(
-                "🎯 TARGET ENCONTRADO:",
-                produto
-            );
-
-
-            // Verifica produto
-
-            if (!produto) {
-
-                console.error(
-                    "❌ Target sem data-produto."
-                );
-
-                return;
-
-            }
-
-
-            // Guarda produto atual
-
-            produtoAtualId =
-                produto;
-
-
-            // Procura imagem AR
-
-            produtoAtualAR =
-                target.querySelector(
-                    ".produto-ar"
+                console.log(
+                    "🎯 TARGET ENCONTRADO!"
                 );
 
 
-            if (!produtoAtualAR) {
+                // -------------------------------
+                // DESCOBRIR PRODUTO
+                // -------------------------------
 
-                console.error(
-                    "❌ .produto-ar não encontrado."
+                const produtoEncontrado =
+                    target.dataset.produto;
+
+
+                console.log(
+                    "Produto:",
+                    produtoEncontrado
                 );
 
-                return;
 
-            }
+                // -------------------------------
+                // VERIFICAR PRODUTO
+                // -------------------------------
 
+                if (
+                    !produtoEncontrado ||
+                    !produtos[produtoEncontrado]
+                ) {
 
-            // Produto encontrado
+                    console.error(
+                        "❌ Produto não cadastrado:",
+                        produtoEncontrado
+                    );
 
-            produtoFoiEncontrado =
-                true;
+                    return;
 
-
-            // Salva produto
-
-            localStorage.setItem(
-                "produtoEncontrado",
-                produto
-            );
-
-
-            localStorage.setItem(
-                "nomeProdutoEncontrado",
-                nomesProdutos[produto]
-            );
+                }
 
 
-            console.log(
-                "💾 Produto salvo:",
-                produto
-            );
+                // -------------------------------
+                // SALVAR PRODUTO
+                // -------------------------------
+
+                localStorage.setItem(
+                    "produtoEncontrado",
+                    produtoEncontrado
+                );
 
 
-            console.log(
-                "👆 Toque na imagem do produto!"
-            );
-
-        }
-    );
+                localStorage.setItem(
+                    "nomeProdutoEncontrado",
+                    produtos[produtoEncontrado]
+                );
 
 
-    // ======================================
-    // PRODUTO PERDIDO
-    // ======================================
-
-    target.addEventListener(
-        "targetLost",
-        function () {
-
-            console.log(
-                "👋 Target perdido:",
-                target.dataset.produto
-            );
+                console.log(
+                    "✅ Produto salvo:",
+                    produtos[produtoEncontrado]
+                );
 
 
-            if (
-                produtoAtualId ===
-                target.dataset.produto
-            ) {
+                // -------------------------------
+                // GUARDAR TARGET ATUAL
+                // -------------------------------
 
-                produtoAtualId =
-                    null;
+                targetAtivo =
+                    target;
 
-                produtoAtualAR =
-                    null;
+
+                // -------------------------------
+                // PEGAR IMAGEM DO PRODUTO
+                // -------------------------------
+
+                produtoAtivo =
+                    target.querySelector(
+                        ".produto-ar"
+                    );
+
+
+                // -------------------------------
+                // MARCAR COMO ENCONTRADO
+                // -------------------------------
 
                 produtoFoiEncontrado =
-                    false;
+                    true;
+
+
+                console.log(
+                    "✨ Produto apareceu em AR!"
+                );
+
+
+                console.log(
+                    "👆 Toque no produto para abrir o card."
+                );
+
+
+                // -------------------------------
+                // ESCONDER CARREGAMENTO
+                // -------------------------------
+
+                if (mensagemCamera) {
+
+                    mensagemCamera.style.display =
+                        "none";
+
+                }
+
+
+                // -------------------------------
+                // MOSTRAR INSTRUÇÃO
+                // -------------------------------
+
+                if (toqueProduto) {
+
+                    toqueProduto.classList.add(
+                        "mostrar"
+                    );
+
+                }
 
             }
-
-        }
-    );
-
-});
+        );
 
 
-// ==========================================
-// PRODUTOS AR
-// ==========================================
+        // ======================================
+        // TARGET PERDIDO
+        // ======================================
 
-const produtosAR =
-    document.querySelectorAll(
-        ".produto-ar"
-    );
+        target.addEventListener(
+            "targetLost",
+            function () {
+
+                console.log(
+                    "👋 Target perdido:",
+                    target.dataset.produto
+                );
 
 
-console.log(
-    "🖼️ Produtos AR encontrados:",
-    produtosAR.length
+                if (
+                    targetAtivo === target
+                ) {
+
+                    targetAtivo = null;
+
+                    produtoAtivo = null;
+
+                    produtoFoiEncontrado = false;
+
+                }
+
+            }
+        );
+
+    }
 );
-
-
-// ==========================================
-// CONFIGURAR CLIQUE NAS IMAGENS
-// ==========================================
-
-produtosAR.forEach(function (produtoAR) {
-
-
-    // Torna clicável
-
-    produtoAR.classList.add(
-        "clicavel"
-    );
-
-
-    // ======================================
-    // CLIQUE
-    // ======================================
-
-    produtoAR.addEventListener(
-        "click",
-        function () {
-
-            console.log(
-                "👆 CLIQUE NA IMAGEM AR!"
-            );
-
-
-            // ==================================
-            // ENCONTRA O TARGET
-            // ==================================
-
-            const target =
-                produtoAR.closest(
-                    "[mindar-image-target]"
-                );
-
-
-            if (!target) {
-
-                console.error(
-                    "❌ Target não encontrado."
-                );
-
-                return;
-
-            }
-
-
-            // ==================================
-            // PEGA O PRODUTO
-            // ==================================
-
-            const produto =
-                target.dataset.produto;
-
-
-            if (!produto) {
-
-                console.error(
-                    "❌ Produto não encontrado."
-                );
-
-                return;
-
-            }
-
-
-            console.log(
-                "📦 Produto clicado:",
-                produto
-            );
-
-
-            // ==================================
-            // SALVA O PRODUTO
-            // ==================================
-
-            localStorage.setItem(
-                "produtoEncontrado",
-                produto
-            );
-
-
-            localStorage.setItem(
-                "nomeProdutoEncontrado",
-                nomesProdutos[produto]
-            );
-
-
-            console.log(
-                "💾 Produto salvo:",
-                produto
-            );
-
-
-            // ==================================
-            // ABRE O CARD
-            // ==================================
-
-            abrirCardProduto();
-
-        }
-    );
-
-});
 
 
 // ==========================================
@@ -364,7 +308,9 @@ produtosAR.forEach(function (produtoAR) {
 function abrirCardProduto() {
 
 
-    // Evita vários cliques
+    // --------------------------------------
+    // EVITAR ABRIR DUAS VEZES
+    // --------------------------------------
 
     if (abrindoCard) {
 
@@ -373,7 +319,9 @@ function abrirCardProduto() {
     }
 
 
-    // Pega produto salvo
+    // --------------------------------------
+    // VERIFICAR PRODUTO
+    // --------------------------------------
 
     const produto =
         localStorage.getItem(
@@ -384,7 +332,7 @@ function abrirCardProduto() {
     if (!produto) {
 
         console.error(
-            "❌ Nenhum produto salvo."
+            "❌ Nenhum produto encontrado."
         );
 
         return;
@@ -393,39 +341,243 @@ function abrirCardProduto() {
 
 
     console.log(
-        "🛒 Abrindo card:",
+        "🛒 Abrindo card do:",
         produto
     );
 
 
-    // Impede novo clique
+    // --------------------------------------
+    // BLOQUEAR NOVOS CLIQUES
+    // --------------------------------------
 
-    abrindoCard =
-        true;
-
-
-    // ======================================
-    // PARA O CRONÔMETRO
-    // ======================================
-
-    if (intervaloTempo) {
-
-        clearInterval(
-            intervaloTempo
-        );
-
-        intervaloTempo =
-            null;
-
-    }
+    abrindoCard = true;
 
 
-    // ======================================
-    // ABRE A TELA DO PRODUTO
-    // ======================================
+    // --------------------------------------
+    // IR PARA O CARD
+    // --------------------------------------
 
     window.location.href =
         "card-produto.html";
+
+}
+
+
+// ==========================================
+// INTERAÇÃO COM O PRODUTO
+// ==========================================
+
+if (cena) {
+
+    cena.addEventListener(
+        "loaded",
+        function () {
+
+            console.log(
+                "✅ Cena A-Frame carregada!"
+            );
+
+
+            const canvas =
+                cena.canvas;
+
+
+            if (!canvas) {
+
+                console.error(
+                    "❌ Canvas do A-Frame não encontrado."
+                );
+
+                return;
+
+            }
+
+
+            console.log(
+                "🖱️👆 Interação ativada!"
+            );
+
+
+            // ----------------------------------
+            // EVITAR GESTOS DO NAVEGADOR
+            // ----------------------------------
+
+            canvas.style.touchAction =
+                "none";
+
+
+            // ==================================
+            // CLIQUE / TOQUE
+            // ==================================
+
+            canvas.addEventListener(
+                "pointerup",
+                function (evento) {
+
+
+                    // ------------------------------
+                    // PRECISA TER PRODUTO
+                    // ------------------------------
+
+                    if (
+                        !produtoFoiEncontrado ||
+                        !produtoAtivo ||
+                        !produtoAtivo.object3D
+                    ) {
+
+                        return;
+
+                    }
+
+
+                    // ------------------------------
+                    // PRODUTO PRECISA ESTAR VISÍVEL
+                    // ------------------------------
+
+                    if (
+                        !produtoAtivo.object3D.visible
+                    ) {
+
+                        return;
+
+                    }
+
+
+                    // ------------------------------
+                    // CÂMERA
+                    // ------------------------------
+
+                    const camera =
+                        cena.camera;
+
+
+                    if (!camera) {
+
+                        console.error(
+                            "❌ Câmera do A-Frame não encontrada."
+                        );
+
+                        return;
+
+                    }
+
+
+                    // ------------------------------
+                    // POSIÇÃO DO TOQUE
+                    // ------------------------------
+
+                    const rect =
+                        canvas.getBoundingClientRect();
+
+
+                    const x =
+                        evento.clientX -
+                        rect.left;
+
+
+                    const y =
+                        evento.clientY -
+                        rect.top;
+
+
+                    // ------------------------------
+                    // CONVERTER PARA THREE.JS
+                    // ------------------------------
+
+                    const mouse =
+                        new THREE.Vector2();
+
+
+                    mouse.x =
+                        (x / rect.width) * 2 - 1;
+
+
+                    mouse.y =
+                        -(y / rect.height) * 2 + 1;
+
+
+                    // ------------------------------
+                    // RAYCASTER
+                    // ------------------------------
+
+                    const raycaster =
+                        new THREE.Raycaster();
+
+
+                    raycaster.setFromCamera(
+                        mouse,
+                        camera
+                    );
+
+
+                    // ------------------------------
+                    // VERIFICAR OBJETO TOCADO
+                    // ------------------------------
+
+                    const intersecoes =
+                        raycaster.intersectObject(
+                            produtoAtivo.object3D,
+                            true
+                        );
+
+
+                    console.log(
+                        "🔎 Interseções:",
+                        intersecoes.length
+                    );
+
+
+                    // ------------------------------
+                    // PRODUTO FOI TOCADO
+                    // ------------------------------
+
+                    if (
+                        intersecoes.length > 0
+                    ) {
+
+                        console.log(
+                            "🎯 PRODUTO TOCADO!"
+                        );
+
+
+                        const nomeProduto =
+                            localStorage.getItem(
+                                "nomeProdutoEncontrado"
+                            );
+
+
+                        console.log(
+                            "Produto:",
+                            nomeProduto
+                        );
+
+
+                        // --------------------------
+                        // ESCONDER MENSAGEM
+                        // --------------------------
+
+                        if (toqueProduto) {
+
+                            toqueProduto.classList.remove(
+                                "mostrar"
+                            );
+
+                        }
+
+
+                        // --------------------------
+                        // ABRIR CARD
+                        // --------------------------
+
+                        abrirCardProduto();
+
+                    }
+
+                }
+            );
+
+        }
+    );
 
 }
 
@@ -450,277 +602,70 @@ if (botaoCarrinho) {
 
 
 // ==========================================
-// CRONÔMETRO
+// MOSTRAR ERRO
 // ==========================================
 
-const DURACAO_MISSAO =
-    120;
-
-let tempoRestante =
-    DURACAO_MISSAO;
-
-let intervaloTempo =
-    null;
-
-let jogoFinalizado =
-    false;
+function mostrarErro(mensagem) {
 
 
-// ==========================================
-// FORMATAR TEMPO
-// ==========================================
+    // -------------------------------
+    // ESCONDER CARREGAMENTO
+    // -------------------------------
 
-function formatarTempo(segundos) {
+    if (mensagemCamera) {
 
-    const minutos =
-        Math.floor(
-            segundos / 60
-        );
-
-
-    const segundosRestantes =
-        segundos % 60;
-
-
-    return (
-
-        String(minutos)
-            .padStart(2, "0")
-
-        +
-
-        ":"
-
-        +
-
-        String(segundosRestantes)
-            .padStart(2, "0")
-
-    );
-
-}
-
-
-// ==========================================
-// MOSTRAR TEMPO
-// ==========================================
-
-function mostrarTempo() {
-
-    if (!elementoTempo) {
-
-        console.error(
-            "❌ #tempo não existe no HTML."
-        );
-
-        return;
+        mensagemCamera.style.display =
+            "none";
 
     }
 
 
-    elementoTempo.textContent =
-        formatarTempo(
-            tempoRestante
-        );
+    // -------------------------------
+    // MOSTRAR ERRO
+    // -------------------------------
 
-}
+    if (erroCamera) {
 
-
-// ==========================================
-// ATUALIZAR TEMPO
-// ==========================================
-
-function atualizarTempo() {
-
-
-    tempoRestante--;
-
-
-    // Evita negativo
-
-    if (
-        tempoRestante < 0
-    ) {
-
-        tempoRestante =
-            0;
-
-    }
-
-
-    // Atualiza tela
-
-    mostrarTempo();
-
-
-    // ======================================
-    // ALERTA DOS 10 SEGUNDOS
-    // ======================================
-
-    if (
-        tempoRestante <= 10 &&
-        tempoRestante > 0
-    ) {
-
-        if (alertaTempo) {
-
-            alertaTempo.style.display =
-                "block";
-
-        }
-
-
-        if (elementoTempoContainer) {
-
-            elementoTempoContainer.classList.add(
-                "tempo-critico"
-            );
-
-        }
-
-    }
-
-
-    // ======================================
-    // TEMPO ACABOU
-    // ======================================
-
-    if (
-        tempoRestante === 0
-    ) {
-
-        finalizarJogo();
-
-    }
-
-}
-
-
-// ==========================================
-// INICIAR CRONÔMETRO
-// ==========================================
-
-function iniciarCronometro() {
-
-    console.log(
-        "⏱️ CRONÔMETRO: 02:00"
-    );
-
-
-    tempoRestante =
-        DURACAO_MISSAO;
-
-
-    mostrarTempo();
-
-
-    // Evita dois intervalos
-
-    if (intervaloTempo) {
-
-        clearInterval(
-            intervaloTempo
-        );
-
-    }
-
-
-    intervaloTempo =
-        setInterval(
-            atualizarTempo,
-            1000
-        );
-
-}
-
-
-// ==========================================
-// FINALIZAR JOGO
-// ==========================================
-
-function finalizarJogo() {
-
-
-    // Evita finalizar duas vezes
-
-    if (jogoFinalizado) {
-
-        return;
-
-    }
-
-
-    jogoFinalizado =
-        true;
-
-
-    // Para cronômetro
-
-    if (intervaloTempo) {
-
-        clearInterval(
-            intervaloTempo
-        );
-
-        intervaloTempo =
-            null;
-
-    }
-
-
-    console.log(
-        "⏰ TEMPO ESGOTADO!"
-    );
-
-
-    // ======================================
-    // MOSTRA ALERTA
-    // ======================================
-
-    if (alertaTempo) {
-
-        alertaTempo.style.display =
+        erroCamera.style.display =
             "block";
 
-
-        alertaTempo.innerHTML = `
-
-            <div class="icone-alerta">
-                ⏰
-            </div>
-
-            <strong>
-                Tempo esgotado!
-            </strong>
-
-            <span>
-                Suas compras foram finalizadas.
-            </span>
-
-        `;
-
     }
 
 
-    // ======================================
-    // VAI PARA VITÓRIA
-    // ======================================
+    // -------------------------------
+    // TEXTO
+    // -------------------------------
 
-    setTimeout(
+    if (textoErro) {
+
+        textoErro.textContent =
+            mensagem;
+
+    }
+
+}
+
+
+// ==========================================
+// TENTAR NOVAMENTE
+// ==========================================
+
+if (tentarNovamente) {
+
+    tentarNovamente.addEventListener(
+        "click",
         function () {
 
-            window.location.href =
-                "vitoria.html";
+            location.reload();
 
-        },
-        3000
+        }
     );
 
 }
 
 
 // ==========================================
-// SALDO
+// ORÇAMENTO
 // ==========================================
 
 const valorSalvo =
@@ -730,9 +675,7 @@ const valorSalvo =
 
 
 const saldoInicial =
-    Number(
-        valorSalvo
-    );
+    Number(valorSalvo);
 
 
 const elementoSaldo =
@@ -743,23 +686,46 @@ const elementoSaldo =
 
 if (
     elementoSaldo &&
-    !isNaN(saldoInicial)
+    !isNaN(saldoInicial) &&
+    saldoInicial >= 0
 ) {
 
     elementoSaldo.textContent =
-        saldoInicial.toLocaleString(
-            "pt-BR",
-            {
-                style: "currency",
-                currency: "BRL"
-            }
-        );
+        "R$ " +
+
+        saldoInicial
+            .toFixed(2)
+            .replace(".", ",");
+
+}
+
+else if (
+    elementoSaldo
+) {
+
+    elementoSaldo.textContent =
+        "R$ 0,00";
 
 }
 
 
 // ==========================================
-// COMEÇAR
+// PÁGINA CARREGADA
 // ==========================================
 
-iniciarCronometro();
+window.addEventListener(
+    "load",
+    function () {
+
+        console.log(
+            "📱 Página da câmera carregada."
+        );
+
+
+        console.log(
+            "🔎 Quantidade de targets:",
+            targets.length
+        );
+
+    }
+);

@@ -13,11 +13,15 @@
                  maximum-scale=1.0,
                  user-scalable=no">
 
+    <title>Estoque Zero - Câmera</title>
+
+
     <!-- ==========================================
          A-FRAME
     =========================================== -->
 
     <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
+
 
     <!-- ==========================================
          A-FRAME EXTRAS
@@ -25,13 +29,17 @@
 
     <script src="https://cdn.jsdelivr.net/gh/donmccurdy/aframe-extras@v7.0.0/dist/aframe-extras.min.js"></script>
 
+
     <!-- ==========================================
          MINDAR
     =========================================== -->
 
     <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
 
-    <title>Estoque Zero - Câmera</title>
+
+    <!-- ==========================================
+         CSS
+    =========================================== -->
 
     <link
         rel="stylesheet"
@@ -42,7 +50,42 @@
 
 <body>
 
+
 <main class="tela-camera">
+
+
+    <!-- ==========================================
+         MENSAGEM INICIAL
+    =========================================== -->
+
+    <div
+        id="mensagem-camera"
+        class="mensagem-camera">
+
+        <div class="icone-camera">
+            📷
+        </div>
+
+        <p>
+            Iniciando câmera...
+        </p>
+
+    </div>
+
+
+    <!-- ==========================================
+         MENSAGEM SOBRE O PRODUTO
+    =========================================== -->
+
+    <div
+        id="toque-produto"
+        class="toque-produto">
+
+        <span>
+            Toque no produto
+        </span>
+
+    </div>
 
 
     <!-- ==========================================
@@ -143,204 +186,245 @@
              CÂMERA
         =========================================== -->
 
-<a-camera
-    position="0 0 0"
-    look-controls="enabled: false"
-    cursor="
-        rayOrigin: mouse;
-        fuse: false;  "
-    raycaster="
-        objects: .produto-ar;
-        recursive: true;"
->
-</a-camera>
-<!-- LEITE -->
-<a-entity
-    id="target-leite"
-    mindar-image-target="targetIndex: 0"
-    data-produto="leite">
+        <a-camera
+            position="0 0 0"
+            look-controls="enabled: false">
 
-    <a-image
-        id="produto-leite"
-        class="produto-ar"
-        src="../../img/produtos/leite.png"
-        position="0 0 0.1"
-        width="0.8"
-        height="1.1">
-    </a-image>
-
-</a-entity>
-
-<!-- FEIJÃO -->
-<a-entity
-    id="target-feijao"
-    mindar-image-target="targetIndex: 1"
-    data-produto="feijao">
-
-    <a-image
-        id="produto-feijao"
-        class="produto-ar"
-        src="../../img/produtos/feijao.png"
-        position="0 0 0.1"
-        width="0.8"
-        height="1.1">
-    </a-image>
-
-</a-entity>
-
-<!-- ARROZ -->
-<a-entity
-    id="target-arroz"
-    mindar-image-target="targetIndex: 2"
-    data-produto="arroz">
-
-    <a-image
-        id="produto-arroz"
-        class="produto-ar"
-        src="../../img/produtos/arroz.jpeg"
-        position="0 0 0.1"
-        width="0.8"
-        height="1.1">
-    </a-image>
-
-</a-entity>
-
-<!-- MACARRÃO -->
-<a-entity
-    id="target-macarrao"
-    mindar-image-target="targetIndex: 3"
-    data-produto="macarrao">
-
-    <a-image
-        id="produto-macarrao"
-        class="produto-ar"
-        src="../../img/produtos/macarrao.jpeg"
-        position="0 0 0.1"
-        width="0.8"
-        height="1.1">
-    </a-image>
-
-</a-entity>
-
-<!-- ==========================================
-     TARGET 4 - ÓLEO
-=========================================== -->
-<a-entity
-    id="target-oleo"
-    mindar-image-target="targetIndex: 4"
-    data-produto="oleo">
-
- <a-image
-    id="produto-oleo"
-    class="produto-ar"
-    src="../../img/produtos/oleo.jpeg"
-    position="0 0 0.1"
-    width="0.8"
-    height="1.1">
-</a-image>
-
-</a-entity>
-
-<!-- ==========================================
-     TARGET 5 - AÇÚCAR
-=========================================== -->
-
-<a-entity
-    id="target-acucar"
-    mindar-image-target="targetIndex: 5"
-    data-produto="acucar">
-
-<a-image
-    id="produto-acucar"
-    class="produto-ar"
-    src="../../img/produtos/acucar.jpeg"
-    position="0 0 0.1"
-    width="0.8"
-    height="1.1">
-</a-image>
-
-</a-entity>
-
-<!-- ==========================================
-     TARGET 6 - BOMBONS
-=========================================== -->
-
-<a-entity
-    id="target-bombons"
-    mindar-image-target="targetIndex: 6"
-    data-produto="bombons">
-
-    <a-image
-    id="produto-bombons"
-    class="produto-ar"
-    src="../../img/produtos/bombons.jpeg"
-    position="0 0 0.1"
-    width="0.8"
-    height="1.1">
-</a-image>
-
-</a-entity>
+        </a-camera>
 
 
-<!-- ==========================================
-     TARGET 7 - GIFT CARD
-=========================================== -->
+        <!-- ==========================================
+             TARGET 0 - LEITE
+        =========================================== -->
 
-<a-entity
-    id="target-giftcard"
-    mindar-image-target="targetIndex: 7"
-    data-produto="giftcard">
+        <a-entity
+            id="target-leite"
+            mindar-image-target="targetIndex: 0"
+            data-produto="leite">
 
-<a-image
-    id="produto-giftcard"
-    class="produto-ar"
-    src="../../img/produtos/giftcard.png"
-    position="0 0 0.1"
-    width="0.8"
-    height="1.1">
-</a-image>
+            <a-image
+                id="produto-leite"
+                class="produto-ar"
+                src="../../img/produtos/leite.png"
+                position="0 0 0.1"
+                width="0.8"
+                data-produto="leite"
+                height="1.1">
 
-</a-entity>
+            </a-image>
+
+        </a-entity>
 
 
-<!-- ==========================================
-     TARGET 8 - COPO
-=========================================== -->
-<a-entity
-    id="target-copo"
-    mindar-image-target="targetIndex: 8"
-    data-produto="copo">
+        <!-- ==========================================
+             TARGET 1 - FEIJÃO
+        =========================================== -->
 
-<a-image
-    id="produto-copo"
-    class="produto-ar"
-    src="../../img/produtos/copo.jpg"
-    position="0 0 0.1"
-    width="0.8"
-    height="1.1">
-</a-image>
+        <a-entity
+            id="target-feijao"
+            mindar-image-target="targetIndex: 1"
+            data-produto="feijao">
 
-</a-entity>
+            <a-image
+                id="produto-feijao"
+                class="produto-ar"
+                src="../../img/produtos/feijao.png"
+                position="0 0 0.1"
+                width="0.8"
+                data-produto="feijao"
+                height="1.1">
 
-<!-- ==========================================
-     TARGET 9 - BONECO
-=========================================== -->
+            </a-image>
 
-<a-entity
-    id="target-boneco"
-    mindar-image-target="targetIndex: 9"
-    data-produto="boneco">
+        </a-entity>
 
-    <a-image
-    id="produto-copo"
-    class="produto-ar"
-    src="../../img/produtos/boneco.jpeg"
-    position="0 0 0.1"
-    width="0.8"
-    height="1.1">
-</a-image>
 
-</a-entity>
+        <!-- ==========================================
+             TARGET 2 - ARROZ
+        =========================================== -->
+
+        <a-entity
+            id="target-arroz"
+            mindar-image-target="targetIndex: 2"
+            data-produto="arroz">
+
+            <a-image
+                id="produto-arroz"
+                class="produto-ar"
+                src="../../img/produtos/arroz.jpeg"
+                position="0 0 0.1"
+                width="0.8"
+                data-produto="arroz"
+                height="1.1">
+
+            </a-image>
+
+        </a-entity>
+
+
+        <!-- ==========================================
+             TARGET 3 - MACARRÃO
+        =========================================== -->
+
+        <a-entity
+            id="target-macarrao"
+            mindar-image-target="targetIndex: 3"
+            data-produto="macarrao">
+
+            <a-image
+                id="produto-macarrao"
+                class="produto-ar"
+                src="../../img/produtos/macarrao.jpeg"
+                position="0 0 0.1"
+                width="0.8"
+                data-produto="macarrao"
+                height="1.1">
+
+            </a-image>
+
+        </a-entity>
+
+
+        <!-- ==========================================
+             TARGET 4 - ÓLEO
+        =========================================== -->
+
+        <a-entity
+            id="target-oleo"
+            mindar-image-target="targetIndex: 4"
+            data-produto="oleo">
+
+            <a-image
+                id="produto-oleo"
+                class="produto-ar"
+                src="../../img/produtos/oleo.jpeg"
+                position="0 0 0.1"
+                width="0.8"
+                data-produto="oleo"
+                height="1.1">
+
+            </a-image>
+
+        </a-entity>
+
+
+        <!-- ==========================================
+             TARGET 5 - AÇÚCAR
+        =========================================== -->
+
+        <a-entity
+            id="target-acucar"
+            mindar-image-target="targetIndex: 5"
+            data-produto="acucar">
+
+            <a-image
+                id="produto-acucar"
+                class="produto-ar"
+                src="../../img/produtos/acucar.jpeg"
+                position="0 0 0.1"
+                width="0.8"
+                data-produto="acucar"
+                height="1.1">
+
+            </a-image>
+
+        </a-entity>
+
+
+        <!-- ==========================================
+             TARGET 6 - BOMBONS
+        =========================================== -->
+
+        <a-entity
+            id="target-bombons"
+            mindar-image-target="targetIndex: 6"
+            data-produto="bombons">
+
+            <a-image
+                id="produto-bombons"
+                class="produto-ar"
+                src="../../img/produtos/bombons.jpeg"
+                position="0 0 0.1"
+                width="0.8"
+                data-produto="bombons"
+                height="1.1">
+
+            </a-image>
+
+        </a-entity>
+
+
+        <!-- ==========================================
+             TARGET 7 - GIFT CARD
+        =========================================== -->
+
+        <a-entity
+            id="target-giftcard"
+            mindar-image-target="targetIndex: 7"
+            data-produto="giftcard">
+
+            <a-image
+                id="produto-giftcard"
+                class="produto-ar"
+                src="../../img/produtos/giftcard.png"
+                position="0 0 0.1"
+                width="0.8"
+                data-produto="gifcard"
+                height="1.1">
+
+            </a-image>
+
+        </a-entity>
+
+
+        <!-- ==========================================
+             TARGET 8 - COPO
+        =========================================== -->
+
+        <a-entity
+            id="target-copo"
+            mindar-image-target="targetIndex: 8"
+            data-produto="copo">
+
+            <a-image
+                id="produto-copo"
+                class="produto-ar"
+                src="../../img/produtos/copo.jpg"
+                position="0 0 0.1"
+                width="0.8"
+                data-produto="copo"
+                height="1.1">
+
+            </a-image>
+
+        </a-entity>
+
+
+        <!-- ==========================================
+             TARGET 9 - BONECO
+        =========================================== -->
+
+        <a-entity
+            id="target-boneco"
+            mindar-image-target="targetIndex: 9"
+            data-produto="boneco">
+
+            <a-image
+                id="produto-boneco"
+                class="produto-ar"
+                src="../../img/produtos/boneco.jpeg"
+                position="0 0 0.1"
+                width="0.8"
+                data-produto="boneco"
+                height="1.1">
+
+            </a-image>
+
+        </a-entity>
+
+
+    </a-scene>
+
 
     <!-- ==========================================
          TOPO
@@ -350,7 +434,8 @@
 
         <div class="nome-jogo">
 
-            ESTOQUE<br>
+            ESTOQUE
+            <br>
             ZERO
 
         </div>
@@ -358,9 +443,14 @@
 
         <div class="informacoes">
 
+
+            <!-- SALDO -->
+
             <div class="saldo">
 
-                Saldo
+                <span>
+                    Saldo
+                </span>
 
                 <strong id="saldo">
                     R$ 0,00
@@ -368,6 +458,8 @@
 
             </div>
 
+
+            <!-- TEMPO -->
 
             <div class="tempo">
 
@@ -380,6 +472,7 @@
                 </strong>
 
             </div>
+
 
         </div>
 
@@ -429,7 +522,9 @@
         <span
             id="quantidade-carrinho"
             class="quantidade-carrinho">
+
             0
+
         </span>
 
     </button>
@@ -476,11 +571,12 @@
 
     </div>
 
-    
+
 </main>
 
-
 <script src="../../Js/camera.js"></script>
+<script src="../../JS/cronometro.js"></script>
+
 
 </body>
 

@@ -1,171 +1,522 @@
 // ========================================
-// PRODUTOS
+// ESTOQUE ZERO
+// JAVASCRIPT DO CARRINHO
 // ========================================
 
-const produtos = {
 
-    leite: {
-        nome: "Leite UHT Integral 1 L",
-        preco: 7.50,
-        imagem: "../../img/produtos/leite.png"
-    },
+// ========================================
+// ELEMENTOS DO HTML
+// ========================================
 
-    feijao: {
-        nome: "Feijão Carioca 1 kg",
-        preco: 8.00,
-        imagem: "../../img/produtos/feijao.png"
-    },
+const listaProdutos =
+    document.getElementById("lista-produtos");
 
-    arroz: {
-        nome: "Arroz Branco 5 kg",
-        preco: 25.00,
-        imagem: "../../img/produtos/arroz.jpeg"
-    },
+const carrinhoVazio =
+    document.getElementById("carrinho-vazio");
 
-    macarrao: {
-        nome: "Macarrão 500 g",
-        preco: 5.00,
-        imagem: "../../img/produtos/macarrao.jpeg"
-    },
+const orcamentoInicial =
+    document.getElementById("orcamento-inicial");
 
-    oleo: {
-        nome: "Óleo de Soja 900 ml",
-        preco: 8.00,
-        imagem: "../../img/produtos/oleo.jpeg"
-    },
+const totalGasto =
+    document.getElementById("total-gasto");
 
-    acucar: {
-        nome: "Açúcar Refinado 1 kg",
-        preco: 5.00,
-        imagem: "../../img/produtos/acucar.jpeg"
-    },
+const saldoRestante =
+    document.getElementById("saldo-restante");
 
-    bombons: {
-        nome: "Caixa de Bombons",
-        preco: 12.00,
-        imagem: "../../img/produtos/bombons.jpeg"
-    },
+const botaoVoltar =
+    document.getElementById("botao-voltar");
 
-    giftcard: {
-        nome: "Gift Card",
-        preco: 20.00,
-        imagem: "../../img/produtos/giftcard.png"
-    },
+const voltarCameraVazio =
+    document.getElementById("voltar-camera-vazio");
 
-    copo: {
-        nome: "Copo Térmico",
-        preco: 15.00,
-        imagem: "../../img/produtos/copo.jpg"
-    },
+const confirmarCompras =
+    document.getElementById("confirmar-compras");
 
-    boneco: {
-        nome: "Boneco Colecionável",
-        preco: 18.00,
-        imagem: "../../img/produtos/boneco.jpeg"
+
+// ========================================
+// PEGAR ORÇAMENTO
+// ========================================
+
+const valorSalvo =
+    localStorage.getItem("orcamentoSelecionado");
+
+const ORCAMENTO =
+    Number(valorSalvo) || 0;
+
+
+console.log("================================");
+console.log("💰 ORÇAMENTO");
+console.log("Valor salvo:", valorSalvo);
+console.log("Orçamento:", ORCAMENTO);
+console.log("================================");
+
+
+// ========================================
+// PEGAR CARRINHO
+// ========================================
+
+let carrinho = [];
+
+try {
+
+    const carrinhoSalvo =
+        localStorage.getItem("carrinho");
+
+    if (carrinhoSalvo) {
+
+        carrinho =
+            JSON.parse(carrinhoSalvo);
+
+    } else {
+
+        carrinho = [];
+
     }
 
-};
-
-// ========================================
-// PRODUTO ENCONTRADO
-// ========================================
-
-// Recupera o produto que foi encontrado
-// pelo MindAR na tela da câmera
-const produtoEncontrado =
-    localStorage.getItem("produtoEncontrado");
-
-// Mostra no console para facilitar o teste
-console.log("🔎 Produto encontrado:", produtoEncontrado);
-
-// Procura o produto na lista
-const produto = produtos[produtoEncontrado];
-
-// ========================================
-// PEGAR ELEMENTOS DO HTML
-// ========================================
-
-const imagemProduto =
-    document.getElementById("imagemProduto");
-
-const nomeProduto =
-    document.getElementById("nomeProduto");
-
-const precoProduto =
-    document.getElementById("precoProduto");
-
-const adicionar =
-    document.getElementById("adicionar");
-
-const cancelar =
-    document.getElementById("cancelar");
-
-const fechar =
-    document.getElementById("fechar");
-
-// ========================================
-// MOSTRAR PRODUTO NO CARD
-// ========================================
-
-if (produto) {
-
-    console.log("✅ Produto carregado:", produto.nome);
-
-    imagemProduto.src = produto.imagem;
-    nomeProduto.textContent = produto.nome;
-
-    // Preço
-    precoProduto.textContent =
-        produto.preco.toLocaleString("pt-BR", {
-            style: "currency",
-            currency: "BRL"
-        });
-
-} else {
+} catch (erro) {
 
     console.error(
-        "❌ Produto não encontrado na lista:",
-        produtoEncontrado
+        "❌ Erro ao ler carrinho:",
+        erro
     );
 
-    nomeProduto.textContent = "Produto não encontrado";
+    carrinho = [];
 
-    precoProduto.textContent = "R$ 0,00";
 }
 
+
+console.log("🛒 Carrinho carregado:", carrinho);
+
+
 // ========================================
-// ADICIONAR AO CARRINHO
+// FORMATAR PREÇO
 // ========================================
 
-adicionar.addEventListener("click", function () {
+function formatarPreco(valor) {
 
-    // Se não encontrou o produto,
-    // não permite adicionar
-    if (!produto) {
-        console.error("❌ Não foi possível adicionar o produto.");
+    return Number(valor).toLocaleString(
+        "pt-BR",
+        {
+            style: "currency",
+            currency: "BRL"
+        }
+    );
+
+}
+
+
+// ========================================
+// CALCULAR TOTAL
+// ========================================
+
+function calcularTotal() {
+
+    let total = 0;
+
+
+    carrinho.forEach(
+        function (produto) {
+
+            const preco =
+                Number(produto.preco) || 0;
+
+            const quantidade =
+                Number(produto.quantidade) || 1;
+
+
+            total +=
+                preco * quantidade;
+
+        }
+    );
+
+
+    return total;
+
+}
+
+
+// ========================================
+// CALCULAR E SALVAR RESULTADO
+// ========================================
+
+function salvarResultado() {
+
+    const total =
+        calcularTotal();
+
+
+    const saldo =
+        ORCAMENTO - total;
+
+
+    // ====================================
+    // SALVAR TOTAL GASTO
+    // ====================================
+
+    localStorage.setItem(
+        "totalGasto",
+        total.toFixed(2)
+    );
+
+
+    // ====================================
+    // SALVAR SALDO FINAL
+    // ====================================
+
+    localStorage.setItem(
+        "saldoFinal",
+        saldo.toFixed(2)
+    );
+
+
+    console.log("================================");
+    console.log("💾 RESULTADO SALVO");
+    console.log("Orçamento:", ORCAMENTO);
+    console.log("Total gasto:", total);
+    console.log("Saldo final:", saldo);
+    console.log("================================");
+
+
+    return {
+        total: total,
+        saldo: saldo
+    };
+
+}
+
+
+// ========================================
+// MOSTRAR CARRINHO
+// ========================================
+
+function mostrarCarrinho() {
+
+    if (!listaProdutos) {
+
+        console.error(
+            "❌ #lista-produtos não encontrado."
+        );
+
         return;
+
     }
 
-    // Pega o carrinho existente
-    let carrinho = JSON.parse(
-        localStorage.getItem("carrinho")
-    ) || [];
 
-    // Adiciona o produto
-    carrinho.push({
-
-        id: produtoEncontrado,
-
-        nome: produto.nome,
-
-        preco: produto.preco,
-
-        imagem: produto.imagem
-
-    });
+    listaProdutos.innerHTML = "";
 
 
-    // Salva o carrinho
+    // ====================================
+    // CARRINHO VAZIO
+    // ====================================
+
+    if (
+        !carrinho ||
+        carrinho.length === 0
+    ) {
+
+        if (carrinhoVazio) {
+
+            carrinhoVazio.style.display =
+                "block";
+
+        }
+
+
+        atualizarResumo();
+
+        return;
+
+    }
+
+
+    // ====================================
+    // ESCONDER CARRINHO VAZIO
+    // ====================================
+
+    if (carrinhoVazio) {
+
+        carrinhoVazio.style.display =
+            "none";
+
+    }
+
+
+    // ====================================
+    // CRIAR PRODUTOS
+    // ====================================
+
+    carrinho.forEach(
+        function (produto, indice) {
+
+            const preco =
+                Number(produto.preco) || 0;
+
+            const quantidade =
+                Number(produto.quantidade) || 1;
+
+            const subtotal =
+                preco * quantidade;
+
+
+            // =================================
+            // CARD
+            // =================================
+
+            const card =
+                document.createElement("article");
+
+
+            card.className =
+                "produto";
+
+
+            card.innerHTML = `
+
+                <div class="imagem-produto">
+
+                    <img
+                        src="${produto.imagem}"
+                        alt="${produto.nome}"
+                    >
+
+                </div>
+
+
+                <div class="informacoes-produto">
+
+                    <h3 class="nome-produto">
+                        ${produto.nome}
+                    </h3>
+
+
+                    <p class="preco-produto">
+                        ${formatarPreco(preco)}
+                    </p>
+
+
+                    <div class="controles">
+
+                        <button
+                            type="button"
+                            class="botao-quantidade diminuir"
+                            data-indice="${indice}"
+                        >
+                            −
+                        </button>
+
+
+                        <span class="quantidade">
+                            ${quantidade}
+                        </span>
+
+
+                        <button
+                            type="button"
+                            class="botao-quantidade aumentar"
+                            data-indice="${indice}"
+                        >
+                            +
+                        </button>
+
+                    </div>
+
+
+                    <strong class="subtotal">
+                        ${formatarPreco(subtotal)}
+                    </strong>
+
+                </div>
+
+
+                <button
+                    type="button"
+                    class="botao-excluir botao-remover"
+                    data-indice="${indice}"
+                    aria-label="Remover produto"
+                >
+                    ×
+                </button>
+
+            `;
+
+
+            listaProdutos.appendChild(card);
+
+        }
+    );
+
+
+    // ====================================
+    // CONFIGURAR BOTÕES
+    // ====================================
+
+    configurarBotoes();
+
+
+    // ====================================
+    // ATUALIZAR RESUMO
+    // ====================================
+
+    atualizarResumo();
+
+}
+
+
+// ========================================
+// CONFIGURAR BOTÕES
+// ========================================
+
+function configurarBotoes() {
+
+
+    // ====================================
+    // AUMENTAR QUANTIDADE
+    // ====================================
+
+    const botoesAumentar =
+        document.querySelectorAll(".aumentar");
+
+
+    botoesAumentar.forEach(
+        function (botao) {
+
+            botao.addEventListener(
+                "click",
+                function () {
+
+                    const indice =
+                        Number(
+                            this.dataset.indice
+                        );
+
+
+                    if (!carrinho[indice]) {
+
+                        return;
+
+                    }
+
+
+                    carrinho[indice].quantidade =
+                        Number(
+                            carrinho[indice].quantidade
+                        ) + 1;
+
+
+                    salvarCarrinho();
+
+                }
+            );
+
+        }
+    );
+
+
+    // ====================================
+    // DIMINUIR QUANTIDADE
+    // ====================================
+
+    const botoesDiminuir =
+        document.querySelectorAll(".diminuir");
+
+
+    botoesDiminuir.forEach(
+        function (botao) {
+
+            botao.addEventListener(
+                "click",
+                function () {
+
+                    const indice =
+                        Number(
+                            this.dataset.indice
+                        );
+
+
+                    if (!carrinho[indice]) {
+
+                        return;
+
+                    }
+
+
+                    const quantidadeAtual =
+                        Number(
+                            carrinho[indice].quantidade
+                        );
+
+
+                    if (quantidadeAtual > 1) {
+
+                        carrinho[indice].quantidade =
+                            quantidadeAtual - 1;
+
+                    } else {
+
+                        carrinho.splice(
+                            indice,
+                            1
+                        );
+
+                    }
+
+
+                    salvarCarrinho();
+
+                }
+            );
+
+        }
+    );
+
+
+    // ====================================
+    // REMOVER PRODUTO
+    // ====================================
+
+    const botoesRemover =
+        document.querySelectorAll(
+            ".botao-remover"
+        );
+
+
+    botoesRemover.forEach(
+        function (botao) {
+
+            botao.addEventListener(
+                "click",
+                function () {
+
+                    const indice =
+                        Number(
+                            this.dataset.indice
+                        );
+
+
+                    carrinho.splice(
+                        indice,
+                        1
+                    );
+
+
+                    salvarCarrinho();
+
+                }
+            );
+
+        }
+    );
+
+}
+
+
+// ========================================
+// SALVAR CARRINHO
+// ========================================
+
+function salvarCarrinho() {
+
     localStorage.setItem(
         "carrinho",
         JSON.stringify(carrinho)
@@ -173,32 +524,212 @@ adicionar.addEventListener("click", function () {
 
 
     console.log(
-        "🛒 Produto adicionado:",
-        produto.nome
+        "💾 Carrinho atualizado:",
+        carrinho
     );
 
 
-    // Volta para o carrinho
-    window.location.href = "carrinho.html";
+    // Atualiza também
+    // total gasto e saldo
 
-});
+    salvarResultado();
+
+
+    // Atualiza a tela
+
+    mostrarCarrinho();
+
+}
+
 
 // ========================================
-// CANCELAR
+// ATUALIZAR RESUMO
 // ========================================
 
-cancelar.addEventListener("click", function () {
+function atualizarResumo() {
+
+    const resultado =
+        salvarResultado();
+
+
+    const total =
+        resultado.total;
+
+    const saldo =
+        resultado.saldo;
+
+
+    // ====================================
+    // ORÇAMENTO
+    // ====================================
+
+    if (orcamentoInicial) {
+
+        orcamentoInicial.textContent =
+            formatarPreco(ORCAMENTO);
+
+    }
+
+
+    // ====================================
+    // TOTAL GASTO
+    // ====================================
+
+    if (totalGasto) {
+
+        totalGasto.textContent =
+            formatarPreco(total);
+
+    }
+
+
+    // ====================================
+    // SALDO RESTANTE
+    // ====================================
+
+    if (saldoRestante) {
+
+        saldoRestante.textContent =
+            formatarPreco(saldo);
+
+    }
+
+
+    console.log("📊 RESUMO ATUALIZADO");
+    console.log("Orçamento:", ORCAMENTO);
+    console.log("Total gasto:", total);
+    console.log("Saldo restante:", saldo);
+
+}
+
+
+// ========================================
+// VOLTAR PARA CÂMERA
+// ========================================
+
+function voltarParaCamera() {
 
     window.history.back();
 
-});
+}
+
+
+if (botaoVoltar) {
+
+    botaoVoltar.addEventListener(
+        "click",
+        voltarParaCamera
+    );
+
+}
+
+
+if (voltarCameraVazio) {
+
+    voltarCameraVazio.addEventListener(
+        "click",
+        voltarParaCamera
+    );
+
+}
+
 
 // ========================================
-// FECHAR
+// FINALIZAR PARTIDA
 // ========================================
 
-fechar.addEventListener("click", function () {
+if (confirmarCompras) {
 
-    window.history.back();
+    confirmarCompras.addEventListener(
+        "click",
+        function () {
 
-});
+            console.log(
+                "================================"
+            );
+
+            console.log(
+                "🏁 PARTIDA FINALIZADA"
+            );
+
+
+            // ====================================
+            // CALCULAR NOVAMENTE
+            // ====================================
+
+            const resultado =
+                salvarResultado();
+
+
+            const total =
+                resultado.total;
+
+            const saldo =
+                resultado.saldo;
+
+
+            console.log(
+                "🛒 Carrinho:",
+                carrinho
+            );
+
+            console.log(
+                "💰 Total:",
+                total
+            );
+
+            console.log(
+                "💵 Saldo:",
+                saldo
+            );
+
+
+            // ====================================
+            // SALVAR RESULTADO COMPLETO
+            // ====================================
+
+            const resultadoPartida = {
+
+                orcamento:
+                    ORCAMENTO,
+
+                totalGasto:
+                    total,
+
+                saldo:
+                    saldo,
+
+                carrinho:
+                    carrinho
+
+            };
+
+            localStorage.setItem(
+                "resultadoPartida",
+                JSON.stringify(
+                    resultadoPartida
+                )
+            );
+
+            console.log(
+                "💾 Resultado da partida:",
+                resultadoPartida
+            );
+
+            // ====================================
+            // IR PARA VITÓRIA
+            // ====================================
+
+            window.location.href =
+                "vitoria.html";
+
+        }
+    );
+
+}
+
+// ========================================
+// INICIAR
+// ========================================
+
+mostrarCarrinho();

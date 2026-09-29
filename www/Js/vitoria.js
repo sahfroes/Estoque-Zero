@@ -4,75 +4,160 @@
 ===================================== */
 
 
-/* =========================
-   PEGAR ELEMENTOS
-========================= */
+// =====================================
+// ELEMENTOS DO HTML
+// =====================================
 
 const orcamentoElemento =
-    document.getElementById("orcamentoInicial");
-
-const gastoElemento =
-    document.getElementById("totalGasto");
-
-const saldoElemento =
-    document.getElementById("saldoRestante");
-
-const comprasElemento =
-    document.getElementById("quantidadeCompras");
-
-const pontuacaoElemento =
-    document.getElementById("pontuacao");
-
-const desempenhoElemento =
-    document.getElementById("mensagemDesempenho");
-
-
-/* =========================
-   PEGAR ORÇAMENTO
-========================= */
-
-// Pega o orçamento escolhido pelo aluno
-const orcamento =
-    Number(
-        localStorage.getItem("orcamentoSelecionado")
-    ) || 0;
-
-
-/* =========================
-   PEGAR RESULTADOS
-========================= */
-
-// Pega o total calculado pelo carrinho
-const totalGasto =
-    Number(
-        localStorage.getItem("totalGasto")
-    ) || 0;
-
-
-// Pega o saldo calculado pelo carrinho
-const saldo =
-    Number(
-        localStorage.getItem("saldoFinal")
+    document.getElementById(
+        "orcamentoInicial"
     );
 
 
-/* =========================
-   PEGAR CARRINHO
-========================= */
+const gastoElemento =
+    document.getElementById(
+        "totalGasto"
+    );
+
+
+const saldoElemento =
+    document.getElementById(
+        "saldoRestante"
+    );
+
+
+const comprasElemento =
+    document.getElementById(
+        "quantidadeCompras"
+    );
+
+
+const pontuacaoElemento =
+    document.getElementById(
+        "pontuacao"
+    );
+
+
+const desempenhoElemento =
+    document.getElementById(
+        "mensagemDesempenho"
+    );
+
+
+// =====================================
+// PEGAR ORÇAMENTO
+// =====================================
+
+const valorOrcamento =
+    localStorage.getItem(
+        "orcamentoSelecionado"
+    );
+
+
+const orcamento =
+    Number(valorOrcamento) || 0;
+
+
+console.log(
+    "💰 Orçamento:",
+    orcamento
+);
+
+
+// =====================================
+// PEGAR TOTAL GASTO
+// =====================================
+
+const valorTotal =
+    localStorage.getItem(
+        "totalGasto"
+    );
+
+
+const totalGasto =
+    Number(valorTotal) || 0;
+
+
+console.log(
+    "💸 Total gasto:",
+    totalGasto
+);
+
+
+// =====================================
+// PEGAR SALDO
+// =====================================
+
+const valorSaldo =
+    localStorage.getItem(
+        "saldoFinal"
+    );
+
+
+// IMPORTANTE:
+// Não usamos Number(null),
+// porque null vira 0.
+
+// Se não existir saldo salvo,
+// calculamos novamente.
+
+let saldoFinal;
+
+
+if (
+    valorSaldo !== null &&
+    valorSaldo !== ""
+) {
+
+    saldoFinal =
+        Number(valorSaldo);
+
+} else {
+
+    saldoFinal =
+        orcamento - totalGasto;
+
+}
+
+
+console.log(
+    "💵 Saldo final:",
+    saldoFinal
+);
+
+
+// =====================================
+// PEGAR CARRINHO
+// =====================================
 
 let carrinho = [];
 
+
 try {
 
-    carrinho =
-        JSON.parse(
-            localStorage.getItem("carrinho")
-        ) || [];
+    const carrinhoSalvo =
+        localStorage.getItem(
+            "carrinho"
+        );
+
+
+    if (carrinhoSalvo) {
+
+        carrinho =
+            JSON.parse(
+                carrinhoSalvo
+            );
+
+    } else {
+
+        carrinho = [];
+
+    }
 
 } catch (erro) {
 
     console.error(
-        "Erro ao carregar carrinho:",
+        "❌ Erro ao carregar carrinho:",
         erro
     );
 
@@ -81,43 +166,40 @@ try {
 }
 
 
-/* =========================
-   CALCULAR QUANTIDADE
-========================= */
+console.log(
+    "🛒 Carrinho:",
+    carrinho
+);
+
+
+// =====================================
+// CALCULAR QUANTIDADE DE COMPRAS
+// =====================================
 
 let quantidadeCompras = 0;
 
 
-carrinho.forEach(function(produto) {
+carrinho.forEach(
+    function (produto) {
 
-    quantidadeCompras +=
-        Number(produto.quantidade) || 1;
+        quantidadeCompras +=
+            Number(
+                produto.quantidade
+            ) || 1;
 
-});
-
-
-/* =========================
-   CALCULAR SALDO
-========================= */
-
-let saldoFinal = saldo;
+    }
+);
 
 
-// Caso saldoFinal não exista,
-// calcula novamente
-if (Number.isNaN(saldoFinal)) {
+console.log(
+    "🛍️ Quantidade de compras:",
+    quantidadeCompras
+);
 
-    saldoFinal =
-        orcamento - totalGasto;
 
-}
-
-/* =========================
-   PONTUAÇÃO
-========================= */
-
-// Quanto mais dinheiro guardar,
-// maior a pontuação.
+// =====================================
+// CALCULAR PONTUAÇÃO
+// =====================================
 
 let pontuacao = 0;
 
@@ -127,6 +209,7 @@ if (orcamento > 0) {
     const porcentagemGuardada =
         saldoFinal / orcamento;
 
+
     pontuacao =
         Math.round(
             porcentagemGuardada * 100
@@ -134,9 +217,10 @@ if (orcamento > 0) {
 
 }
 
-/* =========================
-   LIMITAR PONTUAÇÃO
-========================= */
+
+// =====================================
+// LIMITAR PONTUAÇÃO
+// =====================================
 
 pontuacao =
     Math.max(
@@ -146,9 +230,11 @@ pontuacao =
             pontuacao
         )
     );
-/* =========================
-   FORMATAR DINHEIRO
-========================= */
+
+
+// =====================================
+// FORMATAR DINHEIRO
+// =====================================
 
 function dinheiro(valor) {
 
@@ -162,69 +248,139 @@ function dinheiro(valor) {
 
 }
 
-/* =========================
-   MOSTRAR RESULTADO
-========================= */
 
-orcamentoElemento.textContent =
-    dinheiro(orcamento);
+// =====================================
+// MOSTRAR RESULTADO
+// =====================================
 
+if (orcamentoElemento) {
 
-gastoElemento.textContent =
-    dinheiro(totalGasto);
-
-
-saldoElemento.textContent =
-    dinheiro(saldoFinal);
-
-
-comprasElemento.textContent =
-    quantidadeCompras;
-
-
-pontuacaoElemento.textContent =
-    pontuacao + " pontos";
-
-
-/* =========================
-   MENSAGEM
-========================= */
-
-if (saldoFinal >= orcamento * 0.5) {
-
-    desempenhoElemento.textContent =
-        "🌟 Excelente! Você conseguiu guardar uma boa parte do seu dinheiro.";
+    orcamentoElemento.textContent =
+        dinheiro(orcamento);
 
 }
 
-else if (saldoFinal > 0) {
 
-    desempenhoElemento.textContent =
-        "💜 Muito bem! Você gastou, mas ainda conseguiu guardar dinheiro.";
+if (gastoElemento) {
 
-}
-
-else {
-
-    desempenhoElemento.textContent =
-        "⚠️ Você gastou todo o orçamento. Na próxima missão, tente guardar uma reserva.";
+    gastoElemento.textContent =
+        dinheiro(totalGasto);
 
 }
 
-/* =========================
-   DEBUG
-========================= */
 
-console.log("📊 RESULTADO FINAL");
-console.log("Orçamento:", orcamento);
-console.log("Total gasto:", totalGasto);
-console.log("Saldo:", saldoFinal);
-console.log("Compras:", quantidadeCompras);
-console.log("Carrinho:", carrinho);
+if (saldoElemento) {
 
-/* =========================
-   RANKING
-========================= */
+    saldoElemento.textContent =
+        dinheiro(saldoFinal);
+
+}
+
+
+if (comprasElemento) {
+
+    comprasElemento.textContent =
+        quantidadeCompras;
+
+}
+
+
+if (pontuacaoElemento) {
+
+    pontuacaoElemento.textContent =
+        pontuacao + " pontos";
+
+}
+
+
+// =====================================
+// MENSAGEM DE DESEMPENHO
+// =====================================
+
+if (desempenhoElemento) {
+
+
+    if (
+        saldoFinal >=
+        orcamento * 0.5
+    ) {
+
+        desempenhoElemento.textContent =
+            "🌟 Excelente! Você conseguiu guardar uma boa parte do seu dinheiro.";
+
+    }
+
+
+    else if (
+        saldoFinal > 0
+    ) {
+
+        desempenhoElemento.textContent =
+            "💜 Muito bem! Você gastou, mas ainda conseguiu guardar dinheiro.";
+
+    }
+
+
+    else {
+
+        desempenhoElemento.textContent =
+            "⚠️ Você gastou todo o orçamento. Na próxima missão, tente guardar uma reserva.";
+
+    }
+
+}
+
+
+// =====================================
+// DEBUG
+// =====================================
+
+console.log(
+    "================================="
+);
+
+console.log(
+    "📊 RESULTADO FINAL"
+);
+
+console.log(
+    "Orçamento:",
+    orcamento
+);
+
+console.log(
+    "Total gasto:",
+    totalGasto
+);
+
+console.log(
+    "Saldo:",
+    saldoFinal
+);
+
+console.log(
+    "Compras:",
+    quantidadeCompras
+);
+
+console.log(
+    "Pontuação:",
+    pontuacao
+);
+
+console.log(
+    "Carrinho:",
+    carrinho
+);
+
+console.log(
+    "================================="
+);
+
+
+// =====================================
+// RANKING
+// =====================================
 
 function verRanking() {
 
@@ -233,11 +389,29 @@ function verRanking() {
 
 }
 
-/* =========================
-   VOLTAR
-========================= */
+
+// =====================================
+// VOLTAR
+// =====================================
 
 function voltarInicio() {
+
+    // Limpa a partida anterior
+    // somente quando voltar
+    // para começar uma nova.
+
+    localStorage.removeItem(
+        "carrinho"
+    );
+
+    localStorage.removeItem(
+        "totalGasto"
+    );
+
+    localStorage.removeItem(
+        "saldoFinal"
+    );
+
 
     window.location.href =
         "orcamento.html";
