@@ -5,51 +5,61 @@
 const personagens = [
 
     {
+        id: "gigis",
         nome: "Gigis",
         seed: "gigis-estoque-zero"
     },
 
     {
+        id: "alexa",
         nome: "Alexa",
         seed: "alexa-estoque-zero"
     },
 
     {
+        id: "vivi",
         nome: "Vivi",
         seed: "vivi-estoque-zero"
     },
 
     {
+        id: "gao",
         nome: "Gao",
         seed: "gao-estoque-zero"
     },
 
     {
+        id: "tuco",
         nome: "Tuco",
         seed: "tuco-estoque-zero"
     },
 
     {
+        id: "pulma",
         nome: "Pulma",
         seed: "pulma-estoque-zero"
     },
 
     {
+        id: "robs",
         nome: "Robs",
         seed: "robs-estoque-zero"
     },
 
     {
+        id: "prin",
         nome: "Prin",
         seed: "prin-estoque-zero"
     },
 
     {
+        id: "mark",
         nome: "Mark",
         seed: "mark-estoque-zero"
     },
 
     {
+        id: "ligi",
         nome: "Ligi",
         seed: "ligi-estoque-zero"
     }
@@ -58,136 +68,393 @@ const personagens = [
 
 
 // ======================================
-// ELEMENTOS DA PÁGINA
+// ELEMENTOS DA TELA
 // ======================================
 
 const listaAvatares =
-    document.getElementById("listaAvatares");
+    document.getElementById(
+        "listaAvatares"
+    );
 
 const personagemEscolhido =
-    document.getElementById("personagemEscolhido");
+    document.getElementById(
+        "personagemEscolhido"
+    );
 
 const btnContinuar =
-    document.getElementById("btnContinuar");
+    document.getElementById(
+        "btnContinuar"
+    );
 
 const btnVoltar =
-    document.getElementById("btnVoltar");
+    document.getElementById(
+        "btnVoltar"
+    );
 
 
-// Guarda o personagem escolhido
+// ======================================
+// SALA ATUAL
+// ======================================
+
+const codigoTurma =
+    localStorage.getItem(
+        "codigoTurma"
+    );
+
+
+// ======================================
+// VERIFICAR SE ENTROU EM UMA SALA
+// ======================================
+
+if (!codigoTurma) {
+
+    alert(
+        "Nenhuma sala foi encontrada. Entre em uma sala primeiro."
+    );
+
+    window.location.href =
+        "entrar.html";
+
+}
+
+
+// ======================================
+// VARIÁVEIS
+// ======================================
 
 let avatarSelecionado = null;
 
+let personagensOcupados = new Set();
+
 
 // ======================================
-// CRIAR OS AVATARES
+// CSS DOS PERSONAGENS OCUPADOS
 // ======================================
 
-personagens.forEach(function(personagem) {
+const estiloOcupado =
+    document.createElement("style");
+
+estiloOcupado.textContent = `
+
+    .avatar-card.ocupado {
+        opacity: 0.45;
+        filter: grayscale(1);
+        cursor: not-allowed;
+        position: relative;
+    }
+
+    .avatar-card.ocupado::after {
+        content: "🔒 Ocupado";
+        position: absolute;
+        bottom: 8px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: #333;
+        color: white;
+        padding: 4px 8px;
+        border-radius: 10px;
+        font-size: 11px;
+        white-space: nowrap;
+    }
+
+`;
+
+document.head.appendChild(
+    estiloOcupado
+);
 
 
-    // Cria o card
-    const card = document.createElement("div");
+// ======================================
+// CRIAR AVATARES
+// ======================================
 
-    card.classList.add("avatar-card");
+personagens.forEach(
+    function (personagem) {
 
+        // ------------------------------
+        // CARD
+        // ------------------------------
 
-    // URL da API do DiceBear
-    const urlAvatar =
-        `https://api.dicebear.com/10.x/adventurer/svg?seed=${encodeURIComponent(personagem.seed)}&backgroundColor=e9ddff`;
+        const card =
+            document.createElement(
+                "div"
+            );
 
+        card.classList.add(
+            "avatar-card"
+        );
 
-    // Cria a imagem
-    const imagem =
-        document.createElement("img");
-
-    imagem.src = urlAvatar;
-
-    imagem.alt =
-        `Avatar ${personagem.nome}`;
-
-
-    // Nome
-    const nome =
-        document.createElement("span");
-
-    nome.classList.add("nome-avatar");
-
-    nome.textContent =
-        personagem.nome;
+        card.dataset.personagemId =
+            personagem.id;
 
 
-    // Check de seleção
-    const check =
-        document.createElement("span");
+        // ------------------------------
+        // AVATAR DICEBEAR
+        // ------------------------------
 
-    check.classList.add("check");
-
-    check.textContent = "✓";
-
-
-    // Coloca tudo dentro do card
-    card.appendChild(imagem);
-
-    card.appendChild(nome);
-
-    card.appendChild(check);
+        const urlAvatar =
+            `https://api.dicebear.com/10.x/adventurer/svg?seed=${encodeURIComponent(
+                personagem.seed
+            )}&backgroundColor=e9ddff`;
 
 
-    // Coloca o card na tela
-    listaAvatares.appendChild(card);
+        const imagem =
+            document.createElement(
+                "img"
+            );
+
+        imagem.src =
+            urlAvatar;
+
+        imagem.alt =
+            `Avatar ${personagem.nome}`;
 
 
-    // ==================================
-    // QUANDO CLICAR NO AVATAR
-    // ==================================
+        // ------------------------------
+        // NOME
+        // ------------------------------
 
-    card.addEventListener("click", function() {
+        const nome =
+            document.createElement(
+                "span"
+            );
+
+        nome.classList.add(
+            "nome-avatar"
+        );
+
+        nome.textContent =
+            personagem.nome;
 
 
-        // Remove seleção de todos
-        document
-            .querySelectorAll(".avatar-card")
-            .forEach(function(outroCard) {
+        // ------------------------------
+        // CHECK
+        // ------------------------------
 
-                outroCard.classList.remove(
+        const check =
+            document.createElement(
+                "span"
+            );
+
+        check.classList.add(
+            "check"
+        );
+
+        check.textContent =
+            "✓";
+
+
+        // ------------------------------
+        // MONTAR CARD
+        // ------------------------------
+
+        card.appendChild(imagem);
+
+        card.appendChild(nome);
+
+        card.appendChild(check);
+
+        listaAvatares.appendChild(card);
+
+
+        // ------------------------------
+        // CLIQUE
+        // ------------------------------
+
+        card.addEventListener(
+            "click",
+            function () {
+
+                // Se estiver ocupado,
+                // não deixa selecionar.
+
+                if (
+                    personagensOcupados.has(
+                        personagem.id
+                    )
+                ) {
+
+                    alert(
+                        "⚠️ Esse personagem já foi escolhido. Escolha outro."
+                    );
+
+                    return;
+
+                }
+
+
+                // --------------------------
+                // REMOVE SELEÇÃO ANTERIOR
+                // --------------------------
+
+                document
+                    .querySelectorAll(
+                        ".avatar-card"
+                    )
+                    .forEach(
+                        function (outroCard) {
+
+                            outroCard.classList.remove(
+                                "selecionado"
+                            );
+
+                        }
+                    );
+
+
+                // --------------------------
+                // SELECIONA
+                // --------------------------
+
+                card.classList.add(
                     "selecionado"
                 );
 
-            });
+
+                avatarSelecionado =
+                    personagem;
 
 
-        // Seleciona este
-        card.classList.add("selecionado");
+                personagemEscolhido.textContent =
+                    `Você escolheu: ${personagem.nome}`;
 
 
-        // Guarda personagem
-        avatarSelecionado = personagem;
+                btnContinuar.disabled =
+                    false;
 
+            }
+        );
 
-        // Mostra mensagem
-        personagemEscolhido.textContent =
-            `Você escolheu: ${personagem.nome} `;
-
-
-        // Libera botão
-        btnContinuar.disabled = false;
-
-    });
-
-});
+    }
+);
 
 
 // ======================================
-// BOTÃO CONTINUAR
+// BUSCAR PERSONAGENS OCUPADOS
+// ======================================
+
+async function carregarPersonagensOcupados() {
+
+    try {
+
+        const resposta =
+            await fetch(
+                `/api/jogadores/ocupados?codigo=${encodeURIComponent(
+                    codigoTurma
+                )}`
+            );
+
+
+        if (!resposta.ok) {
+
+            throw new Error(
+                "Erro ao consultar jogadores."
+            );
+
+        }
+
+
+        const dados =
+            await resposta.json();
+
+
+        personagensOcupados =
+            new Set(
+                dados.ocupados || []
+            );
+
+
+        atualizarCardsOcupados();
+
+
+    } catch (erro) {
+
+        console.error(
+            "Erro ao carregar personagens ocupados:",
+            erro
+        );
+
+    }
+
+}
+
+
+// ======================================
+// ATUALIZAR VISUAL DOS CARDS
+// ======================================
+
+function atualizarCardsOcupados() {
+
+    document
+        .querySelectorAll(
+            ".avatar-card"
+        )
+        .forEach(
+            function (card) {
+
+                const id =
+                    card.dataset.personagemId;
+
+
+                if (
+                    personagensOcupados.has(id)
+                ) {
+
+                    card.classList.add(
+                        "ocupado"
+                    );
+
+
+                    // Se esse personagem estava
+                    // selecionado e outra pessoa
+                    // pegou primeiro:
+
+                    if (
+                        avatarSelecionado &&
+                        avatarSelecionado.id === id
+                    ) {
+
+                        avatarSelecionado =
+                            null;
+
+                        card.classList.remove(
+                            "selecionado"
+                        );
+
+                        personagemEscolhido.textContent =
+                            "Esse personagem acabou de ser escolhido. Escolha outro.";
+
+                        btnContinuar.disabled =
+                            true;
+
+                    }
+
+                } else {
+
+                    card.classList.remove(
+                        "ocupado"
+                    );
+
+                }
+
+            }
+        );
+
+}
+
+
+// ======================================
+// CONTINUAR
 // ======================================
 
 btnContinuar.addEventListener(
     "click",
-    function() {
+    async function () {
 
+        // ------------------------------
+        // VERIFICAR SE ESCOLHEU
+        // ------------------------------
 
-        // Verifica se escolheu
         if (!avatarSelecionado) {
 
             alert(
@@ -199,27 +466,180 @@ btnContinuar.addEventListener(
         }
 
 
-        // =================================
-        // SALVAR ESCOLHA
-        // =================================
+        // ------------------------------
+        // DESABILITAR BOTÃO
+        // ------------------------------
 
-        localStorage.setItem(
-            "avatarNome",
-            avatarSelecionado.nome
-        );
+        btnContinuar.disabled =
+            true;
 
-
-        localStorage.setItem(
-            "avatarSeed",
-            avatarSelecionado.seed
-        );
+        btnContinuar.textContent =
+            "Entrando...";
 
 
-        // =================================
-        // IR PARA PRÓXIMA TELA
-        // =================================
+        try {
 
-             window.location.href = "id-criada.html";
+            // --------------------------
+            // ORÇAMENTO
+            // --------------------------
+
+            const orcamento =
+                Number(
+                    localStorage.getItem(
+                        "orcamentoSelecionado"
+                    )
+                ) || 50;
+
+
+            // --------------------------
+            // ENVIAR PARA SERVIDOR
+            // --------------------------
+
+            const resposta =
+                await fetch(
+                    "/api/jogadores/entrar",
+                    {
+
+                        method: "POST",
+
+                        headers: {
+                            "Content-Type":
+                                "application/json"
+                        },
+
+                        body:
+                            JSON.stringify({
+
+                                codigo:
+                                    codigoTurma,
+
+                                personagemId:
+                                    avatarSelecionado.id,
+
+                                orcamento:
+                                    orcamento
+
+                            })
+
+                    }
+                );
+
+
+            const dados =
+                await resposta.json();
+
+
+            // --------------------------
+            // PERSONAGEM JÁ OCUPADO
+            // --------------------------
+
+            if (
+                resposta.status === 409
+            ) {
+
+                alert(
+                    "⚠️ " +
+                    (
+                        dados.mensagem ||
+                        "Esse personagem já foi escolhido."
+                    )
+                );
+
+
+                personagensOcupados.add(
+                    avatarSelecionado.id
+                );
+
+
+                atualizarCardsOcupados();
+
+
+                avatarSelecionado =
+                    null;
+
+
+                btnContinuar.disabled =
+                    true;
+
+                btnContinuar.textContent =
+                    "Continuar →";
+
+
+                return;
+
+            }
+
+
+            // --------------------------
+            // OUTRO ERRO
+            // --------------------------
+
+            if (!resposta.ok) {
+
+                throw new Error(
+                    dados.mensagem ||
+                    "Erro ao entrar no jogo."
+                );
+
+            }
+
+
+            // --------------------------
+            // SALVAR PERSONAGEM
+            // --------------------------
+
+            localStorage.setItem(
+                "personagemId",
+                avatarSelecionado.id
+            );
+
+
+            localStorage.setItem(
+                "avatarNome",
+                avatarSelecionado.nome
+            );
+
+
+            localStorage.setItem(
+                "avatarSeed",
+                avatarSelecionado.seed
+            );
+
+
+            localStorage.setItem(
+                "codigoTurma",
+                codigoTurma
+            );
+
+
+            // --------------------------
+            // IR PARA PRÓXIMA TELA
+            // --------------------------
+
+            window.location.href =
+                "id-criada.html";
+
+
+        } catch (erro) {
+
+            console.error(
+                "Erro ao reservar personagem:",
+                erro
+            );
+
+
+            alert(
+                "Não foi possível entrar com esse personagem. Tente novamente."
+            );
+
+
+            btnContinuar.disabled =
+                false;
+
+            btnContinuar.textContent =
+                "Continuar →";
+
+        }
 
     }
 );
@@ -231,10 +651,33 @@ btnContinuar.addEventListener(
 
 btnVoltar.addEventListener(
     "click",
-    function() {
+    function () {
 
         window.location.href =
             "entrar.html";
 
     }
 );
+
+
+// ======================================
+// PRIMEIRA CONSULTA
+// ======================================
+
+carregarPersonagensOcupados();
+
+
+// ======================================
+// ATUALIZAR A CADA 2 SEGUNDOS
+// ======================================
+//
+// Isso faz com que, se a pessoa A
+// escolher "Robs", a pessoa B veja
+// Robs como ocupado rapidamente.
+//
+
+const intervaloOcupados =
+    setInterval(
+        carregarPersonagensOcupados,
+        2000
+    );
