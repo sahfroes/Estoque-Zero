@@ -2,68 +2,50 @@
 <html lang="pt-BR">
 
 <head>
-
     <meta charset="UTF-8">
 
-    <meta
-        name="viewport"
-        content="width=device-width,
-                 initial-scale=1.0,
-                 viewport-fit=cover">
+    <meta 
+        name="viewport" 
+        content="width=device-width, initial-scale=1.0"
+    >
 
     <title>Produto encontrado</title>
 
-    <link
-        rel="stylesheet"
-        href="../../CSS/card-produto.css">
-
+    <link rel="stylesheet" href="../../CSS/card-produto.css">
 </head>
 
 <body>
 
+    <!-- Fundo da câmera -->
     <main class="tela-camera">
 
-
-        <!-- ==========================================
-             CARD
-        =========================================== -->
-
+        <!-- CARD DO PRODUTO -->
         <div class="card-produto">
 
-
-            <!-- ======================================
-                 FECHAR
-            ======================================= -->
-
-            <button
-                type="button"
-                class="fechar"
-                id="fechar"
-                aria-label="Fechar">
-
-                ×
-
-            </button>
+            <!-- Botão fechar -->
+            <button 
+    type="button"
+    class="fechar"  
+    id="fechar"
+    aria-label="Fechar"
+>
+    ×
+</button>
 
 
-            <!-- ======================================
-                 IMAGEM
-            ======================================= -->
-
+            <!-- Imagem do produto -->
             <div class="area-imagem">
 
-                <img
+                <img 
                     id="imagemProduto"
                     src=""
-                    alt="Produto encontrado">
+                    alt="Produto encontrado"
+                >
 
             </div>
 
 
-            <!-- ======================================
-                 INFORMAÇÕES
-            ======================================= -->
-
+            <!-- Nome e preço -->
             <div class="informacoes">
 
                 <h1 id="nomeProduto">
@@ -77,29 +59,21 @@
             </div>
 
 
-            <!-- ======================================
-                 BOTÕES
-            ======================================= -->
-
+            <!-- Botões -->
             <div class="botoes">
 
-                <button
-                    type="button"
+                <button 
                     class="botao-adicionar"
-                    id="adicionar">
-
+                    id="adicionar"
+                >
                     🛒 Adicionar ao carrinho
-
                 </button>
 
-
-                <button
-                    type="button"
+                <button 
                     class="botao-cancelar"
-                    id="cancelar">
-
+                    id="cancelar"
+                >
                     Cancelar
-
                 </button>
 
             </div>
@@ -108,9 +82,8 @@
 
     </main>
 
-
-    <script src="../../JS/card-produto.js"></script>
-
+<script src="../../Js/card-produto.js?v=4"></script>
+<script src="../../Js/cronometro.js?v=4"></script>
 </body>
 
 </html>

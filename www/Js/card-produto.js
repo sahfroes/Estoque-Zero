@@ -1,129 +1,74 @@
 // ==========================================
-// ESTOQUE ZERO
-// CARD DO PRODUTO
-// ==========================================
-
-
-// ==========================================
 // PRODUTOS
 // ==========================================
 
 const produtos = {
 
     leite: {
-
         nome: "Leite UHT Integral 1 L",
-
         preco: 7.50,
-
         imagem: "../../img/produtos/leite.png"
-
     },
-
 
     feijao: {
-
         nome: "Feijão Carioca 1 kg",
-
         preco: 8.00,
-
         imagem: "../../img/produtos/feijao.png"
-
     },
-
 
     arroz: {
-
         nome: "Arroz Branco 5 kg",
-
         preco: 25.00,
-
         imagem: "../../img/produtos/arroz.jpeg"
-
     },
-
 
     macarrao: {
-
         nome: "Macarrão 500 g",
-
         preco: 5.00,
-
         imagem: "../../img/produtos/macarrao.jpeg"
-
     },
-
 
     oleo: {
-
         nome: "Óleo de Soja 900 ml",
-
         preco: 8.00,
-
         imagem: "../../img/produtos/oleo.jpeg"
-
     },
-
 
     acucar: {
-
         nome: "Açúcar Refinado 1 kg",
-
         preco: 5.00,
-
         imagem: "../../img/produtos/acucar.jpeg"
-
     },
-
 
     bombons: {
-
         nome: "Caixa de Bombons",
-
         preco: 12.00,
-
         imagem: "../../img/produtos/bombons.jpeg"
-
     },
-
 
     giftcard: {
-
         nome: "Gift Card",
-
         preco: 20.00,
-
         imagem: "../../img/produtos/giftcard.png"
-
     },
-
 
     copo: {
-
         nome: "Copo Térmico",
-
         preco: 15.00,
-
         imagem: "../../img/produtos/copo.jpg"
-
     },
 
-
     boneco: {
-
         nome: "Boneco Colecionável",
-
         preco: 18.00,
-
         imagem: "../../img/produtos/boneco.jpeg"
-
     }
 
 };
 
 
 // ==========================================
-// PEGAR PARÂMETRO DA URL
+// PEGAR PRODUTO DA URL
 // ==========================================
 
 const parametros =
@@ -143,7 +88,7 @@ console.log(
 
 
 // ==========================================
-// LOCAL STORAGE
+// PEGAR PRODUTO DO LOCALSTORAGE
 // ==========================================
 
 const produtoDoStorage =
@@ -153,7 +98,7 @@ const produtoDoStorage =
 
 
 console.log(
-    "💾 Produto no Storage:",
+    "💾 Produto no localStorage:",
     produtoDoStorage
 );
 
@@ -168,9 +113,23 @@ const produtoEncontrado =
 
 
 console.log(
-    "🎯 Produto escolhido:",
+    "🎯 Produto utilizado:",
     produtoEncontrado
 );
+
+
+// ==========================================
+// SALVAR NOVAMENTE
+// ==========================================
+
+if (produtoEncontrado) {
+
+    localStorage.setItem(
+        "produtoEncontrado",
+        produtoEncontrado
+    );
+
+}
 
 
 // ==========================================
@@ -182,7 +141,7 @@ const produto =
 
 
 // ==========================================
-// ELEMENTOS
+// ELEMENTOS DA TELA
 // ==========================================
 
 const imagemProduto =
@@ -217,7 +176,27 @@ const fechar =
 
 
 // ==========================================
-// PRODUTO EXISTE
+// VERIFICAR ELEMENTOS
+// ==========================================
+
+console.log(
+    "🖼️ Elemento imagem:",
+    imagemProduto
+);
+
+console.log(
+    "🏷️ Elemento nome:",
+    nomeProduto
+);
+
+console.log(
+    "💰 Elemento preço:",
+    precoProduto
+);
+
+
+// ==========================================
+// MOSTRAR PRODUTO
 // ==========================================
 
 if (produto) {
@@ -228,54 +207,64 @@ if (produto) {
     );
 
 
-    // ======================================
+    // --------------------------------------
     // NOME
-    // ======================================
+    // --------------------------------------
 
-    nomeProduto.textContent =
-        produto.nome;
+    if (nomeProduto) {
+
+        nomeProduto.textContent =
+            produto.nome;
+
+    }
 
 
-    // ======================================
+    // --------------------------------------
     // PREÇO
-    // ======================================
+    // --------------------------------------
 
-    precoProduto.textContent =
-        Number(
-            produto.preco
-        ).toLocaleString(
-            "pt-BR",
-            {
-                style: "currency",
-                currency: "BRL"
-            }
-        );
+    if (precoProduto) {
 
-
-    // ======================================
-    // IMAGEM
-    // ======================================
-
-    imagemProduto.src =
-        produto.imagem;
-
-    imagemProduto.alt =
-        produto.nome;
-
-
-    // ======================================
-    // ERRO IMAGEM
-    // ======================================
-
-    imagemProduto.onerror =
-        function () {
-
-            console.error(
-                "❌ Erro ao carregar imagem:",
-                produto.imagem
+        precoProduto.textContent =
+            produto.preco.toLocaleString(
+                "pt-BR",
+                {
+                    style: "currency",
+                    currency: "BRL"
+                }
             );
 
-        };
+    }
+
+
+    // --------------------------------------
+    // IMAGEM
+    // --------------------------------------
+
+    if (imagemProduto) {
+
+        imagemProduto.src =
+            produto.imagem;
+
+        imagemProduto.alt =
+            produto.nome;
+
+
+        // ----------------------------------
+        // ERRO NA IMAGEM
+        // ----------------------------------
+
+        imagemProduto.onerror =
+            function () {
+
+                console.error(
+                    "❌ Não foi possível carregar:",
+                    produto.imagem
+                );
+
+            };
+
+    }
 
 }
 else {
@@ -286,17 +275,24 @@ else {
     );
 
 
-    nomeProduto.textContent =
-        "Produto não encontrado";
+    // --------------------------------------
+    // MOSTRAR ERRO
+    // --------------------------------------
+
+    if (nomeProduto) {
+
+        nomeProduto.textContent =
+            "Produto não encontrado";
+
+    }
 
 
-    precoProduto.textContent =
-        "R$ 0,00";
+    if (precoProduto) {
 
+        precoProduto.textContent =
+            "R$ 0,00";
 
-    imagemProduto.removeAttribute(
-        "src"
-    );
+    }
 
 }
 
@@ -312,18 +308,18 @@ if (adicionar) {
         function () {
 
             console.log(
-                "🛒 Adicionar ao carrinho"
+                "🛒 Botão adicionar clicado."
             );
 
 
-            // ==================================
-            // VERIFICAR
-            // ==================================
+            // --------------------------------
+            // VERIFICAR PRODUTO
+            // --------------------------------
 
             if (!produto) {
 
                 console.error(
-                    "❌ Produto inválido."
+                    "❌ Não foi possível adicionar."
                 );
 
                 return;
@@ -331,29 +327,21 @@ if (adicionar) {
             }
 
 
-            // ==================================
+            // --------------------------------
             // PEGAR CARRINHO
-            // ==================================
+            // --------------------------------
 
             let carrinho = [];
 
 
             try {
 
-                const salvo =
-                    localStorage.getItem(
-                        "carrinho"
-                    );
-
-
-                if (salvo) {
-
-                    carrinho =
-                        JSON.parse(
-                            salvo
-                        );
-
-                }
+                carrinho =
+                    JSON.parse(
+                        localStorage.getItem(
+                            "carrinho"
+                        )
+                    ) || [];
 
             }
             catch (erro) {
@@ -368,9 +356,9 @@ if (adicionar) {
             }
 
 
-            // ==================================
-            // PROCURAR PRODUTO
-            // ==================================
+            // --------------------------------
+            // PROCURAR PRODUTO EXISTENTE
+            // --------------------------------
 
             const existente =
                 carrinho.find(
@@ -383,9 +371,9 @@ if (adicionar) {
                 );
 
 
-            // ==================================
-            // SE JÁ EXISTE
-            // ==================================
+            // --------------------------------
+            // AUMENTAR QUANTIDADE
+            // --------------------------------
 
             if (existente) {
 
@@ -396,16 +384,16 @@ if (adicionar) {
 
 
                 console.log(
-                    "➕ Quantidade:",
+                    "➕ Quantidade aumentada:",
                     existente.quantidade
                 );
 
             }
 
 
-            // ==================================
-            // NOVO PRODUTO
-            // ==================================
+            // --------------------------------
+            // ADICIONAR NOVO
+            // --------------------------------
 
             else {
 
@@ -438,9 +426,9 @@ if (adicionar) {
             }
 
 
-            // ==================================
-            // SALVAR
-            // ==================================
+            // --------------------------------
+            // SALVAR CARRINHO
+            // --------------------------------
 
             localStorage.setItem(
                 "carrinho",
@@ -449,14 +437,14 @@ if (adicionar) {
 
 
             console.log(
-                "🛒 Carrinho:",
+                "🛒 Carrinho atualizado:",
                 carrinho
             );
 
 
-            // ==================================
+            // --------------------------------
             // IR PARA CARRINHO
-            // ==================================
+            // --------------------------------
 
             window.location.href =
                 "carrinho.html";
@@ -468,7 +456,7 @@ if (adicionar) {
 
 
 // ==========================================
-// CANCELAR
+// BOTÃO CANCELAR
 // ==========================================
 
 if (cancelar) {
@@ -477,8 +465,11 @@ if (cancelar) {
         "click",
         function () {
 
-            window.location.href =
-                "camera.html";
+            console.log(
+                "❌ Cancelando produto."
+            );
+
+            window.history.back();
 
         }
     );
@@ -487,7 +478,7 @@ if (cancelar) {
 
 
 // ==========================================
-// FECHAR
+// BOTÃO FECHAR
 // ==========================================
 
 if (fechar) {
@@ -496,8 +487,11 @@ if (fechar) {
         "click",
         function () {
 
-            window.location.href =
-                "camera.html";
+            console.log(
+                "❌ Fechando card."
+            );
+
+            window.history.back();
 
         }
     );
@@ -506,14 +500,21 @@ if (fechar) {
 
 
 // ==========================================
-// DEBUG
+// PÁGINA CARREGADA
 // ==========================================
 
-console.log(
-    "📱 Card carregado."
-);
+window.addEventListener(
+    "load",
+    function () {
 
-console.log(
-    "🌐 URL:",
-    window.location.href
+        console.log(
+            "📱 Card do produto carregado."
+        );
+
+        console.log(
+            "🌐 URL:",
+            window.location.href
+        );
+
+    }
 );
