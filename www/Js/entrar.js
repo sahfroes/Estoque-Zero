@@ -73,7 +73,7 @@ formulario.addEventListener("submit", async function (evento) {
             localStorage.setItem("codigoTurma", dados.codigo);
 
             // Redireciona para a tela do avatar
-            window.location.href = "avatar.html";
+            window.location.href = "/Frontend/View/avatar.html";
         } else {
             // Exibe a mensagem de erro retornada pelo backend (ex: PIN incorreto)
             mensagem.textContent = dados.mensagem || "Código ou PIN incorretos.";
