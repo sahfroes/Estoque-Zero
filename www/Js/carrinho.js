@@ -60,6 +60,10 @@ try {
     const salvo =
         localStorage.getItem("carrinho");
 
+        console.log(
+        "📦 localStorage carrinho:",
+        salvo
+        );
     if (salvo) {
 
         const dados =
@@ -72,6 +76,11 @@ try {
         }
 
     }
+
+    console.log(
+        "🛒 CARRINHO RECEBIDO NA TELA CARRINHO:",
+        carrinho
+    );
 
 } catch (erro) {
 
