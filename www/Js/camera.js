@@ -1,4 +1,3 @@
-
 // ==========================================
 // ELEMENTOS DA TELA
 // ==========================================
@@ -26,7 +25,7 @@ const botaoCarrinho =
 
 
 // ==========================================
-// CONTROLE DO PRODUTO
+// CONTROLE
 // ==========================================
 
 let produtoFoiEncontrado = false;
@@ -68,7 +67,7 @@ const produtos = {
 
 
 // ==========================================
-// MINDAR PRONTO
+// MINDAR
 // ==========================================
 
 if (cena) {
@@ -112,7 +111,7 @@ if (cena) {
 
 
 // ==========================================
-// PEGAR TODOS OS TARGETS
+// PEGAR TARGETS
 // ==========================================
 
 const targets =
@@ -135,7 +134,7 @@ targets.forEach(
     function (target) {
 
         // ======================================
-        // PRODUTO ENCONTRADO
+        // TARGET ENCONTRADO
         // ======================================
 
         target.addEventListener(
@@ -148,7 +147,7 @@ targets.forEach(
 
 
                 // -------------------------------
-                // DESCOBRIR PRODUTO
+                // PEGAR ID DO PRODUTO
                 // -------------------------------
 
                 const produtoEncontrado =
@@ -197,7 +196,7 @@ targets.forEach(
 
 
                 console.log(
-                    "✅ Produto salvo no localStorage:",
+                    "✅ Produto salvo:",
                     produtoEncontrado
                 );
 
@@ -234,7 +233,7 @@ targets.forEach(
 
 
                 console.log(
-                    "👆 Toque na tela para abrir o produto."
+                    "👆 Toque na tela para abrir."
                 );
 
 
@@ -281,11 +280,14 @@ targets.forEach(
 
 
                 /*
-                 * Não apagamos imediatamente
-                 * o produto do localStorage.
+                 * IMPORTANTE:
                  *
-                 * Isso evita problemas no celular
-                 * durante pequenas perdas do target.
+                 * Não apagamos o produto do
+                 * localStorage.
+                 *
+                 * Assim, se o celular perder
+                 * o target por alguns segundos,
+                 * o produto continua disponível.
                  */
 
                 if (
@@ -314,7 +316,7 @@ targets.forEach(
 function abrirCardProduto() {
 
     // --------------------------------------
-    // EVITAR ABRIR DUAS VEZES
+    // EVITAR DUPLO CLIQUE
     // --------------------------------------
 
     if (abrindoCard) {
@@ -341,7 +343,7 @@ function abrirCardProduto() {
     if (!produto) {
 
         console.error(
-            "❌ Nenhum produto encontrado no localStorage."
+            "❌ Nenhum produto encontrado."
         );
 
         return;
@@ -349,14 +351,8 @@ function abrirCardProduto() {
     }
 
 
-    console.log(
-        "🛒 Abrindo card do produto:",
-        produto
-    );
-
-
     // --------------------------------------
-    // GARANTIR QUE O PRODUTO EXISTE
+    // VERIFICAR SE EXISTE
     // --------------------------------------
 
     if (!produtos[produto]) {
@@ -369,6 +365,12 @@ function abrirCardProduto() {
         return;
 
     }
+
+
+    console.log(
+        "🛒 Abrindo card:",
+        produto
+    );
 
 
     // --------------------------------------
@@ -392,11 +394,48 @@ function abrirCardProduto() {
 
 
     // --------------------------------------
+    // GARANTIR LOCALSTORAGE
+    // --------------------------------------
+
+    localStorage.setItem(
+        "produtoEncontrado",
+        produto
+    );
+
+
+    // ======================================
+    // CRIAR URL DO CARD
+    // ======================================
+
+    const urlCard =
+        new URL(
+            "card-produto.html",
+            window.location.href
+        );
+
+
+    // --------------------------------------
+    // ENVIAR PRODUTO PELA URL
+    // --------------------------------------
+
+    urlCard.searchParams.set(
+        "produto",
+        produto
+    );
+
+
+    console.log(
+        "🔗 URL do card:",
+        urlCard.href
+    );
+
+
+    // --------------------------------------
     // ABRIR CARD
     // --------------------------------------
 
     window.location.href =
-        "card-produto.html";
+        urlCard.href;
 
 }
 
@@ -432,7 +471,7 @@ if (cena) {
 
 
             console.log(
-                "📱🖥️ Interação ativada para PC e celular."
+                "📱🖥️ Interação ativada."
             );
 
 
@@ -445,7 +484,7 @@ if (cena) {
 
 
             // ==================================
-            // FUNÇÃO CENTRAL DE TOQUE
+            // FUNÇÃO CENTRAL
             // ==================================
 
             function tocarTela() {
@@ -455,24 +494,9 @@ if (cena) {
                 );
 
 
-                // ------------------------------
-                // VERIFICAR PRODUTO
-                // ------------------------------
-
-                if (!produtoFoiEncontrado) {
-
-                    console.log(
-                        "⚠️ Ainda não existe produto reconhecido."
-                    );
-
-                    return;
-
-                }
-
-
-                // ------------------------------
-                // PEGAR PRODUTO SALVO
-                // ------------------------------
+                // --------------------------------
+                // PEGAR PRODUTO DO STORAGE
+                // --------------------------------
 
                 const produto =
                     localStorage.getItem(
@@ -480,10 +504,17 @@ if (cena) {
                     );
 
 
-                if (!produto) {
+                // --------------------------------
+                // VERIFICAR
+                // --------------------------------
 
-                    console.error(
-                        "❌ Produto não encontrado no localStorage."
+                if (
+                    !produto ||
+                    !produtos[produto]
+                ) {
+
+                    console.log(
+                        "⚠️ Nenhum produto válido reconhecido."
                     );
 
                     return;
@@ -492,14 +523,14 @@ if (cena) {
 
 
                 console.log(
-                    "🎯 Produto pronto para abrir:",
+                    "🎯 Produto pronto:",
                     produto
                 );
 
 
-                // ------------------------------
+                // --------------------------------
                 // ABRIR CARD
-                // ------------------------------
+                // --------------------------------
 
                 abrirCardProduto();
 
@@ -517,9 +548,8 @@ if (cena) {
                     evento.preventDefault();
 
                     console.log(
-                        "📱 Toque detectado no celular."
+                        "📱 Toque detectado."
                     );
-
 
                     tocarTela();
 
@@ -539,9 +569,8 @@ if (cena) {
                 function () {
 
                     console.log(
-                        "🖱️ Clique detectado no PC."
+                        "🖱️ Clique detectado."
                     );
-
 
                     tocarTela();
 
@@ -563,6 +592,10 @@ if (botaoCarrinho) {
     botaoCarrinho.addEventListener(
         "click",
         function () {
+
+            console.log(
+                "🛒 Abrindo carrinho..."
+            );
 
             window.location.href =
                 "carrinho.html";
@@ -663,16 +696,12 @@ if (
 
     elementoSaldo.textContent =
         "R$ " +
-
         saldoInicial
             .toFixed(2)
             .replace(".", ",");
 
 }
-
-else if (
-    elementoSaldo
-) {
+else if (elementoSaldo) {
 
     elementoSaldo.textContent =
         "R$ 0,00";
@@ -692,7 +721,6 @@ window.addEventListener(
             "📱 Página da câmera carregada."
         );
 
-
         console.log(
             "🔎 Quantidade de targets:",
             targets.length
@@ -700,4 +728,3 @@ window.addEventListener(
 
     }
 );
-
