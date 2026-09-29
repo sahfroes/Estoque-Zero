@@ -30,9 +30,8 @@ const botaoCarrinho =
 
 let produtoFoiEncontrado = false;
 
-let produtoAtivo = null;
-
-let targetAtivo = null;
+// ID do produto reconhecido
+let produtoIdAtivo = null;
 
 let abrindoCard = false;
 
@@ -119,7 +118,6 @@ const targets =
         "[mindar-image-target]"
     );
 
-
 console.log(
     "🔎 Targets encontrados:",
     targets.length
@@ -133,10 +131,6 @@ console.log(
 targets.forEach(
     function (target) {
 
-        // ======================================
-        // TARGET ENCONTRADO
-        // ======================================
-
         target.addEventListener(
             "targetFound",
             function () {
@@ -146,9 +140,9 @@ targets.forEach(
                 );
 
 
-                // -------------------------------
+                // ==================================
                 // PEGAR ID DO PRODUTO
-                // -------------------------------
+                // ==================================
 
                 const produtoEncontrado =
                     target.dataset.produto;
@@ -160,9 +154,9 @@ targets.forEach(
                 );
 
 
-                // -------------------------------
+                // ==================================
                 // VERIFICAR PRODUTO
-                // -------------------------------
+                // ==================================
 
                 if (
                     !produtoEncontrado ||
@@ -179,15 +173,25 @@ targets.forEach(
                 }
 
 
-                // -------------------------------
-                // SALVAR PRODUTO
-                // -------------------------------
+                // ==================================
+                // GUARDAR PRODUTO NA MEMÓRIA
+                // ==================================
+
+                produtoIdAtivo =
+                    produtoEncontrado;
+
+                produtoFoiEncontrado =
+                    true;
+
+
+                // ==================================
+                // SALVAR TAMBÉM NO LOCALSTORAGE
+                // ==================================
 
                 localStorage.setItem(
                     "produtoEncontrado",
                     produtoEncontrado
                 );
-
 
                 localStorage.setItem(
                     "nomeProdutoEncontrado",
@@ -197,49 +201,13 @@ targets.forEach(
 
                 console.log(
                     "✅ Produto salvo:",
-                    produtoEncontrado
+                    produtoIdAtivo
                 );
 
 
-                // -------------------------------
-                // GUARDAR TARGET
-                // -------------------------------
-
-                targetAtivo =
-                    target;
-
-
-                // -------------------------------
-                // PEGAR OBJETO AR
-                // -------------------------------
-
-                produtoAtivo =
-                    target.querySelector(
-                        ".produto-ar"
-                    );
-
-
-                // -------------------------------
-                // MARCAR COMO ENCONTRADO
-                // -------------------------------
-
-                produtoFoiEncontrado =
-                    true;
-
-
-                console.log(
-                    "✨ Produto apareceu em AR!"
-                );
-
-
-                console.log(
-                    "👆 Toque na tela para abrir."
-                );
-
-
-                // -------------------------------
-                // ESCONDER CARREGAMENTO
-                // -------------------------------
+                // ==================================
+                // MENSAGENS
+                // ==================================
 
                 if (mensagemCamera) {
 
@@ -249,10 +217,6 @@ targets.forEach(
                 }
 
 
-                // -------------------------------
-                // MOSTRAR INSTRUÇÃO
-                // -------------------------------
-
                 if (toqueProduto) {
 
                     toqueProduto.classList.add(
@@ -260,6 +224,15 @@ targets.forEach(
                     );
 
                 }
+
+
+                console.log(
+                    "✨ Produto apareceu em AR!"
+                );
+
+                console.log(
+                    "👆 Toque na tela para abrir."
+                );
 
             }
         );
@@ -278,29 +251,13 @@ targets.forEach(
                     target.dataset.produto
                 );
 
-
                 /*
-                 * IMPORTANTE:
+                 * NÃO apagamos produtoIdAtivo.
                  *
-                 * Não apagamos o produto do
-                 * localStorage.
-                 *
-                 * Assim, se o celular perder
-                 * o target por alguns segundos,
-                 * o produto continua disponível.
+                 * Isso é importante no celular.
+                 * O MindAR pode perder o produto
+                 * por alguns instantes.
                  */
-
-                if (
-                    targetAtivo === target
-                ) {
-
-                    targetAtivo = null;
-
-                    produtoAtivo = null;
-
-                    produtoFoiEncontrado = false;
-
-                }
 
             }
         );
@@ -310,14 +267,10 @@ targets.forEach(
 
 
 // ==========================================
-// ABRIR CARD DO PRODUTO
+// ABRIR CARD
 // ==========================================
 
 function abrirCardProduto() {
-
-    // --------------------------------------
-    // EVITAR DUPLO CLIQUE
-    // --------------------------------------
 
     if (abrindoCard) {
 
@@ -326,63 +279,48 @@ function abrirCardProduto() {
     }
 
 
-    // --------------------------------------
-    // PEGAR PRODUTO
-    // --------------------------------------
+    // ======================================
+    // PEGAR PRODUTO DETECTADO
+    // ======================================
 
     const produto =
-        localStorage.getItem(
-            "produtoEncontrado"
-        );
-
-
-    // --------------------------------------
-    // VERIFICAR
-    // --------------------------------------
-
-    if (!produto) {
-
-        console.error(
-            "❌ Nenhum produto encontrado."
-        );
-
-        return;
-
-    }
-
-
-    // --------------------------------------
-    // VERIFICAR SE EXISTE
-    // --------------------------------------
-
-    if (!produtos[produto]) {
-
-        console.error(
-            "❌ Produto inválido:",
-            produto
-        );
-
-        return;
-
-    }
+        produtoIdAtivo;
 
 
     console.log(
-        "🛒 Abrindo card:",
+        "🎯 Produto que será aberto:",
         produto
     );
 
 
-    // --------------------------------------
-    // BLOQUEAR NOVOS TOQUES
-    // --------------------------------------
+    // ======================================
+    // VERIFICAR
+    // ======================================
+
+    if (
+        !produto ||
+        !produtos[produto]
+    ) {
+
+        console.error(
+            "❌ Nenhum produto válido encontrado."
+        );
+
+        return;
+
+    }
+
+
+    // ======================================
+    // BLOQUEAR DUPLO TOQUE
+    // ======================================
 
     abrindoCard = true;
 
 
-    // --------------------------------------
-    // ESCONDER INSTRUÇÃO
-    // --------------------------------------
+    // ======================================
+    // ESCONDER MENSAGEM
+    // ======================================
 
     if (toqueProduto) {
 
@@ -393,9 +331,9 @@ function abrirCardProduto() {
     }
 
 
-    // --------------------------------------
-    // GARANTIR LOCALSTORAGE
-    // --------------------------------------
+    // ======================================
+    // SALVAR
+    // ======================================
 
     localStorage.setItem(
         "produtoEncontrado",
@@ -404,7 +342,7 @@ function abrirCardProduto() {
 
 
     // ======================================
-    // CRIAR URL DO CARD
+    // CRIAR URL
     // ======================================
 
     const urlCard =
@@ -414,9 +352,9 @@ function abrirCardProduto() {
         );
 
 
-    // --------------------------------------
-    // ENVIAR PRODUTO PELA URL
-    // --------------------------------------
+    // ======================================
+    // MANDAR PRODUTO PELA URL
+    // ======================================
 
     urlCard.searchParams.set(
         "produto",
@@ -425,14 +363,14 @@ function abrirCardProduto() {
 
 
     console.log(
-        "🔗 URL do card:",
+        "🔗 Indo para:",
         urlCard.href
     );
 
 
-    // --------------------------------------
-    // ABRIR CARD
-    // --------------------------------------
+    // ======================================
+    // ABRIR
+    // ======================================
 
     window.location.href =
         urlCard.href;
@@ -462,7 +400,7 @@ if (cena) {
             if (!canvas) {
 
                 console.error(
-                    "❌ Canvas do A-Frame não encontrado."
+                    "❌ Canvas não encontrado."
                 );
 
                 return;
@@ -470,21 +408,12 @@ if (cena) {
             }
 
 
-            console.log(
-                "📱🖥️ Interação ativada."
-            );
-
-
-            // ----------------------------------
-            // EVITAR GESTOS DO NAVEGADOR
-            // ----------------------------------
-
             canvas.style.touchAction =
                 "none";
 
 
             // ==================================
-            // FUNÇÃO CENTRAL
+            // TOCAR NA TELA
             // ==================================
 
             function tocarTela() {
@@ -494,27 +423,23 @@ if (cena) {
                 );
 
 
-                // --------------------------------
-                // PEGAR PRODUTO DO STORAGE
-                // --------------------------------
-
-                const produto =
-                    localStorage.getItem(
-                        "produtoEncontrado"
-                    );
+                console.log(
+                    "📦 Produto ativo:",
+                    produtoIdAtivo
+                );
 
 
-                // --------------------------------
+                // ==================================
                 // VERIFICAR
-                // --------------------------------
+                // ==================================
 
                 if (
-                    !produto ||
-                    !produtos[produto]
+                    !produtoIdAtivo ||
+                    !produtos[produtoIdAtivo]
                 ) {
 
                     console.log(
-                        "⚠️ Nenhum produto válido reconhecido."
+                        "⚠️ Nenhum produto foi identificado."
                     );
 
                     return;
@@ -522,15 +447,9 @@ if (cena) {
                 }
 
 
-                console.log(
-                    "🎯 Produto pronto:",
-                    produto
-                );
-
-
-                // --------------------------------
+                // ==================================
                 // ABRIR CARD
-                // --------------------------------
+                // ==================================
 
                 abrirCardProduto();
 
@@ -548,7 +467,7 @@ if (cena) {
                     evento.preventDefault();
 
                     console.log(
-                        "📱 Toque detectado."
+                        "📱 Toque detectado!"
                     );
 
                     tocarTela();
@@ -561,7 +480,7 @@ if (cena) {
 
 
             // ==================================
-            // PC
+            // COMPUTADOR
             // ==================================
 
             canvas.addEventListener(
@@ -569,7 +488,7 @@ if (cena) {
                 function () {
 
                     console.log(
-                        "🖱️ Clique detectado."
+                        "🖱️ Clique detectado!"
                     );
 
                     tocarTela();
@@ -593,10 +512,6 @@ if (botaoCarrinho) {
         "click",
         function () {
 
-            console.log(
-                "🛒 Abrindo carrinho..."
-            );
-
             window.location.href =
                 "carrinho.html";
 
@@ -607,14 +522,10 @@ if (botaoCarrinho) {
 
 
 // ==========================================
-// MOSTRAR ERRO
+// ERRO
 // ==========================================
 
 function mostrarErro(mensagem) {
-
-    // --------------------------------------
-    // ESCONDER CARREGAMENTO
-    // --------------------------------------
 
     if (mensagemCamera) {
 
@@ -624,10 +535,6 @@ function mostrarErro(mensagem) {
     }
 
 
-    // --------------------------------------
-    // MOSTRAR ERRO
-    // --------------------------------------
-
     if (erroCamera) {
 
         erroCamera.style.display =
@@ -635,10 +542,6 @@ function mostrarErro(mensagem) {
 
     }
 
-
-    // --------------------------------------
-    // TEXTO
-    // --------------------------------------
 
     if (textoErro) {
 
@@ -683,9 +586,7 @@ const saldoInicial =
 
 
 const elementoSaldo =
-    document.getElementById(
-        "saldo"
-    );
+    document.getElementById("saldo");
 
 
 if (
