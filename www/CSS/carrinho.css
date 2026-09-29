@@ -1,3 +1,6 @@
+/* ==========================================
+   RESET
+========================================== */
 
 * {
     margin: 0;
@@ -17,14 +20,9 @@ body {
 
     color: #563b87;
 
-    /* Evita comportamentos estranhos de toque */
     -webkit-tap-highlight-color: transparent;
 }
 
-
-/* ==========================================
-   BODY
-========================================== */
 
 body {
     overflow-x: hidden;
@@ -39,7 +37,7 @@ body {
 
     width: 100%;
 
-    height: 150px;
+    height: 125px;
 
     background: linear-gradient(
         135deg,
@@ -47,20 +45,19 @@ body {
         #70499e
     );
 
-    border-radius: 0 0 35px 35px;
+    border-radius: 0 0 32px 32px;
 
     display: flex;
 
     align-items: center;
 
-    padding: 30px;
+    padding: 25px 24px;
 
     gap: 15px;
 
-    /* Importante para o celular */
     position: relative;
 
-    z-index: 50;
+    z-index: 10;
 }
 
 
@@ -72,6 +69,8 @@ body {
 
     width: 50px;
     height: 50px;
+
+    flex-shrink: 0;
 
     border: none;
 
@@ -91,28 +90,14 @@ body {
 
     cursor: pointer;
 
-    /* IMPORTANTE PARA CELULAR */
-
-    position: relative;
-
-    z-index: 999;
-
-    pointer-events: auto;
-
     touch-action: manipulation;
 
     -webkit-tap-highlight-color: transparent;
-
-    user-select: none;
-
-    -webkit-user-select: none;
 }
 
 
 .botao-voltar:active {
-
     transform: scale(0.94);
-
 }
 
 
@@ -127,7 +112,6 @@ body {
     font-size: 27px;
 
     font-weight: 800;
-
 }
 
 
@@ -143,18 +127,19 @@ body {
 
     margin: 0 auto;
 
-    padding: 0 28px 30px;
-
+    padding: 0 20px 40px;
 }
 
 
 /* ==========================================
-   LISTA DE PRODUTOS
+   LISTA
 ========================================== */
 
 .lista-produtos {
 
-    margin-top: -20px;
+    width: 100%;
+
+    margin-top: -15px;
 
     position: relative;
 
@@ -170,30 +155,31 @@ body {
 
     width: 100%;
 
-    min-height: 115px;
+    min-height: 125px;
 
     background: white;
 
-    border-radius: 20px;
+    border-radius: 22px;
 
-    padding: 18px;
+    padding: 15px;
 
     margin-bottom: 14px;
 
-    display: flex;
+    display: grid;
+
+    grid-template-columns: 70px minmax(0, 1fr) auto;
 
     align-items: center;
 
-    gap: 15px;
+    gap: 13px;
 
     box-shadow:
-        0 5px 15px rgba(60, 30, 90, 0.12);
-
+        0 5px 18px rgba(60, 30, 90, 0.10);
 }
 
 
 /* ==========================================
-   IMAGEM DO PRODUTO
+   IMAGEM
 ========================================== */
 
 .imagem-produto {
@@ -211,73 +197,75 @@ body {
 
     justify-content: center;
 
-    flex-shrink: 0;
-
     overflow: hidden;
 
+    flex-shrink: 0;
 }
 
 
 .imagem-produto img {
 
-    width: 85%;
-    height: 85%;
+    width: 90%;
+    height: 90%;
 
     object-fit: contain;
 
+    display: block;
 }
 
 
 /* ==========================================
-   INFORMAÇÕES DO PRODUTO
+   INFORMAÇÕES
 ========================================== */
 
 .informacoes-produto {
 
-    flex: 1;
-
     min-width: 0;
 
+    display: flex;
+
+    flex-direction: column;
+
+    justify-content: center;
+
+    gap: 4px;
 }
 
 
 .nome-produto {
 
-    font-size: 18px;
+    font-size: 17px;
+
+    line-height: 1.2;
 
     font-weight: 800;
 
     color: #63428f;
 
-    margin-bottom: 3px;
-
-}
-
-
-.categoria-produto {
-
-    font-size: 14px;
-
-    color: #ad85d8;
-
-    margin-bottom: 4px;
-
+    word-break: break-word;
 }
 
 
 .preco-produto {
 
-    font-size: 20px;
+    font-size: 16px;
 
     font-weight: 800;
 
     color: #20a59e;
+}
 
+
+.subtotal {
+
+    font-size: 14px;
+
+    color: #8e70aa;
 }
 
 
 /* ==========================================
-   CONTROLES
+   CONTROLES DE QUANTIDADE
 ========================================== */
 
 .controles {
@@ -286,28 +274,20 @@ body {
 
     align-items: center;
 
-    gap: 12px;
+    gap: 7px;
 
-    position: relative;
-
-    z-index: 10;
+    margin-top: 5px;
 }
 
 
-/* ==========================================
-   BOTÕES + E -
-========================================== */
-
 .botao-quantidade {
 
-    width: 40px;
-    height: 40px;
+    width: 38px;
+    height: 38px;
 
     border: none;
 
     border-radius: 50%;
-
-    font-size: 25px;
 
     display: flex;
 
@@ -315,77 +295,51 @@ body {
 
     justify-content: center;
 
+    font-size: 23px;
+
+    font-weight: bold;
+
     cursor: pointer;
 
-    position: relative;
-
-    z-index: 100;
-
-    pointer-events: auto;
-
     touch-action: manipulation;
-
-    user-select: none;
-
-    -webkit-user-select: none;
 
     -webkit-tap-highlight-color: transparent;
 }
 
-
-/* ==========================================
-   BOTÃO MENOS
-========================================== */
 
 .botao-menos {
 
     background: #f0eafa;
 
     color: #76529f;
-
 }
 
-
-/* ==========================================
-   BOTÃO MAIS
-========================================== */
 
 .botao-mais {
 
     background: #70499e;
 
     color: white;
-
 }
 
-
-/* ==========================================
-   EFEITO DE TOQUE
-========================================== */
 
 .botao-quantidade:active {
 
     transform: scale(0.90);
-
 }
 
 
-/* ==========================================
-   NÚMERO DA QUANTIDADE
-========================================== */
-
 .quantidade {
 
-    font-size: 18px;
-
-    font-weight: bold;
-
-    color: #60418d;
-
-    min-width: 15px;
+    min-width: 20px;
 
     text-align: center;
 
+    font-size: 17px;
+
+    font-weight: 800;
+
+    color: #60418d;
 }
 
 
@@ -395,29 +349,26 @@ body {
 
 .botao-excluir {
 
+    width: 35px;
+    height: 35px;
+
     border: none;
 
     background: transparent;
 
-    color: #f28d50;
+    color: #e98954;
 
-    font-size: 21px;
+    font-size: 25px;
 
     cursor: pointer;
 
-    margin-left: 2px;
+    display: flex;
 
-    position: relative;
+    align-items: center;
 
-    z-index: 100;
-
-    pointer-events: auto;
+    justify-content: center;
 
     touch-action: manipulation;
-
-    user-select: none;
-
-    -webkit-user-select: none;
 
     -webkit-tap-highlight-color: transparent;
 }
@@ -426,7 +377,6 @@ body {
 .botao-excluir:active {
 
     transform: scale(0.90);
-
 }
 
 
@@ -436,28 +386,32 @@ body {
 
 .resumo {
 
+    width: 100%;
+
     background: white;
 
-    border-radius: 30px;
+    border-radius: 26px;
 
-    padding: 30px;
+    padding: 24px;
 
-    margin-top: 25px;
+    margin-top: 20px;
 
     box-shadow:
-        0 8px 30px rgba(90, 50, 120, 0.12);
+        0 8px 30px rgba(90, 50, 120, 0.10);
 
     position: relative;
 
-    z-index: 20;
+    z-index: 5;
 }
 
 
 /* ==========================================
-   LINHAS DO RESUMO
+   LINHAS
 ========================================== */
 
 .linha-resumo {
+
+    width: 100%;
 
     display: flex;
 
@@ -465,56 +419,50 @@ body {
 
     align-items: center;
 
-    margin-bottom: 17px;
+    gap: 15px;
 
-    font-size: 18px;
+    margin-bottom: 16px;
+
+    font-size: 17px;
 
     font-weight: 600;
-
 }
 
 
 .linha-resumo span {
 
     color: #9d79ca;
-
 }
 
 
 .linha-resumo strong {
 
-    font-size: 19px;
+    font-size: 18px;
 
+    white-space: nowrap;
 }
 
-
-/* ==========================================
-   CORES DOS VALORES
-========================================== */
 
 #orcamento-inicial {
 
     color: #63428f;
-
 }
 
 
 .total-gasto {
 
     color: #f59a57;
-
 }
 
 
 .saldo-restante {
 
     color: #20a59e;
-
 }
 
 
 /* ==========================================
-   LINHA SEPARADORA
+   LINHA
 ========================================== */
 
 .linha {
@@ -525,24 +473,23 @@ body {
 
     background: #eadff4;
 
-    margin: 10px 0 20px;
-
+    margin: 8px 0 20px;
 }
 
 
 /* ==========================================
-   BOTÃO FINALIZAR PARTIDA
+   FINALIZAR
 ========================================== */
 
 .botao-confirmar {
 
     width: 100%;
 
-    height: 70px;
+    min-height: 60px;
 
     border: none;
 
-    border-radius: 20px;
+    border-radius: 18px;
 
     background: linear-gradient(
         135deg,
@@ -552,7 +499,7 @@ body {
 
     color: white;
 
-    font-size: 18px;
+    font-size: 17px;
 
     font-weight: 800;
 
@@ -562,50 +509,28 @@ body {
 
     justify-content: center;
 
-    gap: 12px;
+    gap: 10px;
 
     cursor: pointer;
 
-    box-shadow:
-        0 6px 15px rgba(90, 50, 130, 0.2);
-
-    /* IMPORTANTE PARA CELULAR */
-
-    position: relative;
-
-    z-index: 999;
-
-    pointer-events: auto;
-
     touch-action: manipulation;
 
-    user-select: none;
-
-    -webkit-user-select: none;
-
     -webkit-tap-highlight-color: transparent;
+
+    box-shadow:
+        0 6px 15px rgba(90, 50, 130, 0.18);
 }
 
-
-/* ==========================================
-   EFEITO DE TOQUE
-========================================== */
 
 .botao-confirmar:active {
 
     transform: scale(0.98);
-
 }
 
-
-/* ==========================================
-   ÍCONE DO BOTÃO
-========================================== */
 
 .icone-confirmar {
 
     font-size: 22px;
-
 }
 
 
@@ -619,11 +544,11 @@ body {
 
     text-align: center;
 
-    padding: 60px 20px;
+    padding: 55px 20px;
 
     position: relative;
 
-    z-index: 20;
+    z-index: 5;
 }
 
 
@@ -632,7 +557,6 @@ body {
     font-size: 55px;
 
     margin-bottom: 15px;
-
 }
 
 
@@ -642,6 +566,7 @@ body {
 
     margin-bottom: 8px;
 
+    font-size: 22px;
 }
 
 
@@ -651,6 +576,7 @@ body {
 
     margin-bottom: 20px;
 
+    line-height: 1.5;
 }
 
 
@@ -666,72 +592,21 @@ body {
 
     color: white;
 
-    padding: 14px 25px;
+    padding: 14px 24px;
 
-    border-radius: 20px;
+    border-radius: 18px;
 
     font-weight: bold;
 
     cursor: pointer;
 
-    position: relative;
-
-    z-index: 999;
-
-    pointer-events: auto;
-
     touch-action: manipulation;
-
-    user-select: none;
-
-    -webkit-user-select: none;
-
-    -webkit-tap-highlight-color: transparent;
 }
 
 
 .botao-voltar-camera:active {
 
     transform: scale(0.96);
-
-}
-
-
-/* ==========================================
-   TODOS OS BOTÕES
-   COMPATIBILIDADE COM CELULAR
-========================================== */
-
-button {
-
-    -webkit-tap-highlight-color: transparent;
-
-    touch-action: manipulation;
-
-    user-select: none;
-
-    -webkit-user-select: none;
-
-    pointer-events: auto;
-}
-
-
-/* ==========================================
-   GARANTIR QUE BOTÕES PRINCIPAIS
-   FIQUEM ACIMA DE OUTRAS CAMADAS
-========================================== */
-
-#botao-voltar,
-#voltar-camera-vazio,
-#confirmar-compras {
-
-    position: relative;
-
-    z-index: 999;
-
-    pointer-events: auto;
-
-    touch-action: manipulation;
 }
 
 
@@ -741,231 +616,222 @@ button {
 
 @media (max-width: 600px) {
 
-
-    /* ==========================================
-       CABEÇALHO
-    ========================================== */
-
     .cabecalho {
 
-        height: 150px;
+        height: 120px;
 
-        padding: 25px 20px;
+        padding: 20px 16px;
 
+        border-radius: 0 0 28px 28px;
     }
 
 
     .cabecalho h1 {
 
-        font-size: 25px;
-
+        font-size: 24px;
     }
 
 
-    /* ==========================================
-       CONTEÚDO
-    ========================================== */
+    .botao-voltar {
+
+        width: 46px;
+        height: 46px;
+
+        font-size: 28px;
+    }
+
 
     .conteudo {
 
-        padding: 0 16px 25px;
-
+        padding: 0 14px 30px;
     }
 
 
-    /* ==========================================
-       PRODUTO
-    ========================================== */
+    .lista-produtos {
+
+        margin-top: -10px;
+    }
+
 
     .produto {
 
-        padding: 14px;
+        min-height: 120px;
+
+        grid-template-columns:
+            62px
+            minmax(0, 1fr)
+            30px;
+
+        padding: 13px;
 
         gap: 10px;
 
+        border-radius: 20px;
     }
 
 
     .imagem-produto {
 
-        width: 65px;
+        width: 62px;
+        height: 62px;
 
-        height: 65px;
-
+        border-radius: 15px;
     }
 
 
     .nome-produto {
 
-        font-size: 16px;
-
-    }
-
-
-    .categoria-produto {
-
-        font-size: 13px;
-
+        font-size: 15px;
     }
 
 
     .preco-produto {
 
-        font-size: 18px;
-
+        font-size: 15px;
     }
 
 
-    /* ==========================================
-       CONTROLES
-    ========================================== */
+    .subtotal {
+
+        font-size: 13px;
+    }
+
 
     .controles {
 
         gap: 6px;
-
     }
 
 
     .botao-quantidade {
 
-        width: 36px;
+        width: 35px;
+        height: 35px;
 
-        height: 36px;
-
-        font-size: 21px;
-
+        font-size: 20px;
     }
 
 
     .quantidade {
 
         font-size: 16px;
-
     }
 
 
     .botao-excluir {
 
-        font-size: 19px;
+        width: 30px;
+        height: 30px;
 
+        font-size: 23px;
     }
 
-    /* ==========================================
-       RESUMO
-    ========================================== */
 
     .resumo {
 
-        margin-top: 280px;
-        padding: 25px 20px;
+        margin-top: 18px;
 
+        padding: 22px 18px;
+
+        border-radius: 24px;
     }
 
 
     .linha-resumo {
 
-        font-size: 16px;
+        font-size: 15px;
 
+        margin-bottom: 14px;
     }
 
 
     .linha-resumo strong {
 
-        font-size: 17px;
-
+        font-size: 16px;
     }
 
-    /* ==========================================
-       BOTÃO FINALIZAR
-    ========================================== */
 
     .botao-confirmar {
 
-        height: 65px;
+        min-height: 60px;
 
         font-size: 16px;
-
-    }
-
-    /* ==========================================
-       BOTÃO VOLTAR
-    ========================================== */
-
-    .botao-voltar {
-
-        width: 48px;
-
-        height: 48px;
-
-        font-size: 29px;
-
     }
 
 }
 
+
 /* ==========================================
-   CELULARES MUITO PEQUENOS
+   CELULARES PEQUENOS
 ========================================== */
 
 @media (max-width: 380px) {
 
+    .conteudo {
+
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+
 
     .produto {
 
-        flex-wrap: wrap;
+        grid-template-columns:
+            58px
+            minmax(0, 1fr)
+            27px;
 
+        padding: 11px;
+
+        gap: 8px;
     }
 
-    .informacoes-produto {
 
-        min-width: calc(100% - 80px);
+    .imagem-produto {
 
+        width: 58px;
+        height: 58px;
     }
 
-    .controles {
 
-        margin-left: auto;
+    .nome-produto {
 
+        font-size: 14px;
     }
 
-    .resumo {
-
-        margin-top: 220px;
-
-    }
 
     .botao-quantidade {
 
-        width: 34px;
-
-        height: 34px;
-
+        width: 33px;
+        height: 33px;
     }
 
-    .botao-excluir {
 
-        font-size: 18px;
+    .resumo {
 
+        margin-top: 16px;
     }
 
 }
 
+
 /* ==========================================
-   CELULARES EM MODO PAISAGEM
+   PAISAGEM
 ========================================== */
 
 @media (max-height: 500px) and (orientation: landscape) {
 
     .cabecalho {
 
-        height: 100px;
-        padding: 15px 20px;
+        height: 90px;
 
+        padding: 12px 20px;
     }
 
+
     .resumo {
-        margin-top: 100px;
+
+        margin-top: 20px;
     }
 
 }

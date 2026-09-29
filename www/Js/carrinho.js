@@ -1,13 +1,12 @@
-
-// ========================================
+// ==========================================
 // ESTOQUE ZERO
-// JAVASCRIPT DO CARRINHO
-// ========================================
+// CARRINHO
+// ==========================================
 
 
-// ========================================
-// ELEMENTOS DO HTML
-// ========================================
+// ==========================================
+// ELEMENTOS
+// ==========================================
 
 const listaProdutos =
     document.getElementById("lista-produtos");
@@ -34,9 +33,9 @@ const confirmarCompras =
     document.getElementById("confirmar-compras");
 
 
-// ========================================
-// ORÇAMENTO DA PARTIDA
-// ========================================
+// ==========================================
+// ORÇAMENTO
+// ==========================================
 
 const valorSalvo =
     localStorage.getItem("orcamentoSelecionado");
@@ -44,24 +43,27 @@ const valorSalvo =
 const ORCAMENTO =
     Number(valorSalvo) || 0;
 
-console.log("💰 Orçamento inicial:", ORCAMENTO);
+console.log(
+    "💰 Orçamento:",
+    ORCAMENTO
+);
 
 
-// ========================================
-// CARRINHO
-// ========================================
+// ==========================================
+// CARREGAR CARRINHO
+// ==========================================
 
 let carrinho = [];
 
 try {
 
-    const carrinhoSalvo =
+    const salvo =
         localStorage.getItem("carrinho");
 
-    if (carrinhoSalvo) {
+    if (salvo) {
 
         const dados =
-            JSON.parse(carrinhoSalvo);
+            JSON.parse(salvo);
 
         if (Array.isArray(dados)) {
 
@@ -74,7 +76,7 @@ try {
 } catch (erro) {
 
     console.error(
-        "Erro ao carregar carrinho:",
+        "❌ Erro ao carregar carrinho:",
         erro
     );
 
@@ -83,9 +85,9 @@ try {
 }
 
 
-// ========================================
-// GARANTIR QUANTIDADES VÁLIDAS
-// ========================================
+// ==========================================
+// GARANTIR DADOS CORRETOS
+// ==========================================
 
 carrinho.forEach(function (produto) {
 
@@ -98,19 +100,24 @@ carrinho.forEach(function (produto) {
 
     }
 
-    // Limite máximo: 3
-    quantidade =
-        Math.max(0, Math.min(3, quantidade));
-
     produto.quantidade =
-        quantidade;
+        Math.max(
+            0,
+            Math.min(
+                3,
+                quantidade
+            )
+        );
+
+    produto.preco =
+        Number(produto.preco) || 0;
 
 });
 
 
-// ========================================
+// ==========================================
 // FORMATAR PREÇO
-// ========================================
+// ==========================================
 
 function formatarPreco(valor) {
 
@@ -125,9 +132,9 @@ function formatarPreco(valor) {
 }
 
 
-// ========================================
+// ==========================================
 // CALCULAR TOTAL
-// ========================================
+// ==========================================
 
 function calcularTotal() {
 
@@ -151,11 +158,11 @@ function calcularTotal() {
 }
 
 
-// ========================================
-// SALVAR RESULTADO
-// ========================================
+// ==========================================
+// ATUALIZAR RESUMO
+// ==========================================
 
-function salvarResultado() {
+function atualizarResumo() {
 
     const total =
         calcularTotal();
@@ -163,46 +170,6 @@ function salvarResultado() {
     const saldo =
         ORCAMENTO - total;
 
-
-    localStorage.setItem(
-        "totalGasto",
-        total.toFixed(2)
-    );
-
-    localStorage.setItem(
-        "saldoFinal",
-        saldo.toFixed(2)
-    );
-
-
-    return {
-
-        total: total,
-
-        saldo: saldo
-
-    };
-
-}
-
-
-// ========================================
-// ATUALIZAR RESUMO
-// ========================================
-
-function atualizarResumo() {
-
-    const resultado =
-        salvarResultado();
-
-    const total =
-        resultado.total;
-
-    const saldo =
-        resultado.saldo;
-
-
-    // Orçamento inicial
 
     if (orcamentoInicial) {
 
@@ -212,8 +179,6 @@ function atualizarResumo() {
     }
 
 
-    // Total gasto
-
     if (totalGasto) {
 
         totalGasto.textContent =
@@ -221,8 +186,6 @@ function atualizarResumo() {
 
     }
 
-
-    // Saldo restante
 
     if (saldoRestante) {
 
@@ -232,13 +195,20 @@ function atualizarResumo() {
     }
 
 
-    console.log(
-        "📊 Orçamento:",
-        ORCAMENTO
+    localStorage.setItem(
+        "totalGasto",
+        total.toFixed(2)
     );
 
+
+    localStorage.setItem(
+        "saldoFinal",
+        saldo.toFixed(2)
+    );
+
+
     console.log(
-        "🛒 Total:",
+        "📊 Total:",
         total
     );
 
@@ -250,9 +220,9 @@ function atualizarResumo() {
 }
 
 
-// ========================================
+// ==========================================
 // MOSTRAR CARRINHO
-// ========================================
+// ==========================================
 
 function mostrarCarrinho() {
 
@@ -266,14 +236,23 @@ function mostrarCarrinho() {
     listaProdutos.innerHTML = "";
 
 
-    // ====================================
-    // CARRINHO VAZIO
-    // ====================================
+    // --------------------------------------
+    // PRODUTOS COM QUANTIDADE
+    // --------------------------------------
 
-    if (
-        !carrinho ||
-        carrinho.length === 0
-    ) {
+    const produtosValidos =
+        carrinho.filter(function (produto) {
+
+            return Number(produto.quantidade) > 0;
+
+        });
+
+
+    // --------------------------------------
+    // CARRINHO VAZIO
+    // --------------------------------------
+
+    if (produtosValidos.length === 0) {
 
         if (carrinhoVazio) {
 
@@ -281,6 +260,7 @@ function mostrarCarrinho() {
                 "block";
 
         }
+
 
         atualizarResumo();
 
@@ -297,115 +277,131 @@ function mostrarCarrinho() {
     }
 
 
-    // ====================================
+    // --------------------------------------
     // CRIAR CARDS
-    // ====================================
+    // --------------------------------------
 
-    carrinho.forEach(
-        function (produto, indice) {
+    carrinho.forEach(function (produto, indice) {
 
-            const preco =
-                Number(produto.preco) || 0;
-
-            const quantidade =
-                Number(produto.quantidade) || 0;
-
-            const subtotal =
-                preco * quantidade;
+        const quantidade =
+            Number(produto.quantidade) || 0;
 
 
-            const card =
-                document.createElement("article");
+        // Produto zerado não aparece
 
-            card.className =
-                "produto";
+        if (quantidade <= 0) {
 
-
-            // =================================
-            // IMAGEM SEGURA
-            // =================================
-
-            const imagem =
-                produto.imagem || "";
-
-
-            card.innerHTML = `
-
-                <div class="imagem-produto">
-
-                    <img
-                        src="${imagem}"
-                        alt="${produto.nome || "Produto"}"
-                        onerror="this.style.display='none'"
-                    >
-
-                </div>
-
-
-                <div class="informacoes-produto">
-
-                    <h3 class="nome-produto">
-                        ${produto.nome || "Produto"}
-                    </h3>
-
-
-                    <p class="preco-produto">
-                        ${formatarPreco(preco)}
-                    </p>
-
-
-                    <div class="controles">
-
-                        <button
-                            type="button"
-                            class="botao-quantidade botao-menos diminuir"
-                            data-indice="${indice}"
-                            aria-label="Diminuir quantidade"
-                        >
-                            −
-                        </button>
-
-
-                        <span class="quantidade">
-                            ${quantidade}
-                        </span>
-
-
-                        <button
-                            type="button"
-                            class="botao-quantidade botao-mais aumentar"
-                            data-indice="${indice}"
-                            aria-label="Aumentar quantidade"
-                        >
-                            +
-                        </button>
-
-                    </div>
-
-
-                    <strong class="subtotal">
-                        ${formatarPreco(subtotal)}
-                    </strong>
-
-                </div>
-
-
-                <button
-                    type="button"
-                    class="botao-excluir botao-remover"
-                    data-indice="${indice}"
-                    aria-label="Remover produto"
-                >
-                    ×
-                </button>
-
-            `;
-
-
-            listaProdutos.appendChild(card);
+            return;
 
         }
-    );
+
+
+        const preco =
+            Number(produto.preco) || 0;
+
+
+        const subtotal =
+            preco * quantidade;
+
+
+        const card =
+            document.createElement("article");
+
+
+        card.className =
+            "produto";
+
+
+        // ----------------------------------
+        // DADOS DO PRODUTO
+        // ----------------------------------
+
+        const imagem =
+            produto.imagem || "";
+
+        const nome =
+            produto.nome || "Produto";
+
+
+        // ----------------------------------
+        // HTML DO CARD
+        // ----------------------------------
+
+        card.innerHTML = `
+
+            <div class="imagem-produto">
+
+                <img
+                    src="${imagem}"
+                    alt="${nome}"
+                >
+
+            </div>
+
+
+            <div class="informacoes-produto">
+
+                <h3 class="nome-produto">
+                    ${nome}
+                </h3>
+
+
+                <p class="preco-produto">
+                    ${formatarPreco(preco)}
+                </p>
+
+
+                <div class="controles">
+
+                    <button
+                        type="button"
+                        class="botao-quantidade botao-menos"
+                        data-indice="${indice}"
+                        aria-label="Diminuir quantidade"
+                    >
+                        −
+                    </button>
+
+
+                    <span class="quantidade">
+                        ${quantidade}
+                    </span>
+
+
+                    <button
+                        type="button"
+                        class="botao-quantidade botao-mais"
+                        data-indice="${indice}"
+                        aria-label="Aumentar quantidade"
+                    >
+                        +
+                    </button>
+
+                </div>
+
+
+                <strong class="subtotal">
+                    ${formatarPreco(subtotal)}
+                </strong>
+
+            </div>
+
+
+            <button
+                type="button"
+                class="botao-excluir"
+                data-indice="${indice}"
+                aria-label="Excluir produto"
+            >
+                ×
+            </button>
+
+        `;
+
+
+        listaProdutos.appendChild(card);
+
+    });
 
 
     configurarBotoes();
@@ -415,20 +411,19 @@ function mostrarCarrinho() {
 }
 
 
-// ========================================
+// ==========================================
 // CONFIGURAR BOTÕES
-// ========================================
+// ==========================================
 
 function configurarBotoes() {
 
 
-    // ====================================
-    // AUMENTAR
-    // MÁXIMO = 3
-    // ====================================
+    // ======================================
+    // BOTÃO +
+    // ======================================
 
     document
-        .querySelectorAll(".aumentar")
+        .querySelectorAll(".botao-mais")
         .forEach(function (botao) {
 
             botao.addEventListener(
@@ -436,12 +431,13 @@ function configurarBotoes() {
                 function (evento) {
 
                     evento.preventDefault();
+
                     evento.stopPropagation();
 
 
                     const indice =
                         Number(
-                            this.dataset.indice
+                            botao.dataset.indice
                         );
 
 
@@ -457,6 +453,8 @@ function configurarBotoes() {
                             carrinho[indice].quantidade
                         ) || 0;
 
+
+                    // Máximo = 3
 
                     if (quantidade < 3) {
 
@@ -464,72 +462,6 @@ function configurarBotoes() {
 
                         carrinho[indice].quantidade =
                             quantidade;
-
-                        salvarCarrinho();
-
-                    }
-
-                }
-            );
-
-        });
-
-
-    // ====================================
-    // DIMINUIR
-    // MÍNIMO = 0
-    // ====================================
-
-    document
-        .querySelectorAll(".diminuir")
-        .forEach(function (botao) {
-
-            botao.addEventListener(
-                "click",
-                function (evento) {
-
-                    evento.preventDefault();
-                    evento.stopPropagation();
-
-
-                    const indice =
-                        Number(
-                            this.dataset.indice
-                        );
-
-
-                    if (!carrinho[indice]) {
-
-                        return;
-
-                    }
-
-
-                    let quantidade =
-                        Number(
-                            carrinho[indice].quantidade
-                        ) || 0;
-
-
-                    if (quantidade > 0) {
-
-                        quantidade--;
-
-                        carrinho[indice].quantidade =
-                            quantidade;
-
-                    }
-
-
-                    // Se chegar a 0,
-                    // remove o produto do carrinho.
-
-                    if (quantidade === 0) {
-
-                        carrinho.splice(
-                            indice,
-                            1
-                        );
 
                     }
 
@@ -542,12 +474,12 @@ function configurarBotoes() {
         });
 
 
-    // ====================================
-    // EXCLUIR
-    // ====================================
+    // ======================================
+    // BOTÃO -
+    // ======================================
 
     document
-        .querySelectorAll(".botao-remover")
+        .querySelectorAll(".botao-menos")
         .forEach(function (botao) {
 
             botao.addEventListener(
@@ -555,19 +487,73 @@ function configurarBotoes() {
                 function (evento) {
 
                     evento.preventDefault();
+
                     evento.stopPropagation();
 
 
                     const indice =
                         Number(
-                            this.dataset.indice
+                            botao.dataset.indice
                         );
 
 
-                    if (
-                        !Number.isInteger(indice) ||
-                        !carrinho[indice]
-                    ) {
+                    if (!carrinho[indice]) {
+
+                        return;
+
+                    }
+
+
+                    let quantidade =
+                        Number(
+                            carrinho[indice].quantidade
+                        ) || 0;
+
+
+                    // Mínimo = 0
+
+                    if (quantidade > 0) {
+
+                        quantidade--;
+
+                        carrinho[indice].quantidade =
+                            quantidade;
+
+                    }
+
+
+                    salvarCarrinho();
+
+                }
+            );
+
+        });
+
+
+    // ======================================
+    // BOTÃO EXCLUIR
+    // ======================================
+
+    document
+        .querySelectorAll(".botao-excluir")
+        .forEach(function (botao) {
+
+            botao.addEventListener(
+                "click",
+                function (evento) {
+
+                    evento.preventDefault();
+
+                    evento.stopPropagation();
+
+
+                    const indice =
+                        Number(
+                            botao.dataset.indice
+                        );
+
+
+                    if (!carrinho[indice]) {
 
                         return;
 
@@ -590,9 +576,9 @@ function configurarBotoes() {
 }
 
 
-// ========================================
+// ==========================================
 // SALVAR CARRINHO
-// ========================================
+// ==========================================
 
 function salvarCarrinho() {
 
@@ -602,22 +588,16 @@ function salvarCarrinho() {
     );
 
 
-    salvarResultado();
-
     mostrarCarrinho();
 
 }
 
 
-// ========================================
+// ==========================================
 // VOLTAR PARA CÂMERA
-// ========================================
+// ==========================================
 
 function voltarParaCamera() {
-
-    // Não usar history.back()
-    // porque no celular pode voltar
-    // para uma página inesperada.
 
     const url =
         new URL(
@@ -625,12 +605,17 @@ function voltarParaCamera() {
             window.location.href
         );
 
+
     window.location.assign(
         url.href
     );
 
 }
 
+
+// ==========================================
+// BOTÃO VOLTAR
+// ==========================================
 
 if (botaoVoltar) {
 
@@ -640,6 +625,8 @@ if (botaoVoltar) {
 
             evento.preventDefault();
 
+            evento.stopPropagation();
+
             voltarParaCamera();
 
         }
@@ -647,6 +634,10 @@ if (botaoVoltar) {
 
 }
 
+
+// ==========================================
+// BOTÃO VOLTAR - CARRINHO VAZIO
+// ==========================================
 
 if (voltarCameraVazio) {
 
@@ -656,6 +647,8 @@ if (voltarCameraVazio) {
 
             evento.preventDefault();
 
+            evento.stopPropagation();
+
             voltarParaCamera();
 
         }
@@ -664,9 +657,9 @@ if (voltarCameraVazio) {
 }
 
 
-// ========================================
+// ==========================================
 // FINALIZAR PARTIDA
-// ========================================
+// ==========================================
 
 if (confirmarCompras) {
 
@@ -676,10 +669,24 @@ if (confirmarCompras) {
 
             evento.preventDefault();
 
+            evento.stopPropagation();
 
-            const resultado =
-                salvarResultado();
 
+            // ----------------------------------
+            // CALCULAR RESULTADO
+            // ----------------------------------
+
+            const total =
+                calcularTotal();
+
+
+            const saldo =
+                ORCAMENTO - total;
+
+
+            // ----------------------------------
+            // RESULTADO DA PARTIDA
+            // ----------------------------------
 
             const resultadoPartida = {
 
@@ -687,10 +694,10 @@ if (confirmarCompras) {
                     ORCAMENTO,
 
                 totalGasto:
-                    resultado.total,
+                    total,
 
                 saldo:
-                    resultado.saldo,
+                    saldo,
 
                 carrinho:
                     carrinho
@@ -698,9 +705,9 @@ if (confirmarCompras) {
             };
 
 
-            // =================================
+            // ----------------------------------
             // SALVAR RESULTADO
-            // =================================
+            // ----------------------------------
 
             localStorage.setItem(
                 "resultadoPartida",
@@ -710,9 +717,27 @@ if (confirmarCompras) {
             );
 
 
-            // =================================
+            localStorage.setItem(
+                "totalGasto",
+                total.toFixed(2)
+            );
+
+
+            localStorage.setItem(
+                "saldoFinal",
+                saldo.toFixed(2)
+            );
+
+
+            console.log(
+                "🏁 Partida finalizada:",
+                resultadoPartida
+            );
+
+
+            // ----------------------------------
             // IR PARA VITÓRIA
-            // =================================
+            // ----------------------------------
 
             const url =
                 new URL(
@@ -731,9 +756,8 @@ if (confirmarCompras) {
 }
 
 
-// ========================================
+// ==========================================
 // INICIAR
-// ========================================
+// ==========================================
 
 mostrarCarrinho();
-
