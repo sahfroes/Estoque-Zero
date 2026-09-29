@@ -50,7 +50,6 @@
 
 <body>
 
-
 <main class="tela-camera">
 
 
@@ -74,7 +73,7 @@
 
 
     <!-- ==========================================
-         MENSAGEM SOBRE O PRODUTO
+         MENSAGEM PRODUTO ENCONTRADO
     =========================================== -->
 
     <div
@@ -82,14 +81,28 @@
         class="toque-produto">
 
         <span>
-            Toque no produto
+            Produto encontrado!
         </span>
 
     </div>
 
 
     <!-- ==========================================
-         CENA AR
+         BOTÃO VER PRODUTO
+    =========================================== -->
+
+    <button
+        id="abrir-produto"
+        class="abrir-produto"
+        type="button">
+
+        Ver produto
+
+    </button>
+
+
+    <!-- ==========================================
+         CENA MINDAR
     =========================================== -->
 
     <a-scene
@@ -124,7 +137,7 @@
 
 
         <!-- ==========================================
-             IMAGENS DOS PRODUTOS
+             IMAGENS
         =========================================== -->
 
         <a-assets>
@@ -141,27 +154,27 @@
 
             <img
                 id="imagem-arroz"
-                src="../../img/produtos/arroz.png"
+                src="../../img/produtos/arroz.jpeg"
                 alt="Arroz">
 
             <img
                 id="imagem-macarrao"
-                src="../../img/produtos/macarrao.png"
+                src="../../img/produtos/macarrao.jpeg"
                 alt="Macarrão">
 
             <img
                 id="imagem-oleo"
-                src="../../img/produtos/oleo.png"
+                src="../../img/produtos/oleo.jpeg"
                 alt="Óleo">
 
             <img
                 id="imagem-acucar"
-                src="../../img/produtos/acucar.png"
+                src="../../img/produtos/acucar.jpeg"
                 alt="Açúcar">
 
             <img
                 id="imagem-bombons"
-                src="../../img/produtos/bombons.png"
+                src="../../img/produtos/bombons.jpeg"
                 alt="Bombons">
 
             <img
@@ -171,7 +184,7 @@
 
             <img
                 id="imagem-copo"
-                src="../../img/produtos/copo.png"
+                src="../../img/produtos/copo.jpg"
                 alt="Copo Térmico">
 
             <img
@@ -189,7 +202,6 @@
         <a-camera
             position="0 0 0"
             look-controls="enabled: false">
-
         </a-camera>
 
 
@@ -208,9 +220,7 @@
                 src="../../img/produtos/leite.png"
                 position="0 0 0.1"
                 width="0.8"
-                data-produto="leite"
                 height="1.1">
-
             </a-image>
 
         </a-entity>
@@ -231,9 +241,7 @@
                 src="../../img/produtos/feijao.png"
                 position="0 0 0.1"
                 width="0.8"
-                data-produto="feijao"
                 height="1.1">
-
             </a-image>
 
         </a-entity>
@@ -254,9 +262,7 @@
                 src="../../img/produtos/arroz.jpeg"
                 position="0 0 0.1"
                 width="0.8"
-                data-produto="arroz"
                 height="1.1">
-
             </a-image>
 
         </a-entity>
@@ -277,9 +283,7 @@
                 src="../../img/produtos/macarrao.jpeg"
                 position="0 0 0.1"
                 width="0.8"
-                data-produto="macarrao"
                 height="1.1">
-
             </a-image>
 
         </a-entity>
@@ -300,9 +304,7 @@
                 src="../../img/produtos/oleo.jpeg"
                 position="0 0 0.1"
                 width="0.8"
-                data-produto="oleo"
                 height="1.1">
-
             </a-image>
 
         </a-entity>
@@ -323,9 +325,7 @@
                 src="../../img/produtos/acucar.jpeg"
                 position="0 0 0.1"
                 width="0.8"
-                data-produto="acucar"
                 height="1.1">
-
             </a-image>
 
         </a-entity>
@@ -346,9 +346,7 @@
                 src="../../img/produtos/bombons.jpeg"
                 position="0 0 0.1"
                 width="0.8"
-                data-produto="bombons"
                 height="1.1">
-
             </a-image>
 
         </a-entity>
@@ -369,9 +367,7 @@
                 src="../../img/produtos/giftcard.png"
                 position="0 0 0.1"
                 width="0.8"
-                data-produto="giftcard"
                 height="1.1">
-
             </a-image>
 
         </a-entity>
@@ -392,9 +388,7 @@
                 src="../../img/produtos/copo.jpg"
                 position="0 0 0.1"
                 width="0.8"
-                data-produto="copo"
                 height="1.1">
-
             </a-image>
 
         </a-entity>
@@ -415,9 +409,7 @@
                 src="../../img/produtos/boneco.jpeg"
                 position="0 0 0.1"
                 width="0.8"
-                data-produto="boneco"
                 height="1.1">
-
             </a-image>
 
         </a-entity>
@@ -427,7 +419,7 @@
 
 
     <!-- ==========================================
-         TOPO
+         CABEÇALHO
     =========================================== -->
 
     <header class="cabecalho">
@@ -443,9 +435,6 @@
 
         <div class="informacoes">
 
-
-            <!-- SALDO -->
-
             <div class="saldo">
 
                 <span>
@@ -459,8 +448,6 @@
             </div>
 
 
-            <!-- TEMPO -->
-
             <div class="tempo">
 
                 <span>
@@ -473,14 +460,13 @@
 
             </div>
 
-
         </div>
 
     </header>
 
 
     <!-- ==========================================
-         ALERTA DE TEMPO
+         ALERTA TEMPO
     =========================================== -->
 
     <div
@@ -522,9 +508,7 @@
         <span
             id="quantidade-carrinho"
             class="quantidade-carrinho">
-
             0
-
         </span>
 
     </button>
@@ -574,9 +558,9 @@
 
 </main>
 
-<script src="../../Js/camera.js"></script>
-<script src="../../JS/cronometro.js"></script>
 
+<script src="../../JS/camera.js"></script>
+<script src="../../JS/cronometro.js"></script>
 
 </body>
 
