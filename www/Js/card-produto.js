@@ -7,61 +7,61 @@ const produtos = {
     leite: {
         nome: "Leite UHT Integral 1 L",
         preco: 7.50,
-        imagem: "../../img/produtos/leite.png"
+        imagem: "/img/produtos/leite.png"
     },
 
     feijao: {
         nome: "Feijão Carioca 1 kg",
         preco: 8.00,
-        imagem: "../../img/produtos/feijao.png"
+        imagem: "/img/produtos/feijao.png"
     },
 
     arroz: {
         nome: "Arroz Branco 5 kg",
         preco: 25.00,
-        imagem: "../../img/produtos/arroz.jpeg"
+        imagem: "/img/produtos/arroz.jpeg"
     },
 
     macarrao: {
         nome: "Macarrão 500 g",
         preco: 5.00,
-        imagem: "../../img/produtos/macarrao.jpeg"
+        imagem: "/img/produtos/macarrao.jpeg"
     },
 
     oleo: {
         nome: "Óleo de Soja 900 ml",
         preco: 8.00,
-        imagem: "../../img/produtos/oleo.jpeg"
+        imagem: "/img/produtos/oleo.jpeg"
     },
 
     acucar: {
         nome: "Açúcar Refinado 1 kg",
         preco: 5.00,
-        imagem: "../../img/produtos/acucar.jpeg"
+        imagem: "/img/produtos/acucar.jpeg"
     },
 
     bombons: {
         nome: "Caixa de Bombons",
         preco: 12.00,
-        imagem: "../../img/produtos/bombons.jpeg"
+        imagem: "/img/produtos/bombons.jpeg"
     },
 
     giftcard: {
         nome: "Gift Card",
         preco: 20.00,
-        imagem: "../../img/produtos/giftcard.png"
+        imagem: "/img/produtos/giftcard.png"
     },
 
     copo: {
         nome: "Copo Térmico",
         preco: 15.00,
-        imagem: "../../img/produtos/copo.jpg"
+        imagem: "/img/produtos/copo.jpg"
     },
 
     boneco: {
         nome: "Boneco Colecionável",
         preco: 18.00,
-        imagem: "../../img/produtos/boneco.jpeg"
+        imagem: "/img/produtos/boneco.jpeg"
     }
 
 };
