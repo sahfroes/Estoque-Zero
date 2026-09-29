@@ -639,3 +639,8 @@ body {
     color: #6030a7;
 
 }
+
+.avatar img,
+.avatar-pequeno img {
+    display: block;
+}

@@ -35,12 +35,17 @@ if (!getApps().length) {
     if (process.env.FIREBASE_SERVICE_ACCOUNT) {
 
         serviceAccount =
-            JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT);
+            JSON.parse(
+                process.env.FIREBASE_SERVICE_ACCOUNT
+            );
 
     } else {
 
         const keyPath =
-            path.join(__dirname, 'firebase-key.json');
+            path.join(
+                __dirname,
+                'firebase-key.json'
+            );
 
         if (fs.existsSync(keyPath)) {
 
@@ -55,13 +60,16 @@ if (!getApps().length) {
         } else {
 
             throw new Error(
-                "Credenciais do Firebase não encontradas."
+                'Credenciais do Firebase não encontradas.'
             );
-
         }
     }
 
-    // Corrige quebra de linha da chave privada
+
+    // ------------------------------------------
+    // Corrigir quebra de linha da chave privada
+    // ------------------------------------------
+
     if (serviceAccount.private_key) {
 
         serviceAccount.private_key =
@@ -70,6 +78,7 @@ if (!getApps().length) {
                 '\n'
             );
     }
+
 
     initializeApp({
         credential: cert(serviceAccount)
@@ -101,7 +110,10 @@ app.use(cors());
 
 app.use(
     express.static(
-        path.join(__dirname, 'www'),
+        path.join(
+            __dirname,
+            'www'
+        ),
         {
             index: false
         }
@@ -147,185 +159,197 @@ app.get('/entrar.html', (req, res) => {
 // ENTRAR NA SALA
 // ======================================================
 
-app.post('/api/salas/entrar', async (req, res) => {
+app.post(
+    '/api/salas/entrar',
+    async (req, res) => {
 
-    try {
+        try {
 
-        const {
-            codigo,
-            pin
-        } = req.body;
+            const {
+                codigo,
+                pin
+            } = req.body;
 
 
-        if (!codigo || !pin) {
+            if (!codigo || !pin) {
 
-            return res.status(400).json({
+                return res.status(400).json({
+                    mensagem:
+                        'Código e PIN são obrigatórios.'
+                });
+
+            }
+
+
+            const codigoFormatado =
+                String(codigo)
+                    .trim()
+                    .toUpperCase();
+
+
+            const salaRef =
+                db
+                    .collection('salas')
+                    .doc(codigoFormatado);
+
+
+            const doc =
+                await salaRef.get();
+
+
+            if (!doc.exists) {
+
+                return res.status(404).json({
+                    mensagem:
+                        'Sala não encontrada.'
+                });
+
+            }
+
+
+            const salaData =
+                doc.data();
+
+
+            if (!salaData.ativa) {
+
+                return res.status(403).json({
+                    mensagem:
+                        'Esta sala não está mais ativa.'
+                });
+
+            }
+
+
+            if (
+                salaData.pin !==
+                String(pin).trim()
+            ) {
+
+                return res.status(401).json({
+                    mensagem:
+                        'PIN incorreto.'
+                });
+
+            }
+
+
+            return res.status(200).json({
+
+                sucesso: true,
+
                 mensagem:
-                    'Código e PIN são obrigatórios.'
+                    'Acesso liberado!',
+
+                codigo:
+                    salaData.codigo
+
+            });
+
+
+        } catch (error) {
+
+            console.error(
+                'Erro ao entrar na sala:',
+                error
+            );
+
+
+            return res.status(500).json({
+                mensagem:
+                    'Erro interno no servidor.'
             });
 
         }
-
-
-        const codigoFormatado =
-            codigo
-                .trim()
-                .toUpperCase();
-
-
-        const salaRef =
-            db
-                .collection('salas')
-                .doc(codigoFormatado);
-
-
-        const doc =
-            await salaRef.get();
-
-
-        if (!doc.exists) {
-
-            return res.status(404).json({
-                mensagem:
-                    'Sala não encontrada.'
-            });
-
-        }
-
-
-        const salaData =
-            doc.data();
-
-
-        if (!salaData.ativa) {
-
-            return res.status(403).json({
-                mensagem:
-                    'Esta sala não está mais ativa.'
-            });
-
-        }
-
-
-        if (
-            salaData.pin !==
-            pin.trim()
-        ) {
-
-            return res.status(401).json({
-                mensagem:
-                    'PIN incorreto.'
-            });
-
-        }
-
-
-        return res.status(200).json({
-
-            sucesso: true,
-
-            mensagem:
-                'Acesso liberado!',
-
-            codigo:
-                salaData.codigo
-
-        });
-
-    } catch (error) {
-
-        console.error(
-            'Erro ao entrar na sala:',
-            error
-        );
-
-        return res.status(500).json({
-            mensagem:
-                'Erro interno no servidor.'
-        });
 
     }
-
-});
+);
 
 
 // ======================================================
 // CRIAR SALA
 // ======================================================
 
-app.post('/api/salas/criar', async (req, res) => {
+app.post(
+    '/api/salas/criar',
+    async (req, res) => {
 
-    try {
+        try {
 
-        const {
-            codigo,
-            pin
-        } = req.body;
+            const {
+                codigo,
+                pin
+            } = req.body;
 
 
-        if (!codigo || !pin) {
+            if (!codigo || !pin) {
 
-            return res.status(400).json({
+                return res.status(400).json({
+                    mensagem:
+                        'Código e PIN são obrigatórios.'
+                });
+
+            }
+
+
+            const codigoFormatado =
+                String(codigo)
+                    .trim()
+                    .toUpperCase();
+
+
+            const salaRef =
+                db
+                    .collection('salas')
+                    .doc(codigoFormatado);
+
+
+            await salaRef.set({
+
+                codigo:
+                    codigoFormatado,
+
+                pin:
+                    String(pin).trim(),
+
+                ativa:
+                    true,
+
+                criadoEm:
+                    FieldValue.serverTimestamp()
+
+            });
+
+
+            return res.status(201).json({
+
+                sucesso: true,
+
                 mensagem:
-                    'Código e PIN são obrigatórios.'
+                    'Sala criada com sucesso!'
+
+            });
+
+
+        } catch (error) {
+
+            console.error(
+                'Erro ao criar sala:',
+                error
+            );
+
+
+            return res.status(500).json({
+
+                mensagem:
+                    'Erro ao criar a sala.'
+
             });
 
         }
 
-
-        const codigoFormatado =
-            codigo
-                .trim()
-                .toUpperCase();
-
-
-        const salaRef =
-            db
-                .collection('salas')
-                .doc(codigoFormatado);
-
-
-        await salaRef.set({
-
-            codigo:
-                codigoFormatado,
-
-            pin:
-                pin.trim(),
-
-            ativa:
-                true,
-
-            criadoEm:
-                FieldValue.serverTimestamp()
-
-        });
-
-
-        return res.status(201).json({
-
-            sucesso: true,
-
-            mensagem:
-                'Sala criada com sucesso!'
-
-        });
-
-    } catch (error) {
-
-        console.error(
-            'Erro ao criar sala:',
-            error
-        );
-
-        return res.status(500).json({
-            mensagem:
-                'Erro ao criar a sala.'
-        });
-
     }
-
-});
+);
 
 
 // ======================================================
@@ -335,63 +359,63 @@ app.post('/api/salas/criar', async (req, res) => {
 const personagensPermitidos = {
 
     gigis: {
-        id: "gigis",
-        nome: "Gigis",
-        seed: "gigis-estoque-zero"
+        id: 'gigis',
+        nome: 'Gigis',
+        seed: 'gigis-estoque-zero'
     },
 
     alexa: {
-        id: "alexa",
-        nome: "Alexa",
-        seed: "alexa-estoque-zero"
+        id: 'alexa',
+        nome: 'Alexa',
+        seed: 'alexa-estoque-zero'
     },
 
     vivi: {
-        id: "vivi",
-        nome: "Vivi",
-        seed: "vivi-estoque-zero"
+        id: 'vivi',
+        nome: 'Vivi',
+        seed: 'vivi-estoque-zero'
     },
 
     gao: {
-        id: "gao",
-        nome: "Gao",
-        seed: "gao-estoque-zero"
+        id: 'gao',
+        nome: 'Gao',
+        seed: 'gao-estoque-zero'
     },
 
     tuco: {
-        id: "tuco",
-        nome: "Tuco",
-        seed: "tuco-estoque-zero"
+        id: 'tuco',
+        nome: 'Tuco',
+        seed: 'tuco-estoque-zero'
     },
 
     pulma: {
-        id: "pulma",
-        nome: "Pulma",
-        seed: "pulma-estoque-zero"
+        id: 'pulma',
+        nome: 'Pulma',
+        seed: 'pulma-estoque-zero'
     },
 
     robs: {
-        id: "robs",
-        nome: "Robs",
-        seed: "robs-estoque-zero"
+        id: 'robs',
+        nome: 'Robs',
+        seed: 'robs-estoque-zero'
     },
 
     prin: {
-        id: "prin",
-        nome: "Prin",
-        seed: "prin-estoque-zero"
+        id: 'prin',
+        nome: 'Prin',
+        seed: 'prin-estoque-zero'
     },
 
     mark: {
-        id: "mark",
-        nome: "Mark",
-        seed: "mark-estoque-zero"
+        id: 'mark',
+        nome: 'Mark',
+        seed: 'mark-estoque-zero'
     },
 
     ligi: {
-        id: "ligi",
-        nome: "Ligi",
-        seed: "ligi-estoque-zero"
+        id: 'ligi',
+        nome: 'Ligi',
+        seed: 'ligi-estoque-zero'
     }
 
 };
@@ -409,7 +433,7 @@ app.get(
 
             const codigo =
                 String(
-                    req.query.codigo || ""
+                    req.query.codigo || ''
                 )
                     .trim()
                     .toUpperCase();
@@ -418,10 +442,8 @@ app.get(
             if (!codigo) {
 
                 return res.status(400).json({
-
                     mensagem:
                         'Código da turma não informado.'
-
                 });
 
             }
@@ -440,10 +462,8 @@ app.get(
             if (!salaDoc.exists) {
 
                 return res.status(404).json({
-
                     mensagem:
                         'Sala não encontrada.'
-
                 });
 
             }
@@ -469,12 +489,14 @@ app.get(
 
             });
 
+
         } catch (error) {
 
             console.error(
                 'Erro ao buscar jogadores:',
                 error
             );
+
 
             return res.status(500).json({
 
@@ -591,9 +613,6 @@ app.post(
 
             // ------------------------------------------
             // TRANSAÇÃO
-            //
-            // Isso impede duas pessoas de pegarem
-            // o mesmo personagem simultaneamente.
             // ------------------------------------------
 
             await db.runTransaction(
@@ -664,6 +683,9 @@ app.post(
                             produtos:
                                 [],
 
+                            orcamento:
+                                saldoInicial,
+
                             criadoEm:
                                 FieldValue.serverTimestamp()
 
@@ -685,16 +707,13 @@ app.post(
                 mensagem:
                     'Personagem reservado com sucesso.',
 
-                personagem: personagem
+                personagem:
+                    personagem
 
             });
 
 
         } catch (error) {
-
-            // ------------------------------------------
-            // PERSONAGEM JÁ OCUPADO
-            // ------------------------------------------
 
             if (
                 error.codigo ===
@@ -726,6 +745,479 @@ app.post(
 
                 mensagem:
                     'Erro ao reservar o personagem.'
+
+            });
+
+        }
+
+    }
+);
+
+
+// ======================================================
+// FINALIZAR PARTIDA DO JOGADOR
+// ======================================================
+
+app.post(
+    '/api/jogadores/finalizar',
+    async (req, res) => {
+
+        try {
+
+            const {
+                codigo,
+                personagemId,
+                orcamento,
+                totalGasto,
+                saldoRestante,
+                quantidadeTotalItens,
+                produtos
+            } = req.body;
+
+
+            // ------------------------------------------
+            // VALIDAR CÓDIGO
+            // ------------------------------------------
+
+            if (!codigo) {
+
+                return res.status(400).json({
+
+                    mensagem:
+                        'Código da turma não informado.'
+
+                });
+
+            }
+
+
+            const codigoFormatado =
+                String(codigo)
+                    .trim()
+                    .toUpperCase();
+
+
+            // ------------------------------------------
+            // VALIDAR PERSONAGEM
+            // ------------------------------------------
+
+            if (
+                !personagemId ||
+                !personagensPermitidos[personagemId]
+            ) {
+
+                return res.status(400).json({
+
+                    mensagem:
+                        'Personagem inválido.'
+
+                });
+
+            }
+
+
+            // ------------------------------------------
+            // VERIFICAR SALA
+            // ------------------------------------------
+
+            const salaRef =
+                db
+                    .collection('salas')
+                    .doc(codigoFormatado);
+
+
+            const salaDoc =
+                await salaRef.get();
+
+
+            if (!salaDoc.exists) {
+
+                return res.status(404).json({
+
+                    mensagem:
+                        'Sala não encontrada.'
+
+                });
+
+            }
+
+
+            // ------------------------------------------
+            // REFERÊNCIA DO JOGADOR
+            // ------------------------------------------
+
+            const jogadorRef =
+                salaRef
+                    .collection('jogadores')
+                    .doc(personagemId);
+
+
+            const jogadorDoc =
+                await jogadorRef.get();
+
+
+            if (!jogadorDoc.exists) {
+
+                return res.status(404).json({
+
+                    mensagem:
+                        'Jogador não encontrado.'
+
+                });
+
+            }
+
+
+            // ------------------------------------------
+            // NORMALIZAR ORÇAMENTO
+            // ------------------------------------------
+
+            let valorOrcamento =
+                Number(orcamento);
+
+
+            if (
+                !Number.isFinite(
+                    valorOrcamento
+                ) ||
+                valorOrcamento <= 0
+            ) {
+
+                const dadosJogador =
+                    jogadorDoc.data();
+
+                valorOrcamento =
+                    Number(
+                        dadosJogador.orcamento
+                    ) || 50;
+
+            }
+
+
+            // ------------------------------------------
+            // NORMALIZAR TOTAL GASTO
+            // ------------------------------------------
+
+            let valorTotalGasto =
+                Number(totalGasto);
+
+
+            if (
+                !Number.isFinite(
+                    valorTotalGasto
+                )
+            ) {
+
+                valorTotalGasto = 0;
+
+            }
+
+
+            // ------------------------------------------
+            // NORMALIZAR SALDO
+            // ------------------------------------------
+
+            let valorSaldoRestante =
+                Number(saldoRestante);
+
+
+            if (
+                !Number.isFinite(
+                    valorSaldoRestante
+                )
+            ) {
+
+                valorSaldoRestante =
+                    valorOrcamento -
+                    valorTotalGasto;
+
+            }
+
+
+            // ------------------------------------------
+            // NORMALIZAR QUANTIDADE
+            // ------------------------------------------
+
+            let quantidadeItens =
+                Number(
+                    quantidadeTotalItens
+                );
+
+
+            if (
+                !Number.isFinite(
+                    quantidadeItens
+                ) ||
+                quantidadeItens < 0
+            ) {
+
+                quantidadeItens = 0;
+
+            }
+
+
+            // ------------------------------------------
+            // PRODUTOS
+            // ------------------------------------------
+
+            const listaProdutos =
+                Array.isArray(produtos)
+                    ? produtos
+                    : [];
+
+
+            // ------------------------------------------
+            // ATUALIZAR JOGADOR
+            // ------------------------------------------
+
+            await jogadorRef.update({
+
+                finalizou:
+                    true,
+
+                quantidadeTotalItens:
+                    quantidadeItens,
+
+                totalGasto:
+                    valorTotalGasto,
+
+                saldoRestante:
+                    valorSaldoRestante,
+
+                produtos:
+                    listaProdutos,
+
+                orcamento:
+                    valorOrcamento,
+
+                finalizadoEm:
+                    FieldValue.serverTimestamp()
+
+            });
+
+
+            // ------------------------------------------
+            // RESPOSTA
+            // ------------------------------------------
+
+            return res.status(200).json({
+
+                sucesso: true,
+
+                mensagem:
+                    'Partida finalizada com sucesso.',
+
+                jogador: {
+
+                    personagemId:
+                        personagemId,
+
+                    personagemNome:
+                        personagensPermitidos[
+                            personagemId
+                        ].nome,
+
+                    quantidadeTotalItens:
+                        quantidadeItens,
+
+                    totalGasto:
+                        valorTotalGasto,
+
+                    saldoRestante:
+                        valorSaldoRestante,
+
+                    produtos:
+                        listaProdutos
+
+                }
+
+            });
+
+
+        } catch (error) {
+
+            console.error(
+                'Erro ao finalizar partida:',
+                error
+            );
+
+
+            return res.status(500).json({
+
+                mensagem:
+                    'Erro ao salvar o resultado da partida.'
+
+            });
+
+        }
+
+    }
+);
+
+
+// ======================================================
+// BUSCAR JOGADORES PARA O RANKING
+// ======================================================
+
+app.get(
+    '/api/jogadores/ranking',
+    async (req, res) => {
+
+        try {
+
+            const codigo =
+                String(
+                    req.query.codigo || ''
+                )
+                    .trim()
+                    .toUpperCase();
+
+
+            // ------------------------------------------
+            // VERIFICAR CÓDIGO
+            // ------------------------------------------
+
+            if (!codigo) {
+
+                return res.status(400).json({
+
+                    mensagem:
+                        'Código da turma não informado.'
+
+                });
+
+            }
+
+
+            // ------------------------------------------
+            // REFERÊNCIA DA SALA
+            // ------------------------------------------
+
+            const salaRef =
+                db
+                    .collection('salas')
+                    .doc(codigo);
+
+
+            const salaDoc =
+                await salaRef.get();
+
+
+            if (!salaDoc.exists) {
+
+                return res.status(404).json({
+
+                    mensagem:
+                        'Sala não encontrada.'
+
+                });
+
+            }
+
+
+            // ------------------------------------------
+            // BUSCAR JOGADORES
+            // ------------------------------------------
+
+            const jogadoresSnapshot =
+                await salaRef
+                    .collection('jogadores')
+                    .get();
+
+
+            const jogadores =
+                jogadoresSnapshot.docs.map(
+                    doc => {
+
+                        const dados =
+                            doc.data();
+
+
+                        return {
+
+                            id:
+                                doc.id,
+
+                            personagemId:
+                                dados.personagemId ||
+                                doc.id,
+
+                            personagemNome:
+                                dados.personagemNome ||
+                                'Jogador',
+
+                            avatarSeed:
+                                dados.avatarSeed ||
+                                '',
+
+                            finalizou:
+                                dados.finalizou === true,
+
+                            quantidadeTotalItens:
+                                Number(
+                                    dados.quantidadeTotalItens
+                                ) || 0,
+
+                            totalGasto:
+                                Number(
+                                    dados.totalGasto
+                                ) || 0,
+
+                            saldoRestante:
+                                Number(
+                                    dados.saldoRestante
+                                ) || 0,
+
+                            orcamento:
+                                Number(
+                                    dados.orcamento
+                                ) || 50,
+
+                            produtos:
+                                Array.isArray(
+                                    dados.produtos
+                                )
+                                    ? dados.produtos
+                                    : []
+
+                        };
+
+                    }
+                );
+
+
+            // ------------------------------------------
+            // RESPOSTA
+            // ------------------------------------------
+
+            return res.status(200).json({
+
+                sucesso: true,
+
+                codigo:
+                    codigo,
+
+                totalJogadores:
+                    jogadores.length,
+
+                jogadores:
+                    jogadores
+
+            });
+
+
+        } catch (error) {
+
+            console.error(
+                'Erro ao buscar ranking:',
+                error
+            );
+
+
+            return res.status(500).json({
+
+                mensagem:
+                    'Erro ao carregar o ranking.'
 
             });
 

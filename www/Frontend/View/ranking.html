@@ -33,10 +33,9 @@
 
             <button
                 class="botao-voltar"
-                onclick="voltarResultado()">
-
+                onclick="voltarResultado()"
+            >
                 ←
-
             </button>
 
 
@@ -59,20 +58,15 @@
         <section class="cabecalho-ranking">
 
             <div class="trofeu">
-
                 🏆
-
             </div>
-
 
             <h1>
                 Ranking
             </h1>
 
-
-            <p>
-                Veja quem mandou melhor
-                na missão!
+            <p id="mensagemRanking">
+                Carregando participantes...
             </p>
 
         </section>
@@ -83,86 +77,37 @@
              PÓDIO
         ========================== -->
 
-        <section class="podio">
+        <section
+            class="podio"
+            id="podio"
+        >
 
-
-            <!-- SEGUNDO -->
-
-            <div class="jogador segundo">
-
-                <div class="medalha">
-                    🥈
-                </div>
-
-                <div class="avatar">
-                    
-                </div>
-
-                <strong>
-                    Julia
-                </strong>
-
-                <span>
-                    82 pontos
-                </span>
-
+            <div
+                id="segundoLugar"
+                class="jogador segundo"
+            >
             </div>
 
 
-
-            <!-- PRIMEIRO -->
-
-            <div class="jogador primeiro">
-
-                <div class="medalha">
-                    🥇
-                </div>
-
-                <div class="avatar">
-                    
-                </div>
-
-                <strong>
-                    Ana
-                </strong>
-
-                <span>
-                    95 pontos
-                </span>
-
+            <div
+                id="primeiroLugar"
+                class="jogador primeiro"
+            >
             </div>
 
 
-
-            <!-- TERCEIRO -->
-
-            <div class="jogador terceiro">
-
-                <div class="medalha">
-                    🥉
-                </div>
-
-                <div class="avatar">
-                    
-                </div>
-
-                <strong>
-                    Lucas
-                </strong>
-
-                <span>
-                    76 pontos
-                </span>
-
+            <div
+                id="terceiroLugar"
+                class="jogador terceiro"
+            >
             </div>
-
 
         </section>
 
 
 
         <!-- =========================
-             LISTA DO RANKING
+             LISTA
         ========================== -->
 
         <section class="lista-ranking">
@@ -172,217 +117,20 @@
             </h2>
 
 
+            <div id="listaRanking">
 
-            <!-- ALUNO 1 -->
-
-            <div class="item-ranking destaque">
-
-                <div class="posicao">
-                    1º
-                </div>
-
-
-                <div class="avatar-pequeno">
-                    
-                </div>
-
-
-                <div class="informacoes">
-
-                    <strong>
-                        Ana
-                    </strong>
-
-                    <small>
-                        Saldo: R$ 32,00
-                    </small>
-
-                </div>
-
-
-                <div class="pontos">
-
-                    95
-
-                    <small>
-                        pontos
-                    </small>
-
-                </div>
+                <p style="text-align:center;">
+                    Carregando...
+                </p>
 
             </div>
-
-
-
-            <!-- ALUNO 2 -->
-
-            <div class="item-ranking">
-
-                <div class="posicao">
-                    2º
-                </div>
-
-
-                <div class="avatar-pequeno">
-                
-                </div>
-
-
-                <div class="informacoes">
-
-                    <strong>
-                        Julia
-                    </strong>
-
-                    <small>
-                        Saldo: R$ 27,00
-                    </small>
-
-                </div>
-
-
-                <div class="pontos">
-
-                    82
-
-                    <small>
-                        pontos
-                    </small>
-
-                </div>
-
-            </div>
-
-
-
-            <!-- ALUNO 3 -->
-
-            <div class="item-ranking">
-
-                <div class="posicao">
-                    3º
-                </div>
-
-
-                <div class="avatar-pequeno">
-                    
-                </div>
-
-
-                <div class="informacoes">
-
-                    <strong>
-                        Lucas
-                    </strong>
-
-                    <small>
-                        Saldo: R$ 24,00
-                    </small>
-
-                </div>
-
-
-                <div class="pontos">
-
-                    76
-
-                    <small>
-                        pontos
-                    </small>
-
-                </div>
-
-            </div>
-
-
-
-            <!-- ALUNO 4 -->
-
-            <div class="item-ranking">
-
-                <div class="posicao">
-                    4º
-                </div>
-
-
-                <div class="avatar-pequeno">
-                
-                </div>
-
-
-                <div class="informacoes">
-
-                    <strong>
-                        Beatriz
-                    </strong>
-
-                    <small>
-                        Saldo: R$ 20,00
-                    </small>
-
-                </div>
-
-
-                <div class="pontos">
-
-                    68
-
-                    <small>
-                        pontos
-                    </small>
-
-                </div>
-
-            </div>
-
-
-
-            <!-- ALUNO 5 -->
-
-            <div class="item-ranking">
-
-                <div class="posicao">
-                    5º
-                </div>
-
-
-                <div class="avatar-pequeno">
-                    
-                </div>
-
-
-                <div class="informacoes">
-
-                    <strong>
-                        Pedro
-                    </strong>
-
-                    <small>
-                        Saldo: R$ 15,00
-                    </small>
-
-                </div>
-
-
-                <div class="pontos">
-
-                    55
-
-                    <small>
-                        pontos
-                    </small>
-
-                </div>
-
-            </div>
-
 
         </section>
 
 
 
         <!-- =========================
-             POSIÇÃO DO JOGADOR
+             MINHA POSIÇÃO
         ========================== -->
 
         <section class="minha-posicao">
@@ -394,7 +142,7 @@
                 </small>
 
                 <strong id="minhaPosicao">
-                    6º lugar
+                    --
                 </strong>
 
             </div>
@@ -422,7 +170,8 @@
 
         <button
             class="botao-principal"
-            onclick="voltarInicio()">
+            onclick="voltarInicio()"
+        >
 
             Voltar para o início
 
@@ -438,7 +187,8 @@
 
             <button
                 class="menu-item"
-                onclick="voltarInicio()">
+                onclick="voltarInicio()"
+            >
 
                 <span>
                     ⌂
@@ -450,7 +200,8 @@
 
 
             <button
-                class="menu-item ativo">
+                class="menu-item ativo"
+            >
 
                 <span>
                     🏆
@@ -462,7 +213,8 @@
 
 
             <button
-                class="menu-item">
+                class="menu-item"
+            >
 
                 <span>
                     👤
@@ -477,8 +229,7 @@
 
     </main>
 
-
-    <script src="../../JS/ranking.js"></script>
+    <script src="../../Js/ranking.js"></script>
 
 </body>
 
