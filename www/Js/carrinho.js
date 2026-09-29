@@ -741,7 +741,26 @@ if (confirmarCompras) {
                 resultadoPartida
             );
 
+// ==================================
+// ENCERRAR CRONÔMETRO DA PARTIDA
+// ==================================
 
+localStorage.setItem(
+    "estoqueZeroFinalizado",
+    "true"
+);
+
+localStorage.removeItem(
+    "estoqueZeroInicio"
+);
+
+localStorage.removeItem(
+    "estoqueZeroDuracao"
+);
+
+console.log(
+    "⏱️ Cronômetro da partida encerrado."
+);
             // ----------------------------------
             // IR PARA VITÓRIA
             // ----------------------------------
