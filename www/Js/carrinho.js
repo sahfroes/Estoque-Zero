@@ -1,3 +1,4 @@
+
 // ========================================
 // ESTOQUE ZERO
 // JAVASCRIPT DO CARRINHO
@@ -34,7 +35,7 @@ const confirmarCompras =
 
 
 // ========================================
-// PEGAR ORÇAMENTO
+// ORÇAMENTO DA PARTIDA
 // ========================================
 
 const valorSalvo =
@@ -43,16 +44,11 @@ const valorSalvo =
 const ORCAMENTO =
     Number(valorSalvo) || 0;
 
-
-console.log("================================");
-console.log("💰 ORÇAMENTO");
-console.log("Valor salvo:", valorSalvo);
-console.log("Orçamento:", ORCAMENTO);
-console.log("================================");
+console.log("💰 Orçamento inicial:", ORCAMENTO);
 
 
 // ========================================
-// PEGAR CARRINHO
+// CARRINHO
 // ========================================
 
 let carrinho = [];
@@ -64,19 +60,21 @@ try {
 
     if (carrinhoSalvo) {
 
-        carrinho =
+        const dados =
             JSON.parse(carrinhoSalvo);
 
-    } else {
+        if (Array.isArray(dados)) {
 
-        carrinho = [];
+            carrinho = dados;
+
+        }
 
     }
 
 } catch (erro) {
 
     console.error(
-        "❌ Erro ao ler carrinho:",
+        "Erro ao carregar carrinho:",
         erro
     );
 
@@ -85,7 +83,29 @@ try {
 }
 
 
-console.log("🛒 Carrinho carregado:", carrinho);
+// ========================================
+// GARANTIR QUANTIDADES VÁLIDAS
+// ========================================
+
+carrinho.forEach(function (produto) {
+
+    let quantidade =
+        Number(produto.quantidade);
+
+    if (!Number.isFinite(quantidade)) {
+
+        quantidade = 1;
+
+    }
+
+    // Limite máximo: 3
+    quantidade =
+        Math.max(0, Math.min(3, quantidade));
+
+    produto.quantidade =
+        quantidade;
+
+});
 
 
 // ========================================
@@ -113,23 +133,18 @@ function calcularTotal() {
 
     let total = 0;
 
+    carrinho.forEach(function (produto) {
 
-    carrinho.forEach(
-        function (produto) {
+        const preco =
+            Number(produto.preco) || 0;
 
-            const preco =
-                Number(produto.preco) || 0;
+        const quantidade =
+            Number(produto.quantidade) || 0;
 
-            const quantidade =
-                Number(produto.quantidade) || 1;
+        total +=
+            preco * quantidade;
 
-
-            total +=
-                preco * quantidade;
-
-        }
-    );
-
+    });
 
     return total;
 
@@ -137,7 +152,7 @@ function calcularTotal() {
 
 
 // ========================================
-// CALCULAR E SALVAR RESULTADO
+// SALVAR RESULTADO
 // ========================================
 
 function salvarResultado() {
@@ -145,24 +160,14 @@ function salvarResultado() {
     const total =
         calcularTotal();
 
-
     const saldo =
         ORCAMENTO - total;
 
-
-    // ====================================
-    // SALVAR TOTAL GASTO
-    // ====================================
 
     localStorage.setItem(
         "totalGasto",
         total.toFixed(2)
     );
-
-
-    // ====================================
-    // SALVAR SALDO FINAL
-    // ====================================
 
     localStorage.setItem(
         "saldoFinal",
@@ -170,18 +175,77 @@ function salvarResultado() {
     );
 
 
-    console.log("================================");
-    console.log("💾 RESULTADO SALVO");
-    console.log("Orçamento:", ORCAMENTO);
-    console.log("Total gasto:", total);
-    console.log("Saldo final:", saldo);
-    console.log("================================");
-
-
     return {
+
         total: total,
+
         saldo: saldo
+
     };
+
+}
+
+
+// ========================================
+// ATUALIZAR RESUMO
+// ========================================
+
+function atualizarResumo() {
+
+    const resultado =
+        salvarResultado();
+
+    const total =
+        resultado.total;
+
+    const saldo =
+        resultado.saldo;
+
+
+    // Orçamento inicial
+
+    if (orcamentoInicial) {
+
+        orcamentoInicial.textContent =
+            formatarPreco(ORCAMENTO);
+
+    }
+
+
+    // Total gasto
+
+    if (totalGasto) {
+
+        totalGasto.textContent =
+            formatarPreco(total);
+
+    }
+
+
+    // Saldo restante
+
+    if (saldoRestante) {
+
+        saldoRestante.textContent =
+            formatarPreco(saldo);
+
+    }
+
+
+    console.log(
+        "📊 Orçamento:",
+        ORCAMENTO
+    );
+
+    console.log(
+        "🛒 Total:",
+        total
+    );
+
+    console.log(
+        "💰 Saldo:",
+        saldo
+    );
 
 }
 
@@ -193,10 +257,6 @@ function salvarResultado() {
 function mostrarCarrinho() {
 
     if (!listaProdutos) {
-
-        console.error(
-            "❌ #lista-produtos não encontrado."
-        );
 
         return;
 
@@ -222,17 +282,12 @@ function mostrarCarrinho() {
 
         }
 
-
         atualizarResumo();
 
         return;
 
     }
 
-
-    // ====================================
-    // ESCONDER CARRINHO VAZIO
-    // ====================================
 
     if (carrinhoVazio) {
 
@@ -243,7 +298,7 @@ function mostrarCarrinho() {
 
 
     // ====================================
-    // CRIAR PRODUTOS
+    // CRIAR CARDS
     // ====================================
 
     carrinho.forEach(
@@ -253,22 +308,25 @@ function mostrarCarrinho() {
                 Number(produto.preco) || 0;
 
             const quantidade =
-                Number(produto.quantidade) || 1;
+                Number(produto.quantidade) || 0;
 
             const subtotal =
                 preco * quantidade;
 
 
-            // =================================
-            // CARD
-            // =================================
-
             const card =
                 document.createElement("article");
 
-
             card.className =
                 "produto";
+
+
+            // =================================
+            // IMAGEM SEGURA
+            // =================================
+
+            const imagem =
+                produto.imagem || "";
 
 
             card.innerHTML = `
@@ -276,8 +334,9 @@ function mostrarCarrinho() {
                 <div class="imagem-produto">
 
                     <img
-                        src="${produto.imagem}"
-                        alt="${produto.nome}"
+                        src="${imagem}"
+                        alt="${produto.nome || "Produto"}"
+                        onerror="this.style.display='none'"
                     >
 
                 </div>
@@ -286,7 +345,7 @@ function mostrarCarrinho() {
                 <div class="informacoes-produto">
 
                     <h3 class="nome-produto">
-                        ${produto.nome}
+                        ${produto.nome || "Produto"}
                     </h3>
 
 
@@ -299,8 +358,9 @@ function mostrarCarrinho() {
 
                         <button
                             type="button"
-                            class="botao-quantidade diminuir"
+                            class="botao-quantidade botao-menos diminuir"
                             data-indice="${indice}"
+                            aria-label="Diminuir quantidade"
                         >
                             −
                         </button>
@@ -313,8 +373,9 @@ function mostrarCarrinho() {
 
                         <button
                             type="button"
-                            class="botao-quantidade aumentar"
+                            class="botao-quantidade botao-mais aumentar"
                             data-indice="${indice}"
+                            aria-label="Aumentar quantidade"
                         >
                             +
                         </button>
@@ -347,16 +408,7 @@ function mostrarCarrinho() {
     );
 
 
-    // ====================================
-    // CONFIGURAR BOTÕES
-    // ====================================
-
     configurarBotoes();
-
-
-    // ====================================
-    // ATUALIZAR RESUMO
-    // ====================================
 
     atualizarResumo();
 
@@ -371,19 +423,21 @@ function configurarBotoes() {
 
 
     // ====================================
-    // AUMENTAR QUANTIDADE
+    // AUMENTAR
+    // MÁXIMO = 3
     // ====================================
 
-    const botoesAumentar =
-        document.querySelectorAll(".aumentar");
-
-
-    botoesAumentar.forEach(
-        function (botao) {
+    document
+        .querySelectorAll(".aumentar")
+        .forEach(function (botao) {
 
             botao.addEventListener(
                 "click",
-                function () {
+                function (evento) {
+
+                    evento.preventDefault();
+                    evento.stopPropagation();
+
 
                     const indice =
                         Number(
@@ -398,35 +452,45 @@ function configurarBotoes() {
                     }
 
 
-                    carrinho[indice].quantidade =
+                    let quantidade =
                         Number(
                             carrinho[indice].quantidade
-                        ) + 1;
+                        ) || 0;
 
 
-                    salvarCarrinho();
+                    if (quantidade < 3) {
+
+                        quantidade++;
+
+                        carrinho[indice].quantidade =
+                            quantidade;
+
+                        salvarCarrinho();
+
+                    }
 
                 }
             );
 
-        }
-    );
+        });
 
 
     // ====================================
-    // DIMINUIR QUANTIDADE
+    // DIMINUIR
+    // MÍNIMO = 0
     // ====================================
 
-    const botoesDiminuir =
-        document.querySelectorAll(".diminuir");
-
-
-    botoesDiminuir.forEach(
-        function (botao) {
+    document
+        .querySelectorAll(".diminuir")
+        .forEach(function (botao) {
 
             botao.addEventListener(
                 "click",
-                function () {
+                function (evento) {
+
+                    evento.preventDefault();
+                    evento.stopPropagation();
+
 
                     const indice =
                         Number(
@@ -441,18 +505,26 @@ function configurarBotoes() {
                     }
 
 
-                    const quantidadeAtual =
+                    let quantidade =
                         Number(
                             carrinho[indice].quantidade
-                        );
+                        ) || 0;
 
 
-                    if (quantidadeAtual > 1) {
+                    if (quantidade > 0) {
+
+                        quantidade--;
 
                         carrinho[indice].quantidade =
-                            quantidadeAtual - 1;
+                            quantidade;
 
-                    } else {
+                    }
+
+
+                    // Se chegar a 0,
+                    // remove o produto do carrinho.
+
+                    if (quantidade === 0) {
 
                         carrinho.splice(
                             indice,
@@ -467,31 +539,39 @@ function configurarBotoes() {
                 }
             );
 
-        }
-    );
+        });
 
 
     // ====================================
-    // REMOVER PRODUTO
+    // EXCLUIR
     // ====================================
 
-    const botoesRemover =
-        document.querySelectorAll(
-            ".botao-remover"
-        );
-
-
-    botoesRemover.forEach(
-        function (botao) {
+    document
+        .querySelectorAll(".botao-remover")
+        .forEach(function (botao) {
 
             botao.addEventListener(
                 "click",
-                function () {
+                function (evento) {
+
+                    evento.preventDefault();
+                    evento.stopPropagation();
+
 
                     const indice =
                         Number(
                             this.dataset.indice
                         );
+
+
+                    if (
+                        !Number.isInteger(indice) ||
+                        !carrinho[indice]
+                    ) {
+
+                        return;
+
+                    }
 
 
                     carrinho.splice(
@@ -505,8 +585,7 @@ function configurarBotoes() {
                 }
             );
 
-        }
-    );
+        });
 
 }
 
@@ -523,82 +602,9 @@ function salvarCarrinho() {
     );
 
 
-    console.log(
-        "💾 Carrinho atualizado:",
-        carrinho
-    );
-
-
-    // Atualiza também
-    // total gasto e saldo
-
     salvarResultado();
 
-
-    // Atualiza a tela
-
     mostrarCarrinho();
-
-}
-
-
-// ========================================
-// ATUALIZAR RESUMO
-// ========================================
-
-function atualizarResumo() {
-
-    const resultado =
-        salvarResultado();
-
-
-    const total =
-        resultado.total;
-
-    const saldo =
-        resultado.saldo;
-
-
-    // ====================================
-    // ORÇAMENTO
-    // ====================================
-
-    if (orcamentoInicial) {
-
-        orcamentoInicial.textContent =
-            formatarPreco(ORCAMENTO);
-
-    }
-
-
-    // ====================================
-    // TOTAL GASTO
-    // ====================================
-
-    if (totalGasto) {
-
-        totalGasto.textContent =
-            formatarPreco(total);
-
-    }
-
-
-    // ====================================
-    // SALDO RESTANTE
-    // ====================================
-
-    if (saldoRestante) {
-
-        saldoRestante.textContent =
-            formatarPreco(saldo);
-
-    }
-
-
-    console.log("📊 RESUMO ATUALIZADO");
-    console.log("Orçamento:", ORCAMENTO);
-    console.log("Total gasto:", total);
-    console.log("Saldo restante:", saldo);
 
 }
 
@@ -609,7 +615,19 @@ function atualizarResumo() {
 
 function voltarParaCamera() {
 
-    window.history.back();
+    // Não usar history.back()
+    // porque no celular pode voltar
+    // para uma página inesperada.
+
+    const url =
+        new URL(
+            "camera.html",
+            window.location.href
+        );
+
+    window.location.assign(
+        url.href
+    );
 
 }
 
@@ -618,7 +636,13 @@ if (botaoVoltar) {
 
     botaoVoltar.addEventListener(
         "click",
-        voltarParaCamera
+        function (evento) {
+
+            evento.preventDefault();
+
+            voltarParaCamera();
+
+        }
     );
 
 }
@@ -628,7 +652,13 @@ if (voltarCameraVazio) {
 
     voltarCameraVazio.addEventListener(
         "click",
-        voltarParaCamera
+        function (evento) {
+
+            evento.preventDefault();
+
+            voltarParaCamera();
+
+        }
     );
 
 }
@@ -642,51 +672,14 @@ if (confirmarCompras) {
 
     confirmarCompras.addEventListener(
         "click",
-        function () {
+        function (evento) {
 
-            console.log(
-                "================================"
-            );
+            evento.preventDefault();
 
-            console.log(
-                "🏁 PARTIDA FINALIZADA"
-            );
-
-
-            // ====================================
-            // CALCULAR NOVAMENTE
-            // ====================================
 
             const resultado =
                 salvarResultado();
 
-
-            const total =
-                resultado.total;
-
-            const saldo =
-                resultado.saldo;
-
-
-            console.log(
-                "🛒 Carrinho:",
-                carrinho
-            );
-
-            console.log(
-                "💰 Total:",
-                total
-            );
-
-            console.log(
-                "💵 Saldo:",
-                saldo
-            );
-
-
-            // ====================================
-            // SALVAR RESULTADO COMPLETO
-            // ====================================
 
             const resultadoPartida = {
 
@@ -694,15 +687,20 @@ if (confirmarCompras) {
                     ORCAMENTO,
 
                 totalGasto:
-                    total,
+                    resultado.total,
 
                 saldo:
-                    saldo,
+                    resultado.saldo,
 
                 carrinho:
                     carrinho
 
             };
+
+
+            // =================================
+            // SALVAR RESULTADO
+            // =================================
 
             localStorage.setItem(
                 "resultadoPartida",
@@ -711,25 +709,31 @@ if (confirmarCompras) {
                 )
             );
 
-            console.log(
-                "💾 Resultado da partida:",
-                resultadoPartida
-            );
 
-            // ====================================
+            // =================================
             // IR PARA VITÓRIA
-            // ====================================
+            // =================================
 
-            window.location.href =
-                "vitoria.html";
+            const url =
+                new URL(
+                    "vitoria.html",
+                    window.location.href
+                );
+
+
+            window.location.assign(
+                url.href
+            );
 
         }
     );
 
 }
 
+
 // ========================================
 // INICIAR
 // ========================================
 
 mostrarCarrinho();
+
