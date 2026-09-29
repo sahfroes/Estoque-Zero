@@ -424,11 +424,7 @@ if (botaoAdicionar) {
                 "carrinho",
                 JSON.stringify(carrinho)
             );
-            
-            console.log(
-    "🛒 CARRINHO DEPOIS DE SALVAR:",
-    localStorage.getItem("carrinho")
-);            
+                        
 
             console.log(
                 "🛒 Carrinho salvo:",
