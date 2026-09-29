@@ -706,3 +706,77 @@ body {
     }
 
 }
+
+
+/* ==========================================
+   CORREÇÃO DE TOQUE NO CELULAR
+========================================== */
+
+button {
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+}
+
+
+/* ==========================================
+   BOTÕES ACIMA DO MINDAR
+========================================== */
+
+.botao-carrinho,
+.botao-trocar-camera,
+.erro-camera,
+.cabecalho,
+.alerta-tempo {
+    pointer-events: auto !important;
+}
+
+
+/* ==========================================
+   MENSAGENS NÃO BLOQUEIAM A CÂMERA
+========================================== */
+
+.mensagem-camera,
+.toque-produto {
+    pointer-events: none !important;
+}
+
+
+/* ==========================================
+   CANVAS
+========================================== */
+
+.cena-ra canvas {
+    touch-action: manipulation !important;
+}
+
+
+/* ==========================================
+   A-FRAME NÃO DEVE COBRIR OS BOTÕES
+========================================== */
+
+.cena-ra {
+    pointer-events: auto;
+}
+
+
+/* ==========================================
+   BOTÃO CARRINHO
+========================================== */
+
+.botao-carrinho {
+    cursor: pointer;
+    -webkit-user-select: none;
+    user-select: none;
+}
+
+
+/* ==========================================
+   TROCAR CÂMERA
+========================================== */
+
+.botao-trocar-camera {
+    cursor: pointer;
+    -webkit-user-select: none;
+    user-select: none;
+}
+

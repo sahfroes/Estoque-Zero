@@ -1,38 +1,24 @@
+
 // ==========================================
-// ELEMENTOS DA TELA
+// ELEMENTOS
 // ==========================================
 
-const cena =
-    document.getElementById("cena-ra");
+const cena = document.getElementById("cena-ra");
+const mensagemCamera = document.getElementById("mensagem-camera");
+const toqueProduto = document.getElementById("toque-produto");
+const erroCamera = document.getElementById("erro-camera");
+const textoErro = document.getElementById("texto-erro");
+const tentarNovamente = document.getElementById("tentar-novamente");
 
-const mensagemCamera =
-    document.getElementById("mensagem-camera");
-
-const toqueProduto =
-    document.getElementById("toque-produto");
-
-const erroCamera =
-    document.getElementById("erro-camera");
-
-const textoErro =
-    document.getElementById("texto-erro");
-
-const tentarNovamente =
-    document.getElementById("tentar-novamente");
-
-const botaoCarrinho =
-    document.getElementById("botao-carrinho");
+const botaoCarrinho = document.getElementById("botao-carrinho");
+const botaoTrocarCamera = document.getElementById("trocar-camera");
 
 
 // ==========================================
-// CONTROLE
+// CONTROLE DO PRODUTO
 // ==========================================
 
-let produtoFoiEncontrado = false;
-
-// ID do produto reconhecido
 let produtoIdAtivo = null;
-
 let abrindoCard = false;
 
 
@@ -42,69 +28,85 @@ let abrindoCard = false;
 
 const produtos = {
 
-    arroz: "Arroz Branco",
+    leite: {
+        nome: "Leite UHT Integral 1 L",
+        preco: 7.50
+    },
 
-    feijao: "Feijão Carioca",
+    feijao: {
+        nome: "Feijão Carioca 1 kg",
+        preco: 8.00
+    },
 
-    leite: "Leite UHT",
+    arroz: {
+        nome: "Arroz Branco 5 kg",
+        preco: 25.00
+    },
 
-    macarrao: "Macarrão",
+    macarrao: {
+        nome: "Macarrão 500 g",
+        preco: 5.00
+    },
 
-    oleo: "Óleo de Soja",
+    oleo: {
+        nome: "Óleo de Soja 900 ml",
+        preco: 8.00
+    },
 
-    acucar: "Açúcar Refinado",
+    acucar: {
+        nome: "Açúcar Refinado 1 kg",
+        preco: 5.00
+    },
 
-    bombons: "Caixa de Bombons",
+    bombons: {
+        nome: "Caixa de Bombons",
+        preco: 12.00
+    },
 
-    giftcard: "Gift Card",
+    giftcard: {
+        nome: "Gift Card",
+        preco: 20.00
+    },
 
-    copo: "Copo Térmico",
+    copo: {
+        nome: "Copo Térmico",
+        preco: 15.00
+    },
 
-    boneco: "Boneco Colecionável"
+    boneco: {
+        nome: "Boneco Colecionável",
+        preco: 18.00
+    }
 
 };
 
 
 // ==========================================
-// MINDAR
+// MINDAR PRONTO
 // ==========================================
 
 if (cena) {
 
-    cena.addEventListener(
-        "arReady",
-        function () {
+    cena.addEventListener("arReady", function () {
 
-            console.log(
-                "✅ MindAR pronto!"
-            );
+        console.log("✅ MindAR pronto!");
 
-            if (mensagemCamera) {
-
-                mensagemCamera.style.display =
-                    "none";
-
-            }
-
+        if (mensagemCamera) {
+            mensagemCamera.style.display = "none";
         }
-    );
+
+    });
 
 
-    cena.addEventListener(
-        "arError",
-        function (evento) {
+    cena.addEventListener("arError", function (evento) {
 
-            console.error(
-                "❌ Erro no MindAR:",
-                evento
-            );
+        console.error("❌ Erro no MindAR:", evento);
 
-            mostrarErro(
-                "Não foi possível iniciar a realidade aumentada."
-            );
+        mostrarErro(
+            "Não foi possível iniciar a realidade aumentada."
+        );
 
-        }
-    );
+    });
 
 }
 
@@ -113,10 +115,9 @@ if (cena) {
 // PEGAR TARGETS
 // ==========================================
 
-const targets =
-    document.querySelectorAll(
-        "[mindar-image-target]"
-    );
+const targets = document.querySelectorAll(
+    "[mindar-image-target]"
+);
 
 console.log(
     "🔎 Targets encontrados:",
@@ -128,142 +129,117 @@ console.log(
 // CONFIGURAR TARGETS
 // ==========================================
 
-targets.forEach(
-    function (target) {
+targets.forEach(function (target) {
 
-        target.addEventListener(
-            "targetFound",
-            function () {
+    target.addEventListener(
+        "targetFound",
+        function () {
 
-                console.log(
-                    "🎯 TARGET ENCONTRADO!"
-                );
+            const produtoEncontrado =
+                target.dataset.produto;
 
-
-                // ==================================
-                // PEGAR ID DO PRODUTO
-                // ==================================
-
-                const produtoEncontrado =
-                    target.dataset.produto;
+            console.log(
+                "🎯 Produto encontrado:",
+                produtoEncontrado
+            );
 
 
-                console.log(
-                    "📦 Produto identificado:",
+            // ----------------------------------
+            // VERIFICAR
+            // ----------------------------------
+
+            if (
+                !produtoEncontrado ||
+                !produtos[produtoEncontrado]
+            ) {
+
+                console.error(
+                    "❌ Produto inválido:",
                     produtoEncontrado
                 );
 
-
-                // ==================================
-                // VERIFICAR PRODUTO
-                // ==================================
-
-                if (
-                    !produtoEncontrado ||
-                    !produtos[produtoEncontrado]
-                ) {
-
-                    console.error(
-                        "❌ Produto não cadastrado:",
-                        produtoEncontrado
-                    );
-
-                    return;
-
-                }
+                return;
+            }
 
 
-                // ==================================
-                // GUARDAR PRODUTO NA MEMÓRIA
-                // ==================================
+            // ----------------------------------
+            // SALVAR PRODUTO
+            // ----------------------------------
 
-                produtoIdAtivo =
-                    produtoEncontrado;
-
-                produtoFoiEncontrado =
-                    true;
+            produtoIdAtivo =
+                produtoEncontrado;
 
 
-                // ==================================
-                // SALVAR TAMBÉM NO LOCALSTORAGE
-                // ==================================
-
-                localStorage.setItem(
-                    "produtoEncontrado",
-                    produtoEncontrado
-                );
-
-                localStorage.setItem(
-                    "nomeProdutoEncontrado",
-                    produtos[produtoEncontrado]
-                );
+            localStorage.setItem(
+                "produtoEncontrado",
+                produtoEncontrado
+            );
 
 
-                console.log(
-                    "✅ Produto salvo:",
-                    produtoIdAtivo
-                );
+            localStorage.setItem(
+                "nomeProdutoEncontrado",
+                produtos[produtoEncontrado].nome
+            );
 
 
-                // ==================================
-                // MENSAGENS
-                // ==================================
-
-                if (mensagemCamera) {
-
-                    mensagemCamera.style.display =
-                        "none";
-
-                }
+            localStorage.setItem(
+                "precoProdutoEncontrado",
+                produtos[produtoEncontrado].preco
+            );
 
 
-                if (toqueProduto) {
-
-                    toqueProduto.classList.add(
-                        "mostrar"
-                    );
-
-                }
+            console.log(
+                "✅ Produto salvo:",
+                produtoIdAtivo
+            );
 
 
-                console.log(
-                    "✨ Produto apareceu em AR!"
-                );
+            // ----------------------------------
+            // ESCONDER MENSAGEM INICIAL
+            // ----------------------------------
 
-                console.log(
-                    "👆 Toque na tela para abrir."
+            if (mensagemCamera) {
+                mensagemCamera.style.display = "none";
+            }
+
+
+            // ----------------------------------
+            // MOSTRAR TOQUE
+            // ----------------------------------
+
+            if (toqueProduto) {
+
+                toqueProduto.classList.add(
+                    "mostrar"
                 );
 
             }
-        );
+
+        }
+    );
 
 
-        // ======================================
-        // TARGET PERDIDO
-        // ======================================
+    target.addEventListener(
+        "targetLost",
+        function () {
 
-        target.addEventListener(
-            "targetLost",
-            function () {
+            console.log(
+                "👋 Target perdido:",
+                target.dataset.produto
+            );
 
-                console.log(
-                    "👋 Target perdido:",
-                    target.dataset.produto
-                );
+            /*
+             * NÃO apagamos produtoIdAtivo.
+             *
+             * Isso é importante no celular,
+             * porque o MindAR pode perder o
+             * target temporariamente.
+             */
 
-                /*
-                 * NÃO apagamos produtoIdAtivo.
-                 *
-                 * Isso é importante no celular.
-                 * O MindAR pode perder o produto
-                 * por alguns instantes.
-                 */
+        }
+    );
 
-            }
-        );
-
-    }
-);
+});
 
 
 // ==========================================
@@ -273,113 +249,193 @@ targets.forEach(
 function abrirCardProduto() {
 
     if (abrindoCard) {
-
         return;
-
     }
 
 
-    // ======================================
-    // PEGAR PRODUTO DETECTADO
-    // ======================================
+    if (!produtoIdAtivo) {
 
-    const produto =
-        produtoIdAtivo;
-
-
-    console.log(
-        "🎯 Produto que será aberto:",
-        produto
-    );
-
-
-    // ======================================
-    // VERIFICAR
-    // ======================================
-
-    if (
-        !produto ||
-        !produtos[produto]
-    ) {
-
-        console.error(
-            "❌ Nenhum produto válido encontrado."
+        console.log(
+            "⚠️ Nenhum produto selecionado."
         );
 
         return;
-
     }
 
 
-    // ======================================
-    // BLOQUEAR DUPLO TOQUE
-    // ======================================
+    if (!produtos[produtoIdAtivo]) {
+
+        console.error(
+            "❌ Produto não existe:",
+            produtoIdAtivo
+        );
+
+        return;
+    }
+
+
+    // --------------------------------------
+    // BLOQUEAR DUPLO CLIQUE
+    // --------------------------------------
 
     abrindoCard = true;
 
 
-    // ======================================
-    // ESCONDER MENSAGEM
-    // ======================================
-
-    if (toqueProduto) {
-
-        toqueProduto.classList.remove(
-            "mostrar"
-        );
-
-    }
-
-
-    // ======================================
+    // --------------------------------------
     // SALVAR
-    // ======================================
+    // --------------------------------------
 
     localStorage.setItem(
         "produtoEncontrado",
-        produto
+        produtoIdAtivo
     );
 
 
-    // ======================================
-    // CRIAR URL
-    // ======================================
+    // --------------------------------------
+    // CAMINHO DO CARD
+    // --------------------------------------
 
-    const urlCard =
+    const url =
         new URL(
             "card-produto.html",
             window.location.href
         );
 
 
-    // ======================================
-    // MANDAR PRODUTO PELA URL
-    // ======================================
-
-    urlCard.searchParams.set(
+    url.searchParams.set(
         "produto",
-        produto
+        produtoIdAtivo
     );
 
 
     console.log(
-        "🔗 Indo para:",
-        urlCard.href
+        "➡️ Abrindo card:",
+        url.href
     );
 
 
-    // ======================================
-    // ABRIR
-    // ======================================
+    // --------------------------------------
+    // IR PARA CARD
+    // --------------------------------------
 
-    window.location.href =
-        urlCard.href;
+    window.location.assign(
+        url.href
+    );
 
 }
 
 
 // ==========================================
-// INTERAÇÃO PC + CELULAR
+// TOQUE NA TELA
+// ==========================================
+
+function configurarToque() {
+
+    const canvas = cena
+        ? cena.canvas
+        : null;
+
+
+    if (!canvas) {
+
+        console.log(
+            "⚠️ Canvas ainda não disponível."
+        );
+
+        return;
+    }
+
+
+    console.log(
+        "✅ Canvas configurado para toque."
+    );
+
+
+    canvas.style.touchAction = "manipulation";
+
+
+    // ======================================
+    // TOUCHSTART
+    // ======================================
+
+    canvas.addEventListener(
+        "touchstart",
+        function () {
+
+            console.log(
+                "📱 Touch detectado."
+            );
+
+        },
+        {
+            passive: true
+        }
+    );
+
+
+    // ======================================
+    // TOUCHEND
+    // ======================================
+
+    canvas.addEventListener(
+        "touchend",
+        function (evento) {
+
+            console.log(
+                "📱 Toque finalizado."
+            );
+
+
+            if (!produtoIdAtivo) {
+
+                console.log(
+                    "⚠️ Nenhum produto identificado."
+                );
+
+                return;
+            }
+
+
+            evento.preventDefault();
+
+
+            abrirCardProduto();
+
+        },
+        {
+            passive: false
+        }
+    );
+
+
+    // ======================================
+    // CLICK PC
+    // ======================================
+
+    canvas.addEventListener(
+        "click",
+        function () {
+
+            console.log(
+                "🖱️ Clique no canvas."
+            );
+
+
+            if (!produtoIdAtivo) {
+                return;
+            }
+
+
+            abrirCardProduto();
+
+        }
+    );
+
+}
+
+
+// ==========================================
+// CENA CARREGADA
 // ==========================================
 
 if (cena) {
@@ -389,111 +445,18 @@ if (cena) {
         function () {
 
             console.log(
-                "✅ Cena A-Frame carregada!"
+                "✅ A-Frame carregado."
             );
 
 
-            const canvas =
-                cena.canvas;
+            /*
+             * Pequeno atraso porque no celular
+             * o canvas pode ser criado depois.
+             */
 
-
-            if (!canvas) {
-
-                console.error(
-                    "❌ Canvas não encontrado."
-                );
-
-                return;
-
-            }
-
-
-            canvas.style.touchAction =
-                "none";
-
-
-            // ==================================
-            // TOCAR NA TELA
-            // ==================================
-
-            function tocarTela() {
-
-                console.log(
-                    "👆 Tela tocada!"
-                );
-
-
-                console.log(
-                    "📦 Produto ativo:",
-                    produtoIdAtivo
-                );
-
-
-                // ==================================
-                // VERIFICAR
-                // ==================================
-
-                if (
-                    !produtoIdAtivo ||
-                    !produtos[produtoIdAtivo]
-                ) {
-
-                    console.log(
-                        "⚠️ Nenhum produto foi identificado."
-                    );
-
-                    return;
-
-                }
-
-
-                // ==================================
-                // ABRIR CARD
-                // ==================================
-
-                abrirCardProduto();
-
-            }
-
-
-            // ==================================
-            // CELULAR
-            // ==================================
-
-            canvas.addEventListener(
-                "touchend",
-                function (evento) {
-
-                    evento.preventDefault();
-
-                    console.log(
-                        "📱 Toque detectado!"
-                    );
-
-                    tocarTela();
-
-                },
-                {
-                    passive: false
-                }
-            );
-
-
-            // ==================================
-            // COMPUTADOR
-            // ==================================
-
-            canvas.addEventListener(
-                "click",
-                function () {
-
-                    console.log(
-                        "🖱️ Clique detectado!"
-                    );
-
-                    tocarTela();
-
-                }
+            setTimeout(
+                configurarToque,
+                500
             );
 
         }
@@ -510,10 +473,51 @@ if (botaoCarrinho) {
 
     botaoCarrinho.addEventListener(
         "click",
-        function () {
+        function (evento) {
 
-            window.location.href =
-                "carrinho.html";
+            evento.preventDefault();
+            evento.stopPropagation();
+
+
+            console.log(
+                "🛒 Abrindo carrinho..."
+            );
+
+
+            window.location.assign(
+                "carrinho.html"
+            );
+
+        }
+    );
+
+}
+
+
+// ==========================================
+// TROCAR CÂMERA
+// ==========================================
+
+if (botaoTrocarCamera) {
+
+    botaoTrocarCamera.addEventListener(
+        "click",
+        function (evento) {
+
+            evento.preventDefault();
+            evento.stopPropagation();
+
+            console.log(
+                "🔄 Trocar câmera."
+            );
+
+            /*
+             * O MindAR possui controle próprio
+             * da câmera. Aqui apenas recarregamos
+             * a página para reiniciar a câmera.
+             */
+
+            window.location.reload();
 
         }
     );
@@ -528,26 +532,17 @@ if (botaoCarrinho) {
 function mostrarErro(mensagem) {
 
     if (mensagemCamera) {
-
-        mensagemCamera.style.display =
-            "none";
-
+        mensagemCamera.style.display = "none";
     }
 
 
     if (erroCamera) {
-
-        erroCamera.style.display =
-            "block";
-
+        erroCamera.style.display = "block";
     }
 
 
     if (textoErro) {
-
-        textoErro.textContent =
-            mensagem;
-
+        textoErro.textContent = mensagem;
     }
 
 }
@@ -561,9 +556,11 @@ if (tentarNovamente) {
 
     tentarNovamente.addEventListener(
         "click",
-        function () {
+        function (evento) {
 
-            location.reload();
+            evento.preventDefault();
+
+            window.location.reload();
 
         }
     );
@@ -572,7 +569,7 @@ if (tentarNovamente) {
 
 
 // ==========================================
-// ORÇAMENTO
+// SALDO
 // ==========================================
 
 const valorSalvo =
@@ -611,7 +608,7 @@ else if (elementoSaldo) {
 
 
 // ==========================================
-// PÁGINA CARREGADA
+// LOAD
 // ==========================================
 
 window.addEventListener(
@@ -619,13 +616,14 @@ window.addEventListener(
     function () {
 
         console.log(
-            "📱 Página da câmera carregada."
+            "📱 Câmera carregada."
         );
 
         console.log(
-            "🔎 Quantidade de targets:",
+            "🔎 Targets:",
             targets.length
         );
 
     }
 );
+

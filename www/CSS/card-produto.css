@@ -1,6 +1,7 @@
-/* =========================
-   CONFIGURAÇÕES
-========================= */
+
+/* ==========================================
+   RESET
+========================================== */
 
 * {
     margin: 0;
@@ -8,203 +9,600 @@
     box-sizing: border-box;
 }
 
+
+/* ==========================================
+   HTML E BODY
+========================================== */
+
+html,
 body {
+
+    width: 100%;
+    min-height: 100%;
+
     font-family: Arial, sans-serif;
-}
 
-
-/* =========================
-   FUNDO
-========================= */
-
-.tela-camera {
-    width: 100%;
-    min-height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: flex-end;
-    padding: 20px;
-    background: linear-gradient(
-        rgba(30, 20, 70, 0.25),
-        rgba(30, 20, 70, 0.45)
-    );
-}
-
-/* =========================
-   CARD
-========================= */
-
-.card-produto {
-    width: 100%;
-    max-width: 360px;
-    background: white;
-    border-radius: 25px;
-    padding: 25px 22px 20px;
-    position: relative;
-    text-align: center;
-    box-shadow:
-        0 -5px 25px rgba(0, 0, 0, 0.15);
-    animation: aparecer 0.3s ease;
-}
-
-/* =========================
-   ANIMAÇÃO
-========================= */
-
-@keyframes aparecer {
-    from {
-        transform: translateY(80px);
-        opacity: 0;
-    }
-    to {
-        transform: translateY(0);
-        opacity: 1;
-    }
-}
-
-/* =========================
-   BOTÃO FECHAR
-========================= */
-
-.fechar {
-    position: absolute;
-    /* Posição */
-    right: 10px;
-    top: 8px;
-
-    /* Área de toque maior */
-    width: 48px;
-    height: 48px;
-
-    /* Remove aparência padrão */
-    border: none;
     background: transparent;
 
-    /* X */
-    font-size: 32px;
-    font-weight: normal;
-    line-height: 48px;
+    overflow-x: hidden;
+
+}
+
+
+/* ==========================================
+   FUNDO DA TELA
+========================================== */
+
+.tela-camera {
+
+    position: fixed;
+
+    inset: 0;
+
+    width: 100%;
+    height: 100%;
+
+    min-height: 100vh;
+    min-height: 100dvh;
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: flex-end;
+
+    padding:
+
+        0
+
+        14px
+
+        calc(14px + env(safe-area-inset-bottom))
+
+        14px;
+
+    background:
+        linear-gradient(
+            180deg,
+            rgba(30, 20, 70, 0.20),
+            rgba(30, 20, 70, 0.60)
+        );
+
+    overflow-y: auto;
+    overflow-x: hidden;
+
+}
+
+
+/* ==========================================
+   CARD DO PRODUTO
+========================================== */
+
+.card-produto {
+
+    position: relative;
+
+    width: 100%;
+
+    max-width: 420px;
+
+    background: #ffffff;
+
+    border-radius: 28px 28px 22px 22px;
+
+    padding:
+
+        28px
+
+        20px
+
+        22px;
+
     text-align: center;
 
-    /* Cor */
-    color: #222;
+    box-shadow:
+        0 -8px 30px
+        rgba(0, 0, 0, 0.22);
 
-    /* Celular */
-    cursor: pointer;
-    touch-action: manipulation;
-    -webkit-tap-highlight-color: transparent;
+    animation:
+        aparecer 0.3s ease;
 
-    /* Fica acima de outros elementos */
-    z-index: 1000;
+    z-index: 10;
 
-    /* Centraliza o X */
-    display: flex;
-    align-items: center;
-    justify-content: center;
 }
 
-/* Efeito ao tocar */
-.fechar:active {
-    transform: scale(0.90);
-}
 
-@media (max-width: 600px) {
+/* ==========================================
+   ANIMAÇÃO
+========================================== */
 
-    .fechar {
-        width: 52px;
-        height: 52px;
-        font-size: 34px;
-        top: 5px;
-        right: 5px;
+@keyframes aparecer {
+
+    from {
+
+        transform:
+            translateY(100%);
+
+        opacity: 0;
+
+    }
+
+    to {
+
+        transform:
+            translateY(0);
+
+        opacity: 1;
+
     }
 
 }
-/* =========================
-   IMAGEM
-========================= */
+
+
+/* ==========================================
+   BOTÃO FECHAR
+========================================== */
+
+.fechar {
+
+    position: absolute;
+
+    top: 8px;
+    right: 8px;
+
+    width: 52px;
+    height: 52px;
+
+    border: none;
+
+    background: transparent;
+
+    color: #333333;
+
+    font-size: 34px;
+
+    font-weight: 300;
+
+    line-height: 1;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    cursor: pointer;
+
+    touch-action: manipulation;
+
+    -webkit-tap-highlight-color: transparent;
+
+    z-index: 1000;
+
+}
+
+
+/* ==========================================
+   EFEITO DO X
+========================================== */
+
+.fechar:active {
+
+    transform:
+        scale(0.88);
+
+}
+
+
+/* ==========================================
+   ÁREA DA IMAGEM
+========================================== */
 
 .area-imagem {
-    width: 150px;
-    height: 150px;
-    margin: 5px auto 10px;
+
+    width: 170px;
+    height: 170px;
+
+    margin:
+
+        4px
+
+        auto
+
+        10px;
+
     display: flex;
-    justify-content: center;
+
     align-items: center;
+    justify-content: center;
+
+    background: #f7f5ff;
+
+    border-radius: 22px;
+
 }
+
+
+/* ==========================================
+   IMAGEM DO PRODUTO
+========================================== */
 
 .area-imagem img {
-    width: 130px;
-    height: 130px;
+
+    display: block;
+
+    width: 145px;
+    height: 145px;
+
+    max-width: 100%;
+    max-height: 100%;
+
     object-fit: contain;
+
 }
 
-/* =========================
-   NOME
-========================= */
+
+/* ==========================================
+   INFORMAÇÕES
+========================================== */
+
+.informacoes {
+
+    width: 100%;
+
+    padding:
+
+        0
+
+        5px;
+
+}
+
+
+/* ==========================================
+   NOME DO PRODUTO
+========================================== */
 
 .informacoes h1 {
-    font-size: 23px;
+
+    width: 100%;
+
+    font-size: 22px;
+
+    line-height: 1.25;
+
+    font-weight: 700;
+
     color: #15158c;
-    margin-bottom: 5px;
+
+    margin:
+
+        8px
+
+        0
+
+        6px;
+
+    overflow-wrap: break-word;
+
 }
 
-/* =========================
+
+/* ==========================================
    PREÇO
-========================= */
+========================================== */
 
 .informacoes p {
-    font-size: 22px;
-    font-weight: bold;
+
+    font-size: 26px;
+
+    line-height: 1.2;
+
+    font-weight: 800;
+
     color: #15158c;
-    margin-bottom: 20px;
+
+    margin:
+
+        0
+
+        0
+
+        22px;
+
 }
 
-/* =========================
+
+/* ==========================================
    BOTÕES
-========================= */
+========================================== */
 
 .botoes {
+
+    width: 100%;
+
     display: flex;
+
     flex-direction: column;
-    gap: 10px;
+
+    gap: 11px;
+
 }
 
-/* =========================
-   ADICIONAR
-========================= */
+
+/* ==========================================
+   BOTÃO ADICIONAR
+========================================== */
 
 .botao-adicionar {
+
     width: 100%;
-    padding: 14px;
+
+    min-height: 54px;
+
+    padding:
+
+        14px
+
+        16px;
+
     border: none;
-    border-radius: 14px;
+
+    border-radius: 16px;
+
     background: #5936c9;
-    color: white;
-    font-size: 15px;
-    font-weight: bold;
+
+    color: #ffffff;
+
+    font-size: 16px;
+
+    line-height: 1.2;
+
+    font-weight: 700;
+
     cursor: pointer;
-    transition: 0.2s;
+
+    touch-action: manipulation;
+
+    -webkit-tap-highlight-color: transparent;
+
+    transition:
+        transform 0.15s ease,
+        background 0.15s ease;
+
 }
 
-.botao-adicionar:hover {
+
+/* ==========================================
+   ADICIONAR — TOQUE
+========================================== */
+
+.botao-adicionar:active {
+
+    transform:
+        scale(0.97);
+
     background: #4725a8;
+
 }
 
-/* =========================
-   CANCELAR
-========================= */
+
+/* ==========================================
+   BOTÃO CANCELAR
+========================================== */
 
 .botao-cancelar {
+
     width: 100%;
-    padding: 13px;
-    border: 1px solid #5936c9;
-    border-radius: 14px;
-    background: white;
+
+    min-height: 52px;
+
+    padding:
+
+        13px
+
+        16px;
+
+    border:
+
+        1.5px solid
+
+        #5936c9;
+
+    border-radius: 16px;
+
+    background: #ffffff;
+
     color: #5936c9;
+
     font-size: 15px;
+
+    font-weight: 700;
+
     cursor: pointer;
+
+    touch-action: manipulation;
+
+    -webkit-tap-highlight-color: transparent;
+
+    transition:
+        transform 0.15s ease,
+        background 0.15s ease;
+
 }
 
-.botao-cancelar:hover {
+
+/* ==========================================
+   CANCELAR — TOQUE
+========================================== */
+
+.botao-cancelar:active {
+
+    transform:
+        scale(0.97);
+
     background: #f3f0ff;
+
 }
+
+
+/* ==========================================
+   TABLETS
+========================================== */
+
+@media (min-width: 601px) {
+
+    .tela-camera {
+
+        padding:
+
+            20px;
+
+    }
+
+
+    .card-produto {
+
+        max-width: 400px;
+
+        border-radius: 28px;
+
+        margin-bottom: 10px;
+
+    }
+
+}
+
+
+/* ==========================================
+   CELULARES PEQUENOS
+========================================== */
+
+@media (max-width: 380px) {
+
+    .tela-camera {
+
+        padding-left: 10px;
+        padding-right: 10px;
+
+    }
+
+
+    .card-produto {
+
+        padding:
+
+            25px
+
+            16px
+
+            18px;
+
+        border-radius:
+            24px 24px 18px 18px;
+
+    }
+
+
+    .area-imagem {
+
+        width: 145px;
+        height: 145px;
+
+    }
+
+
+    .area-imagem img {
+
+        width: 125px;
+        height: 125px;
+
+    }
+
+
+    .informacoes h1 {
+
+        font-size: 20px;
+
+    }
+
+
+    .informacoes p {
+
+        font-size: 24px;
+
+        margin-bottom: 18px;
+
+    }
+
+
+    .botao-adicionar {
+
+        min-height: 52px;
+
+        font-size: 15px;
+
+    }
+
+
+    .botao-cancelar {
+
+        min-height: 50px;
+
+        font-size: 14px;
+
+    }
+
+}
+
+
+/* ==========================================
+   CELULARES MUITO ALTOS / LARGOS
+========================================== */
+
+@media (min-width: 381px) and (max-width: 600px) {
+
+    .card-produto {
+
+        max-width: 430px;
+
+    }
+
+}
+
+
+/* ==========================================
+   ACESSIBILIDADE / TOUCH
+========================================== */
+
+button {
+
+    -webkit-user-select: none;
+
+    user-select: none;
+
+    -webkit-touch-callout: none;
+
+}
+
+
+/* ==========================================
+   EVITAR HOVER ESTRANHO NO CELULAR
+========================================== */
+
+@media (hover: hover) {
+
+    .botao-adicionar:hover {
+
+        background: #4725a8;
+
+    }
+
+
+    .botao-cancelar:hover {
+
+        background: #f3f0ff;
+
+    }
+
+}
+
