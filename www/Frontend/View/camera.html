@@ -124,10 +124,15 @@
 
 
         <!-- ==========================================
-             IMAGENS DOS PRODUTOS
+             ASSETS
         =========================================== -->
 
         <a-assets>
+
+
+            <!-- ======================================
+                 IMAGENS DOS PRODUTOS
+            ======================================= -->
 
             <img
                 id="imagem-leite"
@@ -141,27 +146,27 @@
 
             <img
                 id="imagem-arroz"
-                src="../../img/produtos/arroz.png"
+                src="../../img/produtos/arroz.jpeg"
                 alt="Arroz">
 
             <img
                 id="imagem-macarrao"
-                src="../../img/produtos/macarrao.png"
+                src="../../img/produtos/macarrao.jpeg"
                 alt="Macarrão">
 
             <img
                 id="imagem-oleo"
-                src="../../img/produtos/oleo.png"
+                src="../../img/produtos/oleo.jpeg"
                 alt="Óleo">
 
             <img
                 id="imagem-acucar"
-                src="../../img/produtos/acucar.png"
+                src="../../img/produtos/acucar.jpeg"
                 alt="Açúcar">
 
             <img
                 id="imagem-bombons"
-                src="../../img/produtos/bombons.png"
+                src="../../img/produtos/bombons.jpeg"
                 alt="Bombons">
 
             <img
@@ -171,7 +176,7 @@
 
             <img
                 id="imagem-copo"
-                src="../../img/produtos/copo.png"
+                src="../../img/produtos/copo.jpg"
                 alt="Copo Térmico">
 
             <img
@@ -179,7 +184,76 @@
                 src="../../img/produtos/boneco.jpeg"
                 alt="Boneco">
 
+
+            <!-- ======================================
+                 MODELO 3D DOS PRODUTOS
+            ======================================= -->
+            <a-asset-item
+                id="modelo-bombons"
+                src="../../img/targets/bombons3D.glb">
+            </a-asset-item>
+
+            <a-asset-item
+                id="modelo-acucar"
+                src="../../img/targets/acucar3D.glb">
+            </a-asset-item>
+
+            <a-asset-item
+                id="modelo-gojo"
+                src="../../img/targets/gojo.glb">
+        </a-asset-item>
+
+        <a-asset-item
+                id="modelo-leite"
+                src="../../img/targets/leite3D.glb">
+        </a-asset-item>
+
+        <a-asset-item
+                id="modelo-feijao"
+                src="../../img/targets/feijao.glb">
+        </a-asset-item>
+
+         <a-asset-item
+                id="modelo-copo"
+                src="../../img/targets/copo3D.glb">
+        </a-asset-item>
+
+         <a-asset-item
+                id="modelo-oleo"
+                src="../../img/targets/oleo.glb">
+        </a-asset-item>
+
+        <a-asset-item
+                id="modelo-giftcard"
+                src="../../img/targets/giftcard.glb">
+        </a-asset-item>
+
+        <a-asset-item
+                id="modelo-macarrao"
+                src="../../img/targets/macarrao.glb">
+        </a-asset-item>
+
+        <a-asset-item
+                id="modelo-arroz"
+                src="../../img/targets/arroz.glb">
+        </a-asset-item>
+
         </a-assets>
+    
+        <!-- ==========================================
+             ILUMINAÇÃO PARA O MODELO 3D
+        =========================================== -->
+
+        <a-light
+            type="ambient"
+            intensity="2">
+        </a-light>
+
+        <a-light
+            type="directional"
+            intensity="3"
+            position="2 4 2">
+        </a-light>
 
 
         <!-- ==========================================
@@ -202,16 +276,18 @@
             mindar-image-target="targetIndex: 0"
             data-produto="leite">
 
-            <a-image
-                id="produto-leite"
-                class="produto-ar"
-                src="../../img/produtos/leite.png"
-                position="0 0 0.1"
-                width="0.8"
-                data-produto="leite"
-                height="1.1">
+          <!-- MODELO 3D DO LEITE -->
 
-            </a-image>
+    <a-entity
+        id="produto-leite"
+        class="produto-3d"
+        gltf-model="#modelo-leite"
+        position="0 0 0.1"
+        rotation="0 0 0"
+        scale="0.5 0.5 0.5"
+        data-produto="leite">
+
+    </a-entity>
 
         </a-entity>
 
@@ -225,17 +301,23 @@
             mindar-image-target="targetIndex: 1"
             data-produto="feijao">
 
-            <a-image
+  <a-entity
+
                 id="produto-feijao"
-                class="produto-ar"
-                src="../../img/produtos/feijao.png"
+
+                class="produto-3d"
+
+                gltf-model="#modelo-feijao"
+
                 position="0 0 0.1"
-                width="0.8"
-                data-produto="feijao"
-                height="1.1">
 
-            </a-image>
+                rotation="0 0 0"
 
+                scale="0.5 0.5 0.5"
+
+                data-produto="feijao">
+
+            </a-entity>
         </a-entity>
 
 
@@ -248,16 +330,23 @@
             mindar-image-target="targetIndex: 2"
             data-produto="arroz">
 
-            <a-image
-                id="produto-arroz"
-                class="produto-ar"
-                src="../../img/produtos/arroz.jpeg"
-                position="0 0 0.1"
-                width="0.8"
-                data-produto="arroz"
-                height="1.1">
+  <a-entity
 
-            </a-image>
+                id="produto-arroz"
+
+                class="produto-3d"
+
+                gltf-model="#modelo-arroz"
+
+                position="0 0 0.1"
+
+                rotation="0 0 0"
+
+                scale="0.5 0.5 0.5"
+
+                data-produto="arroz">
+
+            </a-entity>
 
         </a-entity>
 
@@ -271,16 +360,16 @@
             mindar-image-target="targetIndex: 3"
             data-produto="macarrao">
 
-            <a-image
-                id="produto-macarrao"
-                class="produto-ar"
-                src="../../img/produtos/macarrao.jpeg"
-                position="0 0 0.1"
-                width="0.8"
-                data-produto="macarrao"
-                height="1.1">
+          <a-entity
+        id="produto-macarrao"
+        class="produto-3d"
+        gltf-model="#modelo-macarrao"
+        position="0 0 0.1"
+        rotation="0 0 0"
+        scale="0.5 0.5 0.5"
+        data-produto="macarrao">
 
-            </a-image>
+    </a-entity>
 
         </a-entity>
 
@@ -294,16 +383,24 @@
             mindar-image-target="targetIndex: 4"
             data-produto="oleo">
 
-            <a-image
-                id="produto-oleo"
-                class="produto-ar"
-                src="../../img/produtos/oleo.jpeg"
-                position="0 0 0.1"
-                width="0.8"
-                data-produto="oleo"
-                height="1.1">
+            
+  <a-entity
 
-            </a-image>
+                id="produto-oleo"
+
+                class="produto-3d"
+
+                gltf-model="#modelo-oleo"
+
+                position="0 0 0.1"
+
+                rotation="0 0 0"
+
+                scale="0.5 0.5 0.5"
+
+                data-produto="oleo">
+
+            </a-entity>
 
         </a-entity>
 
@@ -312,27 +409,30 @@
              TARGET 5 - AÇÚCAR
         =========================================== -->
 
-        <a-entity
-            id="target-acucar"
-            mindar-image-target="targetIndex: 5"
-            data-produto="acucar">
+     <a-entity
+    id="target-acucar"
+    mindar-image-target="targetIndex: 5"
+    data-produto="acucar">
 
-            <a-image
-                id="produto-acucar"
-                class="produto-ar"
-                src="../../img/produtos/acucar.jpeg"
-                position="0 0 0.1"
-                width="0.8"
-                data-produto="acucar"
-                height="1.1">
+    <!-- MODELO 3D DO AÇÚCAR -->
 
-            </a-image>
+    <a-entity
+        id="produto-acucar"
+        class="produto-3d"
+        gltf-model="#modelo-acucar"
+        position="0 0 0.1"
+        rotation="0 0 0"
+        scale="0.5 0.5 0.5"
+        data-produto="acucar">
 
-        </a-entity>
+    </a-entity>
+
+</a-entity>
 
 
         <!-- ==========================================
              TARGET 6 - BOMBONS
+             AGORA É 3D
         =========================================== -->
 
         <a-entity
@@ -340,16 +440,27 @@
             mindar-image-target="targetIndex: 6"
             data-produto="bombons">
 
-            <a-image
-                id="produto-bombons"
-                class="produto-ar"
-                src="../../img/produtos/bombons.jpeg"
-                position="0 0 0.1"
-                width="0.8"
-                data-produto="bombons"
-                height="1.1">
 
-            </a-image>
+            <!-- MODELO 3D -->
+
+            <a-entity
+
+                id="produto-bombons"
+
+                class="produto-3d"
+
+                gltf-model="#modelo-bombons"
+
+                position="0 0 0.1"
+
+                rotation="0 0 0"
+
+                scale="0.5 0.5 0.5"
+
+                data-produto="bombons">
+
+            </a-entity>
+
 
         </a-entity>
 
@@ -363,16 +474,25 @@
             mindar-image-target="targetIndex: 7"
             data-produto="giftcard">
 
-            <a-image
-                id="produto-giftcard"
-                class="produto-ar"
-                src="../../img/produtos/giftcard.png"
-                position="0 0 0.1"
-                width="0.8"
-                data-produto="giftcard"
-                height="1.1">
+         <!-- MODELO 3D -->
 
-            </a-image>
+            <a-entity
+
+                id="produto-giftcard"
+
+                class="produto-3d"
+
+                gltf-model="#modelo-giftcard"
+
+                position="0 0 0.1"
+
+                rotation="0 0 0"
+
+                scale="0.5 0.5 0.5"
+
+                data-produto="giftcard">
+
+            </a-entity>
 
         </a-entity>
 
@@ -386,42 +506,61 @@
             mindar-image-target="targetIndex: 8"
             data-produto="copo">
 
-            <a-image
-                id="produto-copo"
-                class="produto-ar"
-                src="../../img/produtos/copo.jpg"
-                position="0 0 0.1"
-                width="0.8"
-                data-produto="copo"
-                height="1.1">
+          
+            <a-entity
 
-            </a-image>
+                id="produto-copo"
+
+                class="produto-3d"
+
+                gltf-model="#modelo-copo"
+
+                position="0 0 0.1"
+
+                rotation="0 0 0"
+
+                scale="0.5 0.5 0.5"
+
+                data-produto="copo">
+
+            </a-entity>
 
         </a-entity>
-
 
         <!-- ==========================================
-             TARGET 9 - BONECO
-        =========================================== -->
+     TARGET 9 - BONECO / GOJO 3D
+=========================================== -->
 
-        <a-entity
-            id="target-boneco"
-            mindar-image-target="targetIndex: 9"
-            data-produto="boneco">
+<a-entity
+    id="target-boneco"
+    mindar-image-target="targetIndex: 9"
+    data-produto="boneco">
 
-            <a-image
-                id="produto-boneco"
-                class="produto-ar"
-                src="../../img/produtos/boneco.jpeg"
-                position="0 0 0.1"
-                width="0.8"
-                data-produto="boneco"
-                height="1.1">
 
-            </a-image>
+    <!-- MODELO 3D DO GOJO -->
 
-        </a-entity>
+    <a-entity
 
+        id="produto-boneco"
+
+        class="produto-3d"
+
+        gltf-model="#modelo-gojo"
+
+        position="0 0 0.1"
+
+        rotation="0 0 0"
+
+        scale="0.5 0.5 0.5"
+
+        data-produto="boneco">
+
+    </a-entity>
+
+
+</a-entity>
+
+   
 
     </a-scene>
 
@@ -574,8 +713,15 @@
 
 </main>
 
+
+<!-- ==========================================
+     JAVASCRIPT
+=========================================== -->
+
 <script src="../../Js/camera.js"></script>
+
 <script src="../../Js/cronometro.js"></script>
+
 
 </body>
 

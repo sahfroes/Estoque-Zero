@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width,
+                 initial-scale=1.0,
+                 viewport-fit=cover,
+                 user-scalable=no"
+    >
+
+    <title>Teste MindAR - Bombons</title>
+
+    <!-- ==========================================
+         A-FRAME
+    =========================================== -->
+
+    <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
+
+
+    <!-- ==========================================
+         MINDAR
+    =========================================== -->
+
+    <script
+        src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js">
+    </script>
+
+
+    <style>
+
+        html,
+        body {
+
+            margin: 0;
+            padding: 0;
+
+            width: 100%;
+            height: 100%;
+
+            overflow: hidden;
+
+            background: #000;
+
+        }
+
+
+        #mensagem {
+
+            position: fixed;
+
+            top: 20px;
+            left: 50%;
+
+            transform: translateX(-50%);
+
+            z-index: 9999;
+
+            width: 80%;
+
+            padding: 15px;
+
+            box-sizing: border-box;
+
+            background: rgba(0, 0, 0, 0.75);
+
+            color: white;
+
+            border-radius: 15px;
+
+            font-family: Arial, sans-serif;
+
+            text-align: center;
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- ==========================================
+         MENSAGEM
+    =========================================== -->
+
+    <div id="mensagem">
+
+        Iniciando câmera...
+
+    </div>
+
+
+    <!-- ==========================================
+         MINDAR
+    =========================================== -->
+
+    <a-scene
+
+        id="cena"
+
+        mindar-image="
+            imageTargetSrc: ../../img/targets/targets.mind;
+            autoStart: true;
+            uiLoading: yes;
+            uiScanning: yes;
+            uiError: yes;
+        "
+
+        color-space="sRGB"
+
+        renderer="
+            colorManagement: true;
+            physicallyCorrectLights: true;
+        "
+
+        vr-mode-ui="enabled: false"
+
+        device-orientation-permission-ui="enabled: false"
+
+        embedded
+    >
+
+
+        <!-- ======================================
+             TARGET DOS BOMBONS
+        ======================================= -->
+
+        <a-entity
+            mindar-image-target="targetIndex: 6"
+            id="target-bombons"
+        >
+
+        </a-entity>
+
+
+        <!-- ======================================
+             CÂMERA
+        ======================================= -->
+
+        <a-camera
+            position="0 0 0"
+            look-controls="enabled: false"
+        >
+        </a-camera>
+
+
+    </a-scene>
+
+
+    <script>
+
+        // ==========================================
+        // ELEMENTOS
+        // ==========================================
+
+        const cena =
+            document.getElementById("cena");
+
+        const mensagem =
+            document.getElementById("mensagem");
+
+        const targetBombons =
+            document.getElementById("target-bombons");
+
+
+        // ==========================================
+        // MINDAR INICIOU
+        // ==========================================
+
+        cena.addEventListener("arReady", function () {
+
+            console.log("================================");
+            console.log("MINDAR INICIADO");
+            console.log("CÂMERA ATIVA");
+            console.log("================================");
+
+            mensagem.innerText =
+                "📷 Câmera ativa! Aponte para os bombons.";
+
+        });
+
+
+        // ==========================================
+        // MINDAR PAROU
+        // ==========================================
+
+        cena.addEventListener("arError", function (evento) {
+
+            console.error(
+                "ERRO DO MINDAR:",
+                evento
+            );
+
+            mensagem.innerText =
+                "❌ Erro ao iniciar a câmera.";
+
+        });
+
+
+        // ==========================================
+        // TARGET ENCONTRADO
+        // ==========================================
+
+        targetBombons.addEventListener(
+            "targetFound",
+            function () {
+
+                console.log(
+                    "🍫 TARGET DOS BOMBONS ENCONTRADO!"
+                );
+
+                mensagem.innerText =
+                    "🍫 Bombons encontrados!";
+
+            }
+        );
+
+
+        // ==========================================
+        // TARGET PERDIDO
+        // ==========================================
+
+        targetBombons.addEventListener(
+            "targetLost",
+            function () {
+
+                console.log(
+                    "Target perdido"
+                );
+
+                mensagem.innerText =
+                    "Aponte novamente para os bombons.";
+
+            }
+        );
+
+
+    </script>
+
+
+</body>
+
+</html>
