@@ -1,3 +1,4 @@
+
 /* ==========================================
    RESET
 ========================================== */
@@ -7,7 +8,6 @@
     padding: 0;
     box-sizing: border-box;
 }
-
 
 /* ==========================================
    BODY
@@ -24,6 +24,13 @@ body {
     font-family: Arial, sans-serif;
 
     background: #000;
+
+    /*
+       Evita comportamentos estranhos
+       de zoom/seleção no celular.
+    */
+    -webkit-user-select: none;
+    user-select: none;
 
 }
 
@@ -63,9 +70,16 @@ body {
 
     z-index: 1 !important;
 
+    /*
+       PRECISA receber os eventos
+       do mouse/toque.
+    */
     pointer-events: auto !important;
 
-    touch-action: none !important;
+    /*
+       Permite toque/click sem zoom.
+    */
+    touch-action: manipulation !important;
 
 }
 
@@ -86,9 +100,18 @@ body {
 
     z-index: 2 !important;
 
+    /*
+       O raycaster precisa receber
+       mouse e toque.
+    */
     pointer-events: auto !important;
 
-    touch-action: none !important;
+    touch-action: manipulation !important;
+
+    /*
+       Cursor normal no computador.
+    */
+    cursor: crosshair;
 
 }
 
@@ -111,6 +134,10 @@ body {
 
     z-index: 1 !important;
 
+    /*
+       O vídeo nunca pode bloquear
+       o clique no canvas.
+    */
     pointer-events: none !important;
 
 }
@@ -201,9 +228,12 @@ body {
     transition:
         opacity 0.3s ease;
 
-        pointer-events: none !important;
 }
 
+
+/* ==========================================
+   MOSTRAR "TOQUE NO PRODUTO"
+========================================== */
 
 .toque-produto.mostrar {
 
@@ -382,7 +412,7 @@ body {
 
 
 /* ==========================================
-   CARRINHO
+   BOTÃO CARRINHO
 ========================================== */
 
 .botao-carrinho {
@@ -452,12 +482,20 @@ body {
 }
 
 
+/* ==========================================
+   ÍCONE CARRINHO
+========================================== */
+
 .icone-carrinho {
 
     font-size: 18px;
 
 }
 
+
+/* ==========================================
+   QUANTIDADE CARRINHO
+========================================== */
 
 .quantidade-carrinho {
 
@@ -581,7 +619,7 @@ body {
 
 
 /* ==========================================
-   ÍCONE DO ALERTA
+   ÍCONE ALERTA
 ========================================== */
 
 .alerta-tempo .icone-alerta {
@@ -686,6 +724,10 @@ body {
 
     font-weight: bold;
 
+    cursor: pointer;
+
+    touch-action: manipulation;
+
 }
 
 
@@ -704,11 +746,18 @@ body {
    PRODUTO 3D
 ========================================== */
 
+/*
+   O GLB será detectado pelo
+   THREE.Raycaster no JavaScript.
+
+   Não colocar pointer-events:none aqui,
+   pois queremos que o objeto 3D
+   possa participar da interação.
+*/
+
 .produto-3d {
 
     cursor: pointer;
-
-    pointer-events: auto;
 
 }
 
@@ -727,7 +776,7 @@ button {
 
 
 /* ==========================================
-   ELEMENTOS ACIMA DO MINDAR
+   ELEMENTOS DA INTERFACE
 ========================================== */
 
 .botao-carrinho,
@@ -742,8 +791,7 @@ button {
 
 
 /* ==========================================
-   ELEMENTOS QUE NÃO PODEM BLOQUEAR
-   O TOQUE NO MODELO 3D
+   ELEMENTOS VISUAIS
 ========================================== */
 
 .mensagem-camera,
@@ -805,3 +853,4 @@ button {
     }
 
 }
+
