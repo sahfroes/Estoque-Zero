@@ -9,41 +9,63 @@
 // ======================================================
 
 const cenaRA = document.getElementById("cena-ra");
-const saldoElemento = document.getElementById("saldo");
-const tempoElemento = document.getElementById("tempo");
-const botaoCarrinho = document.getElementById("botao-carrinho");
-const botaoTrocarCamera = document.getElementById("trocar-camera");
-const erroCamera = document.getElementById("erro-camera");
+
+const saldoElemento =
+    document.getElementById("saldo");
+
+const tempoElemento =
+    document.getElementById("tempo");
+
+const botaoCarrinho =
+    document.getElementById("botao-carrinho");
+
+const botaoTrocarCamera =
+    document.getElementById("trocar-camera");
+
+const erroCamera =
+    document.getElementById("erro-camera");
+
+const mensagemCamera =
+    document.getElementById("mensagem-camera");
 
 
 // ======================================================
 // PRODUTOS 3D
 // IMPORTANTE:
-// Aqui usamos os IDs dos A-ENTITY que aparecem na cena.
-// NÃO usamos modelo-leite, modelo-arroz etc.
+// São os A-ENTITY que aparecem na cena.
 // ======================================================
 
 const modelos = {
 
-    leite: document.getElementById("produto-leite"),
+    leite:
+        document.getElementById("produto-leite"),
 
-    feijao: document.getElementById("produto-feijao"),
+    feijao:
+        document.getElementById("produto-feijao"),
 
-    arroz: document.getElementById("produto-arroz"),
+    arroz:
+        document.getElementById("produto-arroz"),
 
-    macarrao: document.getElementById("produto-macarrao"),
+    macarrao:
+        document.getElementById("produto-macarrao"),
 
-    oleo: document.getElementById("produto-oleo"),
+    oleo:
+        document.getElementById("produto-oleo"),
 
-    acucar: document.getElementById("produto-acucar"),
+    acucar:
+        document.getElementById("produto-acucar"),
 
-    bombons: document.getElementById("produto-bombons"),
+    bombons:
+        document.getElementById("produto-bombons"),
 
-    giftcard: document.getElementById("produto-giftcard"),
+    giftcard:
+        document.getElementById("produto-giftcard"),
 
-    copo: document.getElementById("produto-copo"),
+    copo:
+        document.getElementById("produto-copo"),
 
-    boneco: document.getElementById("produto-boneco")
+    boneco:
+        document.getElementById("produto-boneco")
 
 };
 
@@ -121,6 +143,8 @@ let abrindoCard = false;
 
 let ultimoToque = 0;
 
+let ultimoTarget = null;
+
 
 // ======================================================
 // RAYCASTER
@@ -149,21 +173,56 @@ function formatarPreco(valor) {
 
 
 // ======================================================
+// ESCONDER MENSAGEM DE CARREGAMENTO
+// ======================================================
+
+function esconderMensagemCamera() {
+
+    if (!mensagemCamera) {
+        return;
+    }
+
+    mensagemCamera.style.display = "none";
+
+    console.log(
+        "✅ Mensagem 'Iniciando câmera...' escondida."
+    );
+
+}
+
+
+// ======================================================
 // CARREGAR ORÇAMENTO
 // ======================================================
 
 function carregarOrcamento() {
 
     const valorSalvo =
-        localStorage.getItem("orcamentoSelecionado");
+        localStorage.getItem(
+            "orcamentoSelecionado"
+        );
 
     const orcamento =
         Number(valorSalvo);
 
-    console.log("=================================");
-    console.log("💰 VERIFICANDO ORÇAMENTO");
-    console.log("Valor encontrado:", valorSalvo);
-    console.log("Valor convertido:", orcamento);
+    console.log(
+        "================================="
+    );
+
+    console.log(
+        "💰 VERIFICANDO ORÇAMENTO"
+    );
+
+    console.log(
+        "Valor encontrado:",
+        valorSalvo
+    );
+
+    console.log(
+        "Valor convertido:",
+        orcamento
+    );
+
 
     if (
         !Number.isFinite(orcamento) ||
@@ -184,6 +243,7 @@ function carregarOrcamento() {
         return 0;
     }
 
+
     if (saldoElemento) {
 
         saldoElemento.textContent =
@@ -191,19 +251,24 @@ function carregarOrcamento() {
 
     }
 
+
     console.log(
         "✅ Orçamento carregado:",
         formatarPreco(orcamento)
     );
 
-    console.log("=================================");
+    console.log(
+        "================================="
+    );
+
 
     return orcamento;
+
 }
 
 
 // ======================================================
-// CARREGAR ORÇAMENTO
+// ORÇAMENTO ATUAL
 // ======================================================
 
 const orcamentoAtual =
@@ -219,6 +284,7 @@ function salvarProduto(chaveProduto) {
     const produto =
         produtos[chaveProduto];
 
+
     if (!produto) {
 
         console.error(
@@ -228,6 +294,7 @@ function salvarProduto(chaveProduto) {
 
         return false;
     }
+
 
     localStorage.setItem(
         "produtoEncontrado",
@@ -244,16 +311,32 @@ function salvarProduto(chaveProduto) {
         String(produto.preco)
     );
 
-    console.log("=================================");
-    console.log("💾 PRODUTO SALVO");
-    console.log("Produto:", produto.nome);
+
+    console.log(
+        "================================="
+    );
+
+    console.log(
+        "💾 PRODUTO SALVO"
+    );
+
+    console.log(
+        "Produto:",
+        produto.nome
+    );
+
     console.log(
         "Preço:",
         formatarPreco(produto.preco)
     );
-    console.log("=================================");
+
+    console.log(
+        "================================="
+    );
+
 
     return true;
+
 }
 
 
@@ -264,12 +347,13 @@ function salvarProduto(chaveProduto) {
 function abrirCardProduto(chaveProduto) {
 
     if (abrindoCard) {
-
         return;
     }
 
+
     const produto =
         produtos[chaveProduto];
+
 
     if (!produto) {
 
@@ -281,32 +365,42 @@ function abrirCardProduto(chaveProduto) {
         return;
     }
 
+
     console.log(
         "🛒 Produto clicado:",
         produto.nome
     );
 
+
     const salvo =
         salvarProduto(chaveProduto);
 
-    if (!salvo) {
 
+    if (!salvo) {
         return;
     }
 
+
     abrindoCard = true;
+
 
     console.log(
         "📦 Abrindo card do produto..."
     );
 
-    setTimeout(function () {
 
-        window.location.href =
-            "card-produto.html?produto=" +
-            encodeURIComponent(chaveProduto);
+    setTimeout(
+        function () {
 
-    }, 100);
+            window.location.href =
+                "card-produto.html?produto=" +
+                encodeURIComponent(
+                    chaveProduto
+                );
+
+        },
+        100
+    );
 
 }
 
@@ -322,6 +416,7 @@ function esconderTodosModelos() {
 
             const modelo =
                 modelos[chave];
+
 
             if (modelo) {
 
@@ -346,8 +441,10 @@ function mostrarModelo(chaveProduto) {
 
     esconderTodosModelos();
 
+
     const modelo =
         modelos[chaveProduto];
+
 
     if (!modelo) {
 
@@ -359,16 +456,17 @@ function mostrarModelo(chaveProduto) {
         return;
     }
 
-    // Mostra o modelo
+
     modelo.setAttribute(
         "visible",
         true
     );
 
-    // Adiciona uma classe para o raycaster
+
     modelo.classList.add(
         "produto-3d"
     );
+
 
     produtoAtual =
         chaveProduto;
@@ -376,9 +474,19 @@ function mostrarModelo(chaveProduto) {
     produtoDetectado =
         chaveProduto;
 
+    ultimoTarget =
+        chaveProduto;
+
+
     console.log(
         "🎯 MODELO 3D ATIVO:",
         chaveProduto
+    );
+
+
+    console.log(
+        "🛒 Produto pronto para clique:",
+        produtos[chaveProduto].nome
     );
 
 }
@@ -414,10 +522,33 @@ const produtosPorTarget = {
 
 
 // ======================================================
-// MINDAR
+// EVENTOS DO MINDAR
 // ======================================================
 
 if (cenaRA) {
+
+
+    // ==================================================
+    // A-FRAME CARREGADO
+    // ==================================================
+
+    cenaRA.addEventListener(
+        "loaded",
+        function () {
+
+            console.log(
+                "✅ A-Frame carregado."
+            );
+
+            esconderMensagemCamera();
+
+        }
+    );
+
+
+    // ==================================================
+    // TARGET ENCONTRADO
+    // ==================================================
 
     cenaRA.addEventListener(
         "targetFound",
@@ -426,13 +557,16 @@ if (cenaRA) {
             const indice =
                 evento.targetIndex;
 
+
             console.log(
                 "🎯 TARGET ENCONTRADO:",
                 indice
             );
 
+
             const chaveProduto =
                 produtosPorTarget[indice];
+
 
             if (!chaveProduto) {
 
@@ -444,18 +578,18 @@ if (cenaRA) {
                 return;
             }
 
+
             mostrarModelo(
                 chaveProduto
-            );
-
-            console.log(
-                "🛒 Produto pronto para clique:",
-                produtos[chaveProduto].nome
             );
 
         }
     );
 
+
+    // ==================================================
+    // TARGET PERDIDO
+    // ==================================================
 
     cenaRA.addEventListener(
         "targetLost",
@@ -464,22 +598,49 @@ if (cenaRA) {
             const indice =
                 evento.targetIndex;
 
+
             console.log(
                 "❌ TARGET PERDIDO:",
                 indice
             );
 
+
             const chaveProduto =
                 produtosPorTarget[indice];
+
+
+            /*
+             * Não escondemos imediatamente.
+             *
+             * Isso evita que uma pequena perda
+             * de rastreamento do MindAR faça o
+             * modelo desaparecer antes do toque.
+             */
 
             if (
                 chaveProduto &&
                 modelos[chaveProduto]
             ) {
 
-                modelos[chaveProduto].setAttribute(
-                    "visible",
-                    false
+                setTimeout(
+                    function () {
+
+                        if (
+                            produtoDetectado ===
+                            chaveProduto
+                        ) {
+
+                            modelos[
+                                chaveProduto
+                            ].setAttribute(
+                                "visible",
+                                false
+                            );
+
+                        }
+
+                    },
+                    500
                 );
 
             }
@@ -507,17 +668,22 @@ function iniciarRaycaster() {
         return false;
     }
 
+
     raycaster =
         new THREE.Raycaster();
 
+
     mouse =
         new THREE.Vector2();
+
 
     console.log(
         "✅ Raycaster inicializado."
     );
 
+
     return true;
+
 }
 
 
@@ -531,20 +697,22 @@ function prepararCoordenadas(
 ) {
 
     if (!cenaRA) {
-
         return false;
     }
+
 
     const canvas =
         cenaRA.canvas;
 
-    if (!canvas) {
 
+    if (!canvas) {
         return false;
     }
 
+
     const retangulo =
         canvas.getBoundingClientRect();
+
 
     if (
         retangulo.width === 0 ||
@@ -553,6 +721,7 @@ function prepararCoordenadas(
 
         return false;
     }
+
 
     mouse.x =
         (
@@ -563,6 +732,7 @@ function prepararCoordenadas(
             retangulo.width
         ) * 2 - 1;
 
+
     mouse.y =
         -(
             (
@@ -572,7 +742,9 @@ function prepararCoordenadas(
             retangulo.height
         ) * 2 + 1;
 
+
     return true;
+
 }
 
 
@@ -586,9 +758,9 @@ function procurarProdutoNoToque(
 ) {
 
     if (!cenaRA) {
-
         return null;
     }
+
 
     if (!cenaRA.camera) {
 
@@ -599,6 +771,7 @@ function procurarProdutoNoToque(
         return null;
     }
 
+
     if (!raycaster || !mouse) {
 
         console.warn(
@@ -607,6 +780,7 @@ function procurarProdutoNoToque(
 
         return null;
     }
+
 
     if (
         !prepararCoordenadas(
@@ -619,7 +793,10 @@ function procurarProdutoNoToque(
     }
 
 
-    // Configura o raio
+    // ==================================================
+    // CONFIGURAR RAIO
+    // ==================================================
+
     raycaster.setFromCamera(
         mouse,
         cenaRA.camera
@@ -627,13 +804,13 @@ function procurarProdutoNoToque(
 
 
     // ==================================================
-    // TESTAR SOMENTE O PRODUTO DETECTADO
+    // PRODUTO DETECTADO
     // ==================================================
 
     if (!produtoDetectado) {
 
         console.log(
-            "⚠️ Nenhum produto foi detectado pelo MindAR."
+            "⚠️ Nenhum produto detectado."
         );
 
         return null;
@@ -642,6 +819,7 @@ function procurarProdutoNoToque(
 
     const modelo =
         modelos[produtoDetectado];
+
 
     if (!modelo) {
 
@@ -654,9 +832,11 @@ function procurarProdutoNoToque(
     }
 
 
-    // Verifica se está visível
     const visivel =
-        modelo.getAttribute("visible");
+        modelo.getAttribute(
+            "visible"
+        );
+
 
     if (visivel === false) {
 
@@ -668,10 +848,7 @@ function procurarProdutoNoToque(
     }
 
 
-    // Verifica o objeto Three.js
-    if (
-        !modelo.object3D
-    ) {
+    if (!modelo.object3D) {
 
         console.log(
             "⚠️ object3D ainda não carregou."
@@ -682,7 +859,7 @@ function procurarProdutoNoToque(
 
 
     // ==================================================
-    // FAZER INTERSEÇÃO
+    // RAYCAST
     // ==================================================
 
     const intersecoes =
@@ -714,15 +891,7 @@ function procurarProdutoNoToque(
         "🎯 TOQUE ATINGIU O MODELO 3D!"
     );
 
-    console.log(
-        "Produto:",
-        produtoDetectado
-    );
 
-
-    // Como estamos testando
-    // somente o modelo detectado,
-    // sabemos exatamente qual produto é.
     return produtoDetectado;
 
 }
@@ -740,6 +909,7 @@ function processarClique(
     const agora =
         Date.now();
 
+
     if (
         agora - ultimoToque <
         400
@@ -748,16 +918,20 @@ function processarClique(
         return;
     }
 
+
     ultimoToque =
         agora;
+
 
     console.log(
         "================================="
     );
 
+
     console.log(
         "👆 CLIQUE/TOQUE DETECTADO"
     );
+
 
     console.log(
         "X:",
@@ -766,11 +940,13 @@ function processarClique(
         clienteY
     );
 
+
     const chaveProduto =
         procurarProdutoNoToque(
             clienteX,
             clienteY
         );
+
 
     if (!chaveProduto) {
 
@@ -785,19 +961,108 @@ function processarClique(
         return;
     }
 
+
     console.log(
         "✅ PRODUTO SELECIONADO:",
         chaveProduto
     );
+
 
     console.log(
         "================================="
     );
 
 
-    // Abre o card
     abrirCardProduto(
         chaveProduto
+    );
+
+}
+
+
+// ======================================================
+// CONFIGURAR INTERAÇÃO DOS MODELOS
+// ======================================================
+
+function configurarCliquesModelos() {
+
+    console.log(
+        "🖱️ Configurando cliques dos modelos 3D..."
+    );
+
+
+    Object.keys(modelos).forEach(
+        function (chaveProduto) {
+
+            const modelo =
+                modelos[chaveProduto];
+
+
+            if (!modelo) {
+
+                console.error(
+                    "❌ Modelo não encontrado:",
+                    chaveProduto
+                );
+
+                return;
+            }
+
+
+            // ==================================================
+            // CLICK DIRETO
+            // ==================================================
+
+            modelo.addEventListener(
+                "click",
+                function (evento) {
+
+                    console.log(
+                        "🖱️ CLICK DIRETO NO MODELO:",
+                        chaveProduto
+                    );
+
+
+                    if (
+                        evento &&
+                        evento.stopPropagation
+                    ) {
+
+                        evento.stopPropagation();
+
+                    }
+
+
+                    abrirCardProduto(
+                        chaveProduto
+                    );
+
+                }
+            );
+
+
+            // ==================================================
+            // MODEL-LOADED
+            // ==================================================
+
+            modelo.addEventListener(
+                "model-loaded",
+                function () {
+
+                    console.log(
+                        "✅ GLB carregado:",
+                        chaveProduto
+                    );
+
+                }
+            );
+
+        }
+    );
+
+
+    console.log(
+        "✅ Cliques dos modelos configurados."
     );
 
 }
@@ -824,22 +1089,28 @@ function configurarInteracaoCanvas() {
         const canvas =
             cenaRA.canvas;
 
+
         if (!canvas) {
 
             console.warn(
                 "⚠️ Canvas ainda não disponível."
             );
 
+
             setTimeout(
                 iniciarEventos,
                 500
             );
 
+
             return;
         }
 
 
-        // Inicializa Raycaster
+        // ==================================================
+        // RAYCASTER
+        // ==================================================
+
         if (!raycaster) {
 
             iniciarRaycaster();
@@ -853,7 +1124,7 @@ function configurarInteracaoCanvas() {
 
 
         // ==================================================
-        // COMPUTADOR
+        // DESKTOP
         // ==================================================
 
         canvas.addEventListener(
@@ -896,8 +1167,6 @@ function configurarInteracaoCanvas() {
                 );
 
 
-                // Evita comportamento
-                // padrão do navegador
                 evento.preventDefault();
 
             },
@@ -939,6 +1208,13 @@ configurarInteracaoCanvas();
 
 
 // ======================================================
+// CONFIGURAR CLIQUES DOS MODELOS
+// ======================================================
+
+configurarCliquesModelos();
+
+
+// ======================================================
 // BOTÃO DO CARRINHO
 // ======================================================
 
@@ -951,6 +1227,7 @@ if (botaoCarrinho) {
             console.log(
                 "🛒 Indo para o carrinho..."
             );
+
 
             window.location.href =
                 "carrinho.html";
@@ -976,6 +1253,7 @@ if (botaoTrocarCamera) {
                 console.log(
                     "📷 Trocando câmera..."
                 );
+
 
                 cameraAtual =
                     cameraAtual ===
@@ -1061,9 +1339,11 @@ async function verificarCamera() {
             "❌ Navegador sem suporte à câmera."
         );
 
+
         mostrarErroCamera(
             "Seu navegador não suporta o acesso à câmera."
         );
+
 
         return;
     }
@@ -1108,6 +1388,7 @@ async function verificarCamera() {
             erro
         );
 
+
         mostrarErroCamera(
             "Não foi possível acessar a câmera. Verifique a permissão do navegador."
         );
@@ -1124,12 +1405,13 @@ async function verificarCamera() {
 function mostrarErroCamera(mensagem) {
 
     if (!erroCamera) {
-
         return;
     }
 
+
     erroCamera.textContent =
         mensagem;
+
 
     erroCamera.style.display =
         "block";
@@ -1144,9 +1426,9 @@ function mostrarErroCamera(mensagem) {
 function esconderErroCamera() {
 
     if (!erroCamera) {
-
         return;
     }
+
 
     erroCamera.style.display =
         "none";
@@ -1166,12 +1448,14 @@ document.addEventListener(
             "📷 Estoque Zero - Câmera AR"
         );
 
+
         console.log(
             "💰 Orçamento:",
             formatarPreco(
                 orcamentoAtual
             )
         );
+
 
         esconderErroCamera();
 
@@ -1180,12 +1464,13 @@ document.addEventListener(
 
 
 // ======================================================
-// VERIFICAR SE OS MODELOS FORAM ENCONTRADOS
+// VERIFICAR MODELOS
 // ======================================================
 
 console.log(
     "🔍 VERIFICANDO MODELOS 3D..."
 );
+
 
 Object.keys(modelos).forEach(
     function (chave) {
@@ -1209,6 +1494,21 @@ Object.keys(modelos).forEach(
         }
 
     }
+);
+
+
+// ======================================================
+// SEGURANÇA:
+// ESCONDER TELA DE "INICIANDO CÂMERA"
+// ======================================================
+
+setTimeout(
+    function () {
+
+        esconderMensagemCamera();
+
+    },
+    3000
 );
 
 

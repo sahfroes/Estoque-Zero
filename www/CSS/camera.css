@@ -63,11 +63,15 @@ body {
 
     z-index: 1 !important;
 
+    pointer-events: auto !important;
+
+    touch-action: none !important;
+
 }
 
 
 /* ==========================================
-   CANVAS
+   CANVAS DO A-FRAME
 ========================================== */
 
 .cena-ra canvas {
@@ -81,6 +85,8 @@ body {
     height: 100dvh !important;
 
     z-index: 2 !important;
+
+    pointer-events: auto !important;
 
     touch-action: none !important;
 
@@ -105,6 +111,8 @@ body {
 
     z-index: 1 !important;
 
+    pointer-events: none !important;
+
 }
 
 
@@ -128,10 +136,14 @@ body {
 
     text-align: center;
 
-    pointer-events: none;
+    pointer-events: none !important;
 
 }
 
+
+/* ==========================================
+   ÍCONE DA CÂMERA
+========================================== */
 
 .icone-camera {
 
@@ -141,6 +153,10 @@ body {
 
 }
 
+
+/* ==========================================
+   TEXTO DA MENSAGEM
+========================================== */
 
 .mensagem-camera p {
 
@@ -178,7 +194,7 @@ body {
 
     text-align: center;
 
-    pointer-events: none;
+    pointer-events: none !important;
 
     opacity: 0;
 
@@ -227,6 +243,8 @@ body {
             rgba(20, 10, 60, 0.90),
             rgba(20, 10, 60, 0)
         );
+
+    pointer-events: auto;
 
 }
 
@@ -412,6 +430,15 @@ body {
 
     cursor: pointer;
 
+    pointer-events: auto !important;
+
+    -webkit-user-select: none;
+    user-select: none;
+
+    -webkit-tap-highlight-color: transparent;
+
+    touch-action: manipulation;
+
 }
 
 
@@ -485,6 +512,15 @@ body {
 
     cursor: pointer;
 
+    pointer-events: auto !important;
+
+    -webkit-user-select: none;
+    user-select: none;
+
+    -webkit-tap-highlight-color: transparent;
+
+    touch-action: manipulation;
+
 }
 
 
@@ -538,8 +574,14 @@ body {
         0 8px 25px
         rgba(0, 0, 0, 0.3);
 
+    pointer-events: auto;
+
 }
 
+
+/* ==========================================
+   ÍCONE DO ALERTA
+========================================== */
 
 .alerta-tempo .icone-alerta {
 
@@ -604,6 +646,8 @@ body {
 
     color: #333;
 
+    pointer-events: auto;
+
 }
 
 
@@ -651,6 +695,60 @@ body {
 .produto-ar {
 
     cursor: pointer;
+
+}
+
+
+/* ==========================================
+   PRODUTO 3D
+========================================== */
+
+.produto-3d {
+
+    cursor: pointer;
+
+    pointer-events: auto;
+
+}
+
+
+/* ==========================================
+   BOTÕES
+========================================== */
+
+button {
+
+    -webkit-tap-highlight-color: transparent;
+
+    touch-action: manipulation;
+
+}
+
+
+/* ==========================================
+   ELEMENTOS ACIMA DO MINDAR
+========================================== */
+
+.botao-carrinho,
+.botao-trocar-camera,
+.erro-camera,
+.cabecalho,
+.alerta-tempo {
+
+    pointer-events: auto !important;
+
+}
+
+
+/* ==========================================
+   ELEMENTOS QUE NÃO PODEM BLOQUEAR
+   O TOQUE NO MODELO 3D
+========================================== */
+
+.mensagem-camera,
+.toque-produto {
+
+    pointer-events: none !important;
 
 }
 
@@ -706,77 +804,3 @@ body {
     }
 
 }
-
-
-/* ==========================================
-   CORREÇÃO DE TOQUE NO CELULAR
-========================================== */
-
-button {
-    -webkit-tap-highlight-color: transparent;
-    touch-action: manipulation;
-}
-
-
-/* ==========================================
-   BOTÕES ACIMA DO MINDAR
-========================================== */
-
-.botao-carrinho,
-.botao-trocar-camera,
-.erro-camera,
-.cabecalho,
-.alerta-tempo {
-    pointer-events: auto !important;
-}
-
-
-/* ==========================================
-   MENSAGENS NÃO BLOQUEIAM A CÂMERA
-========================================== */
-
-.mensagem-camera,
-.toque-produto {
-    pointer-events: none !important;
-}
-
-
-/* ==========================================
-   CANVAS
-========================================== */
-
-.cena-ra canvas {
-    touch-action: manipulation !important;
-}
-
-
-/* ==========================================
-   A-FRAME NÃO DEVE COBRIR OS BOTÕES
-========================================== */
-
-.cena-ra {
-    pointer-events: auto;
-}
-
-
-/* ==========================================
-   BOTÃO CARRINHO
-========================================== */
-
-.botao-carrinho {
-    cursor: pointer;
-    -webkit-user-select: none;
-    user-select: none;
-}
-
-
-/* ==========================================
-   TROCAR CÂMERA
-========================================== */
-
-.botao-trocar-camera {
-    cursor: pointer;
-    -webkit-user-select: none;
-    user-select: none;
-}
-
