@@ -260,8 +260,11 @@
              CÂMERA
         =========================================== -->
 <a-camera
+    id="camera-ar"
     position="0 0 0"
-    look-controls="enabled: false">
+    look-controls="enabled: false"
+    cursor="rayOrigin: mouse; fuse: false"
+    raycaster="objects: .produto-3d; far: 10000;">
 </a-camera>
 
         <!-- ==========================================

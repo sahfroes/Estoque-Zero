@@ -70,16 +70,13 @@ body {
 
     z-index: 1 !important;
 
-    /*
-       PRECISA receber os eventos
-       do mouse/toque.
-    */
     pointer-events: auto !important;
 
-    /*
-       Permite toque/click sem zoom.
-    */
-    touch-action: manipulation !important;
+    touch-action: none !important;
+
+    cursor: crosshair;
+
+    -webkit-tap-highlight-color: transparent;
 
 }
 
