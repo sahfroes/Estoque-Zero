@@ -1,4 +1,3 @@
-
 // =====================================
 // ELEMENTOS DO HTML
 // =====================================
@@ -112,7 +111,7 @@ console.log("🛒 Carrinho:", carrinho);
 
 
 // =====================================
-// CALCULAR QUANTIDADE DE COMPRAS
+// CALCULAR QUANTIDADE DE ITENS
 // =====================================
 
 let quantidadeCompras = 0;
@@ -133,34 +132,187 @@ console.log(
 // =====================================
 // CALCULAR PONTUAÇÃO
 // =====================================
+//
+// A pontuação considera:
+//
+// 1. Quantidade de itens comprados
+//    → até 40 pontos
+//
+// 2. Equilíbrio dos gastos
+//    → até 60 pontos
+//
+// O objetivo é incentivar o jogador
+// a realizar várias compras sem
+// comprometer completamente o orçamento.
+// =====================================
 
-let pontuacao = 0;
+function calcularPontuacao(
+    orcamento,
+    totalGasto,
+    quantidadeCompras
+) {
 
-if (orcamento > 0) {
+    // -------------------------------------
+    // PROTEÇÃO
+    // -------------------------------------
 
-    const porcentagemGuardada =
-        saldoFinal / orcamento;
+    if (
+        orcamento <= 0
+    ) {
+
+        return 0;
+
+    }
+
+
+    // =====================================
+    // PARTE 1 — QUANTIDADE DE ITENS
+    // =====================================
+    //
+    // Até 5 itens:
+    //
+    // 0 itens = 0 pontos
+    // 1 item  = 8 pontos
+    // 2 itens = 16 pontos
+    // 3 itens = 24 pontos
+    // 4 itens = 32 pontos
+    // 5+     = 40 pontos
+    //
+    // =====================================
+
+    const quantidadeConsiderada =
+        Math.min(
+            quantidadeCompras,
+            5
+        );
+
+
+    const pontosQuantidade =
+        (
+            quantidadeConsiderada / 5
+        ) * 40;
+
+
+    // =====================================
+    // PARTE 2 — EQUILÍBRIO DOS GASTOS
+    // =====================================
+
+    const percentualGasto =
+        totalGasto / orcamento;
+
+
+    let pontosGasto = 0;
+
+
+    // -------------------------------------
+    // GASTOU MENOS DE 40%
+    // -------------------------------------
+    //
+    // Gastou pouco demais para uma
+    // simulação de compras.
+    //
+    // Quanto mais próximo de 40%,
+    // mais pontos recebe.
+    //
+    // -------------------------------------
+
+    if (
+        percentualGasto < 0.40
+    ) {
+
+        pontosGasto =
+            (
+                percentualGasto / 0.40
+            ) * 60;
+
+    }
+
+
+    // -------------------------------------
+    // GASTOU ENTRE 40% E 70%
+    // -------------------------------------
+    //
+    // Faixa considerada equilibrada.
+    //
+    // Recebe os 60 pontos completos.
+    //
+    // -------------------------------------
+
+    else if (
+        percentualGasto <= 0.70
+    ) {
+
+        pontosGasto = 60;
+
+    }
+
+
+    // -------------------------------------
+    // GASTOU MAIS DE 70%
+    // -------------------------------------
+    //
+    // Quanto mais próximo de gastar
+    // todo o orçamento, menos pontos.
+    //
+    // -------------------------------------
+
+    else {
+
+        pontosGasto =
+            (
+                (1 - percentualGasto) /
+                0.30
+            ) * 60;
+
+    }
+
+
+    // =====================================
+    // SOMAR PONTOS
+    // =====================================
+
+    let pontuacao =
+        pontosQuantidade +
+        pontosGasto;
+
+
+    // =====================================
+    // GARANTIR 0 A 100
+    // =====================================
 
     pontuacao =
-        Math.round(
-            porcentagemGuardada * 100
+        Math.max(
+            0,
+            Math.min(
+                100,
+                pontuacao
+            )
         );
+
+
+    return Math.round(
+        pontuacao
+    );
 
 }
 
 
 // =====================================
-// LIMITAR PONTUAÇÃO
+// CALCULAR PONTUAÇÃO FINAL
 // =====================================
 
-pontuacao =
-    Math.max(
-        0,
-        Math.min(
-            100,
-            pontuacao
-        )
+const pontuacao =
+    calcularPontuacao(
+        orcamento,
+        totalGasto,
+        quantidadeCompras
     );
+
+
+console.log(
+    "🏆 Pontuação final:",
+    pontuacao
+);
 
 
 // =====================================
@@ -227,28 +379,58 @@ if (pontuacaoElemento) {
 if (desempenhoElemento) {
 
     if (
-        saldoFinal >=
-        orcamento * 0.5
+        quantidadeCompras === 0
     ) {
 
         desempenhoElemento.textContent =
-            "🌟 Excelente! Você conseguiu guardar uma boa parte do seu dinheiro.";
+            "⚠️ Você não realizou nenhuma compra. Tente participar da próxima missão.";
 
     }
 
     else if (
-        saldoFinal > 0
+        quantidadeCompras === 1
     ) {
 
         desempenhoElemento.textContent =
-            "💜 Muito bem! Você gastou, mas ainda conseguiu guardar dinheiro.";
+            "💡 Você realizou apenas uma compra. Tente explorar melhor seu orçamento.";
+
+    }
+
+    else if (
+        saldoFinal <= 0
+    ) {
+
+        desempenhoElemento.textContent =
+            "⚠️ Você gastou todo o orçamento. Tente manter uma reserva para a próxima missão.";
+
+    }
+
+    else if (
+        totalGasto >=
+        orcamento * 0.40 &&
+        totalGasto <=
+        orcamento * 0.70
+    ) {
+
+        desempenhoElemento.textContent =
+            "🌟 Excelente equilíbrio! Você realizou compras e ainda conseguiu preservar parte do orçamento.";
+
+    }
+
+    else if (
+        totalGasto <
+        orcamento * 0.40
+    ) {
+
+        desempenhoElemento.textContent =
+            "💜 Você preservou bastante dinheiro, mas poderia ter explorado melhor seu orçamento.";
 
     }
 
     else {
 
         desempenhoElemento.textContent =
-            "⚠️ Você gastou todo o orçamento. Na próxima missão, tente guardar uma reserva.";
+            "⚠️ Você realizou várias compras, mas comprometeu uma grande parte do orçamento.";
 
     }
 
@@ -261,20 +443,26 @@ if (desempenhoElemento) {
 
 const resultadoPartida = {
 
-    orcamento: orcamento,
+    orcamento:
+        orcamento,
 
-    totalGasto: totalGasto,
+    totalGasto:
+        totalGasto,
 
-    saldoRestante: saldoFinal,
+    saldoRestante:
+        saldoFinal,
 
     quantidadeTotalItens:
         quantidadeCompras,
 
-    pontuacao: pontuacao,
+    pontuacao:
+        pontuacao,
 
-    produtos: carrinho
+    produtos:
+        carrinho
 
 };
+
 
 localStorage.setItem(
     "resultadoPartida",
@@ -298,6 +486,7 @@ async function salvarResultadoNoFirebase() {
             "personagemId"
         );
 
+
     if (!codigoTurma) {
 
         console.warn(
@@ -307,6 +496,7 @@ async function salvarResultadoNoFirebase() {
         return;
 
     }
+
 
     if (!personagemId) {
 
@@ -328,7 +518,10 @@ async function salvarResultadoNoFirebase() {
             "resultadoEnviado"
         );
 
-    if (resultadoJaEnviado === "true") {
+
+    if (
+        resultadoJaEnviado === "true"
+    ) {
 
         console.log(
             "ℹ️ Resultado já foi enviado nesta partida."
@@ -514,10 +707,6 @@ function verRanking() {
 
 function voltarInicio() {
 
-    // -------------------------------------
-    // Permite uma nova partida
-    // -------------------------------------
-
     sessionStorage.removeItem(
         "resultadoEnviado"
     );
@@ -544,4 +733,3 @@ function voltarInicio() {
         "orcamento.html";
 
 }
-

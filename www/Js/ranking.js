@@ -89,39 +89,122 @@ if (!codigoTurma) {
 // ======================================================
 // CALCULAR PONTUAÇÃO
 // ======================================================
+//
+// Esta função usa EXATAMENTE a mesma
+// lógica utilizada na vitoria.js.
+//
+// Serve apenas como segurança para
+// resultados antigos que ainda não
+// possuem pontuação salva no Firebase.
+//
+// ======================================================
 
 function calcularPontuacao(jogador) {
 
     const orcamento =
-        Number(jogador.orcamento) || 50;
+        Number(jogador.orcamento) || 0;
 
-    const saldo =
-        Number(jogador.saldoRestante) || 0;
+    const totalGasto =
+        Number(jogador.totalGasto) || 0;
+
+    const quantidadeCompras =
+        Number(
+            jogador.quantidadeTotalItens
+        ) || 0;
 
 
-    if (orcamento <= 0) {
+    if (
+        orcamento <= 0
+    ) {
 
         return 0;
 
     }
 
 
-    const porcentagemGuardada =
-        saldo / orcamento;
+    // =====================================
+    // PONTOS PELA QUANTIDADE
+    // =====================================
 
-
-    let pontuacao =
-        Math.round(
-            porcentagemGuardada * 100
+    const quantidadeConsiderada =
+        Math.min(
+            quantidadeCompras,
+            5
         );
 
 
-    return Math.max(
-        0,
-        Math.min(
-            100,
-            pontuacao
-        )
+    const pontosQuantidade =
+        (
+            quantidadeConsiderada / 5
+        ) * 40;
+
+
+    // =====================================
+    // PONTOS PELO EQUILÍBRIO DOS GASTOS
+    // =====================================
+
+    const percentualGasto =
+        totalGasto / orcamento;
+
+
+    let pontosGasto = 0;
+
+
+    if (
+        percentualGasto < 0.40
+    ) {
+
+        pontosGasto =
+            (
+                percentualGasto / 0.40
+            ) * 60;
+
+    }
+
+    else if (
+        percentualGasto <= 0.70
+    ) {
+
+        pontosGasto = 60;
+
+    }
+
+    else {
+
+        pontosGasto =
+            (
+                (1 - percentualGasto) /
+                0.30
+            ) * 60;
+
+    }
+
+
+    // =====================================
+    // TOTAL
+    // =====================================
+
+    let pontuacao =
+        pontosQuantidade +
+        pontosGasto;
+
+
+    // =====================================
+    // LIMITAR ENTRE 0 E 100
+    // =====================================
+
+    pontuacao =
+        Math.max(
+            0,
+            Math.min(
+                100,
+                pontuacao
+            )
+        );
+
+
+    return Math.round(
+        pontuacao
     );
 
 }
@@ -186,17 +269,19 @@ async function carregarRanking() {
                             : [];
 
 
-                    // Se o Firebase tiver pontuação,
-                    // usa a pontuação salva.
-                    //
-                    // Se ainda não tiver,
-                    // calcula novamente.
+                    // ------------------------------------------
+                    // PEGAR PONTUAÇÃO SALVA
+                    // ------------------------------------------
 
                     let pontuacao =
                         Number(
                             jogador.pontuacao
                         );
 
+
+                    // ------------------------------------------
+                    // SE NÃO EXISTIR, CALCULAR
+                    // ------------------------------------------
 
                     if (
                         !Number.isFinite(
@@ -229,14 +314,24 @@ async function carregarRanking() {
 
 
         // ==================================================
-        // ORDENAR
+        // ORDENAR RANKING
+        // ==================================================
+        //
+        // 1º → maior pontuação
+        //
+        // 2º → maior quantidade de itens
+        //
+        // 3º → maior saldo restante
+        //
         // ==================================================
 
         jogadores.sort(
             function (a, b) {
 
-                // 1º critério:
-                // maior pontuação
+                // ------------------------------------------
+                // 1º CRITÉRIO
+                // MAIOR PONTUAÇÃO
+                // ------------------------------------------
 
                 if (
                     b.pontuacao !==
@@ -251,35 +346,10 @@ async function carregarRanking() {
                 }
 
 
-                // 2º critério:
-                // maior saldo
-
-                const saldoA =
-                    Number(
-                        a.saldoRestante
-                    ) || 0;
-
-                const saldoB =
-                    Number(
-                        b.saldoRestante
-                    ) || 0;
-
-
-                if (
-                    saldoB !==
-                    saldoA
-                ) {
-
-                    return (
-                        saldoB -
-                        saldoA
-                    );
-
-                }
-
-
-                // 3º critério:
-                // maior quantidade de itens
+                // ------------------------------------------
+                // 2º CRITÉRIO
+                // MAIOR QUANTIDADE DE ITENS
+                // ------------------------------------------
 
                 const quantidadeA =
                     Number(
@@ -292,9 +362,38 @@ async function carregarRanking() {
                     ) || 0;
 
 
-                return (
-                    quantidadeB -
+                if (
+                    quantidadeB !==
                     quantidadeA
+                ) {
+
+                    return (
+                        quantidadeB -
+                        quantidadeA
+                    );
+
+                }
+
+
+                // ------------------------------------------
+                // 3º CRITÉRIO
+                // MAIOR SALDO
+                // ------------------------------------------
+
+                const saldoA =
+                    Number(
+                        a.saldoRestante
+                    ) || 0;
+
+                const saldoB =
+                    Number(
+                        b.saldoRestante
+                    ) || 0;
+
+
+                return (
+                    saldoB -
+                    saldoA
                 );
 
             }
@@ -829,4 +928,3 @@ function voltarInicio() {
         "orcamento.html";
 
 }
-
