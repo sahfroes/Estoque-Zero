@@ -1,47 +1,25 @@
-/* =====================================
-   ESTOQUE ZERO
-   JAVASCRIPT DA TELA DE RESULTADO
-===================================== */
-
 
 // =====================================
 // ELEMENTOS DO HTML
 // =====================================
 
 const orcamentoElemento =
-    document.getElementById(
-        "orcamentoInicial"
-    );
-
+    document.getElementById("orcamentoInicial");
 
 const gastoElemento =
-    document.getElementById(
-        "totalGasto"
-    );
-
+    document.getElementById("totalGasto");
 
 const saldoElemento =
-    document.getElementById(
-        "saldoRestante"
-    );
-
+    document.getElementById("saldoRestante");
 
 const comprasElemento =
-    document.getElementById(
-        "quantidadeCompras"
-    );
-
+    document.getElementById("quantidadeCompras");
 
 const pontuacaoElemento =
-    document.getElementById(
-        "pontuacao"
-    );
-
+    document.getElementById("pontuacao");
 
 const desempenhoElemento =
-    document.getElementById(
-        "mensagemDesempenho"
-    );
+    document.getElementById("mensagemDesempenho");
 
 
 // =====================================
@@ -49,19 +27,12 @@ const desempenhoElemento =
 // =====================================
 
 const valorOrcamento =
-    localStorage.getItem(
-        "orcamentoSelecionado"
-    );
-
+    localStorage.getItem("orcamentoSelecionado");
 
 const orcamento =
     Number(valorOrcamento) || 0;
 
-
-console.log(
-    "💰 Orçamento:",
-    orcamento
-);
+console.log("💰 Orçamento:", orcamento);
 
 
 // =====================================
@@ -69,19 +40,12 @@ console.log(
 // =====================================
 
 const valorTotal =
-    localStorage.getItem(
-        "totalGasto"
-    );
-
+    localStorage.getItem("totalGasto");
 
 const totalGasto =
     Number(valorTotal) || 0;
 
-
-console.log(
-    "💸 Total gasto:",
-    totalGasto
-);
+console.log("💸 Total gasto:", totalGasto);
 
 
 // =====================================
@@ -89,20 +53,9 @@ console.log(
 // =====================================
 
 const valorSaldo =
-    localStorage.getItem(
-        "saldoFinal"
-    );
-
-
-// IMPORTANTE:
-// Não usamos Number(null),
-// porque null vira 0.
-
-// Se não existir saldo salvo,
-// calculamos novamente.
+    localStorage.getItem("saldoFinal");
 
 let saldoFinal;
-
 
 if (
     valorSaldo !== null &&
@@ -119,11 +72,7 @@ if (
 
 }
 
-
-console.log(
-    "💵 Saldo final:",
-    saldoFinal
-);
+console.log("💵 Saldo final:", saldoFinal);
 
 
 // =====================================
@@ -132,21 +81,15 @@ console.log(
 
 let carrinho = [];
 
-
 try {
 
     const carrinhoSalvo =
-        localStorage.getItem(
-            "carrinho"
-        );
-
+        localStorage.getItem("carrinho");
 
     if (carrinhoSalvo) {
 
         carrinho =
-            JSON.parse(
-                carrinhoSalvo
-            );
+            JSON.parse(carrinhoSalvo);
 
     } else {
 
@@ -165,11 +108,7 @@ try {
 
 }
 
-
-console.log(
-    "🛒 Carrinho:",
-    carrinho
-);
+console.log("🛒 Carrinho:", carrinho);
 
 
 // =====================================
@@ -178,18 +117,12 @@ console.log(
 
 let quantidadeCompras = 0;
 
+carrinho.forEach(function (produto) {
 
-carrinho.forEach(
-    function (produto) {
+    quantidadeCompras +=
+        Number(produto.quantidade) || 1;
 
-        quantidadeCompras +=
-            Number(
-                produto.quantidade
-            ) || 1;
-
-    }
-);
-
+});
 
 console.log(
     "🛍️ Quantidade de compras:",
@@ -203,12 +136,10 @@ console.log(
 
 let pontuacao = 0;
 
-
 if (orcamento > 0) {
 
     const porcentagemGuardada =
         saldoFinal / orcamento;
-
 
     pontuacao =
         Math.round(
@@ -260,14 +191,12 @@ if (orcamentoElemento) {
 
 }
 
-
 if (gastoElemento) {
 
     gastoElemento.textContent =
         dinheiro(totalGasto);
 
 }
-
 
 if (saldoElemento) {
 
@@ -276,14 +205,12 @@ if (saldoElemento) {
 
 }
 
-
 if (comprasElemento) {
 
     comprasElemento.textContent =
         quantidadeCompras;
 
 }
-
 
 if (pontuacaoElemento) {
 
@@ -299,7 +226,6 @@ if (pontuacaoElemento) {
 
 if (desempenhoElemento) {
 
-
     if (
         saldoFinal >=
         orcamento * 0.5
@@ -310,7 +236,6 @@ if (desempenhoElemento) {
 
     }
 
-
     else if (
         saldoFinal > 0
     ) {
@@ -320,7 +245,6 @@ if (desempenhoElemento) {
 
     }
 
-
     else {
 
         desempenhoElemento.textContent =
@@ -329,6 +253,200 @@ if (desempenhoElemento) {
     }
 
 }
+
+
+// =====================================
+// SALVAR RESULTADO LOCALMENTE
+// =====================================
+
+const resultadoPartida = {
+
+    orcamento: orcamento,
+
+    totalGasto: totalGasto,
+
+    saldoRestante: saldoFinal,
+
+    quantidadeTotalItens:
+        quantidadeCompras,
+
+    pontuacao: pontuacao,
+
+    produtos: carrinho
+
+};
+
+localStorage.setItem(
+    "resultadoPartida",
+    JSON.stringify(resultadoPartida)
+);
+
+
+// =====================================
+// ENVIAR RESULTADO PARA O FIREBASE
+// =====================================
+
+async function salvarResultadoNoFirebase() {
+
+    const codigoTurma =
+        localStorage.getItem(
+            "codigoTurma"
+        );
+
+    const personagemId =
+        localStorage.getItem(
+            "personagemId"
+        );
+
+    if (!codigoTurma) {
+
+        console.warn(
+            "⚠️ Código da turma não encontrado."
+        );
+
+        return;
+
+    }
+
+    if (!personagemId) {
+
+        console.warn(
+            "⚠️ Personagem não encontrado."
+        );
+
+        return;
+
+    }
+
+
+    // -------------------------------------
+    // EVITAR DUPLICAR ENVIO
+    // -------------------------------------
+
+    const resultadoJaEnviado =
+        sessionStorage.getItem(
+            "resultadoEnviado"
+        );
+
+    if (resultadoJaEnviado === "true") {
+
+        console.log(
+            "ℹ️ Resultado já foi enviado nesta partida."
+        );
+
+        return;
+
+    }
+
+
+    // -------------------------------------
+    // DADOS QUE SERÃO ENVIADOS
+    // -------------------------------------
+
+    const dados = {
+
+        codigo:
+            codigoTurma,
+
+        personagemId:
+            personagemId,
+
+        orcamento:
+            orcamento,
+
+        totalGasto:
+            totalGasto,
+
+        saldoRestante:
+            saldoFinal,
+
+        quantidadeTotalItens:
+            quantidadeCompras,
+
+        produtos:
+            carrinho,
+
+        pontuacao:
+            pontuacao
+
+    };
+
+
+    console.log(
+        "📤 Enviando resultado para o servidor:",
+        dados
+    );
+
+
+    try {
+
+        const resposta =
+            await fetch(
+                "/api/jogadores/finalizar",
+                {
+                    method: "POST",
+
+                    headers: {
+                        "Content-Type":
+                            "application/json"
+                    },
+
+                    body:
+                        JSON.stringify(
+                            dados
+                        )
+                }
+            );
+
+
+        const resultado =
+            await resposta.json();
+
+
+        console.log(
+            "📥 Resposta do servidor:",
+            resultado
+        );
+
+
+        if (!resposta.ok) {
+
+            throw new Error(
+                resultado.mensagem ||
+                "Erro ao salvar o resultado."
+            );
+
+        }
+
+
+        sessionStorage.setItem(
+            "resultadoEnviado",
+            "true"
+        );
+
+
+        console.log(
+            "✅ Resultado salvo no Firebase!"
+        );
+
+
+    } catch (erro) {
+
+        console.error(
+            "❌ Erro ao salvar resultado:",
+            erro
+        );
+
+    }
+
+}
+
+
+// =====================================
+// EXECUTAR ENVIO
+// =====================================
+
+salvarResultadoNoFirebase();
 
 
 // =====================================
@@ -396,9 +514,14 @@ function verRanking() {
 
 function voltarInicio() {
 
-    // Limpa a partida anterior
-    // somente quando voltar
-    // para começar uma nova.
+    // -------------------------------------
+    // Permite uma nova partida
+    // -------------------------------------
+
+    sessionStorage.removeItem(
+        "resultadoEnviado"
+    );
+
 
     localStorage.removeItem(
         "carrinho"
@@ -412,8 +535,13 @@ function voltarInicio() {
         "saldoFinal"
     );
 
+    localStorage.removeItem(
+        "resultadoPartida"
+    );
+
 
     window.location.href =
         "orcamento.html";
 
 }
+

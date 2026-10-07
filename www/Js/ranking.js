@@ -1,10 +1,4 @@
 // ======================================================
-// ESTOQUE ZERO
-// RANKING
-// ======================================================
-
-
-// ======================================================
 // ELEMENTOS
 // ======================================================
 
@@ -85,8 +79,7 @@ if (!codigoTurma) {
             </p>
         `;
 
-}
-else {
+} else {
 
     carregarRanking();
 
@@ -99,58 +92,37 @@ else {
 
 function calcularPontuacao(jogador) {
 
-    const ORCAMENTO = 50;
-
-
-    // ------------------------------------------
-    // SALDO
-    // ------------------------------------------
+    const orcamento =
+        Number(jogador.orcamento) || 50;
 
     const saldo =
-        Number(
-            jogador.saldoRestante
-        ) || 0;
+        Number(jogador.saldoRestante) || 0;
 
 
-    const dinheiroGuardado =
-        Math.max(
-            0,
-            saldo / ORCAMENTO
-        );
+    if (orcamento <= 0) {
+
+        return 0;
+
+    }
+
+
+    const porcentagemGuardada =
+        saldo / orcamento;
 
 
     let pontuacao =
         Math.round(
-            dinheiroGuardado * 100
+            porcentagemGuardada * 100
         );
 
 
-    // ------------------------------------------
-    // QUANTIDADE DE ITENS
-    // ------------------------------------------
-
-    const quantidade =
-        Number(
-            jogador.quantidadeTotalItens
-        ) || 0;
-
-
-    pontuacao +=
-        quantidade * 5;
-
-
-    // ------------------------------------------
-    // LIMITE
-    // ------------------------------------------
-
-    pontuacao =
+    return Math.max(
+        0,
         Math.min(
             100,
             pontuacao
-        );
-
-
-    return pontuacao;
+        )
+    );
 
 }
 
@@ -189,7 +161,7 @@ async function carregarRanking() {
 
 
         console.log(
-            "📊 Dados do ranking:",
+            "📊 Dados recebidos do Firebase:",
             dados
         );
 
@@ -199,21 +171,56 @@ async function carregarRanking() {
 
 
         // ==================================================
-        // ADICIONAR PONTUAÇÃO
+        // NORMALIZAR DADOS
         // ==================================================
 
         jogadores =
             jogadores.map(
                 function (jogador) {
 
+                    const produtos =
+                        Array.isArray(
+                            jogador.produtos
+                        )
+                            ? jogador.produtos
+                            : [];
+
+
+                    // Se o Firebase tiver pontuação,
+                    // usa a pontuação salva.
+                    //
+                    // Se ainda não tiver,
+                    // calcula novamente.
+
+                    let pontuacao =
+                        Number(
+                            jogador.pontuacao
+                        );
+
+
+                    if (
+                        !Number.isFinite(
+                            pontuacao
+                        )
+                    ) {
+
+                        pontuacao =
+                            calcularPontuacao(
+                                jogador
+                            );
+
+                    }
+
+
                     return {
 
                         ...jogador,
 
                         pontuacao:
-                            calcularPontuacao(
-                                jogador
-                            )
+                            pontuacao,
+
+                        produtos:
+                            produtos
 
                     };
 
@@ -228,7 +235,7 @@ async function carregarRanking() {
         jogadores.sort(
             function (a, b) {
 
-                // Primeiro:
+                // 1º critério:
                 // maior pontuação
 
                 if (
@@ -244,12 +251,50 @@ async function carregarRanking() {
                 }
 
 
-                // Desempate:
+                // 2º critério:
                 // maior saldo
 
+                const saldoA =
+                    Number(
+                        a.saldoRestante
+                    ) || 0;
+
+                const saldoB =
+                    Number(
+                        b.saldoRestante
+                    ) || 0;
+
+
+                if (
+                    saldoB !==
+                    saldoA
+                ) {
+
+                    return (
+                        saldoB -
+                        saldoA
+                    );
+
+                }
+
+
+                // 3º critério:
+                // maior quantidade de itens
+
+                const quantidadeA =
+                    Number(
+                        a.quantidadeTotalItens
+                    ) || 0;
+
+                const quantidadeB =
+                    Number(
+                        b.quantidadeTotalItens
+                    ) || 0;
+
+
                 return (
-                    b.saldoRestante -
-                    a.saldoRestante
+                    quantidadeB -
+                    quantidadeA
                 );
 
             }
@@ -263,12 +308,13 @@ async function carregarRanking() {
         const finalizados =
             jogadores.filter(
                 jogador =>
-                    jogador.finalizou
+                    jogador.finalizou === true
             ).length;
 
 
         mensagemRanking.textContent =
             `${finalizados} de ${jogadores.length} jogador(es) finalizaram a missão.`;
+
 
 
         // ==================================================
@@ -359,10 +405,6 @@ async function carregarRanking() {
 
 function mostrarPodio(jogadores) {
 
-    // ------------------------------------------
-    // PRIMEIRO
-    // ------------------------------------------
-
     if (jogadores[0]) {
 
         primeiroLugar.innerHTML =
@@ -371,18 +413,12 @@ function mostrarPodio(jogadores) {
                 "🥇"
             );
 
-    }
-    else {
+    } else {
 
-        primeiroLugar.innerHTML =
-            "";
+        primeiroLugar.innerHTML = "";
 
     }
 
-
-    // ------------------------------------------
-    // SEGUNDO
-    // ------------------------------------------
 
     if (jogadores[1]) {
 
@@ -392,18 +428,12 @@ function mostrarPodio(jogadores) {
                 "🥈"
             );
 
-    }
-    else {
+    } else {
 
-        segundoLugar.innerHTML =
-            "";
+        segundoLugar.innerHTML = "";
 
     }
 
-
-    // ------------------------------------------
-    // TERCEIRO
-    // ------------------------------------------
 
     if (jogadores[2]) {
 
@@ -413,11 +443,9 @@ function mostrarPodio(jogadores) {
                 "🥉"
             );
 
-    }
-    else {
+    } else {
 
-        terceiroLugar.innerHTML =
-            "";
+        terceiroLugar.innerHTML = "";
 
     }
 
@@ -479,8 +507,7 @@ function criarJogadorPodio(
 
 function mostrarLista(jogadores) {
 
-    listaRanking.innerHTML =
-        "";
+    listaRanking.innerHTML = "";
 
 
     jogadores.forEach(
@@ -537,6 +564,16 @@ function mostrarLista(jogadores) {
                 ) || 0;
 
 
+            // ==================================================
+            // PRODUTOS COMPRADOS
+            // ==================================================
+
+            const produtosTexto =
+                criarTextoProdutos(
+                    jogador.produtos
+                );
+
+
             item.innerHTML = `
 
                 <div class="posicao">
@@ -566,16 +603,23 @@ function mostrarLista(jogadores) {
                         ${jogador.personagemNome}
                     </strong>
 
+
                     <small>
                         Saldo:
                         R$ ${formatarMoeda(saldo)}
                     </small>
+
 
                     <small>
                         ${quantidade}
                         item(ns) ·
                         R$ ${formatarMoeda(totalGasto)}
                         gasto
+                    </small>
+
+
+                    <small>
+                        🛒 ${produtosTexto}
                     </small>
 
                 </div>
@@ -600,6 +644,57 @@ function mostrarLista(jogadores) {
 
         }
     );
+
+}
+
+
+// ======================================================
+// CRIAR TEXTO DOS PRODUTOS
+// ======================================================
+
+function criarTextoProdutos(
+    produtos
+) {
+
+    if (
+        !Array.isArray(produtos) ||
+        produtos.length === 0
+    ) {
+
+        return "Nenhuma compra";
+
+    }
+
+
+    const lista =
+        produtos.map(
+            function (produto) {
+
+                const nome =
+                    produto.nome ||
+                    produto.id ||
+                    produto.produto ||
+                    "Produto";
+
+
+                const quantidade =
+                    Number(
+                        produto.quantidade
+                    ) || 1;
+
+
+                return (
+                    nome +
+                    " (" +
+                    quantidade +
+                    "x)"
+                );
+
+            }
+        );
+
+
+    return lista.join(", ");
 
 }
 
@@ -734,3 +829,4 @@ function voltarInicio() {
         "orcamento.html";
 
 }
+

@@ -1,7 +1,12 @@
+
 import express from 'express';
+
 import path from 'path';
+
 import cors from 'cors';
+
 import fs from 'fs';
+
 import { fileURLToPath } from 'url';
 
 import {
@@ -16,12 +21,15 @@ import {
 } from 'firebase-admin/firestore';
 
 
+
 // ======================================================
 // __dirname
 // ======================================================
 
 const __filename = fileURLToPath(import.meta.url);
+
 const __dirname = path.dirname(__filename);
+
 
 
 // ======================================================
@@ -62,8 +70,10 @@ if (!getApps().length) {
             throw new Error(
                 'Credenciais do Firebase não encontradas.'
             );
+
         }
     }
+
 
 
     // ------------------------------------------
@@ -77,13 +87,17 @@ if (!getApps().length) {
                 /\\n/g,
                 '\n'
             );
+
     }
+
 
 
     initializeApp({
         credential: cert(serviceAccount)
     });
+
 }
+
 
 
 // ======================================================
@@ -91,6 +105,7 @@ if (!getApps().length) {
 // ======================================================
 
 const db = getFirestore();
+
 
 
 // ======================================================
@@ -102,6 +117,7 @@ const app = express();
 app.use(express.json());
 
 app.use(cors());
+
 
 
 // ======================================================
@@ -119,6 +135,7 @@ app.use(
         }
     )
 );
+
 
 
 // ======================================================
@@ -140,6 +157,7 @@ app.get('/', (req, res) => {
 });
 
 
+
 app.get('/entrar.html', (req, res) => {
 
     res.sendFile(
@@ -153,6 +171,7 @@ app.get('/entrar.html', (req, res) => {
     );
 
 });
+
 
 
 // ======================================================
@@ -171,6 +190,7 @@ app.post(
             } = req.body;
 
 
+
             if (!codigo || !pin) {
 
                 return res.status(400).json({
@@ -181,10 +201,12 @@ app.post(
             }
 
 
+
             const codigoFormatado =
                 String(codigo)
                     .trim()
                     .toUpperCase();
+
 
 
             const salaRef =
@@ -193,8 +215,10 @@ app.post(
                     .doc(codigoFormatado);
 
 
+
             const doc =
                 await salaRef.get();
+
 
 
             if (!doc.exists) {
@@ -207,8 +231,10 @@ app.post(
             }
 
 
+
             const salaData =
                 doc.data();
+
 
 
             if (!salaData.ativa) {
@@ -219,6 +245,7 @@ app.post(
                 });
 
             }
+
 
 
             if (
@@ -234,6 +261,7 @@ app.post(
             }
 
 
+
             return res.status(200).json({
 
                 sucesso: true,
@@ -247,12 +275,14 @@ app.post(
             });
 
 
+
         } catch (error) {
 
             console.error(
                 'Erro ao entrar na sala:',
                 error
             );
+
 
 
             return res.status(500).json({
@@ -264,6 +294,7 @@ app.post(
 
     }
 );
+
 
 
 // ======================================================
@@ -282,6 +313,7 @@ app.post(
             } = req.body;
 
 
+
             if (!codigo || !pin) {
 
                 return res.status(400).json({
@@ -292,16 +324,19 @@ app.post(
             }
 
 
+
             const codigoFormatado =
                 String(codigo)
                     .trim()
                     .toUpperCase();
 
 
+
             const salaRef =
                 db
                     .collection('salas')
                     .doc(codigoFormatado);
+
 
 
             await salaRef.set({
@@ -321,6 +356,7 @@ app.post(
             });
 
 
+
             return res.status(201).json({
 
                 sucesso: true,
@@ -331,6 +367,7 @@ app.post(
             });
 
 
+
         } catch (error) {
 
             console.error(
@@ -339,17 +376,17 @@ app.post(
             );
 
 
-            return res.status(500).json({
 
+            return res.status(500).json({
                 mensagem:
                     'Erro ao criar a sala.'
-
             });
 
         }
 
     }
 );
+
 
 
 // ======================================================
@@ -359,66 +396,125 @@ app.post(
 const personagensPermitidos = {
 
     gigis: {
+
         id: 'gigis',
+
         nome: 'Gigis',
+
         seed: 'gigis-estoque-zero'
+
     },
+
+
 
     alexa: {
+
         id: 'alexa',
+
         nome: 'Alexa',
+
         seed: 'alexa-estoque-zero'
+
     },
+
+
 
     vivi: {
+
         id: 'vivi',
+
         nome: 'Vivi',
+
         seed: 'vivi-estoque-zero'
+
     },
+
+
 
     gao: {
+
         id: 'gao',
+
         nome: 'Gao',
+
         seed: 'gao-estoque-zero'
+
     },
+
+
 
     tuco: {
+
         id: 'tuco',
+
         nome: 'Tuco',
+
         seed: 'tuco-estoque-zero'
+
     },
+
+
 
     pulma: {
+
         id: 'pulma',
+
         nome: 'Pulma',
+
         seed: 'pulma-estoque-zero'
+
     },
+
+
 
     robs: {
+
         id: 'robs',
+
         nome: 'Robs',
+
         seed: 'robs-estoque-zero'
+
     },
+
+
 
     prin: {
+
         id: 'prin',
+
         nome: 'Prin',
+
         seed: 'prin-estoque-zero'
+
     },
+
+
 
     mark: {
+
         id: 'mark',
+
         nome: 'Mark',
+
         seed: 'mark-estoque-zero'
+
     },
 
+
+
     ligi: {
+
         id: 'ligi',
+
         nome: 'Ligi',
+
         seed: 'ligi-estoque-zero'
+
     }
 
 };
+
 
 
 // ======================================================
@@ -439,6 +535,7 @@ app.get(
                     .toUpperCase();
 
 
+
             if (!codigo) {
 
                 return res.status(400).json({
@@ -449,14 +546,17 @@ app.get(
             }
 
 
+
             const salaRef =
                 db
                     .collection('salas')
                     .doc(codigo);
 
 
+
             const salaDoc =
                 await salaRef.get();
+
 
 
             if (!salaDoc.exists) {
@@ -469,16 +569,19 @@ app.get(
             }
 
 
+
             const jogadoresSnapshot =
                 await salaRef
                     .collection('jogadores')
                     .get();
 
 
+
             const ocupados =
                 jogadoresSnapshot.docs.map(
                     doc => doc.id
                 );
+
 
 
             return res.status(200).json({
@@ -490,6 +593,7 @@ app.get(
             });
 
 
+
         } catch (error) {
 
             console.error(
@@ -498,17 +602,17 @@ app.get(
             );
 
 
-            return res.status(500).json({
 
+            return res.status(500).json({
                 mensagem:
                     'Erro ao buscar personagens ocupados.'
-
             });
 
         }
 
     }
 );
+
 
 
 // ======================================================
@@ -528,6 +632,7 @@ app.post(
             } = req.body;
 
 
+
             // ------------------------------------------
             // VALIDAR SALA
             // ------------------------------------------
@@ -535,19 +640,19 @@ app.post(
             if (!codigo) {
 
                 return res.status(400).json({
-
                     mensagem:
                         'Código da turma não informado.'
-
                 });
 
             }
+
 
 
             const codigoFormatado =
                 String(codigo)
                     .trim()
                     .toUpperCase();
+
 
 
             // ------------------------------------------
@@ -560,19 +665,19 @@ app.post(
             ) {
 
                 return res.status(400).json({
-
                     mensagem:
                         'Personagem inválido.'
-
                 });
 
             }
+
 
 
             const personagem =
                 personagensPermitidos[
                     personagemId
                 ];
+
 
 
             // ------------------------------------------
@@ -585,20 +690,21 @@ app.post(
                     .doc(codigoFormatado);
 
 
+
             const salaDoc =
                 await salaRef.get();
+
 
 
             if (!salaDoc.exists) {
 
                 return res.status(404).json({
-
                     mensagem:
                         'Sala não encontrada.'
-
                 });
 
             }
+
 
 
             // ------------------------------------------
@@ -609,6 +715,7 @@ app.post(
                 salaRef
                     .collection('jogadores')
                     .doc(personagem.id);
+
 
 
             // ------------------------------------------
@@ -622,6 +729,7 @@ app.post(
                         await transaction.get(
                             jogadorRef
                         );
+
 
 
                     if (jogadorDoc.exists) {
@@ -639,8 +747,10 @@ app.post(
                     }
 
 
+
                     let saldoInicial =
                         Number(orcamento);
+
 
 
                     if (
@@ -653,6 +763,7 @@ app.post(
                         saldoInicial = 50;
 
                     }
+
 
 
                     transaction.create(
@@ -686,6 +797,11 @@ app.post(
                             orcamento:
                                 saldoInicial,
 
+                            // NOVO:
+                            // pontuação inicial de cada personagem
+                            pontuacao:
+                                0,
+
                             criadoEm:
                                 FieldValue.serverTimestamp()
 
@@ -694,6 +810,7 @@ app.post(
 
                 }
             );
+
 
 
             // ------------------------------------------
@@ -711,6 +828,7 @@ app.post(
                     personagem
 
             });
+
 
 
         } catch (error) {
@@ -735,23 +853,24 @@ app.post(
             }
 
 
+
             console.error(
                 'Erro ao reservar personagem:',
                 error
             );
 
 
-            return res.status(500).json({
 
+            return res.status(500).json({
                 mensagem:
                     'Erro ao reservar o personagem.'
-
             });
 
         }
 
     }
 );
+
 
 
 // ======================================================
@@ -771,8 +890,10 @@ app.post(
                 totalGasto,
                 saldoRestante,
                 quantidadeTotalItens,
-                produtos
+                produtos,
+                pontuacao
             } = req.body;
+
 
 
             // ------------------------------------------
@@ -782,19 +903,19 @@ app.post(
             if (!codigo) {
 
                 return res.status(400).json({
-
                     mensagem:
                         'Código da turma não informado.'
-
                 });
 
             }
+
 
 
             const codigoFormatado =
                 String(codigo)
                     .trim()
                     .toUpperCase();
+
 
 
             // ------------------------------------------
@@ -807,13 +928,12 @@ app.post(
             ) {
 
                 return res.status(400).json({
-
                     mensagem:
                         'Personagem inválido.'
-
                 });
 
             }
+
 
 
             // ------------------------------------------
@@ -826,20 +946,21 @@ app.post(
                     .doc(codigoFormatado);
 
 
+
             const salaDoc =
                 await salaRef.get();
+
 
 
             if (!salaDoc.exists) {
 
                 return res.status(404).json({
-
                     mensagem:
                         'Sala não encontrada.'
-
                 });
 
             }
+
 
 
             // ------------------------------------------
@@ -852,20 +973,21 @@ app.post(
                     .doc(personagemId);
 
 
+
             const jogadorDoc =
                 await jogadorRef.get();
+
 
 
             if (!jogadorDoc.exists) {
 
                 return res.status(404).json({
-
                     mensagem:
                         'Jogador não encontrado.'
-
                 });
 
             }
+
 
 
             // ------------------------------------------
@@ -874,6 +996,7 @@ app.post(
 
             let valorOrcamento =
                 Number(orcamento);
+
 
 
             if (
@@ -886,6 +1009,8 @@ app.post(
                 const dadosJogador =
                     jogadorDoc.data();
 
+
+
                 valorOrcamento =
                     Number(
                         dadosJogador.orcamento
@@ -894,12 +1019,14 @@ app.post(
             }
 
 
+
             // ------------------------------------------
             // NORMALIZAR TOTAL GASTO
             // ------------------------------------------
 
             let valorTotalGasto =
                 Number(totalGasto);
+
 
 
             if (
@@ -913,12 +1040,14 @@ app.post(
             }
 
 
+
             // ------------------------------------------
             // NORMALIZAR SALDO
             // ------------------------------------------
 
             let valorSaldoRestante =
                 Number(saldoRestante);
+
 
 
             if (
@@ -934,6 +1063,7 @@ app.post(
             }
 
 
+
             // ------------------------------------------
             // NORMALIZAR QUANTIDADE
             // ------------------------------------------
@@ -942,6 +1072,7 @@ app.post(
                 Number(
                     quantidadeTotalItens
                 );
+
 
 
             if (
@@ -956,6 +1087,7 @@ app.post(
             }
 
 
+
             // ------------------------------------------
             // PRODUTOS
             // ------------------------------------------
@@ -964,6 +1096,41 @@ app.post(
                 Array.isArray(produtos)
                     ? produtos
                     : [];
+
+
+
+            // ------------------------------------------
+            // NORMALIZAR PONTUAÇÃO
+            // ------------------------------------------
+
+            let valorPontuacao =
+                Number(pontuacao);
+
+
+
+            if (
+                !Number.isFinite(
+                    valorPontuacao
+                )
+            ) {
+
+                valorPontuacao = 0;
+
+            }
+
+
+
+            // Mantém a pontuação entre 0 e 100
+
+            valorPontuacao =
+                Math.max(
+                    0,
+                    Math.min(
+                        100,
+                        valorPontuacao
+                    )
+                );
+
 
 
             // ------------------------------------------
@@ -990,10 +1157,14 @@ app.post(
                 orcamento:
                     valorOrcamento,
 
+                pontuacao:
+                    valorPontuacao,
+
                 finalizadoEm:
                     FieldValue.serverTimestamp()
 
             });
+
 
 
             // ------------------------------------------
@@ -1026,12 +1197,16 @@ app.post(
                     saldoRestante:
                         valorSaldoRestante,
 
+                    pontuacao:
+                        valorPontuacao,
+
                     produtos:
                         listaProdutos
 
                 }
 
             });
+
 
 
         } catch (error) {
@@ -1042,17 +1217,17 @@ app.post(
             );
 
 
-            return res.status(500).json({
 
+            return res.status(500).json({
                 mensagem:
                     'Erro ao salvar o resultado da partida.'
-
             });
 
         }
 
     }
 );
+
 
 
 // ======================================================
@@ -1073,6 +1248,7 @@ app.get(
                     .toUpperCase();
 
 
+
             // ------------------------------------------
             // VERIFICAR CÓDIGO
             // ------------------------------------------
@@ -1080,13 +1256,12 @@ app.get(
             if (!codigo) {
 
                 return res.status(400).json({
-
                     mensagem:
                         'Código da turma não informado.'
-
                 });
 
             }
+
 
 
             // ------------------------------------------
@@ -1099,20 +1274,21 @@ app.get(
                     .doc(codigo);
 
 
+
             const salaDoc =
                 await salaRef.get();
+
 
 
             if (!salaDoc.exists) {
 
                 return res.status(404).json({
-
                     mensagem:
                         'Sala não encontrada.'
-
                 });
 
             }
+
 
 
             // ------------------------------------------
@@ -1125,12 +1301,14 @@ app.get(
                     .get();
 
 
+
             const jogadores =
                 jogadoresSnapshot.docs.map(
                     doc => {
 
                         const dados =
                             doc.data();
+
 
 
                         return {
@@ -1173,6 +1351,14 @@ app.get(
                                     dados.orcamento
                                 ) || 50,
 
+                            // IMPORTANTE:
+                            // Cada um dos 10 personagens
+                            // recebe sua própria pontuação.
+                            pontuacao:
+                                Number(
+                                    dados.pontuacao
+                                ) || 0,
+
                             produtos:
                                 Array.isArray(
                                     dados.produtos
@@ -1183,7 +1369,9 @@ app.get(
                         };
 
                     }
+
                 );
+
 
 
             // ------------------------------------------
@@ -1206,6 +1394,7 @@ app.get(
             });
 
 
+
         } catch (error) {
 
             console.error(
@@ -1214,11 +1403,10 @@ app.get(
             );
 
 
-            return res.status(500).json({
 
+            return res.status(500).json({
                 mensagem:
                     'Erro ao carregar o ranking.'
-
             });
 
         }
@@ -1227,12 +1415,14 @@ app.get(
 );
 
 
+
 // ======================================================
 // SERVIDOR
 // ======================================================
 
 const PORT =
     process.env.PORT || 3000;
+
 
 
 app.listen(
@@ -1247,4 +1437,6 @@ app.listen(
 );
 
 
+
 export default app;
+
