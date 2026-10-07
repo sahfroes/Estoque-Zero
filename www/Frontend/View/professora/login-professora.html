@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Área da Professora - Estoque Zero</title>
+
+    <link
+        rel="stylesheet"
+        href="../../../CSS/professora/professora-login.css"
+    >
+
+</head>
+
+<body>
+
+    <main class="tela-login">
+
+        <div class="logo">
+            <span>ESTOQUE</span>
+            <span>ZERO</span>
+        </div>
+
+        <div class="icone-professora">
+            👩‍🏫
+        </div>
+
+        <h1>Área da professora</h1>
+
+        <p class="descricao">
+            Acesse o painel para acompanhar o desempenho
+            dos participantes da turma.
+        </p>
+
+        <form id="formularioProfessora">
+
+            <div class="campo">
+
+                <label for="codigoTurma">
+                    Código da turma
+                </label>
+
+                <div class="campo-input">
+
+                    <span>👥</span>
+
+                    <input
+                        type="text"
+                        id="codigoTurma"
+                        placeholder="Ex.: TESTEDRIVER"
+                        maxlength="20"
+                        autocomplete="off"
+                    >
+
+                </div>
+
+            </div>
+
+
+            <div class="campo">
+
+                <label for="pinProfessora">
+                    PIN da professora
+                </label>
+
+                <div class="campo-input">
+
+                    <span>🔒</span>
+
+                    <input
+                        type="password"
+                        id="pinProfessora"
+                        placeholder="Digite o PIN"
+                        maxlength="10"
+                    >
+
+                    <button
+                        type="button"
+                        id="mostrarPin"
+                    >
+                        👁
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <p
+                id="mensagem"
+                class="mensagem"
+            ></p>
+
+
+            <button
+                type="submit"
+                class="botao-entrar"
+            >
+                Entrar no painel
+            </button>
+
+        </form>
+
+
+        <a
+            href="../entrar.html"
+            class="voltar"
+        >
+            ← Voltar para a entrada dos alunos
+        </a>
+
+    </main>
+
+
+    <script src="../../Js/professora/professora-login.js"></script>
+
+</body>
+
+</html>

@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Perfil do Aluno - Estoque Zero</title>
+
+    <link
+        rel="stylesheet"
+        href="../../../CSS/professora/professora-perfil.css"
+    >
+
+</head>
+
+<body>
+
+    <header class="topo">
+
+        <button
+            id="voltar"
+            class="voltar"
+        >
+            ←
+        </button>
+
+        <div>
+
+            <h1>Perfil do participante</h1>
+
+            <p id="turma">
+                Turma: —
+            </p>
+
+        </div>
+
+    </header>
+
+
+    <main class="conteudo">
+
+        <!-- PERFIL -->
+
+        <section class="perfil">
+
+            <img
+                id="avatar"
+                class="avatar-grande"
+                src=""
+                alt="Avatar"
+            >
+
+            <div>
+
+                <h2 id="nome">
+                    —
+                </h2>
+
+                <span
+                    id="categoria"
+                    class="categoria"
+                >
+                    —
+                </span>
+
+            </div>
+
+        </section>
+
+
+        <!-- RESUMO -->
+
+        <section class="cards">
+
+            <div class="card">
+
+                <span>⭐</span>
+
+                <small>Pontuação</small>
+
+                <strong id="pontuacao">
+                    0 pts
+                </strong>
+
+            </div>
+
+
+            <div class="card">
+
+                <span>💰</span>
+
+                <small>Orçamento inicial</small>
+
+                <strong id="orcamento">
+                    R$ 0,00
+                </strong>
+
+            </div>
+
+
+            <div class="card">
+
+                <span>🛒</span>
+
+                <small>Total gasto</small>
+
+                <strong id="gasto">
+                    R$ 0,00
+                </strong>
+
+            </div>
+
+
+            <div class="card">
+
+                <span>💵</span>
+
+                <small>Saldo final</small>
+
+                <strong id="saldo">
+                    R$ 0,00
+                </strong>
+
+            </div>
+
+
+            <div class="card">
+
+                <span>📦</span>
+
+                <small>Itens comprados</small>
+
+                <strong id="itens">
+                    0
+                </strong>
+
+            </div>
+
+
+            <div class="card">
+
+                <span>⏱️</span>
+
+                <small>Tempo</small>
+
+                <strong id="tempo">
+                    00:00
+                </strong>
+
+            </div>
+
+        </section>
+
+
+        <!-- COMPRAS -->
+
+        <section class="compras">
+
+            <h2>🛒 Produtos comprados</h2>
+
+            <p class="descricao">
+                Veja todos os produtos escolhidos pelo participante.
+            </p>
+
+            <div id="listaProdutos">
+
+                Carregando...
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <script src="../../Js/professora/perfil-aluno.js"></script>
+
+</body>
+
+</html>

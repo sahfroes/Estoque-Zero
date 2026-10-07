@@ -1,0 +1,264 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+
+    min-height: 100vh;
+
+    font-family: Arial, Helvetica, sans-serif;
+
+    background:
+        linear-gradient(
+            135deg,
+            #faf9ff,
+            #eeeaff
+        );
+
+    color: #302080;
+}
+
+
+.topo {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 15px;
+
+    padding: 25px 6%;
+
+    background: white;
+
+    border-bottom: 2px solid #e0d9ff;
+}
+
+
+.topo h1 {
+
+    font-size: 26px;
+}
+
+
+.topo p {
+
+    margin-top: 5px;
+
+    color: #8179a5;
+
+    font-size: 14px;
+}
+
+
+.voltar {
+
+    width: 42px;
+    height: 42px;
+
+    border-radius: 12px;
+
+    border: 2px solid #ded6ff;
+
+    background: white;
+
+    color: #5136ad;
+
+    font-size: 22px;
+
+    cursor: pointer;
+}
+
+
+.conteudo {
+
+    width: 90%;
+
+    max-width: 1100px;
+
+    margin: 30px auto;
+}
+
+
+/* PÓDIO */
+
+.podio {
+
+    display: grid;
+
+    grid-template-columns:
+        1fr 1.15fr 1fr;
+
+    align-items: end;
+
+    gap: 18px;
+
+    margin-bottom: 35px;
+}
+
+
+.podio > div {
+
+    background: white;
+
+    border: 2px solid #ddd6ff;
+
+    border-radius: 22px;
+
+    padding: 25px 15px;
+
+    text-align: center;
+
+    box-shadow:
+        0 10px 25px rgba(70,50,150,0.08);
+}
+
+
+.podio #primeiro {
+
+    padding-top: 35px;
+
+    padding-bottom: 35px;
+}
+
+
+.podio img {
+
+    width: 75px;
+    height: 75px;
+
+    border-radius: 50%;
+
+    background: #eee9ff;
+
+    border: 3px solid #d7ccff;
+}
+
+
+.podio h3 {
+
+    margin-top: 10px;
+
+    color: #4025a7;
+}
+
+
+.podio strong {
+
+    display: block;
+
+    margin-top: 7px;
+
+    font-size: 20px;
+
+    color: #6546cb;
+}
+
+
+/* LISTA */
+
+.ranking-lista {
+
+    background: white;
+
+    border: 2px solid #e0d9ff;
+
+    border-radius: 22px;
+
+    padding: 25px;
+
+}
+
+
+.ranking-lista h2 {
+
+    margin-bottom: 20px;
+}
+
+
+.jogador {
+
+    display: grid;
+
+    grid-template-columns:
+        45px 1fr 100px 100px 100px;
+
+    align-items: center;
+
+    gap: 15px;
+
+    padding: 15px 10px;
+
+    border-top: 1px solid #eeeaff;
+}
+
+
+.posicao {
+
+    font-size: 18px;
+
+    font-weight: bold;
+
+    color: #6a4cc7;
+}
+
+
+.avatar {
+
+    width: 42px;
+    height: 42px;
+
+    border-radius: 50%;
+
+    vertical-align: middle;
+
+    margin-right: 10px;
+}
+
+
+.nome {
+
+    font-weight: bold;
+}
+
+
+.info {
+
+    font-size: 12px;
+
+    color: #8179a5;
+}
+
+
+.valor {
+
+    text-align: center;
+
+    font-weight: bold;
+}
+
+
+@media (max-width: 700px) {
+
+    .podio {
+
+        grid-template-columns: 1fr;
+
+    }
+
+    .jogador {
+
+        grid-template-columns:
+            35px 1fr 80px;
+
+    }
+
+    .jogador .extra {
+
+        display: none;
+
+    }
+
+}

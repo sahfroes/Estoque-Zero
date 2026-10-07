@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Painel da Professora - Estoque Zero</title>
+
+    <link
+        rel="stylesheet"
+        href="../../../CSS/professora/professora-painel.css"
+    >
+
+</head>
+
+<body>
+
+    <header class="topo">
+
+        <div class="logo">
+            ESTOQUE<br>ZERO
+        </div>
+
+        <div class="titulo">
+
+            <h1>Painel da professora</h1>
+
+            <p id="nomeTurma">
+                Turma: —
+            </p>
+
+        </div>
+
+        <button
+            id="botaoSair"
+            class="botao-sair"
+        >
+            Sair
+        </button>
+
+    </header>
+
+
+    <main class="conteudo">
+
+
+        <!-- RESUMO -->
+
+        <section class="cards-resumo">
+
+            <div class="card-resumo">
+
+                <span class="icone">👥</span>
+
+                <div>
+
+                    <small>Participantes</small>
+
+                    <strong id="totalParticipantes">
+                        0
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+            <div class="card-resumo">
+
+                <span class="icone">🏆</span>
+
+                <div>
+
+                    <small>Finalizaram</small>
+
+                    <strong id="totalFinalizados">
+                        0
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+            <div class="card-resumo">
+
+                <span class="icone">💰</span>
+
+                <div>
+
+                    <small>Total gasto</small>
+
+                    <strong id="totalGastoTurma">
+                        R$ 0,00
+                    </strong>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- TÍTULO -->
+
+        <section class="cabecalho-ranking">
+
+            <div>
+
+                <h2>🏆 Ranking da turma</h2>
+
+                <p>
+                    Acompanhe o desempenho dos participantes.
+                </p>
+
+            </div>
+
+            <button
+                id="botaoRanking"
+                class="botao-principal"
+            >
+                Ver ranking completo
+            </button>
+
+        </section>
+
+
+        <!-- RANKING -->
+
+        <section class="tabela-container">
+
+            <div
+                id="carregando"
+                class="carregando"
+            >
+                Carregando resultados...
+            </div>
+
+
+            <table id="tabelaRanking">
+
+                <thead>
+
+                    <tr>
+
+                        <th>#</th>
+
+                        <th>Jogador</th>
+
+                        <th>Itens</th>
+
+                        <th>Inicial</th>
+
+                        <th>Gasto</th>
+
+                        <th>Saldo</th>
+
+                        <th>Tempo</th>
+
+                        <th>Pontos</th>
+
+                        <th></th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody id="corpoRanking"></tbody>
+
+            </table>
+
+        </section>
+
+
+        <!-- LEGENDA -->
+
+        <section class="informacao">
+
+            <div>
+                <strong>💰 Orçamento inicial</strong>
+                <p>Valor disponível no começo da partida.</p>
+            </div>
+
+            <div>
+                <strong>🛒 Total gasto</strong>
+                <p>Valor utilizado nas compras.</p>
+            </div>
+
+            <div>
+                <strong>💵 Saldo final</strong>
+                <p>Valor restante após as compras.</p>
+            </div>
+
+            <div>
+                <strong>⏱️ Tempo</strong>
+                <p>Tempo utilizado pelo participante.</p>
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <script src="../../Js/professora/painel-professora.js"></script>
+
+</body>
+
+</html>
