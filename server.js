@@ -1,4 +1,3 @@
-
 import express from 'express';
 import path from 'path';
 import cors from 'cors';
@@ -17,7 +16,7 @@ import {
 } from 'firebase-admin/firestore';
 
 // ======================================================
-// CAMINHO DO PROJETO
+// __dirname
 // ======================================================
 
 const __filename = fileURLToPath(import.meta.url);
@@ -35,7 +34,10 @@ if (!getApps().length) {
             process.env.FIREBASE_SERVICE_ACCOUNT
         );
     } else {
-        const keyPath = path.join(__dirname, 'firebase-key.json');
+        const keyPath = path.join(
+            __dirname,
+            'firebase-key.json'
+        );
 
         if (fs.existsSync(keyPath)) {
             serviceAccount = JSON.parse(
@@ -86,15 +88,10 @@ function normalizarCodigo(codigo) {
 }
 
 function normalizarPin(pin) {
-    if (pin === undefined || pin === null) {
-        return '';
-    }
-
-    return String(pin).trim();
+    return String(pin ?? '').trim();
 }
 
-// Busca a sala pelo ID do documento ou pelo campo "codigo".
-// Exemplo: ID = TESTE1 e codigo = TESTEDRIVER.
+// Busca a sala pelo ID ou pelo campo "codigo".
 async function buscarSalaPorCodigo(codigoRecebido) {
     const codigo = normalizarCodigo(codigoRecebido);
 
@@ -102,34 +99,49 @@ async function buscarSalaPorCodigo(codigoRecebido) {
         return null;
     }
 
-    // 1. Tenta localizar pelo ID do documento.
-    const referencia = db.collection('salas').doc(codigo);
-    const documento = await referencia.get();
+    const salasRef = db.collection('salas');
 
-    if (documento.exists) {
-        return {
-            ref: referencia,
-            doc: documento
-        };
+    // Primeiro, procura pelo ID do documento.
+    const salaPorId = await salasRef.doc(codigo).get();
+
+    if (salaPorId.exists) {
+        const dados = salaPorId.data() || {};
+        const codigoSalvo = normalizarCodigo(
+            dados.codigo || salaPorId.id
+        );
+
+        if (codigoSalvo === codigo) {
+            return {
+                ref: salaPorId.ref,
+                dados
+            };
+        }
     }
 
-    // 2. Se não encontrar, procura pelo campo "codigo".
-    const resultado = await db
-        .collection('salas')
+    // Depois, procura pelo campo "codigo".
+    const resultado = await salasRef
         .where('codigo', '==', codigo)
         .limit(1)
         .get();
 
-    if (resultado.empty) {
-        return null;
+    if (!resultado.empty) {
+        const documento = resultado.docs[0];
+
+        return {
+            ref: documento.ref,
+            dados: documento.data() || {}
+        };
     }
 
-    const sala = resultado.docs[0];
+    return null;
+}
 
-    return {
-        ref: sala.ref,
-        doc: sala
-    };
+function salaNaoEncontrada(res) {
+    return res.status(404).json({
+        sucesso: false,
+        mensagem:
+            'Sala não encontrada. Confira o código no Firebase.'
+    });
 }
 
 // ======================================================
@@ -161,73 +173,13 @@ app.get('/entrar.html', (req, res) => {
 });
 
 // ======================================================
-// ENTRAR NA SALA
-// ======================================================
-
-app.post('/api/salas/entrar', async (req, res) => {
-    try {
-        const codigo = normalizarCodigo(req.body.codigo);
-        const pin = normalizarPin(req.body.pin);
-
-        if (!codigo || !pin) {
-            return res.status(400).json({
-                sucesso: false,
-                mensagem: 'Código e PIN são obrigatórios.'
-            });
-        }
-
-        const sala = await buscarSalaPorCodigo(codigo);
-
-        if (!sala) {
-            return res.status(404).json({
-                sucesso: false,
-                mensagem: 'Sala não encontrada. Confira o código no Firebase.'
-            });
-        }
-
-        const dados = sala.doc.data();
-
-        if (dados.ativa !== true) {
-            return res.status(403).json({
-                sucesso: false,
-                mensagem: 'Esta sala não está mais ativa.'
-            });
-        }
-
-        if (normalizarPin(dados.pin) !== pin) {
-            return res.status(401).json({
-                sucesso: false,
-                mensagem: 'PIN incorreto.'
-            });
-        }
-
-        const codigoOficial =
-            normalizarCodigo(dados.codigo) || codigo;
-
-        return res.status(200).json({
-            sucesso: true,
-            mensagem: 'Acesso liberado!',
-            codigo: codigoOficial
-        });
-
-    } catch (error) {
-        console.error('Erro ao entrar na sala:', error);
-
-        return res.status(500).json({
-            sucesso: false,
-            mensagem: 'Erro interno no servidor.'
-        });
-    }
-});
-
-// ======================================================
 // CRIAR SALA
 // ======================================================
 
 app.post('/api/salas/criar', async (req, res) => {
     try {
-        const codigo = normalizarCodigo(req.body.codigo);
-        const pin = normalizarPin(req.body.pin);
+        const codigo = normalizarCodigo(req.body?.codigo);
+        const pin = normalizarPin(req.body?.pin);
 
         if (!codigo || !pin) {
             return res.status(400).json({
@@ -236,17 +188,22 @@ app.post('/api/salas/criar', async (req, res) => {
             });
         }
 
-        const salaRef = db.collection('salas').doc(codigo);
-        const salaExistente = await salaRef.get();
+        // Não permite duplicar o código de uma sala.
+        const existente = await buscarSalaPorCodigo(codigo);
 
-        if (salaExistente.exists) {
+        if (existente) {
             return res.status(409).json({
                 sucesso: false,
                 mensagem: 'Já existe uma sala com esse código.'
             });
         }
 
-        await salaRef.set({
+        const salaRef = db
+            .collection('salas')
+            .doc(codigo);
+
+        // create() não sobrescreve um documento existente.
+        await salaRef.create({
             codigo,
             pin,
             ativa: true,
@@ -262,9 +219,73 @@ app.post('/api/salas/criar', async (req, res) => {
     } catch (error) {
         console.error('Erro ao criar sala:', error);
 
+        if (
+            error.code === 6 ||
+            error.code === 'already-exists'
+        ) {
+            return res.status(409).json({
+                sucesso: false,
+                mensagem: 'Já existe uma sala com esse código.'
+            });
+        }
+
         return res.status(500).json({
             sucesso: false,
             mensagem: 'Erro ao criar a sala.'
+        });
+    }
+});
+
+// ======================================================
+// ENTRAR NA SALA COM CÓDIGO E PIN
+// ======================================================
+
+app.post('/api/salas/entrar', async (req, res) => {
+    try {
+        const codigo = normalizarCodigo(req.body?.codigo);
+        const pin = normalizarPin(req.body?.pin);
+
+        if (!codigo || !pin) {
+            return res.status(400).json({
+                sucesso: false,
+                mensagem: 'Código e PIN são obrigatórios.'
+            });
+        }
+
+        const sala = await buscarSalaPorCodigo(codigo);
+
+        if (!sala) {
+            return salaNaoEncontrada(res);
+        }
+
+        if (sala.dados.ativa === false) {
+            return res.status(403).json({
+                sucesso: false,
+                mensagem: 'Esta sala não está mais ativa.'
+            });
+        }
+
+        if (normalizarPin(sala.dados.pin) !== pin) {
+            return res.status(401).json({
+                sucesso: false,
+                mensagem: 'PIN incorreto.'
+            });
+        }
+
+        return res.status(200).json({
+            sucesso: true,
+            mensagem: 'Acesso liberado!',
+            codigo: normalizarCodigo(
+                sala.dados.codigo || sala.ref.id
+            )
+        });
+
+    } catch (error) {
+        console.error('Erro ao entrar na sala:', error);
+
+        return res.status(500).json({
+            sucesso: false,
+            mensagem: 'Erro interno no servidor.'
         });
     }
 });
@@ -344,10 +365,7 @@ app.get('/api/jogadores/ocupados', async (req, res) => {
         const sala = await buscarSalaPorCodigo(codigo);
 
         if (!sala) {
-            return res.status(404).json({
-                sucesso: false,
-                mensagem: 'Sala não encontrada.'
-            });
+            return salaNaoEncontrada(res);
         }
 
         const jogadoresSnapshot = await sala.ref
@@ -364,7 +382,7 @@ app.get('/api/jogadores/ocupados', async (req, res) => {
         });
 
     } catch (error) {
-        console.error('Erro ao buscar personagens ocupados:', error);
+        console.error('Erro ao buscar jogadores:', error);
 
         return res.status(500).json({
             sucesso: false,
@@ -379,8 +397,8 @@ app.get('/api/jogadores/ocupados', async (req, res) => {
 
 app.post('/api/jogadores/entrar', async (req, res) => {
     try {
-        const codigo = normalizarCodigo(req.body.codigo);
-        const { personagemId, orcamento } = req.body;
+        const codigo = normalizarCodigo(req.body?.codigo);
+        const { personagemId, orcamento } = req.body || {};
 
         if (!codigo) {
             return res.status(400).json({
@@ -402,27 +420,27 @@ app.post('/api/jogadores/entrar', async (req, res) => {
         const sala = await buscarSalaPorCodigo(codigo);
 
         if (!sala) {
-            return res.status(404).json({
-                sucesso: false,
-                mensagem: 'Sala não encontrada.'
-            });
+            return salaNaoEncontrada(res);
         }
 
-        if (sala.doc.data().ativa !== true) {
+        if (sala.dados.ativa === false) {
             return res.status(403).json({
                 sucesso: false,
                 mensagem: 'Esta sala não está mais ativa.'
             });
         }
 
-        const personagem = personagensPermitidos[personagemId];
+        const personagem =
+            personagensPermitidos[personagemId];
 
         const jogadorRef = sala.ref
             .collection('jogadores')
             .doc(personagem.id);
 
         await db.runTransaction(async transaction => {
-            const jogadorDoc = await transaction.get(jogadorRef);
+            const jogadorDoc = await transaction.get(
+                jogadorRef
+            );
 
             if (jogadorDoc.exists) {
                 const erro = new Error('PERSONAGEM_OCUPADO');
@@ -465,7 +483,8 @@ app.post('/api/jogadores/entrar', async (req, res) => {
             return res.status(409).json({
                 sucesso: false,
                 codigo: 'PERSONAGEM_OCUPADO',
-                mensagem: 'Esse personagem já foi escolhido. Escolha outro personagem.'
+                mensagem:
+                    'Esse personagem já foi escolhido. Escolha outro personagem.'
             });
         }
 
@@ -484,7 +503,9 @@ app.post('/api/jogadores/entrar', async (req, res) => {
 
 app.post('/api/jogadores/finalizar', async (req, res) => {
     try {
-        const codigo = normalizarCodigo(req.body.codigo);
+        const body = req.body || {};
+
+        const codigo = normalizarCodigo(body.codigo);
 
         const {
             personagemId,
@@ -494,7 +515,7 @@ app.post('/api/jogadores/finalizar', async (req, res) => {
             quantidadeTotalItens,
             produtos,
             pontuacao
-        } = req.body;
+        } = body;
 
         if (!codigo) {
             return res.status(400).json({
@@ -516,10 +537,7 @@ app.post('/api/jogadores/finalizar', async (req, res) => {
         const sala = await buscarSalaPorCodigo(codigo);
 
         if (!sala) {
-            return res.status(404).json({
-                sucesso: false,
-                mensagem: 'Sala não encontrada.'
-            });
+            return salaNaoEncontrada(res);
         }
 
         const jogadorRef = sala.ref
@@ -535,7 +553,7 @@ app.post('/api/jogadores/finalizar', async (req, res) => {
             });
         }
 
-        const dadosJogador = jogadorDoc.data();
+        const dadosJogador = jogadorDoc.data() || {};
 
         let valorOrcamento = Number(orcamento);
 
@@ -543,7 +561,8 @@ app.post('/api/jogadores/finalizar', async (req, res) => {
             !Number.isFinite(valorOrcamento) ||
             valorOrcamento <= 0
         ) {
-            valorOrcamento = Number(dadosJogador.orcamento) || 50;
+            valorOrcamento =
+                Number(dadosJogador.orcamento) || 50;
         }
 
         let valorTotalGasto = Number(totalGasto);
@@ -555,10 +574,13 @@ app.post('/api/jogadores/finalizar', async (req, res) => {
         let valorSaldoRestante = Number(saldoRestante);
 
         if (!Number.isFinite(valorSaldoRestante)) {
-            valorSaldoRestante = valorOrcamento - valorTotalGasto;
+            valorSaldoRestante =
+                valorOrcamento - valorTotalGasto;
         }
 
-        let quantidadeItens = Number(quantidadeTotalItens);
+        let quantidadeItens = Number(
+            quantidadeTotalItens
+        );
 
         if (
             !Number.isFinite(quantidadeItens) ||
@@ -598,7 +620,8 @@ app.post('/api/jogadores/finalizar', async (req, res) => {
             mensagem: 'Partida finalizada com sucesso.',
             jogador: {
                 personagemId,
-                personagemNome: personagensPermitidos[personagemId].nome,
+                personagemNome:
+                    personagensPermitidos[personagemId].nome,
                 quantidadeTotalItens: quantidadeItens,
                 totalGasto: valorTotalGasto,
                 saldoRestante: valorSaldoRestante,
@@ -635,40 +658,53 @@ app.get('/api/jogadores/ranking', async (req, res) => {
         const sala = await buscarSalaPorCodigo(codigo);
 
         if (!sala) {
-            return res.status(404).json({
-                sucesso: false,
-                mensagem: 'Sala não encontrada.'
-            });
+            return salaNaoEncontrada(res);
         }
 
         const jogadoresSnapshot = await sala.ref
             .collection('jogadores')
             .get();
 
-        const jogadores = jogadoresSnapshot.docs.map(documento => {
-            const dados = documento.data();
+        const jogadores = jogadoresSnapshot.docs.map(
+            documento => {
+                const dados = documento.data() || {};
 
-            return {
-                id: documento.id,
-                personagemId: dados.personagemId || documento.id,
-                personagemNome: dados.personagemNome || 'Jogador',
-                avatarSeed: dados.avatarSeed || '',
-                finalizou: dados.finalizou === true,
-                quantidadeTotalItens:
-                    Number(dados.quantidadeTotalItens) || 0,
-                totalGasto: Number(dados.totalGasto) || 0,
-                saldoRestante: Number(dados.saldoRestante) || 0,
-                orcamento: Number(dados.orcamento) || 50,
-                pontuacao: Number(dados.pontuacao) || 0,
-                produtos: Array.isArray(dados.produtos)
-                    ? dados.produtos
-                    : []
-            };
+                return {
+                    id: documento.id,
+                    personagemId:
+                        dados.personagemId || documento.id,
+                    personagemNome:
+                        dados.personagemNome || 'Jogador',
+                    avatarSeed: dados.avatarSeed || '',
+                    finalizou: dados.finalizou === true,
+                    quantidadeTotalItens:
+                        Number(dados.quantidadeTotalItens) || 0,
+                    totalGasto: Number(dados.totalGasto) || 0,
+                    saldoRestante:
+                        Number(dados.saldoRestante) || 0,
+                    orcamento: Number(dados.orcamento) || 50,
+                    pontuacao: Number(dados.pontuacao) || 0,
+                    produtos: Array.isArray(dados.produtos)
+                        ? dados.produtos
+                        : []
+                };
+            }
+        );
+
+        // Quem finalizou aparece primeiro.
+        // Dentro de cada grupo, maior pontuação vem primeiro.
+        jogadores.sort((a, b) => {
+            if (a.finalizou !== b.finalizou) {
+                return Number(b.finalizou) -
+                    Number(a.finalizou);
+            }
+
+            return b.pontuacao - a.pontuacao;
         });
 
         return res.status(200).json({
             sucesso: true,
-            codigo: normalizarCodigo(sala.doc.data().codigo) || codigo,
+            codigo,
             totalJogadores: jogadores.length,
             jogadores
         });
@@ -684,13 +720,13 @@ app.get('/api/jogadores/ranking', async (req, res) => {
 });
 
 // ======================================================
-// INICIAR SERVIDOR
+// SERVIDOR
 // ======================================================
 
 const PORT = process.env.PORT || 3000;
 
 app.listen(PORT, () => {
-    console.log(`🚀 Servidor rodando na porta ${PORT}`);
+    console.log(`Servidor rodando na porta ${PORT}`);
 });
 
 export default app;
