@@ -77,7 +77,7 @@ const produtos = {
     copo: {
         nome: "Copo Térmico",
         preco: 15.00,
-        imagem: "../../img/produtos/copo.jpeg"
+        imagem: "../../img/produtos/copo-stanley.jpeg"
     },
 
     boneco: {
