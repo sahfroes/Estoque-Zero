@@ -1,42 +1,28 @@
-// ==========================================
-// ESTOQUE ZERO
-// CRONÔMETRO DA PARTIDA
-// ==========================================
 
 // ==========================================
 // CONFIGURAÇÕES
 // ==========================================
 
-// 2 minutos = 120 segundos
-const DURACAO_PARTIDA = 120;
+// 10 minutos = 600 segundos
+const DURACAO_PARTIDA = 600;
 
 
 // ==========================================
 // CHAVES DO LOCALSTORAGE
 // ==========================================
 
-const CHAVE_INICIO =
-    "estoqueZeroInicio";
-
-const CHAVE_DURACAO =
-    "estoqueZeroDuracao";
-
-const CHAVE_FINALIZADO =
-    "estoqueZeroFinalizado";
+const CHAVE_INICIO = "estoqueZeroInicio";
+const CHAVE_DURACAO = "estoqueZeroDuracao";
+const CHAVE_FINALIZADO = "estoqueZeroFinalizado";
 
 
 // ==========================================
 // ELEMENTOS DA TELA
 // ==========================================
 
-const elementoTempo =
-    document.getElementById("tempo");
-
-const alertaTempo =
-    document.getElementById("alerta-tempo");
-
-const elementoTempoContainer =
-    document.querySelector(".tempo");
+const elementoTempo = document.getElementById("tempo");
+const alertaTempo = document.getElementById("alerta-tempo");
+const elementoTempoContainer = document.querySelector(".tempo");
 
 
 // ==========================================
@@ -45,17 +31,12 @@ const elementoTempoContainer =
 
 function formatarTempo(segundos) {
 
-    const minutos =
-        Math.floor(segundos / 60);
-
-    const segundosRestantes =
-        segundos % 60;
+    const minutos = Math.floor(segundos / 60);
+    const segundosRestantes = segundos % 60;
 
     return (
-        String(minutos).padStart(2, "0")
-        +
-        ":"
-        +
+        String(minutos).padStart(2, "0") +
+        ":" +
         String(segundosRestantes).padStart(2, "0")
     );
 }
@@ -67,32 +48,26 @@ function formatarTempo(segundos) {
 
 function obterTempoRestante() {
 
-    const inicioSalvo =
-        localStorage.getItem(CHAVE_INICIO);
+    const inicioSalvo = localStorage.getItem(CHAVE_INICIO);
 
     // Ainda não começou
     if (!inicioSalvo) {
         return null;
     }
 
-    const inicio =
-        Number(inicioSalvo);
+    const inicio = Number(inicioSalvo);
 
     const duracaoSalva =
-        Number(
-            localStorage.getItem(CHAVE_DURACAO)
-        ) || DURACAO_PARTIDA;
+        Number(localStorage.getItem(CHAVE_DURACAO))
+        || DURACAO_PARTIDA;
 
-    const agora =
-        Date.now();
+    const agora = Date.now();
 
-    const segundosPassados =
-        Math.floor(
-            (agora - inicio) / 1000
-        );
+    const segundosPassados = Math.floor(
+        (agora - inicio) / 1000
+    );
 
-    const restante =
-        duracaoSalva - segundosPassados;
+    const restante = duracaoSalva - segundosPassados;
 
     return Math.max(0, restante);
 }
@@ -104,21 +79,13 @@ function obterTempoRestante() {
 
 function iniciarNovaPartida() {
 
-    // Se já existe uma partida,
-    // NÃO cria outra.
-    if (
-        localStorage.getItem(CHAVE_INICIO)
-    ) {
+    // Não reinicia uma partida existente
+    if (localStorage.getItem(CHAVE_INICIO)) {
 
-        console.log(
-            "⏱️ Partida já estava iniciada."
-        );
+        console.log("Partida já estava iniciada.");
 
         return;
     }
-
-    // Cria o momento exato em que
-    // a partida começou.
 
     localStorage.setItem(
         CHAVE_INICIO,
@@ -135,9 +102,7 @@ function iniciarNovaPartida() {
         "false"
     );
 
-    console.log(
-        "⏱️ NOVA PARTIDA INICIADA!"
-    );
+    console.log("Partida iniciada: 10 minutos!");
 }
 
 
@@ -147,60 +112,31 @@ function iniciarNovaPartida() {
 
 function atualizarCronometro() {
 
-    const tempoRestante =
-        obterTempoRestante();
+    const tempoRestante = obterTempoRestante();
 
-    // Não existe partida
     if (tempoRestante === null) {
         return;
     }
 
-
-    // ======================================
-    // MOSTRAR TEMPO
-    // ======================================
-
+    // Mostra o tempo
     if (elementoTempo) {
-
-        elementoTempo.textContent =
-            formatarTempo(
-                tempoRestante
-            );
+        elementoTempo.textContent = formatarTempo(tempoRestante);
     }
 
-
-    // ======================================
-    // ÚLTIMOS 10 SEGUNDOS
-    // ======================================
-
-    if (
-        tempoRestante <= 10 &&
-        tempoRestante > 0
-    ) {
+    // Alerta nos últimos 10 segundos
+    if (tempoRestante <= 10 && tempoRestante > 0) {
 
         if (alertaTempo) {
-
-            alertaTempo.style.display =
-                "block";
+            alertaTempo.style.display = "block";
         }
 
         if (elementoTempoContainer) {
-
-            elementoTempoContainer.classList.add(
-                "tempo-critico"
-            );
+            elementoTempoContainer.classList.add("tempo-critico");
         }
     }
 
-
-    // ======================================
-    // TEMPO ESGOTADO
-    // ======================================
-
-    if (
-        tempoRestante <= 0
-    ) {
-
+    // Tempo esgotado
+    if (tempoRestante <= 0) {
         finalizarCronometro();
     }
 }
@@ -212,88 +148,41 @@ function atualizarCronometro() {
 
 function finalizarCronometro() {
 
-    // Evita executar várias vezes
-
-    if (
-        localStorage.getItem(
-            CHAVE_FINALIZADO
-        ) === "true"
-    ) {
-
+    // Evita finalizar várias vezes
+    if (localStorage.getItem(CHAVE_FINALIZADO) === "true") {
         return;
     }
 
+    localStorage.setItem(CHAVE_FINALIZADO, "true");
 
-    // Marca como finalizado
-
-    localStorage.setItem(
-        CHAVE_FINALIZADO,
-        "true"
-    );
-
-
-    console.log(
-        "⏰ TEMPO ESGOTADO!"
-    );
-
-
-    // ======================================
-    // MOSTRAR 00:00
-    // ======================================
+    console.log("Tempo esgotado!");
 
     if (elementoTempo) {
-
-        elementoTempo.textContent =
-            "00:00";
+        elementoTempo.textContent = "00:00";
     }
-
-
-    // ======================================
-    // MOSTRAR ALERTA
-    // ======================================
 
     if (alertaTempo) {
 
-        alertaTempo.style.display =
-            "block";
+        alertaTempo.style.display = "block";
 
         alertaTempo.innerHTML = `
-
-            <div class="icone-alerta">
-                ⏰
-            </div>
-
-            <strong>
-                Tempo esgotado!
-            </strong>
-
-            <span>
-                Suas compras foram finalizadas.
-            </span>
-
+            <div class="icone-alerta">⏰</div>
+            <strong>Tempo esgotado!</strong>
+            <span>Suas compras foram finalizadas.</span>
         `;
     }
 
+    // Vai para a tela de resultado
+    setTimeout(function () {
 
-    // ======================================
-    // IR PARA VITÓRIA
-    // ======================================
+        const url = new URL(
+            "vitoria.html",
+            window.location.href
+        );
 
-    setTimeout(
-        function () {
+        window.location.href = url.href;
 
-            const url =
-                new URL(
-                    "vitoria.html",
-                    window.location.href
-                );
-
-            window.location.href =
-                url.href;
-
-        },
-        1500
-    );
+    }, 1500);
 }
 
 
@@ -303,33 +192,16 @@ function finalizarCronometro() {
 
 function verificarCronometro() {
 
-    const finalizado =
-        localStorage.getItem(
-            CHAVE_FINALIZADO
-        );
+    const finalizado = localStorage.getItem(CHAVE_FINALIZADO);
 
-
-    // ======================================
-    // JÁ FINALIZOU
-    // ======================================
-
-    if (
-        finalizado === "true"
-    ) {
+    if (finalizado === "true") {
 
         if (elementoTempo) {
-
-            elementoTempo.textContent =
-                "00:00";
+            elementoTempo.textContent = "00:00";
         }
 
         return;
     }
-
-
-    // ======================================
-    // ATUALIZAR
-    // ======================================
 
     atualizarCronometro();
 }
@@ -339,79 +211,26 @@ function verificarCronometro() {
 // INICIAR / CONTINUAR PARTIDA
 // ==========================================
 
-document.addEventListener(
-    "DOMContentLoaded",
-    function () {
+document.addEventListener("DOMContentLoaded", function () {
 
-        /*
-         * IMPORTANTE:
-         *
-         * A partida deve começar na CÂMERA.
-         *
-         * Nas telas CARD e CARRINHO,
-         * ela apenas continua.
-         */
+    const paginaAtual = window.location.pathname;
 
-        const paginaAtual =
-            window.location.pathname;
+    const inicioExistente = localStorage.getItem(CHAVE_INICIO);
 
+    // A partida começa na câmera
+    if (paginaAtual.includes("camera.html")) {
 
-        // Verifica se já existe uma partida
-
-        const inicioExistente =
-            localStorage.getItem(
-                CHAVE_INICIO
-            );
-
-
-        // ==================================
-        // CÂMERA
-        // ==================================
-
-        if (
-            paginaAtual.includes("camera.html")
-        ) {
-
-            // Se não existe partida,
-            // começa agora.
-
-            if (!inicioExistente) {
-
-                iniciarNovaPartida();
-
-            }
-
+        if (!inicioExistente) {
+            iniciarNovaPartida();
         }
-
-
-        // ==================================
-        // CARD / CARRINHO
-        // ==================================
-
-        /*
-         * Se já existe uma partida,
-         * não fazemos nada.
-         *
-         * O tempo continua sendo calculado
-         * pelo Date.now().
-         */
-
-
-        // Atualiza imediatamente
-
-        verificarCronometro();
-
-
-        // Atualiza a cada segundo
-
-        setInterval(
-            function () {
-
-                verificarCronometro();
-
-            },
-            1000
-        );
-
     }
-);
+
+    // Atualiza imediatamente
+    verificarCronometro();
+
+    // Continua atualizando a cada segundo
+    setInterval(function () {
+        verificarCronometro();
+    }, 1000);
+
+});

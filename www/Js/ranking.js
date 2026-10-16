@@ -1,66 +1,61 @@
+
 // ======================================================
-// ELEMENTOS
+// ESTOQUE ZERO — RANKING
+// Pontuação, classificação, pódio e emblemas
+// ======================================================
+
+// ======================================================
+// ELEMENTOS DA PÁGINA
 // ======================================================
 
 const mensagemRanking =
-    document.getElementById(
-        "mensagemRanking"
-    );
+    document.getElementById("mensagemRanking");
 
 const podio =
-    document.getElementById(
-        "podio"
-    );
+    document.getElementById("podio");
 
 const primeiroLugar =
-    document.getElementById(
-        "primeiroLugar"
-    );
+    document.getElementById("primeiroLugar");
 
 const segundoLugar =
-    document.getElementById(
-        "segundoLugar"
-    );
+    document.getElementById("segundoLugar");
 
 const terceiroLugar =
-    document.getElementById(
-        "terceiroLugar"
-    );
+    document.getElementById("terceiroLugar");
 
 const listaRanking =
-    document.getElementById(
-        "listaRanking"
-    );
+    document.getElementById("listaRanking");
 
 const minhaPosicao =
-    document.getElementById(
-        "minhaPosicao"
-    );
+    document.getElementById("minhaPosicao");
 
 const minhaPontuacao =
-    document.getElementById(
-        "minhaPontuacao"
-    );
+    document.getElementById("minhaPontuacao");
 
 
 // ======================================================
-// SALA
+// SALA E PERSONAGEM ATUAL
 // ======================================================
 
 const codigoTurma =
-    localStorage.getItem(
-        "codigoTurma"
-    );
-
-
-// ======================================================
-// PERSONAGEM ATUAL
-// ======================================================
+    localStorage.getItem("codigoTurma");
 
 const meuPersonagemId =
-    localStorage.getItem(
-        "personagemId"
-    );
+    localStorage.getItem("personagemId");
+
+
+// ======================================================
+// CAMINHOS DOS EMBLEMAS
+// ======================================================
+// Considera ranking.html em Frontend/View/
+// e a pasta img na raiz pública do projeto.
+// ======================================================
+
+const EMBLEMAS = {
+    primeiro: "../../img/emblemas/primeiro-lugar.png",
+    segundo: "../../img/emblemas/segundo-lugar.png",
+    terceiro: "../../img/emblemas/terceiro-lugar.png"
+};
 
 
 // ======================================================
@@ -72,12 +67,13 @@ if (!codigoTurma) {
     mensagemRanking.textContent =
         "Nenhuma sala foi encontrada.";
 
-    listaRanking.innerHTML =
-        `
-            <p style="text-align:center;">
-                Entre em uma sala primeiro.
-            </p>
-        `;
+    listaRanking.innerHTML = `
+        <p style="text-align:center; padding:20px;">
+            Entre em uma sala primeiro.
+        </p>
+    `;
+
+    limparPodio();
 
 } else {
 
@@ -89,14 +85,9 @@ if (!codigoTurma) {
 // ======================================================
 // CALCULAR PONTUAÇÃO
 // ======================================================
-//
-// Esta função usa EXATAMENTE a mesma
-// lógica utilizada na vitoria.js.
-//
-// Serve apenas como segurança para
-// resultados antigos que ainda não
-// possuem pontuação salva no Firebase.
-//
+// Quantidade de itens: até 40 pontos.
+// Equilíbrio dos gastos: até 60 pontos.
+// Pontuação final limitada entre 0 e 100.
 // ======================================================
 
 function calcularPontuacao(jogador) {
@@ -108,110 +99,63 @@ function calcularPontuacao(jogador) {
         Number(jogador.totalGasto) || 0;
 
     const quantidadeCompras =
-        Number(
-            jogador.quantidadeTotalItens
-        ) || 0;
+        Number(jogador.quantidadeTotalItens) || 0;
 
-
-    if (
-        orcamento <= 0
-    ) {
-
+    if (orcamento <= 0) {
         return 0;
-
     }
 
-
-    // =====================================
-    // PONTOS PELA QUANTIDADE
-    // =====================================
+    // --------------------------------------
+    // PONTOS PELA QUANTIDADE DE ITENS
+    // --------------------------------------
 
     const quantidadeConsiderada =
-        Math.min(
-            quantidadeCompras,
-            5
-        );
-
+        Math.min(Math.max(quantidadeCompras, 0), 5);
 
     const pontosQuantidade =
-        (
-            quantidadeConsiderada / 5
-        ) * 40;
+        (quantidadeConsiderada / 5) * 40;
 
-
-    // =====================================
+    // --------------------------------------
     // PONTOS PELO EQUILÍBRIO DOS GASTOS
-    // =====================================
+    // --------------------------------------
 
     const percentualGasto =
         totalGasto / orcamento;
 
-
     let pontosGasto = 0;
 
-
-    if (
-        percentualGasto < 0.40
-    ) {
+    if (percentualGasto < 0.40) {
 
         pontosGasto =
-            (
-                percentualGasto / 0.40
-            ) * 60;
+            (percentualGasto / 0.40) * 60;
 
-    }
-
-    else if (
-        percentualGasto <= 0.70
-    ) {
+    } else if (percentualGasto <= 0.70) {
 
         pontosGasto = 60;
 
-    }
-
-    else {
+    } else {
 
         pontosGasto =
-            (
-                (1 - percentualGasto) /
-                0.30
-            ) * 60;
+            ((1 - percentualGasto) / 0.30) * 60;
 
     }
 
+    // --------------------------------------
+    // TOTAL ENTRE 0 E 100
+    // --------------------------------------
 
-    // =====================================
-    // TOTAL
-    // =====================================
-
-    let pontuacao =
-        pontosQuantidade +
-        pontosGasto;
-
-
-    // =====================================
-    // LIMITAR ENTRE 0 E 100
-    // =====================================
-
-    pontuacao =
-        Math.max(
-            0,
-            Math.min(
-                100,
-                pontuacao
-            )
-        );
-
+    const pontuacao =
+        pontosQuantidade + pontosGasto;
 
     return Math.round(
-        pontuacao
+        Math.max(0, Math.min(100, pontuacao))
     );
 
 }
 
 
 // ======================================================
-// BUSCAR RANKING
+// CARREGAR RANKING
 // ======================================================
 
 async function carregarRanking() {
@@ -221,277 +165,157 @@ async function carregarRanking() {
         mensagemRanking.textContent =
             "Carregando participantes...";
 
-
-        const resposta =
-            await fetch(
-                `/api/jogadores/ranking?codigo=${encodeURIComponent(
-                    codigoTurma
-                )}`
-            );
-
+        const resposta = await fetch(
+            `/api/jogadores/ranking?codigo=${encodeURIComponent(codigoTurma)}`
+        );
 
         if (!resposta.ok) {
-
             throw new Error(
                 "Não foi possível carregar o ranking."
             );
-
         }
 
-
-        const dados =
-            await resposta.json();
-
+        const dados = await resposta.json();
 
         console.log(
-            "📊 Dados recebidos do Firebase:",
+            "Dados recebidos do servidor:",
             dados
         );
 
+        let jogadores = Array.isArray(dados.jogadores)
+            ? dados.jogadores
+            : [];
 
-        let jogadores =
-            dados.jogadores || [];
+        // --------------------------------------
+        // NORMALIZAR DADOS DOS PARTICIPANTES
+        // --------------------------------------
 
+        jogadores = jogadores.map(function (jogador) {
 
-        // ==================================================
-        // NORMALIZAR DADOS
-        // ==================================================
+            const produtos = Array.isArray(jogador.produtos)
+                ? jogador.produtos
+                : [];
 
-        jogadores =
-            jogadores.map(
-                function (jogador) {
+            // Se a pontuação estiver salva, utilizá-la.
+            // Se não estiver, calcular uma pontuação de reserva.
 
-                    const produtos =
-                        Array.isArray(
-                            jogador.produtos
-                        )
-                            ? jogador.produtos
-                            : [];
+            const pontuacaoSalva =
+                jogador.pontuacao !== null &&
+                jogador.pontuacao !== undefined &&
+                jogador.pontuacao !== "";
 
+            const pontuacao = pontuacaoSalva
+                ? Number(jogador.pontuacao)
+                : calcularPontuacao(jogador);
 
-                    // ------------------------------------------
-                    // PEGAR PONTUAÇÃO SALVA
-                    // ------------------------------------------
+            return {
+                ...jogador,
+                pontuacao: Number.isFinite(pontuacao)
+                    ? pontuacao
+                    : calcularPontuacao(jogador),
+                produtos: produtos
+            };
 
-                    let pontuacao =
-                        Number(
-                            jogador.pontuacao
-                        );
+        });
 
+        // --------------------------------------
+        // ORDENAR CLASSIFICAÇÃO
+        // 1. Maior pontuação
+        // 2. Maior quantidade de itens
+        // 3. Maior saldo restante
+        // --------------------------------------
 
-                    // ------------------------------------------
-                    // SE NÃO EXISTIR, CALCULAR
-                    // ------------------------------------------
+        jogadores.sort(function (a, b) {
 
-                    if (
-                        !Number.isFinite(
-                            pontuacao
-                        )
-                    ) {
+            const diferencaPontuacao =
+                b.pontuacao - a.pontuacao;
 
-                        pontuacao =
-                            calcularPontuacao(
-                                jogador
-                            );
-
-                    }
-
-
-                    return {
-
-                        ...jogador,
-
-                        pontuacao:
-                            pontuacao,
-
-                        produtos:
-                            produtos
-
-                    };
-
-                }
-            );
-
-
-        // ==================================================
-        // ORDENAR RANKING
-        // ==================================================
-        //
-        // 1º → maior pontuação
-        //
-        // 2º → maior quantidade de itens
-        //
-        // 3º → maior saldo restante
-        //
-        // ==================================================
-
-        jogadores.sort(
-            function (a, b) {
-
-                // ------------------------------------------
-                // 1º CRITÉRIO
-                // MAIOR PONTUAÇÃO
-                // ------------------------------------------
-
-                if (
-                    b.pontuacao !==
-                    a.pontuacao
-                ) {
-
-                    return (
-                        b.pontuacao -
-                        a.pontuacao
-                    );
-
-                }
-
-
-                // ------------------------------------------
-                // 2º CRITÉRIO
-                // MAIOR QUANTIDADE DE ITENS
-                // ------------------------------------------
-
-                const quantidadeA =
-                    Number(
-                        a.quantidadeTotalItens
-                    ) || 0;
-
-                const quantidadeB =
-                    Number(
-                        b.quantidadeTotalItens
-                    ) || 0;
-
-
-                if (
-                    quantidadeB !==
-                    quantidadeA
-                ) {
-
-                    return (
-                        quantidadeB -
-                        quantidadeA
-                    );
-
-                }
-
-
-                // ------------------------------------------
-                // 3º CRITÉRIO
-                // MAIOR SALDO
-                // ------------------------------------------
-
-                const saldoA =
-                    Number(
-                        a.saldoRestante
-                    ) || 0;
-
-                const saldoB =
-                    Number(
-                        b.saldoRestante
-                    ) || 0;
-
-
-                return (
-                    saldoB -
-                    saldoA
-                );
-
+            if (diferencaPontuacao !== 0) {
+                return diferencaPontuacao;
             }
-        );
 
+            const quantidadeA =
+                Number(a.quantidadeTotalItens) || 0;
 
-        // ==================================================
-        // MENSAGEM
-        // ==================================================
+            const quantidadeB =
+                Number(b.quantidadeTotalItens) || 0;
 
-        const finalizados =
-            jogadores.filter(
-                jogador =>
-                    jogador.finalizou === true
-            ).length;
+            if (quantidadeB !== quantidadeA) {
+                return quantidadeB - quantidadeA;
+            }
 
+            const saldoA =
+                Number(a.saldoRestante) || 0;
+
+            const saldoB =
+                Number(b.saldoRestante) || 0;
+
+            return saldoB - saldoA;
+
+        });
+
+        // --------------------------------------
+        // MENSAGEM DE FINALIZAÇÃO
+        // --------------------------------------
+
+        const finalizados = jogadores.filter(
+            jogador => jogador.finalizou === true
+        ).length;
 
         mensagemRanking.textContent =
             `${finalizados} de ${jogadores.length} jogador(es) finalizaram a missão.`;
 
+        // --------------------------------------
+        // NENHUM PARTICIPANTE
+        // --------------------------------------
 
+        if (jogadores.length === 0) {
 
-        // ==================================================
-        // NENHUM JOGADOR
-        // ==================================================
-
-        if (
-            jogadores.length === 0
-        ) {
-
-            listaRanking.innerHTML =
-                `
-                    <p style="
-                        text-align:center;
-                        padding:20px;
-                        color:#766b86;
-                    ">
-                        Nenhum jogador entrou na sala ainda.
-                    </p>
-                `;
-
+            listaRanking.innerHTML = `
+                <p style="
+                    text-align:center;
+                    padding:20px;
+                    color:#766b86;
+                ">
+                    Nenhum jogador entrou na sala ainda.
+                </p>
+            `;
 
             limparPodio();
+            mostrarMinhaPosicao([]);
 
             return;
 
         }
 
+        // --------------------------------------
+        // ATUALIZAR A INTERFACE
+        // --------------------------------------
 
-        // ==================================================
-        // MOSTRAR PÓDIO
-        // ==================================================
-
-        mostrarPodio(
-            jogadores
-        );
-
-
-        // ==================================================
-        // MOSTRAR LISTA
-        // ==================================================
-
-        mostrarLista(
-            jogadores
-        );
-
-
-        // ==================================================
-        // MINHA POSIÇÃO
-        // ==================================================
-
-        mostrarMinhaPosicao(
-            jogadores
-        );
-
+        mostrarPodio(jogadores);
+        mostrarLista(jogadores);
+        mostrarMinhaPosicao(jogadores);
 
     } catch (erro) {
 
         console.error(
-            "❌ Erro no ranking:",
+            "Erro ao carregar o ranking:",
             erro
         );
-
 
         mensagemRanking.textContent =
             "Não foi possível carregar o ranking.";
 
-
-        listaRanking.innerHTML =
-            `
-                <p style="
-                    text-align:center;
-                    padding:20px;
-                    color:#b00020;
-                ">
-                    Erro ao carregar os jogadores.
-                </p>
-            `;
+        listaRanking.innerHTML = `
+            <p style="
+                text-align:center;
+                padding:20px;
+                color:#b00020;
+            ">
+                Erro ao carregar os jogadores.
+                Tente atualizar a página.
+            </p>
+        `;
 
     }
 
@@ -499,17 +323,20 @@ async function carregarRanking() {
 
 
 // ======================================================
-// MOSTRAR PÓDIO
+// MOSTRAR PÓDIO COM OS TRÊS EMBLEMAS
 // ======================================================
 
 function mostrarPodio(jogadores) {
+
+    // PRIMEIRO LUGAR
 
     if (jogadores[0]) {
 
         primeiroLugar.innerHTML =
             criarJogadorPodio(
                 jogadores[0],
-                "🥇"
+                EMBLEMAS.primeiro,
+                "Emblema de primeiro lugar"
             );
 
     } else {
@@ -518,13 +345,15 @@ function mostrarPodio(jogadores) {
 
     }
 
+    // SEGUNDO LUGAR
 
     if (jogadores[1]) {
 
         segundoLugar.innerHTML =
             criarJogadorPodio(
                 jogadores[1],
-                "🥈"
+                EMBLEMAS.segundo,
+                "Emblema de segundo lugar"
             );
 
     } else {
@@ -533,13 +362,15 @@ function mostrarPodio(jogadores) {
 
     }
 
+    // TERCEIRO LUGAR
 
     if (jogadores[2]) {
 
         terceiroLugar.innerHTML =
             criarJogadorPodio(
                 jogadores[2],
-                "🥉"
+                EMBLEMAS.terceiro,
+                "Emblema de terceiro lugar"
             );
 
     } else {
@@ -552,31 +383,38 @@ function mostrarPodio(jogadores) {
 
 
 // ======================================================
-// CARD DO PÓDIO
+// CRIAR CARD DO PÓDIO
 // ======================================================
 
 function criarJogadorPodio(
     jogador,
-    medalha
+    caminhoEmblema,
+    descricaoEmblema
 ) {
 
     const avatar =
-        criarUrlAvatar(
-            jogador.avatarSeed
-        );
+        criarUrlAvatar(jogador.avatarSeed);
 
+    const nome =
+        escaparHTML(jogador.personagemNome || "Participante");
 
     return `
 
-        <div class="medalha">
-            ${medalha}
+        <div class="emblema-podio">
+
+            <img
+                src="${caminhoEmblema}"
+                alt="${descricaoEmblema}"
+                class="imagem-emblema"
+            >
+
         </div>
 
         <div class="avatar">
 
             <img
                 src="${avatar}"
-                alt="Avatar de ${jogador.personagemNome}"
+                alt="Avatar de ${nome}"
                 style="
                     width:100%;
                     height:100%;
@@ -587,9 +425,7 @@ function criarJogadorPodio(
 
         </div>
 
-        <strong>
-            ${jogador.personagemNome}
-        </strong>
+        <strong>${nome}</strong>
 
         <span>
             ${jogador.pontuacao} pontos
@@ -601,148 +437,100 @@ function criarJogadorPodio(
 
 
 // ======================================================
-// MOSTRAR LISTA
+// MOSTRAR LISTA COMPLETA DO RANKING
 // ======================================================
 
 function mostrarLista(jogadores) {
 
     listaRanking.innerHTML = "";
 
+    jogadores.forEach(function (jogador, index) {
 
-    jogadores.forEach(
-        function (jogador, index) {
+        const posicao = index + 1;
 
-            const posicao =
-                index + 1;
+        const item = document.createElement("div");
 
+        item.classList.add("item-ranking");
 
-            const item =
-                document.createElement(
-                    "div"
-                );
+        // Destacar o jogador atual.
 
-
-            item.classList.add(
-                "item-ranking"
-            );
-
-
-            if (
-                jogador.personagemId ===
-                meuPersonagemId
-            ) {
-
-                item.classList.add(
-                    "destaque"
-                );
-
-            }
-
-
-            const avatar =
-                criarUrlAvatar(
-                    jogador.avatarSeed
-                );
-
-
-            const saldo =
-                Number(
-                    jogador.saldoRestante
-                ) || 0;
-
-
-            const totalGasto =
-                Number(
-                    jogador.totalGasto
-                ) || 0;
-
-
-            const quantidade =
-                Number(
-                    jogador.quantidadeTotalItens
-                ) || 0;
-
-
-            // ==================================================
-            // PRODUTOS COMPRADOS
-            // ==================================================
-
-            const produtosTexto =
-                criarTextoProdutos(
-                    jogador.produtos
-                );
-
-
-            item.innerHTML = `
-
-                <div class="posicao">
-                    ${posicao}º
-                </div>
-
-
-                <div class="avatar-pequeno">
-
-                    <img
-                        src="${avatar}"
-                        alt="Avatar"
-                        style="
-                            width:100%;
-                            height:100%;
-                            object-fit:contain;
-                            border-radius:50%;
-                        "
-                    >
-
-                </div>
-
-
-                <div class="informacoes">
-
-                    <strong>
-                        ${jogador.personagemNome}
-                    </strong>
-
-
-                    <small>
-                        Saldo:
-                        R$ ${formatarMoeda(saldo)}
-                    </small>
-
-
-                    <small>
-                        ${quantidade}
-                        item(ns) ·
-                        R$ ${formatarMoeda(totalGasto)}
-                        gasto
-                    </small>
-
-
-                    <small>
-                        🛒 ${produtosTexto}
-                    </small>
-
-                </div>
-
-
-                <div class="pontos">
-
-                    ${jogador.pontuacao}
-
-                    <small>
-                        pontos
-                    </small>
-
-                </div>
-
-            `;
-
-
-            listaRanking.appendChild(
-                item
-            );
-
+        if (
+            jogador.personagemId === meuPersonagemId
+        ) {
+            item.classList.add("destaque");
         }
-    );
+
+        const avatar =
+            criarUrlAvatar(jogador.avatarSeed);
+
+        const saldo =
+            Number(jogador.saldoRestante) || 0;
+
+        const totalGasto =
+            Number(jogador.totalGasto) || 0;
+
+        const quantidade =
+            Number(jogador.quantidadeTotalItens) || 0;
+
+        const nome =
+            escaparHTML(jogador.personagemNome || "Participante");
+
+        const produtosTexto =
+            escaparHTML(criarTextoProdutos(jogador.produtos));
+
+        item.innerHTML = `
+
+            <div class="posicao">
+                ${posicao}º
+            </div>
+
+            <div class="avatar-pequeno">
+
+                <img
+                    src="${avatar}"
+                    alt="Avatar de ${nome}"
+                    style="
+                        width:100%;
+                        height:100%;
+                        object-fit:contain;
+                        border-radius:50%;
+                    "
+                >
+
+            </div>
+
+            <div class="informacoes">
+
+                <strong>${nome}</strong>
+
+                <small>
+                    Saldo: R$ ${formatarMoeda(saldo)}
+                </small>
+
+                <small>
+                    ${quantidade} item(ns) ·
+                    R$ ${formatarMoeda(totalGasto)} gasto
+                </small>
+
+                <small>
+                    🛒 ${produtosTexto}
+                </small>
+
+            </div>
+
+            <div class="pontos">
+
+                ${jogador.pontuacao}
+
+                <small>pontos</small>
+
+            </div>
+
+        `;
+
+        listaRanking.appendChild(item);
+
+    });
 
 }
 
@@ -751,102 +539,66 @@ function mostrarLista(jogadores) {
 // CRIAR TEXTO DOS PRODUTOS
 // ======================================================
 
-function criarTextoProdutos(
-    produtos
-) {
+function criarTextoProdutos(produtos) {
 
     if (
         !Array.isArray(produtos) ||
         produtos.length === 0
     ) {
-
         return "Nenhuma compra";
-
     }
 
+    return produtos.map(function (produto) {
 
-    const lista =
-        produtos.map(
-            function (produto) {
+        const nome =
+            produto.nome ||
+            produto.id ||
+            produto.produto ||
+            "Produto";
 
-                const nome =
-                    produto.nome ||
-                    produto.id ||
-                    produto.produto ||
-                    "Produto";
+        const quantidade =
+            Number(produto.quantidade) || 1;
 
+        return `${nome} (${quantidade}x)`;
 
-                const quantidade =
-                    Number(
-                        produto.quantidade
-                    ) || 1;
-
-
-                return (
-                    nome +
-                    " (" +
-                    quantidade +
-                    "x)"
-                );
-
-            }
-        );
-
-
-    return lista.join(", ");
+    }).join(", ");
 
 }
 
 
 // ======================================================
-// MINHA POSIÇÃO
+// MOSTRAR POSIÇÃO DO PARTICIPANTE ATUAL
 // ======================================================
 
-function mostrarMinhaPosicao(
-    jogadores
-) {
+function mostrarMinhaPosicao(jogadores) {
 
     if (!meuPersonagemId) {
 
-        minhaPosicao.textContent =
-            "--";
-
-        minhaPontuacao.textContent =
-            "0";
+        minhaPosicao.textContent = "--";
+        minhaPontuacao.textContent = "0";
 
         return;
 
     }
 
-
-    const indice =
-        jogadores.findIndex(
-            jogador =>
-                jogador.personagemId ===
-                meuPersonagemId
-        );
-
+    const indice = jogadores.findIndex(
+        jogador =>
+            jogador.personagemId === meuPersonagemId
+    );
 
     if (indice === -1) {
 
-        minhaPosicao.textContent =
-            "--";
-
-        minhaPontuacao.textContent =
-            "0";
+        minhaPosicao.textContent = "--";
+        minhaPontuacao.textContent = "0";
 
         return;
 
     }
 
-
-    const jogador =
-        jogadores[indice];
-
+    const jogador = jogadores[indice];
 
     minhaPosicao.textContent =
         `${indice + 1}º lugar`;
-
 
     minhaPontuacao.textContent =
         jogador.pontuacao;
@@ -855,18 +607,14 @@ function mostrarMinhaPosicao(
 
 
 // ======================================================
-// AVATAR
+// CRIAR URL DO AVATAR
 // ======================================================
 
 function criarUrlAvatar(seed) {
 
     if (!seed) {
-
-        seed =
-            "estoque-zero";
-
+        seed = "estoque-zero";
     }
-
 
     return (
         "https://api.dicebear.com/10.x/adventurer/svg" +
@@ -879,7 +627,7 @@ function criarUrlAvatar(seed) {
 
 
 // ======================================================
-// MOEDA
+// FORMATAR MOEDA
 // ======================================================
 
 function formatarMoeda(valor) {
@@ -892,15 +640,29 @@ function formatarMoeda(valor) {
 
 
 // ======================================================
+// ESCAPAR TEXTO EXIBIDO NO HTML
+// ======================================================
+
+function escaparHTML(valor) {
+
+    return String(valor)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+
+}
+
+
+// ======================================================
 // LIMPAR PÓDIO
 // ======================================================
 
 function limparPodio() {
 
     primeiroLugar.innerHTML = "";
-
     segundoLugar.innerHTML = "";
-
     terceiroLugar.innerHTML = "";
 
 }
@@ -912,11 +674,9 @@ function limparPodio() {
 
 function voltarResultado() {
 
-    window.location.href =
-        "vitoria.html";
+    window.location.href = "vitoria.html";
 
 }
-
 
 // ======================================================
 // VOLTAR PARA INÍCIO
@@ -924,7 +684,6 @@ function voltarResultado() {
 
 function voltarInicio() {
 
-    window.location.href =
-        "orcamento.html";
+    window.location.href = "orcamento.html";
 
 }

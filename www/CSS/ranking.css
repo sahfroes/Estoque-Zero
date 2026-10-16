@@ -644,3 +644,70 @@ body {
 .avatar-pequeno img {
     display: block;
 }
+
+
+
+/* =========================
+   EMBLEMAS DO PÓDIO
+========================= */
+
+.emblema-podio {
+    width: 58px;
+    height: 58px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    margin: -30px auto 8px;
+
+    position: relative;
+    z-index: 2;
+}
+
+.emblema-podio img {
+    width: 100%;
+    height: 100%;
+
+    object-fit: contain;
+}
+
+/* Espaço para o emblema */
+
+.jogador {
+    overflow: visible;
+    margin-top: 22px;
+}
+
+/* Destaque para o primeiro lugar */
+
+.jogador.primeiro {
+    border: 2px solid #e7bd35;
+    background: linear-gradient(
+        180deg,
+        #fffdf4,
+        #fff8df
+    );
+}
+
+/* Segundo lugar */
+
+.jogador.segundo {
+    border: 1px solid #c6cbd5;
+    background: linear-gradient(
+        180deg,
+        #ffffff,
+        #f3f4f8
+    );
+}
+
+/* Terceiro lugar */
+
+.jogador.terceiro {
+    border: 1px solid #d9a17e;
+    background: linear-gradient(
+        180deg,
+        #ffffff,
+        #fff1e7
+    );
+}
